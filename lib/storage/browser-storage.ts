@@ -2,8 +2,11 @@ import type { StorageKeyValue } from 'lib/storage';
 import type { Fields } from 'config/fields';
 
 import { Runtime } from 'lib/runtime';
-type CallBack = { [key: string]: chrome.storage.StorageChange; };
 
+
+type CallBack = {
+  [key: string]: chrome.storage.StorageChange;
+};
 
 /**
  * Default class for working with browser Storage.
