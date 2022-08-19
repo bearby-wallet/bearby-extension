@@ -1,5 +1,5 @@
 {
-  "name": "MasPay",
+  "name": "BearBy",
   "author": "Rinat",
   "manifest_version": 3,
   "icons": {
@@ -56,7 +56,7 @@
       "19": "icons/icon19.png",
       "38": "icons/icon38.png"
     },
-    "default_title": "MasPay",
+    "default_title": "BearBy",
     "default_popup": "index.html"
   },
   "background": {

@@ -1,6 +1,6 @@
-# MasPay Browser Extension
+# BearBy Browser Extension
 
-MasPay is Web3 wallet for iteraction with massa chain.
+BearBy is Web3 wallet for iteraction with massa chain.
 
 ## Developing
 ```bash
