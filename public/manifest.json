@@ -1,0 +1,65 @@
+{
+  "name": "MasPay",
+  "author": "Rinat",
+  "manifest_version": 3,
+  "icons": {
+    "16": "icons/icon16.png",
+    "19": "icons/icon19.png",
+    "38": "icons/icon38.png",
+    "39": "icons/icon39.png",
+    "48": "icons/icon48.png",
+    "96": "icons/icon96.png",
+    "128": "icons/icon128.png"
+  },
+  "storage": {
+    "managed_schema": "schema.json"
+  },
+  "commands": {
+    "_execute_browser_action": {
+      "suggested_key": {
+        "chromeos": "Alt+Shift+Z",
+        "linux": "Alt+Shift+Z",
+        "mac": "Alt+Shift+Z",
+        "windows": "Alt+Shift+Z"
+      }
+    }
+  },
+  "host_permissions": [
+    "http://127.0.0.1/*"
+  ],
+  "permissions": [
+    "storage",
+    "notifications",
+    "alarms",
+    "tabs"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["inpage.js", "phishing.html"],
+      "matches": ["*://*/*"]
+    }
+  ],
+  "action": {
+    "default_icon": {
+      "19": "icons/icon19.png",
+      "38": "icons/icon38.png"
+    },
+    "default_title": "MasPay",
+    "default_popup": "index.html"
+  },
+  "background": {
+    "service_worker": "background.js"
+  }
+}

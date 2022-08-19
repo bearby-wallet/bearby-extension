@@ -1,0 +1,42 @@
+// @import "./fonts";
+// @import "./variables";
+@import "./mixins";
+// @import "./theme";
+// @import "./components/index";
+
+:global(*),
+:global(*:after),
+:global(*:before) {
+  @include box-sizing(border-box);
+}
+
+:global(*) {
+  user-select: none;
+  scrollbar-width: none;
+}
+
+:global(body),
+:global(html) {
+  margin: 0;
+  padding: 0;
+
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+
+  min-width: 320px;
+  min-height: 600px;
+
+  background-color: var(--background-color);
+}
+
+:global(a:link),
+:global(a:visited),
+:global(a:hover),
+:global(a:active) {
+  text-decoration: none;
+  color: initial;
+}
+
+:global(::-webkit-scrollbar) { 
+  display: none; 
+}
