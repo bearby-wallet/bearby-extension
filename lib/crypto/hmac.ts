@@ -1,22 +1,18 @@
 import Sha512 from 'sha.js/sha512';
-import Sha256 from 'sha.js/sha256';
 import { Buffer } from 'buffer';
 
-import { Digests } from 'config/digests';
 import { TypeOf } from 'lib/type';
 
 export class Hmac {
   #zeros: Buffer;
   #opad: Uint8Array;
-  #alg: Digests;
   #hash: any;
 
-  constructor(alg: Digests, key: Buffer) {
+  constructor(key: Buffer) {
     this.#zeros = Buffer.alloc(128);
-    this.#alg = alg;
     this.#hash = this.#sha();
 
-    const blocksize = alg === Digests.sha512 ? 128 : 64;
+    const blocksize = 128;
 
     if (key.length > blocksize) {
       key = this.#sha().update(key).digest();
@@ -60,14 +56,6 @@ export class Hmac {
   }
 
   #sha() {
-    if (this.#alg === Digests.Sha256) {
-      return new Sha256();
-    }
-
-    if (this.#alg === Digests.sha512) {
-      return new Sha512();
-    }
-
-    throw new Error('Incorrect alg');
+    return new Sha512();
   }
 }

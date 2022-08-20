@@ -1,7 +1,6 @@
 import { TypeOf } from 'lib/type';
 
 import { Encoding } from 'config/encoding';
-import { Digests } from 'config/digests';
 import { Hmac } from './hmac';
 
 
@@ -38,12 +37,7 @@ function checkParameters(iterations: number, keylen: number) {
 }
 
 
-const sizes = {
-  [Digests.Sha256]: 32,
-  [Digests.sha512]: 64
-};
-
-export function pbkdf2(password: string, salt: string, iterations: number, keylen: number, digest = Digests.sha512) {
+export function pbkdf2(password: string, salt: string, iterations: number, keylen: number) {
   checkParameters(iterations, keylen);
   
   const passwordBytes = toBuffer(password, 'Password');
@@ -55,19 +49,19 @@ export function pbkdf2(password: string, salt: string, iterations: number, keyle
   saltBytes.copy(block1, 0, 0, saltBytes.length);
 
   let destPos = 0;
-  const hLen = sizes[digest];
+  const hLen = 64;
   const l = Math.ceil(keylen / hLen);
 
   for (let i = 1; i <= l; i++) {
     block1.writeUInt32BE(i, saltBytes.length);
 
     const T = Buffer.from(
-      new Hmac(digest, passwordBytes).update(block1).digest()
+      new Hmac(passwordBytes).update(block1).digest()
     );
     let U = T;
 
     for (let j = 1; j < iterations; j++) {
-      U = new Hmac(digest, passwordBytes).update(U).digest();
+      U = new Hmac(passwordBytes).update(U).digest();
 
       for (let k = 0; k < hLen; k++) T[k] ^= U[k];
     }
