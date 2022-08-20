@@ -75,6 +75,8 @@ export class MnemonicController {
 
     const entropyBits = this.#bytesToBinary(Array.from(bufferEntropy));
     const checksumBits = this.#deriveChecksumBits(bufferEntropy);
+    console.log(checksumBits);
+
     const bits = entropyBits + checksumBits;
     const chunks = bits.match(/(.{1,11})/g) || [];
 
@@ -88,8 +90,10 @@ export class MnemonicController {
     return words.join(' ');
   }
 
-  #bytesToBinary(bytes: number[]) {
-    return bytes.map((x) => this.#lpad(x.toString(2), '0', 8)).join('');
+  #bytesToBinary(bytes: Buffer) {
+    return Array
+      .from(bytes)
+      .map((x) => this.#lpad(x.toString(2), '0', 8)).join('');
   }
 
   #salt(password: string) {
@@ -116,8 +120,8 @@ export class MnemonicController {
     const CS = ENT / 32;
     const hash = new Sha256()
       .update(entropyBuffer)
-      .digest('hex');
+      .digest();
 
-    return this.#bytesToBinary(Array.from(hash)).slice(0, CS);
+    return this.#bytesToBinary(hash).slice(0, CS);
   }
 }
