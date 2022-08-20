@@ -15,5 +15,3 @@ import { KeyChain } from 'lib/crypto/aes';
 
 import { randomBytes } from 'lib/crypto/random';
 
-
-console.log(randomBytes(128));
