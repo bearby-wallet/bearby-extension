@@ -55,7 +55,7 @@ const QUOTA = 65536;
 //   return randStr;
 // };
 
-export function randomBytes(length: number) {
+export function randomBytes(length: number): Uint8Array {
   if (!TypeOf.isUndefined(globalThis.crypto)) {
     const crypto = globalThis.crypto;
     const a = new Uint8Array(length);

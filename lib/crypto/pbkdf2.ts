@@ -37,7 +37,7 @@ function checkParameters(iterations: number, keylen: number) {
 }
 
 
-export function pbkdf2(password: string, salt: string, iterations: number, keylen: number) {
+export function pbkdf2(password: string | Buffer, salt: string | Buffer, iterations: number, keylen: number) {
   checkParameters(iterations, keylen);
   
   const passwordBytes = toBuffer(password, 'Password');

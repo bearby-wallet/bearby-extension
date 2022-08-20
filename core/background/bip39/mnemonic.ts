@@ -1,41 +1,32 @@
 import { Buffer } from 'buffer';
+import Sha256 from 'sha.js/sha256';
 import { assert } from 'lib/assert';
 
 import { WORD_LIST } from './wordlists';
 import { randomBytes } from 'lib/crypto/random';
+import { pbkdf2 } from 'lib/crypto/pbkdf2';
 
 
 export class MnemonicController {
 
-  public generateMnemonic(strength = 128) {
+  generateMnemonic(strength = 128) {
     assert(strength % 32 === 0, 'InvalidEntropy');
 
-    return this.#entropyToMnemonic(randomBytes(strength / 8), WORD_LIST);
+    return this.entropyToMnemonic(randomBytes(strength / 8));
   }
 
-  public getKey(index: number) {
+  getKey(index: number) {
     return `m/44'/22'/0'/0/${index}`; // TODO: change to Massa path.
   }
 
-  public mnemonicToSeed(mnemonic: string, password?: string): Promise<Buffer> {
-    return new Promise((resolve, reject) => {
-      const callback = (err: Error, derivedKey: Buffer) => {
-        if (err) {
-          return reject(err);
-        }
-        else {
-          return resolve(derivedKey);
-        }
-      };
+  mnemonicToSeed(mnemonic: string, password?: string): Buffer {
+    const mnemonicBuffer = Buffer.from(this.#normalize(mnemonic));
+    const saltBuffer = Buffer.from(this.#salt(this.#normalize(password)));
 
-      const mnemonicBuffer = Buffer.from(this.#normalize(mnemonic));
-      const saltBuffer = Buffer.from(this.#salt(this.#normalize(password)));
-
-      pbkdf2(mnemonicBuffer, saltBuffer, 2048, 64, 'sha512', callback);
-    });
+    return pbkdf2(mnemonicBuffer, saltBuffer, 2048, 64);
   }
 
-  public mnemonicToEntropy(mnemonic: string) {
+  mnemonicToEntropy(mnemonic: string) {
     const words = this.#normalize(mnemonic).split(' ');
 
     assert(words.length >= 12, 'IncorrectMnemonic');
@@ -65,7 +56,7 @@ export class MnemonicController {
     return entropy.toString('hex');
   }
 
-  public validateMnemonic(mnemonic: string) {
+  validateMnemonic(mnemonic: string) {
     try {
       this.mnemonicToEntropy(mnemonic);
     } catch (e) {
@@ -74,10 +65,8 @@ export class MnemonicController {
     return true;
   }
 
-  #entropyToMnemonic(entropy: string, wordlist: string[]) {
-    const bufferEntropy = Buffer.from(entropy, 'hex');
-
-    assert(Boolean(wordlist), 'WordListRequired');
+  entropyToMnemonic(entropy: Buffer | Uint8Array, wordlist = WORD_LIST) {
+    const bufferEntropy = Buffer.from(entropy);
 
     // 128 <= ENT <= 256
     assert(bufferEntropy.length >= 16, 'InvalidEntropy');
@@ -125,7 +114,7 @@ export class MnemonicController {
   #deriveChecksumBits(entropyBuffer: Buffer) {
     const ENT = entropyBuffer.length * 8;
     const CS = ENT / 32;
-    const hash = sha256()
+    const hash = new Sha256()
       .update(entropyBuffer)
       .digest('hex');
 

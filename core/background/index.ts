@@ -14,4 +14,18 @@ import { KeyChain } from 'lib/crypto/aes';
 
 
 import { randomBytes } from 'lib/crypto/random';
+import { Hmac } from 'lib/crypto/hmac';
 
+import { MnemonicController } from './bip39/mnemonic';
+
+const mnemonic = new MnemonicController();
+const bytes = [
+  156,  25, 160,  35, 134,  94, 109, 106,
+  151,  15,  55, 148, 220,  49,  58, 129,
+   40,   5, 101, 125,  27, 198, 149, 100,
+  245, 250, 160, 237, 156, 165,  75, 237
+];
+
+const words = mnemonic.entropyToMnemonic(Buffer.from(bytes));
+
+console.log(words);
