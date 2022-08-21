@@ -29,3 +29,5 @@ const bytes = [
 const words = mnemonic.entropyToMnemonic(Buffer.from(bytes));
 
 console.log(words);
+console.log(mnemonic.mnemonicToEntropy(words));
+console.log(mnemonic.mnemonicToSeed(words).toString('hex'));

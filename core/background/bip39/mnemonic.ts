@@ -51,9 +51,7 @@ export class MnemonicController {
     assert(entropyBytes.length <= 32, 'InvalidEntropy');
     assert(entropyBytes.length % 4 === 0, 'InvalidEntropy');
 
-    const entropy = Buffer.from(entropyBytes);
-
-    return entropy.toString('hex');
+    return Buffer.from(entropyBytes);
   }
 
   validateMnemonic(mnemonic: string) {
@@ -73,10 +71,8 @@ export class MnemonicController {
     assert(bufferEntropy.length <= 32, 'InvalidEntropy');
     assert(bufferEntropy.length % 4 === 0, 'InvalidEntropy');
 
-    const entropyBits = this.#bytesToBinary(Array.from(bufferEntropy));
+    const entropyBits = this.#bytesToBinary(bufferEntropy);
     const checksumBits = this.#deriveChecksumBits(bufferEntropy);
-    console.log(checksumBits);
-
     const bits = entropyBits + checksumBits;
     const chunks = bits.match(/(.{1,11})/g) || [];
 
