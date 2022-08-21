@@ -1,7 +1,8 @@
 import { TypeOf } from 'lib/type';
 
 import { Encoding } from 'config/encoding';
-import { Hmac } from './hmac';
+import Hmac from 'hash.js/lib/hash/hmac.js';
+import sha512 from 'hash.js/lib/hash/sha/512';
 
 
 const MAX_ALLOC = Math.pow(2, 30) - 1;
@@ -56,12 +57,12 @@ export function pbkdf2(password: string | Buffer, salt: string | Buffer, iterati
     block1.writeUInt32BE(i, saltBytes.length);
 
     const T = Buffer.from(
-      new Hmac(passwordBytes).update(block1).digest()
+      new Hmac(sha512, passwordBytes).update(block1).digest()
     );
     let U = T;
 
     for (let j = 1; j < iterations; j++) {
-      U = new Hmac(passwordBytes).update(U).digest();
+      U = new Hmac(sha512, passwordBytes).update(U).digest();
 
       for (let k = 0; k < hLen; k++) T[k] ^= U[k];
     }

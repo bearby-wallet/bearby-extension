@@ -1,5 +1,6 @@
 import { Buffer } from 'buffer';
-import Sha256 from 'sha.js/sha256';
+import sha256 from 'hash.js/lib/hash/sha/256';
+
 import { assert } from 'lib/assert';
 
 import { WORD_LIST } from './wordlists';
@@ -114,7 +115,7 @@ export class MnemonicController {
   #deriveChecksumBits(entropyBuffer: Buffer) {
     const ENT = entropyBuffer.length * 8;
     const CS = ENT / 32;
-    const hash = new Sha256()
+    const hash = sha256()
       .update(entropyBuffer)
       .digest();
 
