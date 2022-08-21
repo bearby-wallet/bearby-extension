@@ -16,8 +16,8 @@
 // import { randomBytes } from 'lib/crypto/random';
 // import { Hmac } from 'lib/crypto/hmac';
 
-import { MnemonicController } from './bip39/mnemonic';
-import { HDKey } from './bip39/hd-key';
+import { MnemonicController } from '../../lib/bip39/mnemonic';
+import { HDKey } from '../../lib/bip39/hd-key';
 
 const mnemonic = new MnemonicController();
 const bytes = [
