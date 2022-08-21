@@ -17,6 +17,7 @@
 // import { Hmac } from 'lib/crypto/hmac';
 
 import { MnemonicController } from './bip39/mnemonic';
+import { HDKey } from './bip39/hd-key';
 
 const mnemonic = new MnemonicController();
 const bytes = [
@@ -27,7 +28,13 @@ const bytes = [
 ];
 
 const words = mnemonic.entropyToMnemonic(Buffer.from(bytes));
+const seed = mnemonic.mnemonicToSeed(words);
+const hdkey = new HDKey().fromMasterSeed(seed);
+const childKey = hdkey.derive(mnemonic.getKey(0));
 
 console.log(words);
-console.log(mnemonic.mnemonicToEntropy(words).toString('hex'));
-console.log(mnemonic.mnemonicToSeed(words).toString('hex'));
+console.log('seed', seed.toString('hex'));
+console.log({
+  privateKey: childKey.privateKey.toString('hex'),
+  publicKey: childKey.publicKey.toString('hex')
+});

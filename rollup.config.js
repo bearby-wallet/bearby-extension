@@ -6,6 +6,7 @@ import typescript from '@rollup/plugin-typescript';
 import css from 'rollup-plugin-css-only';
 import { sass } from 'svelte-preprocess-sass';
 import copy from 'rollup-plugin-copy';
+import json from '@rollup/plugin-json';
 import { terser } from 'rollup-plugin-terser';
 import { visualizer } from 'rollup-plugin-visualizer';
 
@@ -85,6 +86,7 @@ const background = {
 		production && visualizer({
 			filename: 'background.html'
 		}),
+		json(),
 		copy({
 			targets: [
 				{

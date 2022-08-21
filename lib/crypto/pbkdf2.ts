@@ -1,7 +1,7 @@
 import { TypeOf } from 'lib/type';
 
 import { Encoding } from 'config/encoding';
-import Hmac from 'hash.js/lib/hash/hmac.js';
+import Hmac from 'hash.js/lib/hash/hmac';
 import sha512 from 'hash.js/lib/hash/sha/512';
 
 
