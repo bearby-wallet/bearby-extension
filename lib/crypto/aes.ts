@@ -1,27 +1,33 @@
-import type { Buffer } from 'buffer';
-import { Counter, utils, ModeOfOperation } from 'aes-js';
+import { Counter, ModeOfOperation } from 'aes-js';
 import { assert } from 'lib/assert';
+import { randomBytes } from 'lib/crypto/random';
+import { AesError, INCORRECT_ARGS } from './errors';
 
 
-const counter = 5;
-export const Aes = Object.freeze({
-  encrypt(content: Buffer, key: Buffer) {
-    assert(Boolean(content), 'IncorrectParams');
-    assert(Boolean(key), 'IncorrectParams');
+export const Cipher = Object.freeze({
+  encrypt(content: Uint8Array, key: Uint8Array) {
+    assert(Boolean(content), INCORRECT_ARGS, AesError);
+    assert(Boolean(key), INCORRECT_ARGS, AesError);
 
-    const aesCtr = new ModeOfOperation.ctr(
-      key, new Counter(counter)
-    );
+    const entropy = randomBytes(16);
+    const iv = new Counter(entropy);
+    const aesCtr = new ModeOfOperation.ctr(key, iv);
 
-    return aesCtr.encrypt(content);
+    return {
+      iv: entropy,
+      encrypted: aesCtr.encrypt(content)
+    };
   },
-  decrypt(encryptedBytes: Buffer, key: Buffer) {
+  decrypt(encryptedBytes: Uint8Array, key: Uint8Array, entropy: Uint8Array) {
+    assert(Boolean(encryptedBytes), INCORRECT_ARGS, AesError);
+    assert(Boolean(key), INCORRECT_ARGS, AesError);
+
+    const iv = new Counter(entropy);
     const aesCtr = new ModeOfOperation.ctr(
       key,
-      new Counter(counter)
+      iv
     );
-    const bytes = aesCtr.decrypt(encryptedBytes);
 
-    return utils.utf8.fromBytes(bytes);
+    return aesCtr.decrypt(encryptedBytes);
   }
 });
