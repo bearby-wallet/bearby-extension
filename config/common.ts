@@ -1,0 +1,1 @@
+export const TIME_BEFORE_LOCK = 3; // in hours.
