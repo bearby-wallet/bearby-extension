@@ -1,5 +1,4 @@
 import { Counter, ModeOfOperation, utils } from 'aes-js';
-import { fromByteArray, toByteArray } from 'base64-js';
 import { assert } from 'lib/assert';
 import { randomBytes } from 'lib/crypto/random';
 import { AesError, INCORRECT_ARGS } from './errors';
@@ -18,13 +17,12 @@ export const Cipher = Object.freeze({
       `${utils.hex.fromBytes(encrypted)}/${utils.hex.fromBytes(entropy)}`
     );
 
-    return fromByteArray(bytes);
+    return bytes;
   },
-  decrypt(base64: string, key: Uint8Array) {
-    assert(Boolean(base64), INCORRECT_ARGS, AesError);
+  decrypt(bytes: Uint8Array, key: Uint8Array) {
+    assert(Boolean(bytes), INCORRECT_ARGS, AesError);
     assert(Boolean(key), INCORRECT_ARGS, AesError);
 
-    const bytes = toByteArray(base64);
     const [encrypted, iv] = utils.utf8.fromBytes(bytes).split('/');
 
     const counter = new Counter(utils.hex.toBytes(iv));
