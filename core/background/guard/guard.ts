@@ -94,10 +94,14 @@ export class Guard {
     try {
       assert(Boolean(this.#encryptMnemonic), WALLET_NOT_SYNC, GuardError);
 
+      const mnemonicController = new MnemonicController();
       const hash = new Uint8Array(sha256().update(password).digest());
       const mnemonicBytes = Cipher.decrypt(this.#encryptMnemonic as Uint8Array, hash);
       const mnemonic = utils.utf8.fromBytes(mnemonicBytes);
-      const seed = new MnemonicController().mnemonicToSeed(mnemonic);
+
+      assert(mnemonicController.validateMnemonic(mnemonic), INCORRECT_PASSWORD, GuardError);
+
+      const seed = mnemonicController.mnemonicToSeed(mnemonic);
 
       this.#privateExtendedKey = Cipher.encrypt(seed, hash);
 
