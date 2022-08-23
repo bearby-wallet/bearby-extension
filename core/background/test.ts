@@ -2,7 +2,6 @@ import { Guard, INCORRECT_PASSWORD } from './guard';
 import { HDKey, MnemonicController } from 'lib/bip39';
 import { assert } from 'lib/assert';
 import { BrowserStorage } from 'lib/storage';
-import { randomBytes } from 'lib/crypto/random';
 import { utils } from 'aes-js';
 
 
