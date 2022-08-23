@@ -3,6 +3,7 @@ import { HDKey, MnemonicController } from 'lib/bip39';
 import { assert } from 'lib/assert';
 import { BrowserStorage } from 'lib/storage';
 import { utils } from 'aes-js';
+import { base58ToBinary, binaryToBase58 } from 'lib/crypto/base58';
 
 
 (async function start() {
@@ -85,5 +86,13 @@ import { utils } from 'aes-js';
   assert('38f7eee62d803325fca53521a767781777ce9dfd5b3c469aeb5c52cab9c38fa5' === res2.privateKey, 'Incorrect PrivateKey');
   assert('0319fcfecfb3750e378cf1d26516772cce2a9fc969bd3b50df2d1fddb4083f0600' === res2.publicKey, 'Incorrect PublicKey');
   /// HDKey
-  console.log(guard);
+
+  // base58
+  const base58Str = '6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV';
+  const fromBase58 = base58ToBinary(base58Str);
+  const toBase58 = binaryToBase58(fromBase58);
+
+  assert(utils.hex.fromBytes(fromBase58) === '02c0ded2bc1f1305fb0faac5e6c03ee3a1924234985427b6167ca569d13df435cfeb05f9d2', 'incorrect base58ToBinary');
+  assert(toBase58 === base58Str, 'incorrect binaryToBase58');
+  // base58
 }());

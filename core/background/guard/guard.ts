@@ -10,7 +10,6 @@ import {
   WALLET_NOT_ENABLED
 } from './error';
 import { Cipher } from 'lib/crypto/aes';
-import { randomBytes } from 'lib/crypto/random';
 import { MnemonicController } from 'lib/bip39';
 import { assert } from 'lib/assert';
 import { BrowserStorage, buildObject, StorageKeyValue } from 'lib/storage';
