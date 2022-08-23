@@ -13,7 +13,7 @@ export interface Account {
     [key: string]: string;
   };
   nft: {
-    [key: string]: ZRC1Token[];
+    [key: string]: object[];
   };
 }
 

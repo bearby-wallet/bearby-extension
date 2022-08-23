@@ -6,10 +6,10 @@ import { AccountTypes } from 'config/account-type';
 
 
 export class AccountController {
-  public static readonly field0 = 'identities';
-  public static readonly field1 = 'selectedAddress';
+  static readonly field0 = 'identities';
+  static readonly field1 = 'selectedAddress';
 
-  public readonly bip39 = new MnemonicController();
+  readonly bip39 = new MnemonicController();
 
   readonly #hdKey = new HDKey();
 
@@ -20,11 +20,11 @@ export class AccountController {
     [AccountController.field0]: []
   };
 
-  public get wallet() {
+  get wallet() {
     return this.#wallet;
   }
 
-  public get selectedAccount(): undefined | Account {
+  get selectedAccount(): undefined | Account {
     if (this.wallet.identities.length === 0) {
       return;
     }
@@ -34,28 +34,28 @@ export class AccountController {
     return this.wallet.identities[this.wallet.selectedAddress];
   }
 
-  public get lastIndexPrivKey() {
+  get lastIndexPrivKey() {
     return this.#wallet
       .identities
       .filter((acc) => acc.type === AccountTypes.PrivateKey)
       .length;
   }
 
-  public get lastIndexSeed() {
+  get lastIndexSeed() {
     return this.#wallet
       .identities
       .filter((acc) => acc.type === AccountTypes.Seed)
       .length;
   }
 
-  public get lastIndexLedger() {
+  get lastIndexLedger() {
     return this.#wallet
       .identities
       .filter((acc) => acc.type === AccountTypes.Ledger)
       .length;
   }
 
-  public get lastIndexTrezor() {
+  get lastIndexTrezor() {
     return this.#wallet
       .identities
       .filter((acc) => acc.type === AccountTypes.Trezor)
