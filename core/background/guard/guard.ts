@@ -37,7 +37,7 @@ export class Guard {
   #endSession = new Date(-1);
   #time = TIME_BEFORE_LOCK;
 
-  public get seed() {
+  get seed() {
     this.checkSession();
 
     const session = this.#hash.get(this) as Uint8Array;
@@ -49,26 +49,26 @@ export class Guard {
     return decryptSeedBytes;
   }
 
-  public get lockTime() {
+  get lockTime() {
     return Number(this.#time);
   }
 
-  public get isEnable() {
+  get isEnable() {
     const now = new Date().getTime();
     const timeDifference = this.#endSession.getTime() - now;
 
     return timeDifference > 0 && this.#isEnable;
   }
 
-  public get isReady() {
+  get isReady() {
     return this.#isReady;
   }
 
-  public get encryptedMnemonic() {
+  get encryptedMnemonic() {
     return this.#encryptMnemonic;
   }
 
-  public async sync() {
+  async sync() {
     const data = await BrowserStorage.get(
       Fields.VAULT,
       Fields.LOCK_TIME
@@ -88,7 +88,7 @@ export class Guard {
     }
   }
 
-  public unlock(password: string) {
+  unlock(password: string) {
     assert(this.isReady, WALLET_NOT_READY, GuardError);
 
     try {
@@ -110,29 +110,28 @@ export class Guard {
     }
   }
 
-  public async setupVault(mnemonic: string, password: string, usePassword = false) {
+  async setupVault(mnemonic: string, password: string, usePassword = false) {
     const mnemonicBuf = utils.utf8.toBytes(mnemonic);
-    const hash = Buffer.from(sha256().update(password).digest());
-    const bytes = Buffer.from(randomBytes(128));
+    const hash = new Uint8Array(sha256().update(password).digest());
     const seed = new MnemonicController().mnemonicToSeed(
       mnemonic,
       usePassword ? password : undefined
     );
 
     this.#encryptMnemonic = Cipher.encrypt(mnemonicBuf, hash);
-    this.#privateExtendedKey = Cipher.encrypt(seed, bytes);
+    this.#privateExtendedKey = Cipher.encrypt(seed, hash);
 
     this.#isReady = true;
     this.#isEnable = true;
     this.#updateSession();
-    this.#hash.set(this, bytes);
+    this.#hash.set(this, hash);
 
     await BrowserStorage.set(
       buildObject(Fields.VAULT, fromByteArray(this.#encryptMnemonic))
     );
   }
 
-  public encryptPrivateKey(privKey: string) {
+  encryptPrivateKey(privKey: string) {
     isPrivateKey(privKey);
 
     const hash = this.#hash.get(this) as Uint8Array;
@@ -141,18 +140,18 @@ export class Guard {
     return fromByteArray(encrypted);
   }
 
-  public decryptPrivateKey(content: string) {
+  decryptPrivateKey(content: string) {
     const hash = this.#hash.get(this) as Uint8Array;
 
     return Cipher.decrypt(toByteArray(content), hash);
   }
 
-  public checkSession() {
+  checkSession() {
     assert(this.#isReady, WALLET_NOT_READY, GuardError);
     assert(this.#isEnable, WALLET_NOT_ENABLED, GuardError);
   }
 
-  public async logout() {
+  async logout() {
     this.#isEnable = false;
     this.#endSession = new Date(-1);
 

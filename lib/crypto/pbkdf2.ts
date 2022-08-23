@@ -1,3 +1,5 @@
+import { Buffer } from 'buffer';
+
 import { TypeOf } from 'lib/type';
 
 import { Encoding } from 'config/encoding';
