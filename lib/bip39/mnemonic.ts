@@ -16,7 +16,7 @@ export class MnemonicController {
     return this.entropyToMnemonic(randomBytes(strength / 8));
   }
 
-  getKey(index: number) {
+  getPath(index: number) {
     return `m/44'/22'/0'/0/${index}`; // TODO: change to Massa path.
   }
 

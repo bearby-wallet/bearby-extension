@@ -6,6 +6,7 @@ import { ripemd160 } from 'hash.js/lib/hash/ripemd';
 import secp256k1 from 'secp256k1/elliptic';
 
 import { assert } from 'lib/assert';
+import { utils } from 'aes-js';
 
 
 const MASTER_SECRET = Buffer.from('Bitcoin seed', 'utf8');
@@ -164,9 +165,9 @@ export class HDKey {
     return hd;
   }
 
-  public fromMasterSeed(seedBuffer: Buffer, versions = BITCOIN_VERSIONS) {
+  public fromMasterSeed(seedBuffer: Uint8Array, versions = BITCOIN_VERSIONS) {
     const I = Hmac(sha512, MASTER_SECRET)
-      .update(seedBuffer.toString('hex'))
+      .update(utils.hex.fromBytes(seedBuffer))
       .digest();
 
     const IL = Buffer.from(I).slice(0, 32);

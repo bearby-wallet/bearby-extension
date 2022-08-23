@@ -3,16 +3,6 @@
   "author": "Rinat",
   "manifest_version": 3,
   "icons": {
-    "16": "icons/icon16.png",
-    "19": "icons/icon19.png",
-    "38": "icons/icon38.png",
-    "39": "icons/icon39.png",
-    "48": "icons/icon48.png",
-    "96": "icons/icon96.png",
-    "128": "icons/icon128.png"
-  },
-  "storage": {
-    "managed_schema": "schema.json"
   },
   "commands": {
     "_execute_browser_action": {
@@ -47,7 +37,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["inpage.js", "phishing.html"],
+      "resources": ["phishing.html"],
       "matches": ["*://*/*"]
     }
   ],

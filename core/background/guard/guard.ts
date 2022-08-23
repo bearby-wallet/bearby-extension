@@ -146,8 +146,12 @@ export class Guard {
 
   decryptPrivateKey(content: string) {
     const hash = this.#hash.get(this) as Uint8Array;
+    const bytes = Cipher.decrypt(toByteArray(content), hash);
+    const privateKey = utils.hex.fromBytes(bytes);
 
-    return Cipher.decrypt(toByteArray(content), hash);
+    isPrivateKey(privateKey);
+
+    return privateKey;
   }
 
   checkSession() {
