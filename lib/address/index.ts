@@ -1,9 +1,12 @@
+import blake3 from 'blake3-js';
 import sha256 from 'hash.js/lib/hash/sha/256';
 import { Buffer } from 'buffer';
 
 import { base58ToBinary, binaryToBase58 } from 'lib/crypto/base58';
 import { assert } from 'lib/assert';
 import { INVALID_CHECKSUM } from './errors';
+import { ADDRESS_PREFIX, VERSION_NUMBER } from 'config/common';
+import { VarintEncode } from 'lib/varint';
 
 
 function encode(data: Uint8Array | Buffer, prefix = '00') {
@@ -48,4 +51,11 @@ export function base58Encode(data: Buffer | Uint8Array): string {
 export function base58Decode(data: string): Buffer {
   const decoded = decode(data);
   return Buffer.concat([decoded.prefix, decoded.data]);
+}
+
+export function addressFromPublicKey(publicKey: Uint8Array) {
+  const version = Buffer.from(new VarintEncode().encode(VERSION_NUMBER));
+  const pubKeyHash = blake3.newRegular().update(publicKey).finalize();
+
+  return ADDRESS_PREFIX + base58Encode(Buffer.concat([version, pubKeyHash]));
 }
