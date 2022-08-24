@@ -29,7 +29,7 @@ function decode(content: string) {
   let hash = Buffer.concat([prefix, data]);
 
   hash = sha256().update(hash).digest();
-  hash = sha256().update(hash).digest();
+  hash = Buffer.from(sha256().update(hash).digest());
 
   buffer.slice(-4).forEach((check, index) => {
     assert(check === hash[index], INVALID_CHECKSUM);
@@ -59,3 +59,10 @@ export function addressFromPublicKey(publicKey: Uint8Array) {
 
   return ADDRESS_PREFIX + base58Encode(Buffer.concat([version, pubKeyHash]));
 }
+
+export function base58PrivateKeyToBytes(base58PrivateKey: string) {
+  const secretKeyVersionBase58Decoded = base58Decode(base58PrivateKey.slice(1));
+
+  return secretKeyVersionBase58Decoded.slice(1);
+}
+
