@@ -4,6 +4,8 @@ import { assert } from 'lib/assert';
 import { BrowserStorage } from 'lib/storage';
 import { utils } from 'aes-js';
 import { base58ToBinary, binaryToBase58 } from 'lib/crypto/base58';
+import { base58Encode, base58Decode } from 'lib/address';
+import { Buffer } from 'buffer';
 
 
 (async function start() {
@@ -88,6 +90,7 @@ import { base58ToBinary, binaryToBase58 } from 'lib/crypto/base58';
   /// HDKey
 
   // base58
+  console.log('start testing base58 decoder, encoder');
   const base58Str = '6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV';
   const fromBase58 = base58ToBinary(base58Str);
   const toBase58 = binaryToBase58(fromBase58);
@@ -95,4 +98,18 @@ import { base58ToBinary, binaryToBase58 } from 'lib/crypto/base58';
   assert(utils.hex.fromBytes(fromBase58) === '02c0ded2bc1f1305fb0faac5e6c03ee3a1924234985427b6167ca569d13df435cfeb05f9d2', 'incorrect base58ToBinary');
   assert(toBase58 === base58Str, 'incorrect binaryToBase58');
   // base58
+
+  // address encoder
+  console.log('start testing address decoder, encoder');
+  const testContent = Buffer.from('005b6ae2595c52f7ea02257582a4beacff65bc0753111ae5cbbb3eaacf18ad3abd', 'hex');
+  const address0 = base58Encode(testContent);
+  const test1Content = Buffer.from('00b6cda5e8b5995ffb2710839c74989c0b69249de330aced521f3c454cdef0f12c', 'hex');
+  const address1 = base58Encode(test1Content);
+
+  assert('1hG8zRRJF2v3qkwyZ2fnHJeaVw9uT4huCkwcWJVvgypEz6D2aR' === address0, 'does not math with right address');
+  assert('12PWTzCKkkE9P5Supt3Fkb4QVZ3cdfB281TGaup7Nv1DY12a6F1' === address1, 'does not math with right address');
+
+  assert(base58Decode(address0).toString('hex') === testContent.toString('hex'), 'does not math with right address bytes');
+  assert(base58Decode(address1).toString('hex') === test1Content.toString('hex'), 'does not math with right address bytes');
+  // address encoder
 }());
