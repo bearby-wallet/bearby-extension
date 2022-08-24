@@ -7,6 +7,12 @@ import secp256k1 from 'secp256k1/elliptic';
 
 import { assert } from 'lib/assert';
 import { utils } from 'aes-js';
+import {
+  ADDRESS_PREFIX,
+  PUBLIC_KEY_PREFIX,
+  VERSION_NUMBER
+} from 'config/common';
+import { base58Encode } from 'lib/address';
 
 
 const MASTER_SECRET = Buffer.from('Bitcoin seed', 'utf8');
@@ -51,6 +57,10 @@ export class HDKey {
   }
 
   public get keyPair() {
+		// 	const version = Buffer.from(varintEncode(VERSION_NUMBER));
+    // const publicKeyBase58Encoded: string = PUBLIC_KEY_PREFIX + base58Encode(Buffer.concat([version, this.publicKey]));
+    // const base58 = ADDRESS_PREFIX + base58Encode(Buffer.concat([version, hashBlake3(this.publicKey)]));
+
     return {
       pubKey: this.publicKey,
       privKey: this.privateKey

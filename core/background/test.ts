@@ -6,6 +6,8 @@ import { utils } from 'aes-js';
 import { base58ToBinary, binaryToBase58 } from 'lib/crypto/base58';
 import { base58Encode, base58Decode } from 'lib/address';
 import { Buffer } from 'buffer';
+import { VarintDecode, VarintEncode } from 'lib/varint';
+import { VERSION_NUMBER } from 'config/common';
 
 
 (async function start() {
@@ -112,4 +114,34 @@ import { Buffer } from 'buffer';
   assert(base58Decode(address0).toString('hex') === testContent.toString('hex'), 'does not math with right address bytes');
   assert(base58Decode(address1).toString('hex') === test1Content.toString('hex'), 'does not math with right address bytes');
   // address encoder
+
+
+  // varint
+  console.log('start testing varint');
+
+  function randint(range: number) {
+    return Math.floor(Math.random() * range);
+  }
+
+  function varintTest0() {
+    var expect, encoded;
+
+    for(var i = 0, len = 100; i < len; ++i) {
+      expect = randint(0x7FFFFFFF);
+      const decoder = new VarintDecode();
+      encoded = new VarintEncode().encode(expect);
+
+      const data = decoder.decode(encoded);
+
+      assert(expect === data, 'expect and data is not equal');
+      assert(decoder.bytes === encoded.length, 'bytes is not equal encoded.length');
+    }
+  }
+
+  const version = Buffer.from(new VarintEncode().encode(VERSION_NUMBER));
+
+  assert(version.toString('hex') === '00', 'version encoded is not equal version');
+
+  varintTest0();
+  // varint
 }());
