@@ -1,4 +1,6 @@
 import blake3 from 'blake3-js';
+import EC from 'elliptic/lib/elliptic/ec';
+import secp256k1 from 'secp256k1/elliptic';
 import sha256 from 'hash.js/lib/hash/sha/256';
 import { Buffer } from 'buffer';
 
@@ -7,7 +9,7 @@ import { assert } from 'lib/assert';
 import { INVALID_CHECKSUM } from './errors';
 import { ADDRESS_PREFIX, VERSION_NUMBER } from 'config/common';
 import { VarintEncode } from 'lib/varint';
-
+import { tohexString } from 'lib/validator';
 
 function encode(data: Uint8Array | Buffer, prefix = '00') {
   const bufPrefix = Buffer.from(prefix, 'hex');
@@ -66,3 +68,10 @@ export function base58PrivateKeyToBytes(base58PrivateKey: string) {
   return secretKeyVersionBase58Decoded.slice(1);
 }
 
+export function publicKeyBytesFromPrivateKey(privateKey: Uint8Array | Buffer) {
+  const ed25519 = new EC('ed25519');
+  console.log(Buffer.from(secp256k1.publicKeyCreate(privateKey, true)).toString('hex'));
+  const keyPair = ed25519.keyFromPrivate(privateKey);
+
+  return Buffer.from(keyPair.getPublic(true, 'bytes'));
+};

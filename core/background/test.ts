@@ -4,7 +4,7 @@ import { assert } from 'lib/assert';
 import { BrowserStorage } from 'lib/storage';
 import { utils } from 'aes-js';
 import { base58ToBinary, binaryToBase58 } from 'lib/crypto/base58';
-import { base58Encode, base58Decode, addressFromPublicKey, base58PrivateKeyToBytes } from 'lib/address';
+import { base58Encode, base58Decode, addressFromPublicKey, base58PrivateKeyToBytes, publicKeyBytesFromPrivateKey } from 'lib/address';
 import { Buffer } from 'buffer';
 import { VarintDecode, VarintEncode } from 'lib/varint';
 import { VERSION_NUMBER } from 'config/common';
@@ -150,5 +150,12 @@ import { VERSION_NUMBER } from 'config/common';
   const privateKeyBytes =  base58PrivateKeyToBytes('S12tw4YShWtjWfy7YBQ9Erbcg6DYgWnMgb5hGjn9hAKGtgrLNa7L');
 
   assert(Buffer.from(privateKeyBytes).toString('hex') === 'f99d3fac98a9adb3b622500b50c020b05efe01408249aab3a25c8839f3c61b26', 'buf privatekeys is not equal');
+
+  const pubKey = publicKeyBytesFromPrivateKey(privateKeyBytes);
+
+  console.log(pubKey.toString('hex'));
+  assert('5b6ae2595c52f7ea02257582a4beacff65bc0753111ae5cbbb3eaacf18ad3abd' === pubKey.toString('hex'), 'Incorrect publicKey')
+  console.log(pubKey.toString('hex'));
+  // const address = addressFromPublicKey();
   // addresses utils  
 }());

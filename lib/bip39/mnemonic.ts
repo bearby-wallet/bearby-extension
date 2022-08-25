@@ -17,7 +17,7 @@ export class MnemonicController {
   }
 
   getPath(index: number) {
-    return `m/44'/22'/0'/0/${index}`; // TODO: change to Massa path.
+    return `m/44'/632'/0'/0/${index}`; // TODO: change to Massa path.
   }
 
   mnemonicToSeed(mnemonic: string, password?: string): Buffer {
