@@ -150,7 +150,7 @@ export class Guard {
 
     isPrivateKey(privateKey);
 
-    return privateKey;
+    return bytes;
   }
 
   checkSession() {

@@ -69,8 +69,8 @@ import { VERSION_NUMBER } from 'config/common';
     const { pubKey, privKey, base58 } = childKey.keyPair;
 
     return {
-      privateKey: privKey.toString('hex'),
-      publicKey: pubKey.toString('hex'),
+      privateKey: utils.hex.fromBytes(privKey),
+      publicKey: utils.hex.fromBytes(pubKey),
       base58
     };
   }
@@ -153,7 +153,7 @@ import { VERSION_NUMBER } from 'config/common';
 
   assert(Buffer.from(privateKeyBytes).toString('hex') === 'f99d3fac98a9adb3b622500b50c020b05efe01408249aab3a25c8839f3c61b26', 'buf privatekeys is not equal');
 
-  const pubKey = Buffer.from(publicKeyBytesFromPrivateKey(privateKeyBytes));
+  const pubKey = publicKeyBytesFromPrivateKey(privateKeyBytes);
   const address = addressFromPublicKey(pubKey);
 
   assert(pubKey.toString('hex') === '0378d75c840a3ae70a78d7b59c17cbd2989a070710ae7fc29fcb979866ad9088e8', 'pubKey is not equal');

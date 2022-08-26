@@ -71,5 +71,5 @@ export function base58PrivateKeyToBytes(base58PrivateKey: string) {
 }
 
 export function publicKeyBytesFromPrivateKey(privateKey: Uint8Array | Buffer) {
-  return secp256k1.publicKeyCreate(privateKey, true);
+  return Buffer.from(secp256k1.publicKeyCreate(privateKey, true));
 };

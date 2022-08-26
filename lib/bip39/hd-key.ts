@@ -1,3 +1,5 @@
+import type { KeyPair } from 'types/account';
+
 import { Buffer } from 'buffer';
 import sha256 from 'hash.js/lib/hash/sha/256';
 import sha512 from 'hash.js/lib/hash/sha/512';
@@ -59,7 +61,7 @@ export class HDKey {
     this.#privateKey = undefined;
   }
 
-  public get keyPair() {
+  public get keyPair(): KeyPair {
     return {
       pubKey: this.publicKey,
       privKey: this.privateKey,

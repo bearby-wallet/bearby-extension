@@ -4,7 +4,6 @@ export interface Account {
   name: string;
   index: number;
   type: AccountTypes;
-  base16: string;
   base58: string;
   privKey?: string;
   pubKey: string;
@@ -20,4 +19,10 @@ export interface Account {
 export interface Wallet {
   selectedAddress: number;
   identities: Account[];
+}
+
+export interface KeyPair {
+  pubKey: Uint8Array;
+  privKey: Uint8Array;
+  base58: string;
 }
