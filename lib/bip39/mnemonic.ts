@@ -6,18 +6,23 @@ import { assert } from 'lib/assert';
 import { WORD_LIST } from './wordlists';
 import { randomBytes } from 'lib/crypto/random';
 import { pbkdf2 } from 'lib/crypto/pbkdf2';
+import {
+  INVALID_ENTROPY,
+  Bip39Error,
+  INCORRECT_MNEMONIC
+} from './errors';
 
 
 export class MnemonicController {
 
   generateMnemonic(strength = 128) {
-    assert(strength % 32 === 0, 'InvalidEntropy');
+    assert(strength % 32 === 0, INVALID_ENTROPY, Bip39Error);
 
     return this.entropyToMnemonic(randomBytes(strength / 8));
   }
 
   getPath(index: number) {
-    return `m/44'/632'/0'/0/${index}`; // TODO: change to Massa path.
+    return `m/44'/632'/0'/0/${index}`;
   }
 
   mnemonicToSeed(mnemonic: string, password?: string): Buffer {
@@ -30,13 +35,13 @@ export class MnemonicController {
   mnemonicToEntropy(mnemonic: string) {
     const words = this.#normalize(mnemonic).split(' ');
 
-    assert(words.length >= 12, 'IncorrectMnemonic');
-    assert(words.length % 3 === 0, 'IncorrectMnemonic');
+    assert(words.length >= 12, INCORRECT_MNEMONIC, Bip39Error);
+    assert(words.length % 3 === 0, INCORRECT_MNEMONIC, Bip39Error);
     // convert word indices to 11 bit binary strings
     const bits = words.map((word) => {
       const index = WORD_LIST.indexOf(word);
 
-      assert(index !== -1, 'IncorrectMnemonic');
+      assert(index !== -1, INCORRECT_MNEMONIC, Bip39Error);
 
       return this.#lpad(index.toString(2), '0', 11);
     }).join('');
@@ -48,9 +53,9 @@ export class MnemonicController {
     const entropyBytes = (entropyBits.match(/(.{1,8})/g) || [])
       .map(this.#binaryToByte);
 
-    assert(entropyBytes.length >= 16, 'InvalidEntropy');
-    assert(entropyBytes.length <= 32, 'InvalidEntropy');
-    assert(entropyBytes.length % 4 === 0, 'InvalidEntropy');
+    assert(entropyBytes.length >= 16, INVALID_ENTROPY, Bip39Error);
+    assert(entropyBytes.length <= 32, INVALID_ENTROPY, Bip39Error);
+    assert(entropyBytes.length % 4 === 0, INVALID_ENTROPY, Bip39Error);
 
     return Buffer.from(entropyBytes);
   }
@@ -68,16 +73,16 @@ export class MnemonicController {
     const bufferEntropy = Buffer.from(entropy);
 
     // 128 <= ENT <= 256
-    assert(bufferEntropy.length >= 16, 'InvalidEntropy');
-    assert(bufferEntropy.length <= 32, 'InvalidEntropy');
-    assert(bufferEntropy.length % 4 === 0, 'InvalidEntropy');
+    assert(bufferEntropy.length >= 16, INVALID_ENTROPY, Bip39Error);
+    assert(bufferEntropy.length <= 32, INVALID_ENTROPY, Bip39Error);
+    assert(bufferEntropy.length % 4 === 0, INVALID_ENTROPY, Bip39Error);
 
     const entropyBits = this.#bytesToBinary(bufferEntropy);
     const checksumBits = this.#deriveChecksumBits(bufferEntropy);
     const bits = entropyBits + checksumBits;
     const chunks = bits.match(/(.{1,11})/g) || [];
 
-    assert(Boolean(chunks) || chunks.length === 0, 'InvalidEntropy');
+    assert(Boolean(chunks) || chunks.length === 0, INVALID_ENTROPY, Bip39Error);
 
     const words = chunks.map((binary) => {
         const index = this.#binaryToByte(binary);
