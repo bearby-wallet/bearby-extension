@@ -82,7 +82,7 @@ export class AccountController {
     this.#guard = guard;
   }
 
-  public async remove(index: number) {
+  async remove(index: number) {
     const account = this.wallet.identities[index];
 
     assert(Boolean(account), NIL_ACCOUNT, AccountError);
@@ -106,7 +106,7 @@ export class AccountController {
     );
   }
 
-  public async sync() {
+  async sync() {
     const walletJson = await BrowserStorage.get(Fields.WALLET);
 
     try {
@@ -118,7 +118,7 @@ export class AccountController {
     }
   }
 
-  public async reset() {
+  async reset() {
     this.#wallet.identities = [];
     this.#wallet.selectedAddress = 0;
 
@@ -127,7 +127,7 @@ export class AccountController {
     );
   }
 
-  public fromSeed(seed: Uint8Array, index = 0) {
+  fromSeed(seed: Uint8Array, index = 0) {
     const path = this.bip39.getPath(index);
     const hdKey = this.#hdKey.fromMasterSeed(seed);
     const childKey = hdKey.derive(path);
@@ -135,7 +135,7 @@ export class AccountController {
     return childKey.keyPair;
   }
 
-  public async addAccountFromSeed(seed: Uint8Array, name: string) {
+  async addAccountFromSeed(seed: Uint8Array, name: string) {
     const index = this.lastIndexSeed;
     const { pubKey } = this.fromSeed(seed, index);
     const base58 = addressFromPublicKey(pubKey);
@@ -153,7 +153,26 @@ export class AccountController {
     return account;
   }
 
-  public fromPrivateKey(privateKey: string): KeyPair {
+  async addAccountFromPrivateKey(privKey: string, name: string) {
+    const index = this.lastIndexPrivKey;
+    const { pubKey, base58 } = this.fromPrivateKey(privKey);
+    const type = AccountTypes.PrivateKey;
+    const encryptedPrivateKey = this.#guard.encryptPrivateKey(privKey);
+    const account: Account = {
+      name,
+      index,
+      base58,
+      type,
+      pubKey: utils.hex.fromBytes(pubKey),
+      privKey: encryptedPrivateKey,
+      nft: {},
+      tokens: {}
+    };    
+    await this.#add(account);
+    return account;
+  }
+
+  fromPrivateKey(privateKey: string): KeyPair {
     isPrivateKey(privateKey);
 
     const bufPrivateKey = utils.hex.toBytes(privateKey);
@@ -169,7 +188,7 @@ export class AccountController {
   }
 
   getAccount(index: number) {
-    assert(index <= this.wallet.identities.length - 1, ACCOUNT_OUT_INDEX);
+    assert(index <= this.wallet.identities.length - 1, ACCOUNT_OUT_INDEX, AccountError);
     return this.wallet.identities[index];
   }
 
@@ -192,6 +211,28 @@ export class AccountController {
     }
 
     throw new Error(HARDWARE_NOT_SUPPORT_METHOD);
+  }
+
+  async select(index: number) {
+    assert(index < this.wallet.identities.length, ACCOUNT_OUT_INDEX, AccountError);
+
+    this.#wallet.selectedAddress = index;
+
+    await this.#trigger();
+
+    await BrowserStorage.set(
+      buildObject(Fields.WALLET, this.#wallet)
+    );
+
+    return this.selectedAccount;
+  }
+
+  async changeAccountName(index: number, name: string) {
+    this.#wallet.identities[index].name = name;
+
+    await BrowserStorage.set(
+      buildObject(Fields.WALLET, this.#wallet)
+    );
   }
 
   async #add(account: Account) {
