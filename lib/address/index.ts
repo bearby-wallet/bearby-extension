@@ -56,7 +56,10 @@ export function base58Decode(data: string): Buffer {
 
 export function addressFromPublicKey(publicKey: Uint8Array) {
   const version = Buffer.from(new VarintEncode().encode(VERSION_NUMBER));
-  const pubKeyHash = blake3.newRegular().update(publicKey).finalize();
+  const pubKeyHash = Buffer.from(
+    blake3.newRegular().update(publicKey).finalize(),
+    'hex'
+  );
 
   return ADDRESS_PREFIX + base58Encode(Buffer.concat([version, pubKeyHash]));
 }
