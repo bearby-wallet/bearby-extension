@@ -77,18 +77,18 @@ import { VERSION_NUMBER } from 'config/common';
 
   const res0 = testKeys(0);
 
-  assert('20cbb3e05d1be2385e5e795db63fa436b47ebfbc15b25a1193d8f8ef8f699f5b' === res0.privateKey, 'Incorrect PrivateKey');
-  assert('030087d0aac1660e043807c2fa28e0d7193c1a7eaefa9d84104192a0ce90e4626e' === res0.publicKey, 'Incorrect PublicKey');
+  assert('105ddfe5b4b01848ebd622b4dc6f4b352169bd2b1d8cace8fbc75570534b7b27' === res0.privateKey, 'Incorrect PrivateKey');
+  assert('02dca24e533b4f2bf056f5d28514203097afdace1f1944b2fd1560debdebe188cd' === res0.publicKey, 'Incorrect PublicKey');
 
   const res1 = testKeys(1);
 
-  assert('bc34c1499276cdd920bf004cfc209ea13781868409c4861fede0edcb1a484124' === res1.privateKey, 'Incorrect PrivateKey');
-  assert('0288a73c45888665af33bc5148ae90aed9bf02b5dc99e9b4b15a3270ba9ea883c5' === res1.publicKey, 'Incorrect PublicKey');
+  assert('c6dd0714f63c7c781b83a9511041c369b8340cf2dc53de3395b76f268cae02d0' === res1.privateKey, 'Incorrect PrivateKey');
+  assert('038f0953535041b7dba7c7965f589ba1f9b90c090b82eac8a3bddcf0aa0cd9b047' === res1.publicKey, 'Incorrect PublicKey');
 
   const res2 = testKeys(55);
 
-  assert('38f7eee62d803325fca53521a767781777ce9dfd5b3c469aeb5c52cab9c38fa5' === res2.privateKey, 'Incorrect PrivateKey');
-  assert('0319fcfecfb3750e378cf1d26516772cce2a9fc969bd3b50df2d1fddb4083f0600' === res2.publicKey, 'Incorrect PublicKey');
+  assert('5088f231d7930cf19677a368d96c62d85138f520466eb07f8390a464c661acf1' === res2.privateKey, 'Incorrect PrivateKey');
+  assert('035b220764f92171c7210327856b5b8025ad3e79cc995f4ecec838d0acd7f44fa0' === res2.publicKey, 'Incorrect PublicKey');
   /// HDKey
 
   // base58
@@ -153,9 +153,11 @@ import { VERSION_NUMBER } from 'config/common';
 
   const pubKey = publicKeyBytesFromPrivateKey(privateKeyBytes);
 
-  console.log(pubKey.toString('hex'));
-  assert('5b6ae2595c52f7ea02257582a4beacff65bc0753111ae5cbbb3eaacf18ad3abd' === pubKey.toString('hex'), 'Incorrect publicKey')
-  console.log(pubKey.toString('hex'));
+  assert(Buffer.from(pubKey).toString('hex') === '0378d75c840a3ae70a78d7b59c17cbd2989a070710ae7fc29fcb979866ad9088e8', 'pubKey is not equal');
+
+  // console.log(pubKey.toString('hex'));
+  // assert('5b6ae2595c52f7ea02257582a4beacff65bc0753111ae5cbbb3eaacf18ad3abd' === pubKey.toString('hex'), 'Incorrect publicKey')
+  // console.log(pubKey.toString('hex'));
   // const address = addressFromPublicKey();
   // addresses utils  
 }());

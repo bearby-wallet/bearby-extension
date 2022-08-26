@@ -7,12 +7,15 @@ import secp256k1 from 'secp256k1/elliptic';
 
 import { assert } from 'lib/assert';
 import { utils } from 'aes-js';
+import { addressFromPublicKey } from 'lib/address';
+import { INVALID_PRIVATE_KEY } from 'lib/validator/errors';
 import {
-  ADDRESS_PREFIX,
-  PUBLIC_KEY_PREFIX,
-  VERSION_NUMBER
-} from 'config/common';
-import { base58Encode } from 'lib/address';
+  Bip39Error,
+  INVALID_PUBLIC_KEY,
+  INVALID_PATH,
+  INVALID_PATH_INDEX,
+  COULD_NOT_DERIVE
+} from './errors';
 
 
 const MASTER_SECRET = Buffer.from('Bitcoin seed', 'utf8');
@@ -36,8 +39,8 @@ export class HDKey {
   public versions: typeof BITCOIN_VERSIONS;
 
   public set privateKey(value: Uint8Array) {
-    assert(value.length === 32, 'PrivateKeyMustBe');
-    assert(secp256k1.privateKeyVerify(value) === true, 'BadPrivateKey');
+    assert(value.length === 32, INVALID_PRIVATE_KEY, Bip39Error);
+    assert(secp256k1.privateKeyVerify(value) === true, INVALID_PRIVATE_KEY, Bip39Error);
 
     this.#privateKey = value;
     this.#publicKey = Buffer.from(secp256k1.publicKeyCreate(value, true));
@@ -46,8 +49,8 @@ export class HDKey {
   }
 
   public set publicKey(value: Buffer) {
-    assert(value.length === 33 || value.length === 65, 'PublicKeyMustBe');
-    assert(secp256k1.publicKeyVerify(value) === true, 'BadPubKey');
+    assert(value.length === 33 || value.length === 65, INVALID_PUBLIC_KEY, Bip39Error);
+    assert(secp256k1.publicKeyVerify(value) === true, INVALID_PUBLIC_KEY, Bip39Error);
 
     // force compressed point
     this.#publicKey = Buffer.from(secp256k1.publicKeyConvert(value, true));
@@ -57,13 +60,10 @@ export class HDKey {
   }
 
   public get keyPair() {
-		// 	const version = Buffer.from(varintEncode(VERSION_NUMBER));
-    // const publicKeyBase58Encoded: string = PUBLIC_KEY_PREFIX + base58Encode(Buffer.concat([version, this.publicKey]));
-    // const base58 = ADDRESS_PREFIX + base58Encode(Buffer.concat([version, hashBlake3(this.publicKey)]));
-
     return {
       pubKey: this.publicKey,
-      privKey: this.privateKey
+      privKey: this.privateKey,
+      base58: addressFromPublicKey(this.publicKey)
     };
   }
 
@@ -95,14 +95,14 @@ export class HDKey {
       const c = entries[i];
       
       if (i === 0) {
-        assert(/^[mM]{1}/.test(c), 'Path must start with "m" or "M"');
+        assert(/^[mM]{1}/.test(c), INVALID_PATH, Bip39Error);
         continue;
       }
   
       const hardened = (c.length > 1) && (c[c.length - 1] === "'");
       let childIndex = parseInt(c, 10); // & (HARDENED_OFFSET - 1)
 
-      assert(childIndex < HARDENED_OFFSET, 'Invalid index');
+      assert(childIndex < HARDENED_OFFSET, INVALID_PATH_INDEX, Bip39Error);
 
       if (hardened) {
         childIndex += HARDENED_OFFSET;
@@ -123,7 +123,7 @@ export class HDKey {
     let data: Buffer;
   
     if (isHardened) { // Hardened child
-      assert(Boolean(this.#privateKey), 'CouldNotDeriveHardened');
+      assert(Boolean(this.#privateKey), COULD_NOT_DERIVE, Bip39Error);
   
       let pk = Buffer.from(this.privateKey);
       let zb = Buffer.alloc(1, 0);
