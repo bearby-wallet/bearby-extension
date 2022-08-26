@@ -19,6 +19,8 @@ import {
 } from './errors';
 import { addressFromPublicKey, publicKeyBytesFromPrivateKey } from 'lib/address';
 import { isPrivateKey } from 'lib/validator';
+import { MTypeTab } from 'config/stream-keys';
+import { TabsMessage } from 'lib/stream/tabs-message';
 
 
 export class AccountController {
@@ -262,5 +264,12 @@ export class AccountController {
     assert(!isUnique, ACCOUNT_MUST_UNIQUE, AccountError);
   }
 
-  async #trigger() {}
+  async #trigger() {
+    await new TabsMessage({
+      type: MTypeTab.ACCOUNT_CHANGED,
+      payload: {
+        account: (this.selectedAccount?.base58) || null
+      }
+    }).send();
+  }
 }

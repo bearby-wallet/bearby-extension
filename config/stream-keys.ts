@@ -11,5 +11,6 @@ export const MTypePopup = {
 };
 
 export const MTypeTab = {
-  GET_WALLET_DATA: `@/${app}/injected-get-wallet-data`
+  GET_WALLET_DATA: `@/${app}/injected-get-wallet-data`,
+  ACCOUNT_CHANGED: `@/${app}/accounts-just-changed`
 };
