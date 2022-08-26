@@ -15,12 +15,15 @@ import {
   ACCOUNT_MUST_UNIQUE,
   ACCOUNT_OUT_INDEX,
   ACCOUNT_NOT_FOUND,
-  HARDWARE_NOT_SUPPORT_METHOD
+  HARDWARE_NOT_SUPPORT_METHOD,
+  ACCOUNT_NAME_MUST_UNIQUE,
+  ACCOUNT_PRODUCT_ID_MUST_UNIQUE
 } from './errors';
 import { addressFromPublicKey, publicKeyBytesFromPrivateKey } from 'lib/address';
 import { isPrivateKey } from 'lib/validator';
 import { MTypeTab } from 'config/stream-keys';
 import { TabsMessage } from 'lib/stream/tabs-message';
+import { TypeOf } from 'lib/type';
 
 
 export class AccountController {
@@ -115,8 +118,8 @@ export class AccountController {
       const wallet = JSON.parse(String(walletJson));
 
       this.#wallet = wallet;
-    } catch (err) {
-      console.error(err);
+    } catch {
+      await this.reset();
     }
   }
 
@@ -155,9 +158,9 @@ export class AccountController {
     return account;
   }
 
-  async addAccountFromPrivateKey(privKey: string, name: string) {
+  async addAccountFromPrivateKey(privateKey: string, name: string) {
     const index = this.lastIndexPrivKey;
-    const { pubKey, base58 } = this.fromPrivateKey(privKey);
+    const { pubKey, base58, privKey } = this.fromPrivateKey(privateKey);
     const type = AccountTypes.PrivateKey;
     const encryptedPrivateKey = this.#guard.encryptPrivateKey(privKey);
     const account: Account = {
@@ -175,9 +178,9 @@ export class AccountController {
   }
 
   fromPrivateKey(privateKey: string): KeyPair {
-    isPrivateKey(privateKey);
+    const bufPrivateKey = new Uint8Array(utils.hex.toBytes(privateKey));
 
-    const bufPrivateKey = utils.hex.toBytes(privateKey);
+    isPrivateKey(bufPrivateKey);
 
     const pubKey = publicKeyBytesFromPrivateKey(bufPrivateKey);
     const base58 = addressFromPublicKey(pubKey);
@@ -257,11 +260,21 @@ export class AccountController {
   async #checkAccount(account: Account) {
     await this.sync();
 
-    const isUnique = this.wallet.identities.some(
+    const isUniqueAddress = this.wallet.identities.some(
       (acc) => (acc.base58 === account.base58)
     );
+    const isUniqueName = this.wallet.identities.some(
+      (acc) => (acc.name === account.name)
+    );
+    const isUniqueProductId = this.wallet.identities.some(
+      (acc) => (!TypeOf.isUndefined(acc.productId) &&
+        !TypeOf.isUndefined(account.productId) &&
+          acc.productId === account.productId)
+    );
 
-    assert(!isUnique, ACCOUNT_MUST_UNIQUE, AccountError);
+    assert(!isUniqueAddress, ACCOUNT_MUST_UNIQUE, AccountError);
+    assert(!isUniqueName, ACCOUNT_NAME_MUST_UNIQUE, AccountError);
+    assert(!isUniqueProductId, ACCOUNT_PRODUCT_ID_MUST_UNIQUE, AccountError);
   }
 
   async #trigger() {

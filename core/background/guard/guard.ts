@@ -134,11 +134,11 @@ export class Guard {
     );
   }
 
-  encryptPrivateKey(privKey: string) {
+  encryptPrivateKey(privKey: Uint8Array) {
     isPrivateKey(privKey);
 
     const hash = this.#hash.get(this) as Uint8Array;
-    const encrypted = Cipher.encrypt(utils.hex.toBytes(privKey), hash);
+    const encrypted = Cipher.encrypt(privKey, hash);
 
     return fromByteArray(encrypted);
   }
@@ -146,9 +146,8 @@ export class Guard {
   decryptPrivateKey(content: string) {
     const hash = this.#hash.get(this) as Uint8Array;
     const bytes = Cipher.decrypt(toByteArray(content), hash);
-    const privateKey = utils.hex.fromBytes(bytes);
 
-    isPrivateKey(privateKey);
+    isPrivateKey(bytes);
 
     return bytes;
   }

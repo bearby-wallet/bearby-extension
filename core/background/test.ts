@@ -8,6 +8,10 @@ import { base58Encode, base58Decode, addressFromPublicKey, base58PrivateKeyToByt
 import { Buffer } from 'buffer';
 import { VarintDecode, VarintEncode } from 'lib/varint';
 import { VERSION_NUMBER } from 'config/common';
+import { AccountController } from 'core/background/account/account';
+import { randomBytes } from 'lib/crypto/random';
+import { AccountTypes } from 'config/account-type';
+import { ACCOUNT_MUST_UNIQUE, INCORRECT_ACCOUNT } from './account/errors';
 
 
 (async function start() {
@@ -159,4 +163,87 @@ import { VERSION_NUMBER } from 'config/common';
   assert(pubKey.toString('hex') === '0378d75c840a3ae70a78d7b59c17cbd2989a070710ae7fc29fcb979866ad9088e8', 'pubKey is not equal');
   assert(address === 'A1naJqhUv1n3pz9Gvvza1JnjT79SC9b4boaF1SZ3jobpx2sdeDh', 'address is not equal');
   // addresses utils
+
+  // Account controller
+  console.log('start testing AccountController');
+  
+  const account = new AccountController(guard);
+
+  await account.sync();
+
+  assert(account.lastIndexLedger === 0, 'Incorrect ledger index');
+  assert(account.lastIndexPrivKey === 0, 'Incorrect privateKey index');
+  assert(account.lastIndexSeed === 0, 'Incorrect seed index');
+  assert(account.lastIndexTrezor === 0, 'Incorrect trezor index');
+
+  const accountName = utils.hex.fromBytes(randomBytes(8));
+  await account.addAccountFromSeed(guard.seed, accountName);
+
+  assert(account.lastIndexLedger === 0, 'Incorrect ledger index');
+  assert(account.lastIndexPrivKey === 0, 'Incorrect privateKey index');
+  assert(account.lastIndexTrezor === 0, 'Incorrect trezor index');
+  assert(account.lastIndexSeed === 1, 'Incorrect seed index');
+  assert(account.selectedAccount?.type === AccountTypes.Seed, 'Incorrect account type');
+  assert(account.selectedAccount?.name === accountName, 'Incorrect account name');
+  assert(account.selectedAccount?.index === 0, 'Incorrect account index');
+  assert(account.selectedAccount?.pubKey === '02dca24e533b4f2bf056f5d28514203097afdace1f1944b2fd1560debdebe188cd', 'Incorrect account pubKey');
+  assert(account.selectedAccount?.base58 === 'A12sh8pXSEAsaKZQP95BxhSDsiM8zgqL7otsENXhNdype6ebBGUq', 'Incorrect account address');
+
+  try {
+    const accountName = utils.hex.fromBytes(randomBytes(8));
+    const privateKey = '105ddfe5b4b01848ebd622b4dc6f4b352169bd2b1d8cace8fbc75570534b7b27';
+    await account.addAccountFromPrivateKey(privateKey, accountName);
+  } catch (err) {
+    assert((err as Error).message === ACCOUNT_MUST_UNIQUE, `Incorrect error message: ${(err as Error).message}`);
+  }
+
+  const accountName55 = utils.hex.fromBytes(randomBytes(8));
+  const privateKey55 = '5088f231d7930cf19677a368d96c62d85138f520466eb07f8390a464c661acf1';
+  await account.addAccountFromPrivateKey(privateKey55, accountName55);
+
+  assert(account.lastIndexLedger === 0, 'Incorrect ledger index');
+  assert(account.lastIndexPrivKey === 1, 'Incorrect privateKey index');
+  assert(account.lastIndexSeed === 1, 'Incorrect seed index');
+  assert(account.lastIndexTrezor === 0, 'Incorrect trezor index');
+  
+  assert(account.wallet.selectedAddress === 1, 'Incorrect selectedAddress index');
+
+  assert(account.selectedAccount?.type === AccountTypes.PrivateKey, 'Incorrect account type');
+  assert(account.selectedAccount?.name === accountName55, 'Incorrect account name');
+  assert(account.selectedAccount?.index === 0, 'Incorrect account index');
+  assert(account.selectedAccount?.pubKey === '035b220764f92171c7210327856b5b8025ad3e79cc995f4ecec838d0acd7f44fa0', 'Incorrect account pubKey');
+  assert(account.selectedAccount?.base58 === 'A12HmLYCZeJdhdiGdntpyYzrxWwzHY4R4sRQS2UooLRi79Dr48T2', 'Incorrect account address');
+
+  await account.select(0);
+
+  assert(account.selectedAccount?.base58 === 'A12sh8pXSEAsaKZQP95BxhSDsiM8zgqL7otsENXhNdype6ebBGUq', 'Incorrect account address');
+
+  const newAccountName = utils.hex.fromBytes(randomBytes(8));
+
+  await account.changeAccountName(0, newAccountName);
+
+  assert(account.selectedAccount?.name === newAccountName, 'Incorrect account name');
+  
+  try {
+    await account.remove(0);
+  } catch (err) {
+    assert((err as Error).message === INCORRECT_ACCOUNT, `Incorrect error message: ${(err as Error).message}`);
+  }
+
+  const secondSeedAccountName = utils.hex.fromBytes(randomBytes(8));
+  await account.addAccountFromSeed(guard.seed, secondSeedAccountName);
+
+  assert(account.wallet.identities.length === 3, 'Incorrect length of accounts');
+  assert(account.wallet.selectedAddress === 2, 'Incorrect selectedAddress account');
+
+  await account.remove(2);
+
+  assert(account.wallet.identities.length === 2, 'Incorrect length of accounts');
+  assert(account.wallet.selectedAddress === 1, 'Incorrect selectedAddress account');
+
+  await account.remove(1);
+
+  assert(account.wallet.identities.length === 1, 'Incorrect length of accounts');
+  assert(account.wallet.selectedAddress === 0, 'Incorrect selectedAddress account');
+  // Account controller
 }());
