@@ -1,13 +1,12 @@
 import type { KeyPair } from 'types/account';
 
-import { Buffer } from 'buffer';
-import sha512 from 'hash.js/lib/hash/sha/512';
-import Hmac from 'hash.js/lib/hash/hmac';
-import { ripemd160 } from 'hash.js/lib/hash/ripemd';
+import { utils } from 'aes-js';
+import { ripemd160 } from 'hash.js';
 import secp256k1 from 'secp256k1/elliptic';
+import { Buffer } from 'buffer';
 
 import { assert } from 'lib/assert';
-import { utils } from 'aes-js';
+import { hmac } from 'lib/crypto/hmac';
 import { addressFromPublicKey } from 'lib/address';
 import { sha256 } from 'lib/crypto/sha256';
 import { INVALID_PRIVATE_KEY } from 'lib/validator/errors';
@@ -20,7 +19,7 @@ import {
 } from './errors';
 
 
-const MASTER_SECRET = Buffer.from('Bitcoin seed', 'utf8');
+const MASTER_SECRET = utils.utf8.toBytes('Bitcoin seed');
 const HARDENED_OFFSET = 0x80000000;
 const BITCOIN_VERSIONS = {
   private: 0x0488ADE4,
@@ -30,22 +29,22 @@ const BITCOIN_VERSIONS = {
 
 export class HDKey {
   #privateKey?: Uint8Array;
-  #publicKey?: Buffer;
+  #publicKey?: Uint8Array;
   #fingerprint = 0;
-  #identifier?: Buffer;
+  #identifier?: Uint8Array;
 
   public parentFingerprint = 0;
-  public chainCode?: Buffer | number[];
+  public chainCode?: Uint8Array;
   public depth = 0;
   public index = 0;
   public versions: typeof BITCOIN_VERSIONS;
 
   public get publicKey() {
-    return Buffer.from(this.#publicKey || []);
+    return new Uint8Array(this.#publicKey || []);
   }
 
-  public get privateKey(): Buffer {
-    return Buffer.from(this.#privateKey || []);
+  public get privateKey() {
+    return new Uint8Array(this.#privateKey || []);
   }
 
   constructor(versions = BITCOIN_VERSIONS) {
@@ -59,7 +58,7 @@ export class HDKey {
     this.#privateKey = value;
     this.#publicKey = Buffer.from(secp256k1.publicKeyCreate(value, true));
     this.#identifier = Buffer.from(await this.#hash160(this.#publicKey));
-    this.#fingerprint = this.#identifier.slice(0, 4).readUInt32BE(0);
+    this.#fingerprint = Buffer.from(this.#identifier).slice(0, 4).readUInt32BE(0);
   }
 
   async setPublicKey(value: Buffer) {
@@ -81,7 +80,7 @@ export class HDKey {
     };
   }
 
-  public setChainCode(ir: Buffer | number[]) {
+  public setChainCode(ir: Uint8Array) {
     this.chainCode = ir;
   }
 
@@ -139,9 +138,7 @@ export class HDKey {
       data = Buffer.concat([this.publicKey, indexBuffer]);
     }
 
-    const I = Hmac(sha512, this.chainCode)
-      .update(data)
-      .digest();
+    const I = await hmac(new Uint8Array(this.chainCode || []), data);
     const IL = Uint8Array.from(I.slice(0, 32));
     const IR = Uint8Array.from(I.slice(32));
     const hd = new HDKey(this.versions);
@@ -182,9 +179,9 @@ export class HDKey {
   }
 
   async fromMasterSeed(seedBuffer: Uint8Array, versions = BITCOIN_VERSIONS) {
-    const I = Hmac(sha512, MASTER_SECRET)
-      .update(utils.hex.fromBytes(seedBuffer))
-      .digest();
+    const I = await hmac(MASTER_SECRET, utils.utf8.toBytes(
+      utils.hex.fromBytes(seedBuffer) /// TODO: create issue on HDKey
+    ));
 
     const IL = Buffer.from(I).slice(0, 32);
     const IR = Buffer.from(I).slice(32);  
@@ -198,7 +195,7 @@ export class HDKey {
     return hdkey;
   }
 
-  async #hash160(buf: Buffer) {
+  async #hash160(buf: Uint8Array) {
     const hash = await sha256(buf);
     return ripemd160()
       .update(hash)
