@@ -132,18 +132,18 @@ export class AccountController {
     );
   }
 
-  fromSeed(seed: Uint8Array, index = 0) {
+  async fromSeed(seed: Uint8Array, index = 0) {
     const path = this.bip39.getPath(index);
     const hdKey = this.#hdKey.fromMasterSeed(seed);
     const childKey = hdKey.derive(path);
 
-    return childKey.keyPair;
+    return await childKey.keyPair();
   }
 
   async addAccountFromSeed(seed: Uint8Array, name: string) {
     const index = this.lastIndexSeed;
-    const { pubKey } = this.fromSeed(seed, index);
-    const base58 = addressFromPublicKey(pubKey);
+    const { pubKey } = await this.fromSeed(seed, index);
+    const base58 = await addressFromPublicKey(pubKey);
     const type = AccountTypes.Seed;
     const account: Account = {
       name,
@@ -160,7 +160,7 @@ export class AccountController {
 
   async addAccountFromPrivateKey(privateKey: string, name: string) {
     const index = this.lastIndexPrivKey;
-    const { pubKey, base58, privKey } = this.fromPrivateKey(privateKey);
+    const { pubKey, base58, privKey } = await this.fromPrivateKey(privateKey);
     const type = AccountTypes.PrivateKey;
     const encryptedPrivateKey = this.#guard.encryptPrivateKey(privKey);
     const account: Account = {
@@ -177,13 +177,13 @@ export class AccountController {
     return account;
   }
 
-  fromPrivateKey(privateKey: string): KeyPair {
+  async fromPrivateKey(privateKey: string): Promise<KeyPair> {
     const bufPrivateKey = new Uint8Array(utils.hex.toBytes(privateKey));
 
     isPrivateKey(bufPrivateKey);
 
     const pubKey = publicKeyBytesFromPrivateKey(bufPrivateKey);
-    const base58 = addressFromPublicKey(pubKey);
+    const base58 = await addressFromPublicKey(pubKey);
 
     return {
       pubKey,

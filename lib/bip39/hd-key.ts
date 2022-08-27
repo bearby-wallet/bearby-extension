@@ -61,14 +61,6 @@ export class HDKey {
     this.#privateKey = undefined;
   }
 
-  public get keyPair(): KeyPair {
-    return {
-      pubKey: this.publicKey,
-      privKey: this.privateKey,
-      base58: addressFromPublicKey(this.publicKey)
-    };
-  }
-
   public get publicKey() {
     return Buffer.from(this.#publicKey || []);
   }
@@ -79,6 +71,14 @@ export class HDKey {
 
   constructor(versions = BITCOIN_VERSIONS) {
     this.versions = versions;
+  }
+
+  async keyPair() {
+    return {
+      pubKey: this.publicKey,
+      privKey: this.privateKey,
+      base58: await addressFromPublicKey(this.publicKey)
+    };
   }
 
   public setChainCode(ir: Buffer | number[]) {

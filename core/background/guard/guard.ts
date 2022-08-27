@@ -1,6 +1,6 @@
 import { toByteArray, fromByteArray } from 'base64-js';
 import { utils } from 'aes-js';
-import sha256 from 'hash.js/lib/hash/sha/256';
+import { sha256 } from 'lib/crypto/sha256';
 
 import {
   GuardError,
@@ -87,14 +87,15 @@ export class Guard {
     }
   }
 
-  unlock(password: string) {
+  async unlock(password: string) {
     assert(this.isReady, WALLET_NOT_READY, GuardError);
 
     try {
       assert(Boolean(this.#encryptMnemonic), WALLET_NOT_SYNC, GuardError);
 
       const mnemonicController = new MnemonicController();
-      const hash = new Uint8Array(sha256().update(password).digest());
+      const passwordBytes = utils.utf8.toBytes(password);
+      const hash = await sha256(passwordBytes);
       const mnemonicBytes = Cipher.decrypt(this.#encryptMnemonic as Uint8Array, hash);
       const mnemonic = utils.utf8.fromBytes(mnemonicBytes);
 
@@ -115,7 +116,8 @@ export class Guard {
 
   async setupVault(mnemonic: string, password: string, usePassword = false) {
     const mnemonicBuf = utils.utf8.toBytes(mnemonic);
-    const hash = new Uint8Array(sha256().update(password).digest());
+    const passwordBytes = utils.utf8.toBytes(password);
+    const hash = await sha256(passwordBytes);
     const seed = new MnemonicController().mnemonicToSeed(
       mnemonic,
       usePassword ? password : undefined

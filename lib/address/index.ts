@@ -1,6 +1,6 @@
 import blake3 from 'blake3-js';
 import secp256k1 from 'secp256k1/elliptic';
-import sha256 from 'hash.js/lib/hash/sha/256';
+import { sha256 } from 'lib/crypto/sha256';
 import { Buffer } from 'buffer';
 
 import { base58ToBinary, binaryToBase58 } from 'lib/crypto/base58';
@@ -8,31 +8,31 @@ import { assert } from 'lib/assert';
 import { INVALID_CHECKSUM } from './errors';
 import { ADDRESS_PREFIX, VERSION_NUMBER } from 'config/common';
 import { VarintEncode } from 'lib/varint';
+import { utils } from 'aes-js';
 
 
-function encode(data: Uint8Array | Buffer, prefix = '00') {
-  const bufPrefix = Buffer.from(prefix, 'hex');
-  let hash = Buffer.concat([bufPrefix, data]);
+async function encode(data: Uint8Array | Buffer, prefix = '00') {
+  const bufPrefix = utils.hex.toBytes(prefix);
+  let hash = new Uint8Array([...bufPrefix, ...data]);
 
-  hash = sha256().update(hash).digest();
-  hash = Buffer.from(sha256().update(hash).digest());
-  hash = Buffer.concat([bufPrefix, data,  hash.slice(0, 4)]);
+  hash = await sha256(hash);
+  hash = await sha256(hash)
+  hash = new Uint8Array([...bufPrefix, ...data,  ...hash.slice(0, 4)]);
 
   return binaryToBase58(hash);
 }
 
-function decode(content: string) {
+async function decode(content: string) {
   const bytes = base58ToBinary(content);
-  const buffer = Buffer.from(bytes);
 
-  const prefix = buffer.slice(0, 1);
-  const data = buffer.slice(1, -4);
-  let hash = Buffer.concat([prefix, data]);
+  const prefix = bytes.slice(0, 1);
+  const data = bytes.slice(1, -4);
+  let hash = new Uint8Array([...prefix, ...data]);
 
-  hash = sha256().update(hash).digest();
-  hash = Buffer.from(sha256().update(hash).digest());
+  hash = await sha256(hash);
+  hash = await sha256(hash);
 
-  buffer.slice(-4).forEach((check, index) => {
+  bytes.slice(-4).forEach((check, index) => {
     assert(check === hash[index], INVALID_CHECKSUM);
   });
 
@@ -43,29 +43,28 @@ function decode(content: string) {
 }
 
 
-export function base58Encode(data: Buffer | Uint8Array): string {
-  const bufData = Buffer.from(data);
-
-  return encode(bufData.slice(1), bufData[0].toString(16).padStart(2, "0"));
+export async function base58Encode(data: Uint8Array): Promise<string> {
+  return await encode(data.slice(1), data[0].toString(16).padStart(2, "0"));
 }
 
-export function base58Decode(data: string): Buffer {
-  const decoded = decode(data);
-  return Buffer.concat([decoded.prefix, decoded.data]);
+export async function base58Decode(data: string): Promise<Uint8Array> {
+  const decoded = await decode(data);
+
+  return new Uint8Array([...decoded.prefix, ...decoded.data]);
 }
 
-export function addressFromPublicKey(publicKey: Uint8Array) {
+export async function addressFromPublicKey(publicKey: Uint8Array) {
   const version = Buffer.from(new VarintEncode().encode(VERSION_NUMBER));
   const pubKeyHash = Buffer.from(
     blake3.newRegular().update(publicKey).finalize(),
     'hex'
   );
 
-  return ADDRESS_PREFIX + base58Encode(Buffer.concat([version, pubKeyHash]));
+  return ADDRESS_PREFIX + await base58Encode(Buffer.concat([version, pubKeyHash]));
 }
 
-export function base58PrivateKeyToBytes(base58PrivateKey: string) {
-  const secretKeyVersionBase58Decoded = base58Decode(base58PrivateKey.slice(1));
+export async function base58PrivateKeyToBytes(base58PrivateKey: string) {
+  const secretKeyVersionBase58Decoded = await base58Decode(base58PrivateKey.slice(1));
 
   return secretKeyVersionBase58Decoded.slice(1);
 }
