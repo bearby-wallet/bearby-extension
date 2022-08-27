@@ -134,8 +134,8 @@ export class AccountController {
 
   async fromSeed(seed: Uint8Array, index = 0) {
     const path = this.bip39.getPath(index);
-    const hdKey = this.#hdKey.fromMasterSeed(seed);
-    const childKey = hdKey.derive(path);
+    const hdKey = await this.#hdKey.fromMasterSeed(seed);
+    const childKey = await hdKey.derive(path);
 
     return await childKey.keyPair();
   }
@@ -197,12 +197,12 @@ export class AccountController {
     return this.wallet.identities[index];
   }
 
-  getKeyPair(index = this.wallet.selectedAddress): KeyPair {
+  async getKeyPair(index = this.wallet.selectedAddress): Promise<KeyPair> {
     const account = this.wallet.identities[index];
     switch (account.type) {
       case AccountTypes.Seed:
         const seed = this.#guard.seed;
-        const keyPair = this.fromSeed(seed, account.index);
+        const keyPair = await this.fromSeed(seed, account.index);
         return keyPair;
       case AccountTypes.PrivateKey:
         const encryptedPriveLey = this.selectedAccount?.privKey;

@@ -1,7 +1,6 @@
 import type { KeyPair } from 'types/account';
 
 import { Buffer } from 'buffer';
-import sha256 from 'hash.js/lib/hash/sha/256';
 import sha512 from 'hash.js/lib/hash/sha/512';
 import Hmac from 'hash.js/lib/hash/hmac';
 import { ripemd160 } from 'hash.js/lib/hash/ripemd';
@@ -10,6 +9,7 @@ import secp256k1 from 'secp256k1/elliptic';
 import { assert } from 'lib/assert';
 import { utils } from 'aes-js';
 import { addressFromPublicKey } from 'lib/address';
+import { sha256 } from 'lib/crypto/sha256';
 import { INVALID_PRIVATE_KEY } from 'lib/validator/errors';
 import {
   Bip39Error,
@@ -40,27 +40,6 @@ export class HDKey {
   public index = 0;
   public versions: typeof BITCOIN_VERSIONS;
 
-  public set privateKey(value: Uint8Array) {
-    assert(value.length === 32, INVALID_PRIVATE_KEY, Bip39Error);
-    assert(secp256k1.privateKeyVerify(value) === true, INVALID_PRIVATE_KEY, Bip39Error);
-
-    this.#privateKey = value;
-    this.#publicKey = Buffer.from(secp256k1.publicKeyCreate(value, true));
-    this.#identifier = Buffer.from(this.#hash160(this.#publicKey));
-    this.#fingerprint = this.#identifier.slice(0, 4).readUInt32BE(0);
-  }
-
-  public set publicKey(value: Buffer) {
-    assert(value.length === 33 || value.length === 65, INVALID_PUBLIC_KEY, Bip39Error);
-    assert(secp256k1.publicKeyVerify(value) === true, INVALID_PUBLIC_KEY, Bip39Error);
-
-    // force compressed point
-    this.#publicKey = Buffer.from(secp256k1.publicKeyConvert(value, true));
-    this.#identifier = this.#hash160(this.publicKey);
-    this.#fingerprint = Buffer.from(this.#identifier || []).slice(0, 4).readUInt32BE(0);
-    this.#privateKey = undefined;
-  }
-
   public get publicKey() {
     return Buffer.from(this.#publicKey || []);
   }
@@ -73,7 +52,28 @@ export class HDKey {
     this.versions = versions;
   }
 
-  async keyPair() {
+  async setPrivateKey(value: Uint8Array) {
+    assert(value.length === 32, INVALID_PRIVATE_KEY, Bip39Error);
+    assert(secp256k1.privateKeyVerify(value) === true, INVALID_PRIVATE_KEY, Bip39Error);
+
+    this.#privateKey = value;
+    this.#publicKey = Buffer.from(secp256k1.publicKeyCreate(value, true));
+    this.#identifier = Buffer.from(await this.#hash160(this.#publicKey));
+    this.#fingerprint = this.#identifier.slice(0, 4).readUInt32BE(0);
+  }
+
+  async setPublicKey(value: Buffer) {
+    assert(value.length === 33 || value.length === 65, INVALID_PUBLIC_KEY, Bip39Error);
+    assert(secp256k1.publicKeyVerify(value) === true, INVALID_PUBLIC_KEY, Bip39Error);
+
+    // force compressed point
+    this.#publicKey = Buffer.from(secp256k1.publicKeyConvert(value, true));
+    this.#identifier = Buffer.from(await this.#hash160(this.publicKey));
+    this.#fingerprint = Buffer.from(this.#identifier || []).slice(0, 4).readUInt32BE(0);
+    this.#privateKey = undefined;
+  }
+
+  async keyPair(): Promise<KeyPair> {
     return {
       pubKey: this.publicKey,
       privKey: this.privateKey,
@@ -85,7 +85,7 @@ export class HDKey {
     this.chainCode = ir;
   }
 
-  public derive(path: string) {
+  async derive(path: string) {
     if (path === 'm' || path === 'M' || path === "m'" || path === "M'") {
       return this;
     }
@@ -110,13 +110,13 @@ export class HDKey {
         childIndex += HARDENED_OFFSET;
       }
   
-      hdkey = hdkey.deriveChild(childIndex);
+      hdkey = await hdkey.deriveChild(childIndex);
     }
 
     return hdkey;
   }
 
-  public deriveChild(index: number): HDKey {
+  async deriveChild(index: number): Promise<HDKey> {
     const isHardened = index >= HARDENED_OFFSET;
     const indexBuffer = Buffer.allocUnsafe(4);
 
@@ -150,7 +150,9 @@ export class HDKey {
     if (this.privateKey) {
       // ki = parse256(IL) + kpar (mod n)
       try {
-        hd.privateKey = Uint8Array.from(secp256k1.privateKeyTweakAdd(this.privateKey, IL));
+        await hd.setPrivateKey(
+          Uint8Array.from(secp256k1.privateKeyTweakAdd(this.privateKey, IL))
+        );
         // throw if IL >= n || (privateKey + IL) === 0
       } catch (err) {
         // In case parse256(IL) >= n or ki == 0, one should proceed with the next value for i
@@ -161,7 +163,9 @@ export class HDKey {
       // Ki = point(parse256(IL)) + Kpar
       //    = G*IL + Kpar
       try {
-        hd.publicKey = Buffer.from(secp256k1.publicKeyTweakAdd(this.publicKey, IL, true))
+        await hd.setPublicKey(
+          Buffer.from(secp256k1.publicKeyTweakAdd(this.publicKey, IL, true))
+        );
         // throw if IL >= n || (g**IL + publicKey) is infinity
       } catch (err) {
         // In case parse256(IL) >= n or Ki is the point at infinity, one should proceed with the next value for i
@@ -177,7 +181,7 @@ export class HDKey {
     return hd;
   }
 
-  public fromMasterSeed(seedBuffer: Uint8Array, versions = BITCOIN_VERSIONS) {
+  async fromMasterSeed(seedBuffer: Uint8Array, versions = BITCOIN_VERSIONS) {
     const I = Hmac(sha512, MASTER_SECRET)
       .update(utils.hex.fromBytes(seedBuffer))
       .digest();
@@ -187,15 +191,15 @@ export class HDKey {
     const hdkey = new HDKey(versions);
 
     hdkey.setChainCode(IR);
-    hdkey.privateKey = Uint8Array.from(IL);
+    await hdkey.setPrivateKey(
+      Uint8Array.from(IL)
+    );
   
     return hdkey;
   }
 
-  #hash160(buf: Buffer) {
-    const hash = sha256()
-      .update(buf)
-      .digest();
+  async #hash160(buf: Buffer) {
+    const hash = await sha256(buf);
     return ripemd160()
       .update(hash)
       .digest();

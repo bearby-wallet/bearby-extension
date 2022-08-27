@@ -68,8 +68,8 @@ import { ACCOUNT_MUST_UNIQUE, INCORRECT_ACCOUNT } from './account/errors';
 
   /// HDKey
   async function testKeys(index: number) {
-    const hdKey = new HDKey().fromMasterSeed(guard.seed);
-    const childKey = hdKey.derive(mnemonic.getPath(index));
+    const hdKey = await new HDKey().fromMasterSeed(guard.seed);
+    const childKey = await hdKey.derive(mnemonic.getPath(index));
     const { pubKey, privKey, base58 } = await childKey.keyPair();
 
     return {
