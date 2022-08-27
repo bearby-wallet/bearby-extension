@@ -1,5 +1,3 @@
-import { Buffer } from 'buffer';
-
 import { assert } from 'lib/assert';
 
 import { WORD_LIST } from './wordlists';
@@ -11,6 +9,7 @@ import {
   Bip39Error,
   INCORRECT_MNEMONIC
 } from './errors';
+import { utils } from 'aes-js';
 
 
 export class MnemonicController {
@@ -26,8 +25,8 @@ export class MnemonicController {
   }
 
   async mnemonicToSeed(mnemonic: string, password?: string) {
-    const mnemonicBuffer = Buffer.from(this.#normalize(mnemonic));
-    const saltBuffer = Buffer.from(this.#salt(this.#normalize(password)));
+    const mnemonicBuffer = utils.utf8.toBytes(this.#normalize(mnemonic));
+    const saltBuffer = utils.utf8.toBytes(this.#salt(this.#normalize(password)));
 
     return await pbkdf2(mnemonicBuffer, saltBuffer, 2048);
   }
@@ -57,7 +56,7 @@ export class MnemonicController {
     assert(entropyBytes.length <= 32, INVALID_ENTROPY, Bip39Error);
     assert(entropyBytes.length % 4 === 0, INVALID_ENTROPY, Bip39Error);
 
-    return Buffer.from(entropyBytes);
+    return new Uint8Array(entropyBytes);
   }
 
   validateMnemonic(mnemonic: string) {
@@ -69,16 +68,15 @@ export class MnemonicController {
     return true;
   }
 
-  async entropyToMnemonic(entropy: Buffer | Uint8Array, wordlist = WORD_LIST) {
-    const bufferEntropy = Buffer.from(entropy);
+  async entropyToMnemonic(entropy: Uint8Array, wordlist = WORD_LIST) {
 
     // 128 <= ENT <= 256
-    assert(bufferEntropy.length >= 16, INVALID_ENTROPY, Bip39Error);
-    assert(bufferEntropy.length <= 32, INVALID_ENTROPY, Bip39Error);
-    assert(bufferEntropy.length % 4 === 0, INVALID_ENTROPY, Bip39Error);
+    assert(entropy.length >= 16, INVALID_ENTROPY, Bip39Error);
+    assert(entropy.length <= 32, INVALID_ENTROPY, Bip39Error);
+    assert(entropy.length % 4 === 0, INVALID_ENTROPY, Bip39Error);
 
-    const entropyBits = this.#bytesToBinary(bufferEntropy);
-    const checksumBits = await this.#deriveChecksumBits(bufferEntropy);
+    const entropyBits = this.#bytesToBinary(entropy);
+    const checksumBits = await this.#deriveChecksumBits(entropy);
     const bits = entropyBits + checksumBits;
     const chunks = bits.match(/(.{1,11})/g) || [];
 
@@ -117,10 +115,10 @@ export class MnemonicController {
     return parseInt(bin, 2);
   }
 
-  async #deriveChecksumBits(entropyBuffer: Buffer) {
+  async #deriveChecksumBits(entropyBuffer: Uint8Array) {
     const ENT = entropyBuffer.length * 8;
     const CS = ENT / 32;
-    const hash = await sha256(entropyBuffer);
+    const hash = await sha256(new Uint8Array(entropyBuffer));
 
     return this.#bytesToBinary(hash).slice(0, CS);
   }
