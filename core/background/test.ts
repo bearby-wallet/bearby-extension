@@ -32,7 +32,7 @@ import { ACCOUNT_MUST_UNIQUE, INCORRECT_ACCOUNT } from './account/errors';
   const wordsSHouldBe = 'insect harsh unable fog damp together skin eager clutch pyramid travel budget flat flag ten bone whisper carbon addict siren elegant legend mandate cover';
   const seedShouldBe = '9de4324c250bc7f98aac98eb10e13f523fd68df6dbe4fd36b552a80de07ffaa91aaa521f88d4502e98719002462e4fb4f348196a695ac78ad8afa3ebf0e03dd4';
   const entropy = '750d2bb12d2373c772a2272c95e39e0ec588b077b8cafa844c0d64b478ff21c1';
-  const words = mnemonic.entropyToMnemonic(utils.hex.toBytes(entropy));
+  const words = await mnemonic.entropyToMnemonic(utils.hex.toBytes(entropy));
   const password = 'test';
 
   assert(wordsSHouldBe === words, 'words are different');

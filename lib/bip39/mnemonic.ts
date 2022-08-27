@@ -1,11 +1,11 @@
 import { Buffer } from 'buffer';
-import sha256 from 'hash.js/lib/hash/sha/256';
 
 import { assert } from 'lib/assert';
 
 import { WORD_LIST } from './wordlists';
 import { randomBytes } from 'lib/crypto/random';
 import { pbkdf2 } from 'lib/crypto/pbkdf2';
+import { sha256 } from 'lib/crypto/sha256';
 import {
   INVALID_ENTROPY,
   Bip39Error,
@@ -15,10 +15,10 @@ import {
 
 export class MnemonicController {
 
-  generateMnemonic(strength = 128) {
+  async generateMnemonic(strength = 128) {
     assert(strength % 32 === 0, INVALID_ENTROPY, Bip39Error);
 
-    return this.entropyToMnemonic(randomBytes(strength / 8));
+    return await this.entropyToMnemonic(randomBytes(strength / 8));
   }
 
   getPath(index: number) {
@@ -69,7 +69,7 @@ export class MnemonicController {
     return true;
   }
 
-  entropyToMnemonic(entropy: Buffer | Uint8Array, wordlist = WORD_LIST) {
+  async entropyToMnemonic(entropy: Buffer | Uint8Array, wordlist = WORD_LIST) {
     const bufferEntropy = Buffer.from(entropy);
 
     // 128 <= ENT <= 256
@@ -78,7 +78,7 @@ export class MnemonicController {
     assert(bufferEntropy.length % 4 === 0, INVALID_ENTROPY, Bip39Error);
 
     const entropyBits = this.#bytesToBinary(bufferEntropy);
-    const checksumBits = this.#deriveChecksumBits(bufferEntropy);
+    const checksumBits = await this.#deriveChecksumBits(bufferEntropy);
     const bits = entropyBits + checksumBits;
     const chunks = bits.match(/(.{1,11})/g) || [];
 
@@ -92,7 +92,7 @@ export class MnemonicController {
     return words.join(' ');
   }
 
-  #bytesToBinary(bytes: Buffer) {
+  #bytesToBinary(bytes: Uint8Array) {
     return Array
       .from(bytes)
       .map((x) => this.#lpad(x.toString(2), '0', 8)).join('');
@@ -117,12 +117,10 @@ export class MnemonicController {
     return parseInt(bin, 2);
   }
 
-  #deriveChecksumBits(entropyBuffer: Buffer) {
+  async #deriveChecksumBits(entropyBuffer: Buffer) {
     const ENT = entropyBuffer.length * 8;
     const CS = ENT / 32;
-    const hash = sha256()
-      .update(entropyBuffer)
-      .digest();
+    const hash = await sha256(entropyBuffer);
 
     return this.#bytesToBinary(hash).slice(0, CS);
   }
