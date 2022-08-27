@@ -101,7 +101,7 @@ export class Guard {
 
       assert(mnemonicController.validateMnemonic(mnemonic), INCORRECT_PASSWORD, GuardError);
 
-      const seed = mnemonicController.mnemonicToSeed(mnemonic);
+      const seed = await mnemonicController.mnemonicToSeed(mnemonic);
 
       this.#privateExtendedKey = Cipher.encrypt(seed, hash);
 
@@ -118,7 +118,7 @@ export class Guard {
     const mnemonicBuf = utils.utf8.toBytes(mnemonic);
     const passwordBytes = utils.utf8.toBytes(password);
     const hash = await sha256(passwordBytes);
-    const seed = new MnemonicController().mnemonicToSeed(
+    const seed = await new MnemonicController().mnemonicToSeed(
       mnemonic,
       usePassword ? password : undefined
     );

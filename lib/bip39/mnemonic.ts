@@ -25,11 +25,11 @@ export class MnemonicController {
     return `m/44'/632'/0'/0/${index}`;
   }
 
-  mnemonicToSeed(mnemonic: string, password?: string): Buffer {
+  async mnemonicToSeed(mnemonic: string, password?: string) {
     const mnemonicBuffer = Buffer.from(this.#normalize(mnemonic));
     const saltBuffer = Buffer.from(this.#salt(this.#normalize(password)));
 
-    return pbkdf2(mnemonicBuffer, saltBuffer, 2048, 64);
+    return await pbkdf2(mnemonicBuffer, saltBuffer, 2048);
   }
 
   mnemonicToEntropy(mnemonic: string) {
