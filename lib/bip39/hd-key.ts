@@ -1,7 +1,7 @@
 import type { KeyPair } from 'types/account';
 
 import { utils } from 'aes-js';
-import { ripemd160 } from 'hash.js';
+import Ripemd160 from '@hicaru/ripemd160.js';
 import secp256k1 from 'secp256k1/elliptic';
 import { Buffer } from 'buffer';
 
@@ -195,7 +195,7 @@ export class HDKey {
 
   async #hash160(buf: Uint8Array) {
     const hash = await sha256(buf);
-    return ripemd160()
+    return new Ripemd160()
       .update(hash)
       .digest();
   }

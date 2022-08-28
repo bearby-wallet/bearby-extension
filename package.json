@@ -31,11 +31,11 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
+    "@hicaru/ripemd160.js": "^0.0.9",
     "@noble/ed25519": "^1.7.0",
     "aes-js": "^3.1.2",
     "blake3-js": "^0.0.5",
     "buffer": "^6.0.3",
-    "hash.js": "^1.1.7",
     "secp256k1": "^4.0.3",
     "svelte-i18n": "^3.4.0",
     "svelte-spa-router": "^3.3.0"
