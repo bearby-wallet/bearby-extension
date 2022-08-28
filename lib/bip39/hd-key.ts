@@ -179,9 +179,7 @@ export class HDKey {
   }
 
   async fromMasterSeed(seedBuffer: Uint8Array, versions = BITCOIN_VERSIONS) {
-    const I = await hmac(MASTER_SECRET, utils.utf8.toBytes(
-      utils.hex.fromBytes(seedBuffer) /// TODO: create issue on HDKey
-    ));
+    const I = await hmac(MASTER_SECRET, seedBuffer);
 
     const IL = Buffer.from(I).slice(0, 32);
     const IR = Buffer.from(I).slice(32);  

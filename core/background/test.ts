@@ -81,20 +81,21 @@ import { ACCOUNT_MUST_UNIQUE, INCORRECT_ACCOUNT } from './account/errors';
 
   const res0 = await testKeys(0);
 
-  assert('105ddfe5b4b01848ebd622b4dc6f4b352169bd2b1d8cace8fbc75570534b7b27' === res0.privateKey, 'Incorrect PrivateKey');
-  assert('02dca24e533b4f2bf056f5d28514203097afdace1f1944b2fd1560debdebe188cd' === res0.publicKey, 'Incorrect PublicKey');
-  assert('A12sh8pXSEAsaKZQP95BxhSDsiM8zgqL7otsENXhNdype6ebBGUq' === res0.base58, 'does not math address base58');
+  assert('8c8b2ba0c4000cc5aeb935bcd7cc1838fb47454385372aeacc8fdd0a38297ee5' === res0.privateKey, 'Incorrect PrivateKey');
+  assert('034cf4c51d83c2e728ece5ce1a7b52c0eb0c2fcfe691729ebae6073b61f36809a5' === res0.publicKey, 'Incorrect PublicKey');
+  assert("A1dMYxmnqbT8xAtXzqtfrpAMfH6eg1YERsgHWj4iJ8iQSsekVq3" === res0.base58, 'does not math address base58');
 
   const res1 = await testKeys(1);
 
-  assert('c6dd0714f63c7c781b83a9511041c369b8340cf2dc53de3395b76f268cae02d0' === res1.privateKey, 'Incorrect PrivateKey');
-  assert('038f0953535041b7dba7c7965f589ba1f9b90c090b82eac8a3bddcf0aa0cd9b047' === res1.publicKey, 'Incorrect PublicKey');
-  assert('A17oyhvP5h96mvto2nJvbRyv7nfY7CbNS2kavps2mFiPMS5sxLt' === res1.base58, 'does not math address base58');
+  assert('2c7f378b6b0a0fcfaf1d9f80b1dbbed81428a027e3ba0f85a70cb6e27853206e' === res1.privateKey, 'Incorrect PrivateKey');
+  assert('038a6a663928b80c704bb237e6ee6cdbd39fa25d86215b8b244205dea0ecc217a4' === res1.publicKey, 'Incorrect PublicKey');
+  assert("A1zBMxyfQUvUMyDfGQt7mcdt2ekeqSCNEaKKgH2xxccYT5nvpU8" === res1.base58, 'does not math address base58');
+
   const res2 = await testKeys(55);
 
-  assert('5088f231d7930cf19677a368d96c62d85138f520466eb07f8390a464c661acf1' === res2.privateKey, 'Incorrect PrivateKey');
-  assert('035b220764f92171c7210327856b5b8025ad3e79cc995f4ecec838d0acd7f44fa0' === res2.publicKey, 'Incorrect PublicKey');
-  assert('A12HmLYCZeJdhdiGdntpyYzrxWwzHY4R4sRQS2UooLRi79Dr48T2' === res2.base58, 'does not math address base58');
+  assert('0c98d7c4ace6d07627211c4e7ae1c5fda32a8a69dbda6a9d44fa22280d1e544d' === res2.privateKey, 'Incorrect PrivateKey');
+  assert('03f8bea895d1891a3480d61fd628cc83750427334c0ed723e4a6062c81685dfefd' === res2.publicKey, 'Incorrect PublicKey');
+  assert("A12L7BPcCSFqxc5bxPGZfBkPW5EiP1qynsgPZjRZP4RrdFd9Arv6" === res2.base58, 'does not math address base58');
   /// HDKey
 
   // base58
@@ -185,13 +186,14 @@ import { ACCOUNT_MUST_UNIQUE, INCORRECT_ACCOUNT } from './account/errors';
   assert(account.selectedAccount?.type === AccountTypes.Seed, 'Incorrect account type');
   assert(account.selectedAccount?.name === accountName, 'Incorrect account name');
   assert(account.selectedAccount?.index === 0, 'Incorrect account index');
-  assert(account.selectedAccount?.pubKey === '02dca24e533b4f2bf056f5d28514203097afdace1f1944b2fd1560debdebe188cd', 'Incorrect account pubKey');
-  assert(account.selectedAccount?.base58 === 'A12sh8pXSEAsaKZQP95BxhSDsiM8zgqL7otsENXhNdype6ebBGUq', 'Incorrect account address');
+  assert(account.selectedAccount?.pubKey === '034cf4c51d83c2e728ece5ce1a7b52c0eb0c2fcfe691729ebae6073b61f36809a5', 'Incorrect account pubKey');
+  assert(account.selectedAccount?.base58 === 'A1dMYxmnqbT8xAtXzqtfrpAMfH6eg1YERsgHWj4iJ8iQSsekVq3', 'Incorrect account address');
 
   try {
     const accountName = utils.hex.fromBytes(randomBytes(8));
-    const privateKey = '105ddfe5b4b01848ebd622b4dc6f4b352169bd2b1d8cace8fbc75570534b7b27';
+    const privateKey = '8c8b2ba0c4000cc5aeb935bcd7cc1838fb47454385372aeacc8fdd0a38297ee5';
     await account.addAccountFromPrivateKey(privateKey, accountName);
+    throw new Error();
   } catch (err) {
     assert((err as Error).message === ACCOUNT_MUST_UNIQUE, `Incorrect error message: ${(err as Error).message}`);
   }
@@ -215,7 +217,7 @@ import { ACCOUNT_MUST_UNIQUE, INCORRECT_ACCOUNT } from './account/errors';
 
   await account.select(0);
 
-  assert(account.selectedAccount?.base58 === 'A12sh8pXSEAsaKZQP95BxhSDsiM8zgqL7otsENXhNdype6ebBGUq', 'Incorrect account address');
+  assert(account.selectedAccount?.base58 === 'A1dMYxmnqbT8xAtXzqtfrpAMfH6eg1YERsgHWj4iJ8iQSsekVq3', 'Incorrect account address');
 
   const newAccountName = utils.hex.fromBytes(randomBytes(8));
 
