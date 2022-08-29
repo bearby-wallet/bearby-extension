@@ -62,11 +62,6 @@
   dependencies:
     tslib "^2.1.0"
 
-"@hicaru/ripemd160.js@^0.0.9":
-  version "0.0.9"
-  resolved "https://registry.yarnpkg.com/@hicaru/ripemd160.js/-/ripemd160.js-0.0.9.tgz#c5eff8ecf0e918ec9e71cd4b0cab5870ca5c407d"
-  integrity sha512-/wOHmFyw2x2EdL7/SWIiFRNrcd3sYjjF17lcHV8bNs+dmyv6yQ/lUnUejT428EwMgXJ8W+Sf9M3bSQYo+2Iujg==
-
 "@jridgewell/gen-mapping@^0.3.0":
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/@jridgewell/gen-mapping/-/gen-mapping-0.3.2.tgz#c1aedc61e853f2bb9f5dfe6d4442d3b565b253b9"
