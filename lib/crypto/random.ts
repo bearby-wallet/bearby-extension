@@ -1,6 +1,3 @@
-import { TypeOf } from 'lib/type';
-
-
 const QUOTA = 65536;
 /**
  * randomBytes
@@ -56,16 +53,12 @@ const QUOTA = 65536;
 // };
 
 export function randomBytes(length: number): Uint8Array {
-  if (!TypeOf.isUndefined(globalThis.crypto)) {
-    const crypto = globalThis.crypto;
-    const a = new Uint8Array(length);
+  const crypto = globalThis.crypto;
+  const a = new Uint8Array(length);
 
-    for (var i = 0; i < length; i += QUOTA) {
-      crypto.getRandomValues(a.subarray(i, i + Math.min(length - i, QUOTA)));
-    }
-
-    return a;
+  for (var i = 0; i < length; i += QUOTA) {
+    crypto.getRandomValues(a.subarray(i, i + Math.min(length - i, QUOTA)));
   }
 
-  return require("crypto").randomBytes(length);
+  return a;
 };

@@ -1,5 +1,5 @@
 import blake3 from 'blake3-js';
-import secp256k1 from 'secp256k1/elliptic';
+import * as nacl from 'tweetnacl/nacl-fast.js';
 import { sha256 } from 'lib/crypto/sha256';
 import { Buffer } from 'buffer';
 
@@ -70,5 +70,9 @@ export async function base58PrivateKeyToBytes(base58PrivateKey: string) {
 }
 
 export function publicKeyBytesFromPrivateKey(privateKey: Uint8Array | Buffer) {
-  return Buffer.from(secp256k1.publicKeyCreate(privateKey, true));
+  const keyPair = nacl.sign.keyPair.fromSeed(privateKey);
+  const signPk = keyPair.secretKey.subarray(32);
+  const zero = Buffer.alloc(1, 0);
+
+  return Buffer.concat([zero, Buffer.from(signPk)]);
 };

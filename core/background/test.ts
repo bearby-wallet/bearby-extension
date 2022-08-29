@@ -68,9 +68,12 @@ import { ACCOUNT_MUST_UNIQUE, INCORRECT_ACCOUNT } from './account/errors';
 
   /// HDKey
   async function testKeys(index: number) {
-    const hdKey = await new HDKey().fromMasterSeed(guard.seed);
-    const childKey = await hdKey.derive(mnemonic.getPath(index));
-    const { pubKey, privKey, base58 } = await childKey.keyPair();
+    const hdKey = new HDKey();
+    const path = mnemonic.getPath(index);
+  
+    await hdKey.derivePath(path, guard.seed);
+
+    const { pubKey, privKey, base58 } = await hdKey.keyPair();
 
     return {
       privateKey: utils.hex.fromBytes(privKey),
@@ -81,21 +84,21 @@ import { ACCOUNT_MUST_UNIQUE, INCORRECT_ACCOUNT } from './account/errors';
 
   const res0 = await testKeys(0);
 
-  assert('8c8b2ba0c4000cc5aeb935bcd7cc1838fb47454385372aeacc8fdd0a38297ee5' === res0.privateKey, 'Incorrect PrivateKey');
-  assert('034cf4c51d83c2e728ece5ce1a7b52c0eb0c2fcfe691729ebae6073b61f36809a5' === res0.publicKey, 'Incorrect PublicKey');
-  assert("A1dMYxmnqbT8xAtXzqtfrpAMfH6eg1YERsgHWj4iJ8iQSsekVq3" === res0.base58, 'does not math address base58');
+  assert('522de2457f50b0e87a065a77e081a33db7ef2735d7152fad44e4ed6fdf08e93e' === res0.privateKey, 'Incorrect PrivateKey');
+  assert('0090184d44d4b49ccbca26dda160f3ef1cd53696b90e4eb72f621404aa5183304a' === res0.publicKey, 'Incorrect PublicKey');
+  assert("A1ozoJvMAFSVgdFwfhDJgtMSr233YUsAayMHAetRdTAvJFJetFd" === res0.base58, 'does not math address base58');
 
   const res1 = await testKeys(1);
 
-  assert('2c7f378b6b0a0fcfaf1d9f80b1dbbed81428a027e3ba0f85a70cb6e27853206e' === res1.privateKey, 'Incorrect PrivateKey');
-  assert('038a6a663928b80c704bb237e6ee6cdbd39fa25d86215b8b244205dea0ecc217a4' === res1.publicKey, 'Incorrect PublicKey');
-  assert("A1zBMxyfQUvUMyDfGQt7mcdt2ekeqSCNEaKKgH2xxccYT5nvpU8" === res1.base58, 'does not math address base58');
+  assert('9f4131037adc3e450eb39383df9c5759427c142b4660f19760a4e9d6f450fef7' === res1.privateKey, 'Incorrect PrivateKey');
+  assert('00c80b48b9f0de125c5af33632e52b63e423bcd6bcf7c403ce265847098d200684' === res1.publicKey, 'Incorrect PublicKey');
+  assert("A1tGz4GfS9a1WNGQBGFvhxKFsAiYcb5ey4gV83pw753jDqdcijh" === res1.base58, 'does not math address base58');
 
   const res2 = await testKeys(55);
 
-  assert('0c98d7c4ace6d07627211c4e7ae1c5fda32a8a69dbda6a9d44fa22280d1e544d' === res2.privateKey, 'Incorrect PrivateKey');
-  assert('03f8bea895d1891a3480d61fd628cc83750427334c0ed723e4a6062c81685dfefd' === res2.publicKey, 'Incorrect PublicKey');
-  assert("A12L7BPcCSFqxc5bxPGZfBkPW5EiP1qynsgPZjRZP4RrdFd9Arv6" === res2.base58, 'does not math address base58');
+  assert('b85b2fc3dd250ffe41f8d06b2746fd6c000551db30cad1b1f5c3ae69cef4437e' === res2.privateKey, 'Incorrect PrivateKey');
+  assert('00dd5c0a051848eb1693b4a1a035353328ac2bab46cdad1b91c120148db0e02842' === res2.publicKey, 'Incorrect PublicKey');
+  assert("A12CYgXVqRb4Lg7EhgoNP6FuPsNq3xb3nEuL8KLrzKKoXiTjJWxQ" === res2.base58, 'does not math address base58');
   /// HDKey
 
   // base58
@@ -160,8 +163,8 @@ import { ACCOUNT_MUST_UNIQUE, INCORRECT_ACCOUNT } from './account/errors';
   const pubKey = publicKeyBytesFromPrivateKey(privateKeyBytes);
   const address = await addressFromPublicKey(pubKey);
 
-  assert(pubKey.toString('hex') === '0378d75c840a3ae70a78d7b59c17cbd2989a070710ae7fc29fcb979866ad9088e8', 'pubKey is not equal');
-  assert(address === 'A1naJqhUv1n3pz9Gvvza1JnjT79SC9b4boaF1SZ3jobpx2sdeDh', 'address is not equal');
+  assert(pubKey.toString('hex') === '005b6ae2595c52f7ea02257582a4beacff65bc0753111ae5cbbb3eaacf18ad3abd', 'pubKey is not equal');
+  assert(address === 'A12WKR3s2cGz7Pap4xqjd3NjWKrGG8RS1R9ktPMx9cLEVh3T79bu', 'address is not equal');
   // addresses utils
 
   // Account controller
@@ -186,14 +189,14 @@ import { ACCOUNT_MUST_UNIQUE, INCORRECT_ACCOUNT } from './account/errors';
   assert(account.selectedAccount?.type === AccountTypes.Seed, 'Incorrect account type');
   assert(account.selectedAccount?.name === accountName, 'Incorrect account name');
   assert(account.selectedAccount?.index === 0, 'Incorrect account index');
-  assert(account.selectedAccount?.pubKey === '034cf4c51d83c2e728ece5ce1a7b52c0eb0c2fcfe691729ebae6073b61f36809a5', 'Incorrect account pubKey');
-  assert(account.selectedAccount?.base58 === 'A1dMYxmnqbT8xAtXzqtfrpAMfH6eg1YERsgHWj4iJ8iQSsekVq3', 'Incorrect account address');
+  assert(account.selectedAccount?.pubKey === '0090184d44d4b49ccbca26dda160f3ef1cd53696b90e4eb72f621404aa5183304a', 'Incorrect account pubKey');
+  assert(account.selectedAccount?.base58 === 'A1ozoJvMAFSVgdFwfhDJgtMSr233YUsAayMHAetRdTAvJFJetFd', 'Incorrect account address');
 
   try {
     const accountName = utils.hex.fromBytes(randomBytes(8));
-    const privateKey = '8c8b2ba0c4000cc5aeb935bcd7cc1838fb47454385372aeacc8fdd0a38297ee5';
+    const privateKey = '522de2457f50b0e87a065a77e081a33db7ef2735d7152fad44e4ed6fdf08e93e';
     await account.addAccountFromPrivateKey(privateKey, accountName);
-    throw new Error();
+    throw new Error('added already have account');
   } catch (err) {
     assert((err as Error).message === ACCOUNT_MUST_UNIQUE, `Incorrect error message: ${(err as Error).message}`);
   }
@@ -212,12 +215,12 @@ import { ACCOUNT_MUST_UNIQUE, INCORRECT_ACCOUNT } from './account/errors';
   assert(account.selectedAccount?.type === AccountTypes.PrivateKey, 'Incorrect account type');
   assert(account.selectedAccount?.name === accountName55, 'Incorrect account name');
   assert(account.selectedAccount?.index === 0, 'Incorrect account index');
-  assert(account.selectedAccount?.pubKey === '035b220764f92171c7210327856b5b8025ad3e79cc995f4ecec838d0acd7f44fa0', 'Incorrect account pubKey');
-  assert(account.selectedAccount?.base58 === 'A12HmLYCZeJdhdiGdntpyYzrxWwzHY4R4sRQS2UooLRi79Dr48T2', 'Incorrect account address');
+  assert(account.selectedAccount?.pubKey === '0034e8fe098eb6216bc045a8d95f84473638b63e6e2f37936bab125a1a72df31ff', 'Incorrect account pubKey');
+  assert(account.selectedAccount?.base58 === 'A1EFZ91VBtEBt6fAinQG3ffoXhYBaAPUoGncoV2GLJoRjDiY2M2', 'Incorrect account address');
 
   await account.select(0);
 
-  assert(account.selectedAccount?.base58 === 'A1dMYxmnqbT8xAtXzqtfrpAMfH6eg1YERsgHWj4iJ8iQSsekVq3', 'Incorrect account address');
+  assert(account.selectedAccount?.base58 === 'A1ozoJvMAFSVgdFwfhDJgtMSr233YUsAayMHAetRdTAvJFJetFd', 'Incorrect account address');
 
   const newAccountName = utils.hex.fromBytes(randomBytes(8));
 

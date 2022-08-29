@@ -1,4 +1,2 @@
-declare module 'secp256k1/elliptic';
 declare module 'elliptic/lib/elliptic/ec';
-
-
+declare module 'tweetnacl/nacl-fast.js';

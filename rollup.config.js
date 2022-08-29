@@ -9,6 +9,7 @@ import copy from 'rollup-plugin-copy';
 import json from '@rollup/plugin-json';
 import { terser } from 'rollup-plugin-terser';
 import { visualizer } from 'rollup-plugin-visualizer';
+import nodePolyfills from 'rollup-plugin-node-polyfills';
 
 import pkg from './package.json';
 
@@ -79,6 +80,7 @@ const background = {
 			brower: true,
 			preferBuiltins: false
 		}),
+		nodePolyfills(),
 		typescript({
 			sourceMap: !production,
 			inlineSources: !production

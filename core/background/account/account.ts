@@ -32,8 +32,6 @@ export class AccountController {
 
   readonly bip39 = new MnemonicController();
 
-  readonly #hdKey = new HDKey();
-
   readonly #guard: Guard;
 
   #wallet: Wallet = {
@@ -133,11 +131,11 @@ export class AccountController {
   }
 
   async fromSeed(seed: Uint8Array, index = 0) {
+    const hdKey = new HDKey();
     const path = this.bip39.getPath(index);
-    const hdKey = await this.#hdKey.fromMasterSeed(seed);
-    const childKey = await hdKey.derive(path);
+    await hdKey.derivePath(path, seed);
 
-    return await childKey.keyPair();
+    return await hdKey.keyPair();
   }
 
   async addAccountFromSeed(seed: Uint8Array, name: string) {
