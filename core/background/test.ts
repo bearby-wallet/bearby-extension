@@ -321,8 +321,5 @@ import { MassaControl } from './provider';
     }
   });
   const provider = new MassaControl(netwrok);
-  const res = await provider.getNodesStatus();
-
-  console.log(res);
   // Massa Provider
 }());

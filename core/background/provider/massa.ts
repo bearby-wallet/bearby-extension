@@ -1,4 +1,10 @@
-import type { RPCBody } from 'types';
+
+import type {
+  RPCBody,
+  JsonRPCResponseNodeStatus,
+  JsonRPCResponseNodeStatusAddresses,
+  JsonRPCResponseStakers
+} from 'types';
 import type { NetworkControl } from "background/network";
 
 import { HttpProvider } from "./http";
@@ -16,8 +22,24 @@ export class MassaControl {
     this.#network = network;
   }
 
-  async getNodesStatus() {
+  async getNodesStatus(): Promise<JsonRPCResponseNodeStatus[]> {
     const body = this.provider.buildBody(JsonRPCRequestMethods.GET_STATUS, []);
+    return await this.sendJson(body);
+  }
+
+  async getAddresses(...addresses: string[]): Promise<JsonRPCResponseNodeStatusAddresses[]> {
+    const body = this.provider.buildBody(JsonRPCRequestMethods.GET_ADDRESSES, [addresses]);
+    return await this.sendJson(body);
+  }
+
+  async getBlocks(...blocks: string[]) {
+    //  TODO: write type interface.
+    const body = this.provider.buildBody(JsonRPCRequestMethods.GET_BLOCKS, [blocks]);
+    return await this.sendJson(body);
+  }
+
+  async getStakers(): Promise<JsonRPCResponseStakers[]> {
+    const body = this.provider.buildBody(JsonRPCRequestMethods.GET_STAKERS, []);
     return await this.sendJson(body);
   }
 

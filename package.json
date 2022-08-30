@@ -34,8 +34,8 @@
   "dependencies": {
     "@noble/ed25519": "^1.7.0",
     "aes-js": "^3.1.2",
+    "base64-js": "^1.5.1",
     "blake3-js": "^0.0.5",
-    "buffer": "^6.0.3",
     "svelte-i18n": "^3.4.0",
     "svelte-spa-router": "^3.3.0",
     "tweetnacl": "^1.0.3"
