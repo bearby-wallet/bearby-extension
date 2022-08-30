@@ -85,20 +85,20 @@ import { ACCOUNT_MUST_UNIQUE, INCORRECT_ACCOUNT } from './account/errors';
   const res0 = await testKeys(0);
 
   assert('522de2457f50b0e87a065a77e081a33db7ef2735d7152fad44e4ed6fdf08e93e' === res0.privateKey, 'Incorrect PrivateKey');
-  assert('0090184d44d4b49ccbca26dda160f3ef1cd53696b90e4eb72f621404aa5183304a' === res0.publicKey, 'Incorrect PublicKey');
-  assert("A1ozoJvMAFSVgdFwfhDJgtMSr233YUsAayMHAetRdTAvJFJetFd" === res0.base58, 'does not math address base58');
+  assert('90184d44d4b49ccbca26dda160f3ef1cd53696b90e4eb72f621404aa5183304a' === res0.publicKey, 'Incorrect PublicKey');
+  assert("A1muhtTqVkpzDJgwASYGya9XaY1GmVYfNeJwpobdmtDACTRTBpW" === res0.base58, 'does not math address base58');
 
   const res1 = await testKeys(1);
 
   assert('9f4131037adc3e450eb39383df9c5759427c142b4660f19760a4e9d6f450fef7' === res1.privateKey, 'Incorrect PrivateKey');
-  assert('00c80b48b9f0de125c5af33632e52b63e423bcd6bcf7c403ce265847098d200684' === res1.publicKey, 'Incorrect PublicKey');
-  assert("A1tGz4GfS9a1WNGQBGFvhxKFsAiYcb5ey4gV83pw753jDqdcijh" === res1.base58, 'does not math address base58');
+  assert('c80b48b9f0de125c5af33632e52b63e423bcd6bcf7c403ce265847098d200684' === res1.publicKey, 'Incorrect PublicKey');
+  assert("A12jRXS6cnGms86qwqFNm8Atca7bEQNSp5P4Dnsyra95iURMyCAA" === res1.base58, 'does not math address base58');
 
   const res2 = await testKeys(55);
 
   assert('b85b2fc3dd250ffe41f8d06b2746fd6c000551db30cad1b1f5c3ae69cef4437e' === res2.privateKey, 'Incorrect PrivateKey');
-  assert('00dd5c0a051848eb1693b4a1a035353328ac2bab46cdad1b91c120148db0e02842' === res2.publicKey, 'Incorrect PublicKey');
-  assert("A12CYgXVqRb4Lg7EhgoNP6FuPsNq3xb3nEuL8KLrzKKoXiTjJWxQ" === res2.base58, 'does not math address base58');
+  assert('dd5c0a051848eb1693b4a1a035353328ac2bab46cdad1b91c120148db0e02842' === res2.publicKey, 'Incorrect PublicKey');
+  assert("A12ZcmhKnGCWuEcxuXrw8P16Cj8XYNAc6FbMHzoa39cBo4UQ9VpN" === res2.base58, 'does not math address base58');
   /// HDKey
 
   // base58
@@ -113,13 +113,13 @@ import { ACCOUNT_MUST_UNIQUE, INCORRECT_ACCOUNT } from './account/errors';
 
   // address encoder
   console.log('start testing address decoder, encoder');
-  const testContent = Buffer.from('005b6ae2595c52f7ea02257582a4beacff65bc0753111ae5cbbb3eaacf18ad3abd', 'hex');
+  const testContent = Buffer.from('5b6ae2595c52f7ea02257582a4beacff65bc0753111ae5cbbb3eaacf18ad3abd', 'hex');
   const address0 = await base58Encode(testContent);
-  const test1Content = Buffer.from('00b6cda5e8b5995ffb2710839c74989c0b69249de330aced521f3c454cdef0f12c', 'hex');
+  const test1Content = Buffer.from('b6cda5e8b5995ffb2710839c74989c0b69249de330aced521f3c454cdef0f12c', 'hex');
   const address1 = await base58Encode(test1Content);
 
-  assert('1hG8zRRJF2v3qkwyZ2fnHJeaVw9uT4huCkwcWJVvgypEz6D2aR' === address0, 'does not math with right address');
-  assert('12PWTzCKkkE9P5Supt3Fkb4QVZ3cdfB281TGaup7Nv1DY12a6F1' === address1, 'does not math with right address');
+  assert('hG8zRRJF2v3qkwyZ2fnHJeaVw9uT4huCkwcWJVvgypEwMNHVC' === address0, 'does not math with right address');
+  assert('2PWTzCKkkE9P5Supt3Fkb4QVZ3cdfB281TGaup7Nv1DY1is9fL' === address1, 'does not math with right address');
 
   assert(utils.hex.fromBytes(await base58Decode(address0)) === testContent.toString('hex'), 'does not math with right address bytes');
   assert(utils.hex.fromBytes(await base58Decode(address1)) === test1Content.toString('hex'), 'does not math with right address bytes');
@@ -158,13 +158,13 @@ import { ACCOUNT_MUST_UNIQUE, INCORRECT_ACCOUNT } from './account/errors';
   console.log('start addreses utils testing');
   const privateKeyBytes = await base58PrivateKeyToBytes('S12tw4YShWtjWfy7YBQ9Erbcg6DYgWnMgb5hGjn9hAKGtgrLNa7L');
 
-  assert(Buffer.from(privateKeyBytes).toString('hex') === 'f99d3fac98a9adb3b622500b50c020b05efe01408249aab3a25c8839f3c61b26', 'buf privatekeys is not equal');
+  assert(utils.hex.fromBytes(privateKeyBytes) === 'f99d3fac98a9adb3b622500b50c020b05efe01408249aab3a25c8839f3c61b26', 'buf privatekeys is not equal');
 
   const pubKey = publicKeyBytesFromPrivateKey(privateKeyBytes);
   const address = await addressFromPublicKey(pubKey);
 
-  assert(pubKey.toString('hex') === '005b6ae2595c52f7ea02257582a4beacff65bc0753111ae5cbbb3eaacf18ad3abd', 'pubKey is not equal');
-  assert(address === 'A12WKR3s2cGz7Pap4xqjd3NjWKrGG8RS1R9ktPMx9cLEVh3T79bu', 'address is not equal');
+  assert(utils.hex.fromBytes(pubKey) === '5b6ae2595c52f7ea02257582a4beacff65bc0753111ae5cbbb3eaacf18ad3abd', 'pubKey is not equal');
+  assert(address === 'A12PWTzCKkkE9P5Supt3Fkb4QVZ3cdfB281TGaup7Nv1DY12a6F1', 'address is not equal');
   // addresses utils
 
   // Account controller
@@ -189,8 +189,8 @@ import { ACCOUNT_MUST_UNIQUE, INCORRECT_ACCOUNT } from './account/errors';
   assert(account.selectedAccount?.type === AccountTypes.Seed, 'Incorrect account type');
   assert(account.selectedAccount?.name === accountName, 'Incorrect account name');
   assert(account.selectedAccount?.index === 0, 'Incorrect account index');
-  assert(account.selectedAccount?.pubKey === '0090184d44d4b49ccbca26dda160f3ef1cd53696b90e4eb72f621404aa5183304a', 'Incorrect account pubKey');
-  assert(account.selectedAccount?.base58 === 'A1ozoJvMAFSVgdFwfhDJgtMSr233YUsAayMHAetRdTAvJFJetFd', 'Incorrect account address');
+  assert(account.selectedAccount?.pubKey === '90184d44d4b49ccbca26dda160f3ef1cd53696b90e4eb72f621404aa5183304a', 'Incorrect account pubKey');
+  assert(account.selectedAccount?.base58 === 'A1muhtTqVkpzDJgwASYGya9XaY1GmVYfNeJwpobdmtDACTRTBpW', 'Incorrect account address');
 
   try {
     const accountName = utils.hex.fromBytes(randomBytes(8));
@@ -202,7 +202,7 @@ import { ACCOUNT_MUST_UNIQUE, INCORRECT_ACCOUNT } from './account/errors';
   }
 
   const accountName55 = utils.hex.fromBytes(randomBytes(8));
-  const privateKey55 = '5088f231d7930cf19677a368d96c62d85138f520466eb07f8390a464c661acf1';
+  const privateKey55 = 'a5794a23256a837d46f43227639b2072e722d8bde1d1f24f5173a644a09ed103';
   await account.addAccountFromPrivateKey(privateKey55, accountName55);
 
   assert(account.lastIndexLedger === 0, 'Incorrect ledger index');
@@ -215,12 +215,12 @@ import { ACCOUNT_MUST_UNIQUE, INCORRECT_ACCOUNT } from './account/errors';
   assert(account.selectedAccount?.type === AccountTypes.PrivateKey, 'Incorrect account type');
   assert(account.selectedAccount?.name === accountName55, 'Incorrect account name');
   assert(account.selectedAccount?.index === 0, 'Incorrect account index');
-  assert(account.selectedAccount?.pubKey === '0034e8fe098eb6216bc045a8d95f84473638b63e6e2f37936bab125a1a72df31ff', 'Incorrect account pubKey');
-  assert(account.selectedAccount?.base58 === 'A1EFZ91VBtEBt6fAinQG3ffoXhYBaAPUoGncoV2GLJoRjDiY2M2', 'Incorrect account address');
+  assert(account.selectedAccount?.pubKey === '530ef8e87dff6d5040b965e22e525dfc1f993a2d10efedcc40cb123a30dc1705', 'Incorrect account pubKey');
+  assert(account.selectedAccount?.base58 === 'A12oKBQr6rHMw1QT1CQbJCrLYert7tVoYWEocnSeFkVkEVovKStf', 'Incorrect account address');
 
   await account.select(0);
 
-  assert(account.selectedAccount?.base58 === 'A1ozoJvMAFSVgdFwfhDJgtMSr233YUsAayMHAetRdTAvJFJetFd', 'Incorrect account address');
+  assert(account.selectedAccount?.base58 === 'A1muhtTqVkpzDJgwASYGya9XaY1GmVYfNeJwpobdmtDACTRTBpW', 'Incorrect account address');
 
   const newAccountName = utils.hex.fromBytes(randomBytes(8));
 

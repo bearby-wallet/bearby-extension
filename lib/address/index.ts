@@ -5,8 +5,8 @@ import { Buffer } from 'buffer';
 
 import { base58ToBinary, binaryToBase58 } from 'lib/crypto/base58';
 import { assert } from 'lib/assert';
-import { INVALID_CHECKSUM } from './errors';
-import { ADDRESS_PREFIX, VERSION_NUMBER } from 'config/common';
+import { INVALID_CHECKSUM, INVALID_PREFIX } from './errors';
+import { ADDRESS_PREFIX, SECRET_KEY_PREFIX, VERSION_NUMBER } from 'config/common';
 import { VarintEncode } from 'lib/varint';
 import { utils } from 'aes-js';
 
@@ -64,15 +64,13 @@ export async function addressFromPublicKey(publicKey: Uint8Array) {
 }
 
 export async function base58PrivateKeyToBytes(base58PrivateKey: string) {
+  assert(base58PrivateKey[0] === SECRET_KEY_PREFIX, INVALID_PREFIX);
   const secretKeyVersionBase58Decoded = await base58Decode(base58PrivateKey.slice(1));
-
   return secretKeyVersionBase58Decoded.slice(1);
 }
 
-export function publicKeyBytesFromPrivateKey(privateKey: Uint8Array | Buffer) {
+export function publicKeyBytesFromPrivateKey(privateKey: Uint8Array): Uint8Array {
   const keyPair = nacl.sign.keyPair.fromSeed(privateKey);
-  const signPk = keyPair.secretKey.subarray(32);
-  const zero = Buffer.alloc(1, 0);
 
-  return Buffer.concat([zero, Buffer.from(signPk)]);
+  return keyPair.secretKey.subarray(32);
 };

@@ -38,9 +38,8 @@ export class HDKey {
     const privateKey = Uint8Array.from(this.#key || []);
     const keyPair = nacl.sign.keyPair.fromSeed(privateKey);
     const signPk = keyPair.secretKey.subarray(32);
-    const zero = Buffer.alloc(1, 0);
 
-    return Buffer.concat([zero, Buffer.from(signPk)]);
+    return Buffer.from(signPk);
   }
 
   get privateKey() {
