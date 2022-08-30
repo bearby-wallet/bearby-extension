@@ -13,6 +13,7 @@ import { AccountTypes } from 'config/account-type';
 import { ACCOUNT_MUST_UNIQUE, INCORRECT_ACCOUNT } from './account/errors';
 import { privateKeyBytesToBase58, base58PrivateKeyToBytes } from 'lib/validator';
 import { NetworkControl } from './network';
+import { MassaControl } from './provider';
 
 
 (async function start() {
@@ -310,4 +311,18 @@ import { NetworkControl } from './network';
   assert(newNetwrok.providers.length === 2, 'Incorrect number of providers');
   assert(newNetwrok.count === 2, 'Incorrect nodes counter');
   // NetworkControl
+
+  // Massa Provider
+  await netwrok.setConfig({
+    ...netwrok.config,
+    'custom': {
+      PROVIDERS: ['http://89.108.81.86:33035'],
+      VERSION: 1
+    }
+  });
+  const provider = new MassaControl(netwrok);
+  const res = await provider.getNodesStatus();
+
+  console.log(res);
+  // Massa Provider
 }());

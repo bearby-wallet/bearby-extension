@@ -16,16 +16,23 @@ export class MassaControl {
     this.#network = network;
   }
 
+  async getNodesStatus() {
+    const body = this.provider.buildBody(JsonRPCRequestMethods.GET_STATUS, []);
+    return await this.sendJson(body);
+  }
+
   async sendJson(...body: RPCBody[]) {
     const request = this.provider.json(...body);
 
     for (const provider of this.#network.providers) {
       try {
         const responce = await fetch(provider, request);
+        if (!responce.ok) {
+          continue;
+        }
         const data = await responce.json();
-    
         return data;
-      } catch {
+      } catch(err) {
         /// TODO: add sort for providers.
         continue;
       }
