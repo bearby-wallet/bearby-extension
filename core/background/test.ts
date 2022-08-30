@@ -14,6 +14,7 @@ import { ACCOUNT_MUST_UNIQUE, INCORRECT_ACCOUNT } from './account/errors';
 import { privateKeyBytesToBase58, base58PrivateKeyToBytes } from 'lib/validator';
 import { NetworkControl } from './network';
 import { MassaControl } from './provider';
+import { NETWORK } from 'config/network';
 
 
 (async function start() {
@@ -261,7 +262,7 @@ import { MassaControl } from './provider';
   const netwrok = new NetworkControl();
 
   assert(netwrok.selected === "mainnet", 'Incorrect selected netwrok');
-  assert(netwrok.providers[0] === "https://massa.net/api/v2", 'Incorrect http provider');
+  assert(netwrok.providers[0] === NETWORK['mainnet'].PROVIDERS[0], 'Incorrect http provider');
   assert(netwrok.version === 0, 'Incorrect netwrok version');
   assert(netwrok.count === COUNT_NODES, 'Incorrect nodes counter');
   assert(netwrok.providers.length === 1, 'Incorrect number of providers');
@@ -291,6 +292,11 @@ import { MassaControl } from './provider';
   assert(netwrok.providers.length === 3, 'Incorrect number of providers');
   assert(netwrok.version === 1, 'Incorrect netwrok version');
 
+  await netwrok.downgradeNodeStatus('localhost:3333');
+
+  assert(netwrok.providers[0] === "localhost:2355", 'Incorrect http provider');
+  assert(netwrok.providers[netwrok.providers.length - 1] === "localhost:3333", 'Incorrect http provider');
+
   await netwrok.setNodesCount(2);
 
   assert(netwrok.providers.length === 2, 'Incorrect number of providers');
@@ -298,7 +304,7 @@ import { MassaControl } from './provider';
   const newNetwrok = new NetworkControl();
 
   assert(newNetwrok.selected === "mainnet", 'Incorrect selected netwrok');
-  assert(newNetwrok.providers[0] === "https://massa.net/api/v2", 'Incorrect http provider');
+  assert(newNetwrok.providers[0] === NETWORK['mainnet'].PROVIDERS[0], 'Incorrect http provider');
   assert(newNetwrok.version === 0, 'Incorrect netwrok version');
   assert(newNetwrok.count === COUNT_NODES, 'Incorrect nodes counter');
   assert(newNetwrok.providers.length === 1, 'Incorrect number of providers');
@@ -306,7 +312,7 @@ import { MassaControl } from './provider';
   await newNetwrok.sync();
 
   assert(newNetwrok.selected === "custom", 'Incorrect selected netwrok');
-  assert(newNetwrok.providers[0] === "localhost:3333", 'Incorrect http provider');
+  assert(newNetwrok.providers[0] === "localhost:2355", 'Incorrect http provider');
   assert(newNetwrok.version === 1, 'Incorrect netwrok version');
   assert(newNetwrok.providers.length === 2, 'Incorrect number of providers');
   assert(newNetwrok.count === 2, 'Incorrect nodes counter');

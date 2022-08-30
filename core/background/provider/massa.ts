@@ -55,7 +55,7 @@ export class MassaControl {
         const data = await responce.json();
         return data;
       } catch(err) {
-        /// TODO: add sort for providers.
+        await this.#network.downgradeNodeStatus(provider);
         continue;
       }
     }

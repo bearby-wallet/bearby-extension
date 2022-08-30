@@ -120,6 +120,26 @@ export class NetworkControl {
     );
   }
 
+  async downgradeNodeStatus(node: string) {
+    if (this.count === 1) return;
+
+    const chunk = this.providers.sort((a, b) => {
+      if (a === node) return 1;
+      if (b === node) return -1;
+      return 0;
+    });
+    const lastChunk = this.config[this.selected].PROVIDERS.slice(this.count);
+ 
+    this.#config[this.selected].PROVIDERS = [
+      ...chunk,
+      ...lastChunk
+    ];
+
+    await BrowserStorage.set(
+      buildObject(Fields.NETWROK_CONFIG, this.config)
+    );
+  }
+
   #getURL(selected: string) {
     return this.config[selected].PROVIDERS.slice(0, this.count);
   }
