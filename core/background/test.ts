@@ -6,7 +6,7 @@ import { utils } from 'aes-js';
 import { base58ToBinary, binaryToBase58 } from 'lib/crypto/base58';
 import { base58Encode, base58Decode, addressFromPublicKey, publicKeyBytesFromPrivateKey } from 'lib/address';
 import { VarintDecode, VarintEncode } from 'lib/varint';
-import { VERSION_NUMBER } from 'config/common';
+import { COUNT_NODES, VERSION_NUMBER } from 'config/common';
 import { AccountController } from 'core/background/account/account';
 import { randomBytes } from 'lib/crypto/random';
 import { AccountTypes } from 'config/account-type';
@@ -260,28 +260,54 @@ import { NetworkControl } from './network';
   const netwrok = new NetworkControl();
 
   assert(netwrok.selected === "mainnet", 'Incorrect selected netwrok');
-  assert(netwrok.provider === "https://massa.net/api/v2", 'Incorrect http provider');
+  assert(netwrok.providers[0] === "https://massa.net/api/v2", 'Incorrect http provider');
   assert(netwrok.version === 0, 'Incorrect netwrok version');
+  assert(netwrok.count === COUNT_NODES, 'Incorrect nodes counter');
+  assert(netwrok.providers.length === 1, 'Incorrect number of providers');
+
 
   await netwrok.sync();
-  await netwrok.changeNetwork('testnet');
+  await netwrok.setNetwork('testnet');
 
   assert(netwrok.selected === "testnet", 'Incorrect selected netwrok');
-  assert(netwrok.provider === "https://test.massa.net/api/v2", 'Incorrect http provider');
+  assert(netwrok.providers[0] === "https://test.massa.net/api/v2", 'Incorrect http provider');
   assert(netwrok.version === 0, 'Incorrect netwrok version');
+  assert(netwrok.providers.length === 1, 'Incorrect number of providers');
+  assert(netwrok.count === COUNT_NODES, 'Incorrect nodes counter');
 
-  await netwrok.changeConfig({
+  await netwrok.setConfig({
     ...netwrok.config,
     'custom': {
-      PROVIDER: ['localhost:3333'],
+      PROVIDERS: ['localhost:3333', 'localhost:2355', 'localhost:634', '127.0.0.1:80'],
       VERSION: 1
     }
   });
 
-  await netwrok.changeNetwork('custom');
+  await netwrok.setNetwork('custom');
 
   assert(netwrok.selected === "custom", 'Incorrect selected netwrok');
-  assert(netwrok.provider === "localhost:3333", 'Incorrect http provider');
+  assert(netwrok.providers[0] === "localhost:3333", 'Incorrect http provider');
+  assert(netwrok.providers.length === 3, 'Incorrect number of providers');
   assert(netwrok.version === 1, 'Incorrect netwrok version');
+
+  await netwrok.setNodesCount(2);
+
+  assert(netwrok.providers.length === 2, 'Incorrect number of providers');
+
+  const newNetwrok = new NetworkControl();
+
+  assert(newNetwrok.selected === "mainnet", 'Incorrect selected netwrok');
+  assert(newNetwrok.providers[0] === "https://massa.net/api/v2", 'Incorrect http provider');
+  assert(newNetwrok.version === 0, 'Incorrect netwrok version');
+  assert(newNetwrok.count === COUNT_NODES, 'Incorrect nodes counter');
+  assert(newNetwrok.providers.length === 1, 'Incorrect number of providers');
+
+  await newNetwrok.sync();
+
+  assert(newNetwrok.selected === "custom", 'Incorrect selected netwrok');
+  assert(newNetwrok.providers[0] === "localhost:3333", 'Incorrect http provider');
+  assert(newNetwrok.version === 1, 'Incorrect netwrok version');
+  assert(newNetwrok.providers.length === 2, 'Incorrect number of providers');
+  assert(newNetwrok.count === 2, 'Incorrect nodes counter');
   // NetworkControl
 }());

@@ -1,6 +1,15 @@
 export interface NetwrokConfig {
   [key: string]: {
-    PROVIDER: string[];
+    PROVIDERS: string[];
     VERSION: number;
   };
 }
+
+export type Params = object[] | string[] | number[] | (string | string[] | number[])[];
+
+export interface RPCBody {
+  id: number;
+  jsonrpc: string;
+  method: string;
+  params: Params;
+};
