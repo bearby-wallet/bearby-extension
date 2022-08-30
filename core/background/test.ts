@@ -5,7 +5,6 @@ import { BrowserStorage } from 'lib/storage';
 import { utils } from 'aes-js';
 import { base58ToBinary, binaryToBase58 } from 'lib/crypto/base58';
 import { base58Encode, base58Decode, addressFromPublicKey, publicKeyBytesFromPrivateKey } from 'lib/address';
-import { Buffer } from 'buffer';
 import { VarintDecode, VarintEncode } from 'lib/varint';
 import { VERSION_NUMBER } from 'config/common';
 import { AccountController } from 'core/background/account/account';
@@ -114,16 +113,16 @@ import { privateKeyBytesToBase58, base58PrivateKeyToBytes } from 'lib/validator'
 
   // address encoder
   console.log('start testing address decoder, encoder');
-  const testContent = Buffer.from('5b6ae2595c52f7ea02257582a4beacff65bc0753111ae5cbbb3eaacf18ad3abd', 'hex');
+  const testContent = utils.hex.toBytes('5b6ae2595c52f7ea02257582a4beacff65bc0753111ae5cbbb3eaacf18ad3abd');
   const address0 = await base58Encode(testContent);
-  const test1Content = Buffer.from('b6cda5e8b5995ffb2710839c74989c0b69249de330aced521f3c454cdef0f12c', 'hex');
+  const test1Content = utils.hex.toBytes('b6cda5e8b5995ffb2710839c74989c0b69249de330aced521f3c454cdef0f12c');
   const address1 = await base58Encode(test1Content);
 
   assert('hG8zRRJF2v3qkwyZ2fnHJeaVw9uT4huCkwcWJVvgypEwMNHVC' === address0, 'does not math with right address');
   assert('2PWTzCKkkE9P5Supt3Fkb4QVZ3cdfB281TGaup7Nv1DY1is9fL' === address1, 'does not math with right address');
 
-  assert(utils.hex.fromBytes(await base58Decode(address0)) === testContent.toString('hex'), 'does not math with right address bytes');
-  assert(utils.hex.fromBytes(await base58Decode(address1)) === test1Content.toString('hex'), 'does not math with right address bytes');
+  assert(utils.hex.fromBytes(await base58Decode(address0)) === utils.hex.fromBytes(testContent), 'does not math with right address bytes');
+  assert(utils.hex.fromBytes(await base58Decode(address1)) === utils.hex.fromBytes(test1Content), 'does not math with right address bytes');
   // address encoder
 
   // varint
@@ -148,9 +147,9 @@ import { privateKeyBytesToBase58, base58PrivateKeyToBytes } from 'lib/validator'
     }
   }
 
-  const version = Buffer.from(new VarintEncode().encode(VERSION_NUMBER));
+  const version = new VarintEncode().encode(VERSION_NUMBER);
 
-  assert(version.toString('hex') === '00', 'version encoded is not equal version');
+  assert(utils.hex.fromBytes(version) === '00', 'version encoded is not equal version');
 
   varintTest0();
   // varint
@@ -254,4 +253,8 @@ import { privateKeyBytesToBase58, base58PrivateKeyToBytes } from 'lib/validator'
   assert(account.wallet.identities.length === 1, 'Incorrect length of accounts');
   assert(account.wallet.selectedAddress === 0, 'Incorrect selectedAddress account');
   // Account controller
+
+  // NetworkControl
+  console.log('start testing NetworkControl');
+  // NetworkControl
 }());

@@ -13,7 +13,7 @@ export class VarintDecode {
     return this.#bytes;
   }
 
-  decode(buf: number[], offset = 0) {
+  decode(buf: Uint8Array, offset = 0) {
     const l = buf.length;
   
     let res = 0;
@@ -70,6 +70,6 @@ export class VarintEncode {
     out[offset] = num | 0;
     this.#bytes = offset - oldOffset + 1;
     
-    return out;
+    return Uint8Array.from(out);
   }
 }
