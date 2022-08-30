@@ -1,13 +1,13 @@
 import type { KeyPair } from 'types/account';
 
 import * as nacl from 'tweetnacl/nacl-fast.js';
-import { Buffer } from 'buffer';
 
 import { hmac } from 'lib/crypto/hmac';
 import { utils } from 'aes-js';
 import { assert } from 'lib/assert';
 import { addressFromPublicKey } from 'lib/address';
 import { CHAIN_CODE_EMPTY, INVALID_PATH, INVALID_PATH_INDEX } from './errors';
+import { writeUint32BE } from 'lib/crypto/bytes';
 
 
 const ED25519_CURVE = utils.utf8.toBytes('ed25519 seed');
@@ -40,7 +40,7 @@ export class HDKey {
     const keyPair = nacl.sign.keyPair.fromSeed(privateKey);
     const signPk = keyPair.secretKey.subarray(32);
 
-    return Buffer.from(signPk);
+    return Uint8Array.from(signPk);
   }
 
   get privateKey() {
@@ -72,10 +72,8 @@ export class HDKey {
     assert(Boolean(this.#chainCode && this.#chainCode.length > 0), CHAIN_CODE_EMPTY);
 
     const key = Uint8Array.from(this.#key || []);
-    const indexBuffer = Buffer.allocUnsafe(4);
-    indexBuffer.writeUInt32BE(index, 0);
-
-    const data = Buffer.concat([Buffer.alloc(1, 0), key, indexBuffer]);
+    const indexBuffer = writeUint32BE(new Uint8Array(4), index, 0);
+    const data = Uint8Array.from([...new Uint8Array(1), ...key, ...indexBuffer]);
     const I = await hmac(Uint8Array.from(this.#chainCode || []), data);
 
     this.#key = I.slice(0, 32);

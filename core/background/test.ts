@@ -316,7 +316,7 @@ import { MassaControl } from './provider';
   await netwrok.setConfig({
     ...netwrok.config,
     'custom': {
-      PROVIDERS: ['http://89.108.81.86:33035'],
+      PROVIDERS: ['https://labnet.massa.net/api/v2'],
       VERSION: 1
     }
   });

@@ -1,17 +1,16 @@
 import blake3 from 'blake3-js';
 import * as nacl from 'tweetnacl/nacl-fast.js';
 import { sha256 } from 'lib/crypto/sha256';
-import { Buffer } from 'buffer';
 
 import { base58ToBinary, binaryToBase58 } from 'lib/crypto/base58';
 import { assert } from 'lib/assert';
-import { INVALID_CHECKSUM, INVALID_PREFIX } from './errors';
-import { ADDRESS_PREFIX, SECRET_KEY_PREFIX, VERSION_NUMBER } from 'config/common';
+import { INVALID_CHECKSUM } from './errors';
+import { ADDRESS_PREFIX, VERSION_NUMBER } from 'config/common';
 import { VarintEncode } from 'lib/varint';
 import { utils } from 'aes-js';
 
 
-async function encode(data: Uint8Array | Buffer, prefix = '00') {
+async function encode(data: Uint8Array, prefix = '00') {
   const bufPrefix = utils.hex.toBytes(prefix);
   let hash = new Uint8Array([...bufPrefix, ...data]);
 
@@ -54,13 +53,14 @@ export async function base58Decode(data: string): Promise<Uint8Array> {
 }
 
 export async function addressFromPublicKey(publicKey: Uint8Array) {
-  const version = Buffer.from(new VarintEncode().encode(VERSION_NUMBER));
-  const pubKeyHash = Buffer.from(
-    blake3.newRegular().update(publicKey).finalize(),
-    'hex'
+  const version = new VarintEncode().encode(VERSION_NUMBER);
+  const pubKeyHash = utils.hex.toBytes(
+    blake3.newRegular().update(publicKey).finalize()
   );
 
-  return ADDRESS_PREFIX + await base58Encode(Buffer.concat([version, pubKeyHash]));
+  return ADDRESS_PREFIX + await base58Encode(Uint8Array.from(
+    [...version, ...pubKeyHash]
+  ));
 }
 
 export function publicKeyBytesFromPrivateKey(privateKey: Uint8Array): Uint8Array {
