@@ -12,6 +12,7 @@ import { randomBytes } from 'lib/crypto/random';
 import { AccountTypes } from 'config/account-type';
 import { ACCOUNT_MUST_UNIQUE, INCORRECT_ACCOUNT } from './account/errors';
 import { privateKeyBytesToBase58, base58PrivateKeyToBytes } from 'lib/validator';
+import { NetworkControl } from './network';
 
 
 (async function start() {
@@ -256,5 +257,31 @@ import { privateKeyBytesToBase58, base58PrivateKeyToBytes } from 'lib/validator'
 
   // NetworkControl
   console.log('start testing NetworkControl');
+  const netwrok = new NetworkControl();
+
+  assert(netwrok.selected === "mainnet", 'Incorrect selected netwrok');
+  assert(netwrok.provider === "https://massa.net/api/v2", 'Incorrect http provider');
+  assert(netwrok.version === 0, 'Incorrect netwrok version');
+
+  await netwrok.sync();
+  await netwrok.changeNetwork('testnet');
+
+  assert(netwrok.selected === "testnet", 'Incorrect selected netwrok');
+  assert(netwrok.provider === "https://test.massa.net/api/v2", 'Incorrect http provider');
+  assert(netwrok.version === 0, 'Incorrect netwrok version');
+
+  await netwrok.changeConfig({
+    ...netwrok.config,
+    'custom': {
+      PROVIDER: ['localhost:3333'],
+      VERSION: 1
+    }
+  });
+
+  await netwrok.changeNetwork('custom');
+
+  assert(netwrok.selected === "custom", 'Incorrect selected netwrok');
+  assert(netwrok.provider === "localhost:3333", 'Incorrect http provider');
+  assert(netwrok.version === 1, 'Incorrect netwrok version');
   // NetworkControl
 }());

@@ -10,8 +10,16 @@ import { FAIL_SYNC, INVALID_CONFIG, INVALID_SELECTED, NetworkError } from './err
 const [mainnet] = NETWORK_KEYS;
 
 export class NetworkControl {
-  public config = NETWORK;
-  public selected = mainnet;
+  #config = NETWORK;
+  #selected = mainnet;
+
+  get config() {
+    return this.#config;
+  }
+
+  get selected() {
+    return this.#selected;
+  }
 
   get provider() {
     return this.#getURL(this.selected);
@@ -29,11 +37,11 @@ export class NetworkControl {
 
     try {
       if (data[Fields.NETWROK_SELECTED]) {
-        this.selected = data[Fields.NETWROK_SELECTED];
+        this.#selected = data[Fields.NETWROK_SELECTED];
       }
 
       if (data[Fields.NETWROK_CONFIG]) {
-        this.config = JSON.parse(data[Fields.NETWROK_CONFIG]);
+        this.#config = JSON.parse(data[Fields.NETWROK_CONFIG]);
       }
 
       assert(Boolean(this.provider), FAIL_SYNC, NetworkError);
@@ -43,8 +51,8 @@ export class NetworkControl {
   }
 
   async reset() {
-    this.selected = mainnet;
-    this.config = NETWORK;
+    this.#selected = mainnet;
+    this.#config = NETWORK;
 
     await BrowserStorage.set(
       buildObject(Fields.NETWROK_CONFIG, this.config),
@@ -69,7 +77,7 @@ export class NetworkControl {
       buildObject(Fields.NETWROK_SELECTED, selected)
     );
 
-    this.selected = selected;
+    this.#selected = selected;
 
     return {
       selected,
@@ -84,8 +92,10 @@ export class NetworkControl {
       assert(!isNaN(Number(newConfig[key].VERSION)), INVALID_CONFIG, NetworkError);
     }
 
+    this.#config = newConfig;
+
     await BrowserStorage.set(
-      buildObject(Fields.NETWROK_CONFIG, newConfig)
+      buildObject(Fields.NETWROK_CONFIG, this.config)
     );
   }
 
