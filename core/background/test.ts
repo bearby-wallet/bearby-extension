@@ -12,6 +12,7 @@ import { AccountController } from 'core/background/account/account';
 import { randomBytes } from 'lib/crypto/random';
 import { AccountTypes } from 'config/account-type';
 import { ACCOUNT_MUST_UNIQUE, INCORRECT_ACCOUNT } from './account/errors';
+import { privateKeyBytesToBase58 } from 'lib/validator';
 
 
 (async function start() {
@@ -156,8 +157,11 @@ import { ACCOUNT_MUST_UNIQUE, INCORRECT_ACCOUNT } from './account/errors';
 
   // addresses utils
   console.log('start addreses utils testing');
-  const privateKeyBytes = await base58PrivateKeyToBytes('S12tw4YShWtjWfy7YBQ9Erbcg6DYgWnMgb5hGjn9hAKGtgrLNa7L');
+  const base58PrivKey = 'S12tw4YShWtjWfy7YBQ9Erbcg6DYgWnMgb5hGjn9hAKGtgrLNa7L';
+  const privateKeyBytes = await base58PrivateKeyToBytes(base58PrivKey);
+  const privateKeyBase58 = await privateKeyBytesToBase58(privateKeyBytes);
 
+  assert(privateKeyBase58 === base58PrivKey, 'Incorrect base58 privateKey');
   assert(utils.hex.fromBytes(privateKeyBytes) === 'f99d3fac98a9adb3b622500b50c020b05efe01408249aab3a25c8839f3c61b26', 'buf privatekeys is not equal');
 
   const pubKey = publicKeyBytesFromPrivateKey(privateKeyBytes);
@@ -250,4 +254,6 @@ import { ACCOUNT_MUST_UNIQUE, INCORRECT_ACCOUNT } from './account/errors';
   assert(account.wallet.identities.length === 1, 'Incorrect length of accounts');
   assert(account.wallet.selectedAddress === 0, 'Incorrect selectedAddress account');
   // Account controller
+
+
 }());
