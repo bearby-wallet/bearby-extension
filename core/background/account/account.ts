@@ -20,7 +20,7 @@ import {
   ACCOUNT_PRODUCT_ID_MUST_UNIQUE
 } from './errors';
 import { addressFromPublicKey, publicKeyBytesFromPrivateKey } from 'lib/address';
-import { isPrivateKey } from 'lib/validator';
+import { base58PrivateKeyToBytes, isPrivateKey } from 'lib/validator';
 import { MTypeTab } from 'config/stream-keys';
 import { TabsMessage } from 'lib/stream/tabs-message';
 import { TypeOf } from 'lib/type';
@@ -176,7 +176,7 @@ export class AccountController {
   }
 
   async fromPrivateKey(privateKey: string): Promise<KeyPair> {
-    const bufPrivateKey = new Uint8Array(utils.hex.toBytes(privateKey));
+    const bufPrivateKey = await base58PrivateKeyToBytes(privateKey);
 
     isPrivateKey(bufPrivateKey);
 

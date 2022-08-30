@@ -4,7 +4,7 @@ import { assert } from 'lib/assert';
 import { BrowserStorage } from 'lib/storage';
 import { utils } from 'aes-js';
 import { base58ToBinary, binaryToBase58 } from 'lib/crypto/base58';
-import { base58Encode, base58Decode, addressFromPublicKey, base58PrivateKeyToBytes, publicKeyBytesFromPrivateKey } from 'lib/address';
+import { base58Encode, base58Decode, addressFromPublicKey, publicKeyBytesFromPrivateKey } from 'lib/address';
 import { Buffer } from 'buffer';
 import { VarintDecode, VarintEncode } from 'lib/varint';
 import { VERSION_NUMBER } from 'config/common';
@@ -12,7 +12,7 @@ import { AccountController } from 'core/background/account/account';
 import { randomBytes } from 'lib/crypto/random';
 import { AccountTypes } from 'config/account-type';
 import { ACCOUNT_MUST_UNIQUE, INCORRECT_ACCOUNT } from './account/errors';
-import { privateKeyBytesToBase58 } from 'lib/validator';
+import { privateKeyBytesToBase58, base58PrivateKeyToBytes } from 'lib/validator';
 
 
 (async function start() {
@@ -198,7 +198,7 @@ import { privateKeyBytesToBase58 } from 'lib/validator';
 
   try {
     const accountName = utils.hex.fromBytes(randomBytes(8));
-    const privateKey = '522de2457f50b0e87a065a77e081a33db7ef2735d7152fad44e4ed6fdf08e93e';
+    const privateKey = 'S1dCABJCm1Ms3m6y6sf2JQvkhRn1VP8TaLBxzjeADxurDGB77Zt';
     await account.addAccountFromPrivateKey(privateKey, accountName);
     throw new Error('added already have account');
   } catch (err) {
@@ -206,7 +206,7 @@ import { privateKeyBytesToBase58 } from 'lib/validator';
   }
 
   const accountName55 = utils.hex.fromBytes(randomBytes(8));
-  const privateKey55 = 'a5794a23256a837d46f43227639b2072e722d8bde1d1f24f5173a644a09ed103';
+  const privateKey55 = 'S12jtn2WJ3R89DBitafREHgXa1tcEJc28Kd3yqoEcMVpjYpJ1CQY';
   await account.addAccountFromPrivateKey(privateKey55, accountName55);
 
   assert(account.lastIndexLedger === 0, 'Incorrect ledger index');
@@ -219,8 +219,8 @@ import { privateKeyBytesToBase58 } from 'lib/validator';
   assert(account.selectedAccount?.type === AccountTypes.PrivateKey, 'Incorrect account type');
   assert(account.selectedAccount?.name === accountName55, 'Incorrect account name');
   assert(account.selectedAccount?.index === 0, 'Incorrect account index');
-  assert(account.selectedAccount?.pubKey === '530ef8e87dff6d5040b965e22e525dfc1f993a2d10efedcc40cb123a30dc1705', 'Incorrect account pubKey');
-  assert(account.selectedAccount?.base58 === 'A12oKBQr6rHMw1QT1CQbJCrLYert7tVoYWEocnSeFkVkEVovKStf', 'Incorrect account address');
+  assert(account.selectedAccount?.pubKey === 'b9f7fe423a31008e17bccf6a9c96b94bb1c11de0fd0184e3770a40c72c553113', 'Incorrect account pubKey');
+  assert(account.selectedAccount?.base58 === 'A12BXgeMYsiCPQKFUoLpsx2U7Zr1TkFTQXa6PRwEKjdz9WVCvYGL', 'Incorrect account address');
 
   await account.select(0);
 

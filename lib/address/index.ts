@@ -63,12 +63,6 @@ export async function addressFromPublicKey(publicKey: Uint8Array) {
   return ADDRESS_PREFIX + await base58Encode(Buffer.concat([version, pubKeyHash]));
 }
 
-export async function base58PrivateKeyToBytes(base58PrivateKey: string) {
-  assert(base58PrivateKey[0] === SECRET_KEY_PREFIX, INVALID_PREFIX);
-  const secretKeyVersionBase58Decoded = await base58Decode(base58PrivateKey.slice(1));
-  return secretKeyVersionBase58Decoded.slice(1);
-}
-
 export function publicKeyBytesFromPrivateKey(privateKey: Uint8Array): Uint8Array {
   const keyPair = nacl.sign.keyPair.fromSeed(privateKey);
 

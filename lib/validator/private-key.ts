@@ -2,7 +2,8 @@ import { assert } from 'lib/assert';
 import { INVALID_PRIVATE_KEY } from './errors';
 import { VarintEncode } from 'lib/varint';
 import { SECRET_KEY_PREFIX, VERSION_NUMBER } from 'config/common';
-import { base58Encode } from 'lib/address';
+import { base58Decode, base58Encode } from 'lib/address';
+import { INVALID_PREFIX } from 'lib/address/errors';
 
 
 export const isPrivateKey = (privateKey: Uint8Array) => {
@@ -15,4 +16,10 @@ export async function privateKeyBytesToBase58(bytes: Uint8Array) {
   );
   const encoded = await base58Encode(Uint8Array.from([...version, ...bytes]))
   return SECRET_KEY_PREFIX + encoded;
+}
+
+export async function base58PrivateKeyToBytes(base58PrivateKey: string) {
+  assert(base58PrivateKey[0] === SECRET_KEY_PREFIX, INVALID_PREFIX);
+  const secretKeyVersionBase58Decoded = await base58Decode(base58PrivateKey.slice(1));
+  return secretKeyVersionBase58Decoded.slice(1);
 }
