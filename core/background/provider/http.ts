@@ -3,7 +3,7 @@ import type { RPCBody, Params } from 'types';
 
 export class HttpProvider {
   readonly #rpc = {
-    id: 1,
+    id: 0,
     jsonrpc: '2.0'
   };
 

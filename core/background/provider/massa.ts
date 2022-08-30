@@ -4,6 +4,7 @@ import type { NetworkControl } from "background/network";
 import { HttpProvider } from "./http";
 import { assert } from 'lib/assert';
 import { REQUEST_FALLED, MassaHttpError } from './errors';
+import { JsonRPCRequestMethods } from './methods';
 
 
 export class MassaControl {
@@ -25,6 +26,7 @@ export class MassaControl {
     
         return data;
       } catch {
+        /// TODO: add sort for providers.
         continue;
       }
     }
