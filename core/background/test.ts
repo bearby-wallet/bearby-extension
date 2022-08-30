@@ -254,6 +254,4 @@ import { privateKeyBytesToBase58, base58PrivateKeyToBytes } from 'lib/validator'
   assert(account.wallet.identities.length === 1, 'Incorrect length of accounts');
   assert(account.wallet.selectedAddress === 0, 'Incorrect selectedAddress account');
   // Account controller
-
-
 }());

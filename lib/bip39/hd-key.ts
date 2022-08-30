@@ -7,6 +7,7 @@ import { hmac } from 'lib/crypto/hmac';
 import { utils } from 'aes-js';
 import { assert } from 'lib/assert';
 import { addressFromPublicKey } from 'lib/address';
+import { CHAIN_CODE_EMPTY, INVALID_PATH, INVALID_PATH_INDEX } from './errors';
 
 
 const ED25519_CURVE = utils.utf8.toBytes('ed25519 seed');
@@ -33,7 +34,7 @@ export class HDKey {
   #chainCode = new Uint8Array(32);
 
   get publicKey() {
-    assert(Boolean(this.#chainCode && this.#chainCode.length > 0), 'empty chainCode');
+    assert(Boolean(this.#chainCode && this.#chainCode.length > 0), CHAIN_CODE_EMPTY);
 
     const privateKey = Uint8Array.from(this.#key || []);
     const keyPair = nacl.sign.keyPair.fromSeed(privateKey);
@@ -67,7 +68,8 @@ export class HDKey {
   }
 
   async #deriveChild(index: number) {
-    assert(Boolean(this.#chainCode && this.#chainCode.length > 0), 'empty chainCode');
+    assert(index < 0 || index > 2147483647, INVALID_PATH_INDEX);
+    assert(Boolean(this.#chainCode && this.#chainCode.length > 0), CHAIN_CODE_EMPTY);
 
     const key = Uint8Array.from(this.#key || []);
     const indexBuffer = Buffer.allocUnsafe(4);
@@ -81,7 +83,7 @@ export class HDKey {
   }
 
   async derivePath(path: string, seed: Uint8Array, offset = HARDENED_OFFSET) {
-    assert(HDKey.isValidPath(path), 'Invalid derivation path');
+    assert(HDKey.isValidPath(path), INVALID_PATH);
 
     await this.#fromMasterSeed(seed);
 
