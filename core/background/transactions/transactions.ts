@@ -1,3 +1,4 @@
+import type { BadgeControl } from 'background/notifications';
 import type { NetworkControl } from 'core/background/network';
 
 import { AccountController, NIL_ACCOUNT } from 'core/background/account';
@@ -10,6 +11,7 @@ import { BrowserStorage, buildObject } from 'lib/storage';
 export class TransactionsController {
   readonly #network: NetworkControl;
   readonly #account: AccountController;
+  readonly #badge: BadgeControl;
 
   #history: object[] = [];
   #confirm: object[] = [];
@@ -39,9 +41,14 @@ export class TransactionsController {
     return `${Fields.CONFIRM_TRANSACTIONS}/${this.#network.selected}`;
   }
 
-  constructor(network: NetworkControl, account: AccountController) {
+  constructor(
+    network: NetworkControl,
+    account: AccountController,
+    badge: BadgeControl
+  ) {
     this.#network = network;
     this.#account = account;
+    this.#badge = badge;
   }
 
   async addHistory(tx: object) {
@@ -72,19 +79,17 @@ export class TransactionsController {
   }
 
   async clearConfirm() {
+    this.#badge.decrease(this.confirm.length);
     this.#confirm = [];
 
     await BrowserStorage.set(
       buildObject(this.#confirmField, this.confirm)
     );
-
-    /// TODO: add NotificationsControl
-    // NotificationsControl.counter(this.#confirm.length);
   }
 
   async addConfirm(params: object) {
     this.#confirm.push(params);
-    // NotificationsControl.counter(this.#confirm.length);
+    this.#badge.increase();
     await BrowserStorage.set(
       buildObject(this.#confirmField, this.confirm)
     );
@@ -92,9 +97,7 @@ export class TransactionsController {
 
   async addMessage(message: object) {
     this.#message = message;
-
-    // NotificationsControl.counter(1);
-
+    this.#badge.increase();
     await BrowserStorage.set(
       buildObject(Fields.CONFIRM_SIGN_MESSAGE, message)
     );
@@ -102,9 +105,7 @@ export class TransactionsController {
 
   async removeMessage() {
     this.#message = undefined;
-
-    // NotificationsControl.counter(0);
-
+    this.#badge.decrease();
     await BrowserStorage.rm(Fields.CONFIRM_SIGN_MESSAGE);
   }
 
@@ -112,8 +113,7 @@ export class TransactionsController {
     delete this.#confirm[index];
 
     this.#confirm = this.#confirm.filter(Boolean);
-
-    // NotificationsControl.counter(this.#confirm.length);
+    this.#badge.decrease();
 
     await BrowserStorage.set(
       buildObject(this.#confirmField, this.confirm)
@@ -150,8 +150,6 @@ export class TransactionsController {
     } catch (err) {
       this.#history = [];
     }
-
-    // NotificationsControl.counter(this.#confirm.length);
   }
 
 }
