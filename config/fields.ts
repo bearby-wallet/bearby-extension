@@ -10,5 +10,6 @@ export enum Fields {
   CONFIRM_SIGN_MESSAGE = 'confirm-sign-message',
   BADGE_COUNTER = 'badge-control',
   UI_THEME = 'ui-theme',
-  SELECTED_CURRENCY = 'selected-currency'
+  SELECTED_CURRENCY = 'selected-currency',
+  LOCALE = 'locale'
 }
