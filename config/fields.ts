@@ -11,5 +11,6 @@ export enum Fields {
   BADGE_COUNTER = 'badge-control',
   UI_THEME = 'ui-theme',
   SELECTED_CURRENCY = 'selected-currency',
-  LOCALE = 'locale'
+  LOCALE = 'locale',
+  PHISHING_DETECTION = 'phishing-detection-enabled'
 }
