@@ -15,6 +15,7 @@ import { privateKeyBytesToBase58, base58PrivateKeyToBytes } from 'lib/validator'
 import { NetworkControl } from './network';
 import { MassaControl } from './provider';
 import { NETWORK } from 'config/network';
+import { BadgeControl } from './notifications';
 
 
 (async function start() {
@@ -328,4 +329,44 @@ import { NETWORK } from 'config/network';
   });
   const provider = new MassaControl(netwrok);
   // Massa Provider
+
+
+  /// BadgeControl
+  console.log('start testing BadgeControl');
+  let badge = new BadgeControl();
+
+  assert(badge.counter === 0, 'invalid badge counter');
+
+  await badge.sync();
+
+  assert(badge.counter === 0, 'invalid badge counter');
+
+  await badge.increase();
+
+  assert(badge.counter === 1, 'invalid badge counter');
+
+  await badge.increase(22);
+
+  assert(badge.counter === 23, 'invalid badge counter');
+
+  await badge.decrease(10);
+
+  assert(badge.counter === 13, 'invalid badge counter');
+
+  badge = new BadgeControl();
+
+  assert(badge.counter === 0, 'invalid badge counter');
+
+  await badge.sync();
+
+  assert(badge.counter === 13, 'invalid badge counter');
+
+  await badge.decrease();
+
+  assert(badge.counter === 12, 'invalid badge counter');
+
+  await badge.reset();
+
+  assert(badge.counter === 0, 'invalid badge counter');
+  /// BadgeControl
 }());

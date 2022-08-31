@@ -64,7 +64,7 @@ export class BadgeControl {
   #showBadge() {
     const text = this.counter === 0 ? '' : String(this.counter);
 
-    Runtime.browserAction.setBadgeText({
+    Runtime.action.setBadgeText({
       text
     });
   }
