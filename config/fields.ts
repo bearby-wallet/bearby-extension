@@ -7,5 +7,6 @@ export enum Fields {
   NETWROK_NODES_COUNT = 'network-nodes-counter',
   TRANSACTIONS = 'transactions',
   CONFIRM_TRANSACTIONS = 'confirm-transactions',
-  CONFIRM_SIGN_MESSAGE = 'confirm-sign-message'
+  CONFIRM_SIGN_MESSAGE = 'confirm-sign-message',
+  BADGE_COUNTER = 'badge-control'
 }
