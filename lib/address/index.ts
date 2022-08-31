@@ -63,6 +63,24 @@ export async function addressFromPublicKey(publicKey: Uint8Array) {
   ));
 }
 
+export async function isBase58Address(address: string) {
+  try {
+    if (address[0] !== ADDRESS_PREFIX) {
+      return false;
+    }
+
+    const bytes = await base58Decode(address.slice(1));
+
+    if (bytes.length !== 33) {
+      return false;
+    }
+
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export function publicKeyBytesFromPrivateKey(privateKey: Uint8Array): Uint8Array {
   const keyPair = nacl.sign.keyPair.fromSeed(privateKey);
 
