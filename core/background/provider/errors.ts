@@ -1,5 +1,6 @@
 import { BaseError } from 'lib/error';
 
+
 export class MassaHttpError extends BaseError {
   name = 'MassaHttpError';
 }

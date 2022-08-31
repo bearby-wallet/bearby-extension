@@ -8,7 +8,7 @@ export class HttpProvider {
   };
 
   json(...rpcBody: RPCBody[]) {
-    let body = JSON.stringify(rpcBody);
+    const body = JSON.stringify(rpcBody);
 
     return {
       body,

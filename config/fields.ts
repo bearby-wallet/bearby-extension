@@ -4,5 +4,8 @@ export enum Fields {
   WALLET = 'wallet-identities',
   NETWROK_CONFIG = 'network-config',
   NETWROK_SELECTED = 'network-selected',
-  NETWROK_NODES_COUNT = 'network-nodes-counter'
+  NETWROK_NODES_COUNT = 'network-nodes-counter',
+  TRANSACTIONS = 'transactions',
+  CONFIRM_TRANSACTIONS = 'confirm-transactions',
+  CONFIRM_SIGN_MESSAGE = 'confirm-sign-message'
 }
