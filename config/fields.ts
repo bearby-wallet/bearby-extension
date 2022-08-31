@@ -12,5 +12,7 @@ export enum Fields {
   UI_THEME = 'ui-theme',
   SELECTED_CURRENCY = 'selected-currency',
   LOCALE = 'locale',
-  PHISHING_DETECTION = 'phishing-detection-enabled'
+  PHISHING_DETECTION = 'phishing-detection-enabled',
+  CONNECTIONS_LIST = 'dapp-connections-list',
+  CONNECT_DAPP = 'for-connect-app'
 }
