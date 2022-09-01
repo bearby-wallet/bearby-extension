@@ -4,33 +4,33 @@ import { BrowserStorage, buildObject } from 'lib/storage';
 
 
 export class LocaleSettings {
-  #locale = Locales.Auto;
+  #selected = Locales.Auto;
 
-  get locale() {
-    return this.#locale;
+  get selected() {
+    return this.#selected;
   }
 
   async setLocale(newLocale: Locales) {
-    this.#locale = newLocale;
+    this.#selected = newLocale;
 
     await BrowserStorage.set(
-      buildObject(Fields.LOCALE, this.locale)
+      buildObject(Fields.LOCALE, this.selected)
     );
   }
 
-  async syncLocale(content?: string | Locales | null) {
+  async sync(content?: string | Locales | null) {
     if (!content) {
-      return this.resetLocale();
+      return this.reset();
     }
 
-    this.#locale = content as Locales;
+    this.#selected = content as Locales;
   }
 
-  async resetLocale() {
-    this.#locale = Locales.Auto;
+  async reset() {
+    this.#selected = Locales.Auto;
 
     await BrowserStorage.set(
-      buildObject(Fields.LOCALE, this.locale)
+      buildObject(Fields.LOCALE, this.selected)
     );
   }
 }

@@ -6,10 +6,10 @@ import { INVALID_CURREENCY, SettingsError } from './errors';
 
 
 export class CurrenciesController {
-  #currency = DEFAULT_CURRENCIES[0];
+  #selected = DEFAULT_CURRENCIES[0];
 
-  get currency() {
-    return this.#currency;
+  get selected() {
+    return this.#selected;
   }
 
   async update(newSelected: string) {
@@ -19,28 +19,28 @@ export class CurrenciesController {
       SettingsError
     );
 
-    this.#currency = newSelected;
+    this.#selected = newSelected;
 
     await BrowserStorage.set(
-      buildObject(Fields.SELECTED_CURRENCY, this.currency)
+      buildObject(Fields.SELECTED_CURRENCY, this.selected)
     );
   }
 
-  async syncCurrency(content?: string | null) {
+  async sync(content?: string | null) {
     if (!content || !DEFAULT_CURRENCIES.includes(String(content))) {
-      return this.resetCurrency();
+      return this.reset();
     }
 
     const selected = String(content);
 
-    this.#currency = selected;
+    this.#selected = selected;
   }
 
-  async resetCurrency() {
-    this.#currency = DEFAULT_CURRENCIES[0];
+  async reset() {
+    this.#selected = DEFAULT_CURRENCIES[0];
 
     await BrowserStorage.set(
-      buildObject(Fields.SELECTED_CURRENCY, this.currency)
+      buildObject(Fields.SELECTED_CURRENCY, this.selected)
     );
   }
 }

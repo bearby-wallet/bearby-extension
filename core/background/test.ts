@@ -20,6 +20,7 @@ import { CurrenciesController, INVALID_CURREENCY, INVALID_THEME, LocaleSettings,
 import { DEFAULT_CURRENCIES } from 'config/currencies';
 import { Locales } from 'config/locale';
 import { Themes } from 'config/theme';
+import { SettingsControl } from './settings/settings';
 
 
 (async function start() {
@@ -378,15 +379,15 @@ import { Themes } from 'config/theme';
   console.log('start testing CurrenciesController');
   let currencies = new CurrenciesController();
 
-  assert(currencies.currency === DEFAULT_CURRENCIES[0], 'incorrect started currency');
+  assert(currencies.selected === DEFAULT_CURRENCIES[0], 'incorrect started selected');
 
-  await currencies.syncCurrency(DEFAULT_CURRENCIES[5]);
+  await currencies.sync(DEFAULT_CURRENCIES[5]);
 
-  assert(currencies.currency === DEFAULT_CURRENCIES[5], 'incorrect started currency');
+  assert(currencies.selected === DEFAULT_CURRENCIES[5], 'incorrect selected');
 
-  await currencies.resetCurrency();
+  await currencies.reset();
 
-  assert(currencies.currency === DEFAULT_CURRENCIES[0], 'incorrect started currency');
+  assert(currencies.selected === DEFAULT_CURRENCIES[0], 'incorrect selected');
 
   try {
     await currencies.update('incorrect');
@@ -398,19 +399,19 @@ import { Themes } from 'config/theme';
 
   currencies = new CurrenciesController();
 
-  assert(currencies.currency === DEFAULT_CURRENCIES[0], 'incorrect started currency');
+  assert(currencies.selected === DEFAULT_CURRENCIES[0], 'incorrect selected');
 
-  await currencies.syncCurrency(DEFAULT_CURRENCIES[10]);
+  await currencies.sync(DEFAULT_CURRENCIES[10]);
 
-  assert(currencies.currency === DEFAULT_CURRENCIES[10], 'incorrect started currency');
+  assert(currencies.selected === DEFAULT_CURRENCIES[10], 'incorrect selected');
 
-  await currencies.syncCurrency(null);
+  await currencies.sync(null);
 
-  assert(currencies.currency === DEFAULT_CURRENCIES[0], 'incorrect started currency');
+  assert(currencies.selected === DEFAULT_CURRENCIES[0], 'incorrect selected');
 
-  await currencies.syncCurrency('random');
+  await currencies.sync('random');
 
-  assert(currencies.currency === DEFAULT_CURRENCIES[0], 'incorrect started currency');
+  assert(currencies.selected === DEFAULT_CURRENCIES[0], 'incorrect selected');
   /// CurrenciesController
 
 
@@ -418,15 +419,15 @@ import { Themes } from 'config/theme';
   console.log('start testing LocaleSettings');
   const locale = new LocaleSettings();
 
-  assert(locale.locale === Locales.Auto, 'incorrect locale');
+  assert(locale.selected === Locales.Auto, 'incorrect locale selected');
 
-  await locale.syncLocale(Locales.EN);
+  await locale.sync(Locales.EN);
 
-  assert(locale.locale === Locales.EN, 'incorrect locale');
+  assert(locale.selected === Locales.EN, 'incorrect locale selected');
 
   await locale.setLocale(Locales.Auto);
 
-  assert(locale.locale === Locales.Auto, 'incorrect locale');
+  assert(locale.selected === Locales.Auto, 'incorrect locale selected');
   /// LocaleSettings
 
   /// PhishingDetection
@@ -435,15 +436,15 @@ import { Themes } from 'config/theme';
 
   assert(phishing.phishingDetectionEnabled, 'incorrect phishingDetectionEnabled is false');
 
-  await phishing.syncPhishing('true');
+  await phishing.sync('true');
 
   assert(phishing.phishingDetectionEnabled, 'incorrect phishingDetectionEnabled is false');
 
-  await phishing.syncPhishing('false');
+  await phishing.sync('false');
 
   assert(!phishing.phishingDetectionEnabled, 'incorrect phishingDetectionEnabled is ture');
 
-  await phishing.resetPhishing();
+  await phishing.reset();
 
   assert(phishing.phishingDetectionEnabled, 'incorrect phishingDetectionEnabled is false');
 
@@ -456,27 +457,27 @@ import { Themes } from 'config/theme';
   console.log('start testing ThemeSettings');
   const theme = new ThemeSettings();
 
-  assert(theme.theme === Themes.System, 'incorrect selected theme is not System');
+  assert(theme.selected === Themes.System, 'incorrect selected theme is not System');
 
-  await theme.syncTheme(Themes.Dark);
+  await theme.sync(Themes.Dark);
 
-  assert(theme.theme === Themes.Dark, 'incorrect selected theme is not Dark');
+  assert(theme.selected === Themes.Dark, 'incorrect selected theme is not Dark');
 
   await theme.setTheme(Themes.Light);
 
-  assert(theme.theme === Themes.Light, 'incorrect selected theme is not Light');
+  assert(theme.selected === Themes.Light, 'incorrect selected theme is not Light');
 
-  await theme.syncTheme('');
+  await theme.sync('');
 
-  assert(theme.theme === Themes.System, 'incorrect selected theme is not System');
+  assert(theme.selected === Themes.System, 'incorrect selected theme is not System');
 
-  await theme.syncTheme(Themes.Dark);
+  await theme.sync(Themes.Dark);
 
-  assert(theme.theme === Themes.Dark, 'incorrect selected theme is not Dark');
+  assert(theme.selected === Themes.Dark, 'incorrect selected theme is not Dark');
 
-  await theme.syncTheme('incorrect theme');
+  await theme.sync('incorrect theme');
 
-  assert(theme.theme === Themes.System, 'incorrect selected theme is not System');
+  assert(theme.selected === Themes.System, 'incorrect selected theme is not System');
 
   try {
     await theme.setTheme('incorrect theme' as Themes);
@@ -484,4 +485,34 @@ import { Themes } from 'config/theme';
     assert((err as Error).message === INVALID_THEME, 'incorrect error');
   }
   /// ThemeSettings
+
+  /// SettingsControl
+  console.log('start testing SettingsControl');
+  const settings = new SettingsControl();
+
+  assert(settings.state.currency === DEFAULT_CURRENCIES[0], 'incorrect selected currency');
+  assert(settings.state.locale === Locales.Auto, 'incorrect selected locale');
+  assert(settings.state.theme === Themes.System, 'incorrect selected themes');
+
+  await settings.sync();
+
+  assert(settings.state.currency === DEFAULT_CURRENCIES[0], 'incorrect selected currency');
+  assert(settings.state.locale === Locales.Auto, 'incorrect selected locale');
+  assert(settings.state.theme === Themes.System, 'incorrect selected themes');
+
+  await settings.currencies.update(DEFAULT_CURRENCIES[11]);
+  await settings.locale.setLocale(Locales.EN);
+  await settings.phishing.togglePhishing();
+  await settings.theme.setTheme(Themes.Light);
+
+  assert(settings.state.currency === DEFAULT_CURRENCIES[11], 'incorrect selected currency');
+  assert(settings.state.locale === Locales.EN, 'incorrect selected locale');
+  assert(settings.state.theme === Themes.Light, 'incorrect selected themes');
+
+  await settings.reset();
+
+  assert(settings.state.currency === DEFAULT_CURRENCIES[0], 'incorrect selected currency');
+  assert(settings.state.locale === Locales.Auto, 'incorrect selected locale');
+  assert(settings.state.theme === Themes.System, 'incorrect selected themes');
+  /// SettingsControl
 }());

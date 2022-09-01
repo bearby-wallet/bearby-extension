@@ -6,10 +6,10 @@ import { INVALID_THEME, SettingsError } from './errors';
 
 
 export class ThemeSettings {
-  #theme = Themes.System;
+  #selected = Themes.System;
 
-  public get theme() {
-    return this.#theme;
+  public get selected() {
+    return this.#selected;
   }
 
   public async setTheme(newTheme: Themes) {
@@ -18,28 +18,28 @@ export class ThemeSettings {
       INVALID_THEME,
       SettingsError
     );
-    this.#theme = newTheme;
+    this.#selected = newTheme;
 
     await BrowserStorage.set(
-      buildObject(Fields.UI_THEME, this.theme)
+      buildObject(Fields.UI_THEME, this.selected)
     );
   }
 
-  public async syncTheme(content?: string | Themes| null) {
+  public async sync(content?: string | Themes| null) {
     if (!content) {
-      return this.resetTheme();
+      return this.reset();
     } else if (String(content) !== Themes.Dark && String(content) !== Themes.System && String(content) !== Themes.Light) {
-      return this.resetTheme();
+      return this.reset();
     }
 
-    this.#theme = content as Themes;
+    this.#selected = content as Themes;
   }
 
-  public async resetTheme() {
-    this.#theme = Themes.System;
+  public async reset() {
+    this.#selected = Themes.System;
 
     await BrowserStorage.set(
-      buildObject(Fields.UI_THEME, this.theme)
+      buildObject(Fields.UI_THEME, this.selected)
     );
   }
 }

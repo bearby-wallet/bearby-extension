@@ -12,6 +12,14 @@ export class SettingsControl {
   readonly phishing = new PhishingDetection();
   readonly theme = new ThemeSettings();
 
+  get state() {
+    return {
+      currency: this.currencies.selected,
+      locale: this.locale.selected,
+      theme: this.theme.selected
+    };
+  }
+
   async sync() {
     const data = await BrowserStorage.get(
       Fields.SELECTED_CURRENCY,
@@ -20,9 +28,16 @@ export class SettingsControl {
       Fields.UI_THEME
     ) as StorageKeyValue;
 
-    await this.currencies.syncCurrency(data[Fields.SELECTED_CURRENCY]);
-    await this.locale.syncLocale(data[Fields.LOCALE]);
-    await this.phishing.syncPhishing(data[Fields.PHISHING_DETECTION]);
-    await this.theme.syncTheme(data[Fields.UI_THEME]);
+    await this.currencies.sync(data[Fields.SELECTED_CURRENCY]);
+    await this.locale.sync(data[Fields.LOCALE]);
+    await this.phishing.sync(data[Fields.PHISHING_DETECTION]);
+    await this.theme.sync(data[Fields.UI_THEME]);
+  }
+
+  async reset() {
+    await this.currencies.reset();
+    await this.locale.reset();
+    await this.phishing.reset();
+    await this.theme.reset();
   }
 }

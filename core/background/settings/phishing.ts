@@ -17,15 +17,15 @@ export class PhishingDetection {
     );
   }
 
-  async syncPhishing(content?: string | null) {
+  async sync(content?: string | null) {
     if (!content) {
-      return this.resetPhishing();
+      return this.reset();
     }
 
     this.#phishingDetectionEnabled = (content === 'true');
   }
 
-  async resetPhishing() {
+  async reset() {
     this.#phishingDetectionEnabled = true;
 
     await BrowserStorage.set(
