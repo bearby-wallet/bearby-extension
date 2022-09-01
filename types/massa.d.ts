@@ -131,3 +131,79 @@ export interface JsonRPCResponseNodeStatusAddresses extends JsonRPCResponse {
 export interface JsonRPCResponseStakers extends JsonRPCResponse {
   result?: Array<[string, number]>;
 }
+
+export interface OperationTransaction {
+  id: string; // Operation id
+  in_blocks: string[]; // Block ids
+  in_pool: boolean;
+  is_final: boolean;
+  operation: {
+    content: {
+      expire_period: number;// after that period, the operation become invalid forever
+      fee: string; // represent an Amount in coins
+      op: {
+        Transaction?: {
+          amount: string; // represent an Amount in coins
+          recipient_address: String
+        };
+        RollBuy?: {
+          roll_count: number;
+        };
+        RollSell?: {
+          roll_count: number;
+        };
+        ExecuteSC?: {
+          data: number[]; // vec of bytes to execute
+          max_gas: number; // maximum amount of gas that the execution of the contract is allowed to cost.
+          coins: string; // represent an Amount in coins that are spent by consensus and are available in the execution context of the contract.
+          gas_price: string; // represent an Amount in coins, price per unit of gas that the caller is willing to pay for the execution.
+        };
+        CallSC?: {
+          target_addr: string; // Address
+          target_func: string; // Function name
+          param: string; // Parameter to pass to the function
+          max_gas: number;
+          sequential_coins: number; // Amount
+          parallel_coins: number; // Amount
+          gas_price: number; // Amount
+        };
+      };
+      sender_public_key: string;
+    };
+    signature: string;
+  }
+}
+
+export interface MassaBlock {
+  id: string; // BlockId,
+  content?: {
+    is_final: boolean;
+    is_stale: boolean;
+    is_in_blockclique: boolean;
+    block: {
+      header: {
+        content: {
+          endorsed_block: string; // Block id
+          index: number;
+          sender_public_key: string;
+          slot: { // endorsed block slot: deifferent from block's slot
+            period: number;
+            thread: Number
+          };
+        };
+        signature: string;
+      }
+      operation_merkle_root: string; // Hash of all operations
+      parents: string[]; // Block ids, as many as thread count
+      slot: {
+        period: number;
+        thread: number;
+      };
+      signature: string;
+    };
+    operations: OperationTransaction[];
+  };
+  is_final: boolean;
+  is_in_blockclique: boolean;
+  is_stale: boolean;
+}

@@ -3,7 +3,9 @@ import type {
   RPCBody,
   JsonRPCResponseNodeStatus,
   JsonRPCResponseNodeStatusAddresses,
-  JsonRPCResponseStakers
+  JsonRPCResponseStakers,
+  OperationTransaction,
+  MassaBlock
 } from 'types';
 import type { NetworkControl } from "background/network";
 import type { AccountController } from 'background/account';
@@ -39,9 +41,13 @@ export class MassaControl {
     return await this.sendJson(body);
   }
 
-  async getBlocks(...blocks: string[]) {
-    //  TODO: write type interface.
+  async getBlocks(...blocks: string[]): Promise<MassaBlock[]> {
     const body = this.provider.buildBody(JsonRPCRequestMethods.GET_BLOCKS, [blocks]);
+    return await this.sendJson(body);
+  }
+
+  async getOperations(...operations: string[]): Promise<OperationTransaction[]> {
+    const body = this.provider.buildBody(JsonRPCRequestMethods.GET_OPERATIONS, [operations]);
     return await this.sendJson(body);
   }
 
