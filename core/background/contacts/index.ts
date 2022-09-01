@@ -18,12 +18,12 @@ import { isBase58Address } from 'lib/address';
 export class ContactController {
   #identities: Contact[] = [];
 
-  get contacts() {
+  get list() {
     return this.#identities;
   }
 
   #isUnique(connect: Contact) {
-    for (const iterator of this.contacts) {
+    for (const iterator of this.list) {
       assert(
         iterator.name.toLowerCase() !== connect.name.toLowerCase(),
         UINIQE_NAME,
@@ -49,7 +49,7 @@ export class ContactController {
     this.#identities.push(connect);
 
     await BrowserStorage.set(
-      buildObject(Fields.CONTACTS_LIST, this.contacts)
+      buildObject(Fields.CONTACTS_LIST, this.list)
     );
   }
 
@@ -59,7 +59,7 @@ export class ContactController {
     this.#identities = this.#identities.filter(Boolean);
 
     await BrowserStorage.set(
-      buildObject(Fields.CONTACTS_LIST, this.contacts)
+      buildObject(Fields.CONTACTS_LIST, this.list)
     );
   }
 
@@ -67,7 +67,7 @@ export class ContactController {
     this.#identities = [];
 
     await BrowserStorage.set(
-      buildObject(Fields.CONTACTS_LIST, this.contacts)
+      buildObject(Fields.CONTACTS_LIST, this.list)
     );
   }
 

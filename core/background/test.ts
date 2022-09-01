@@ -20,7 +20,9 @@ import { CurrenciesController, INVALID_CURREENCY, INVALID_THEME, LocaleSettings,
 import { DEFAULT_CURRENCIES } from 'config/currencies';
 import { Locales } from 'config/locale';
 import { Themes } from 'config/theme';
+import { ContactController } from 'core/background/contacts';
 import { SettingsControl } from './settings/settings';
+import { INVALID_BASE58, UINIQE_ADDRESS, UINIQE_NAME } from './contacts/errors';
 
 
 (async function start() {
@@ -515,4 +517,65 @@ import { SettingsControl } from './settings/settings';
   assert(settings.state.locale === Locales.Auto, 'incorrect selected locale');
   assert(settings.state.theme === Themes.System, 'incorrect selected themes');
   /// SettingsControl
+
+  /// ContactController
+  console.log('start testing ContactController');
+  let contacts = new ContactController();
+
+  assert(contacts.list.length === 0, 'incorrect contacts length');
+
+  await contacts.sync();
+
+  assert(contacts.list.length === 0, 'incorrect contacts length');
+
+  try {
+    await contacts.add({
+      name: 'test',
+      address: 'incorrect address'
+    });
+  } catch (err) {
+    assert((err as Error).message === INVALID_BASE58, 'incorrect error message');
+  }
+
+  await contacts.add({
+    name: 'test',
+    address: 'A1muhtTqVkpzDJgwASYGya9XaY1GmVYfNeJwpobdmtDACTRTBpW'
+  });
+
+  assert(contacts.list.length === 1, 'incorrect contacts length');
+  assert(contacts.list[0].name === 'test', 'incorrect contact name');
+  assert(contacts.list[0].address === 'A1muhtTqVkpzDJgwASYGya9XaY1GmVYfNeJwpobdmtDACTRTBpW', 'incorrect contact address');
+
+  try {
+    await contacts.add({
+      name: 'test1',
+      address: 'A1muhtTqVkpzDJgwASYGya9XaY1GmVYfNeJwpobdmtDACTRTBpW'
+    });
+  } catch (err) {
+    assert((err as Error).message === UINIQE_ADDRESS, 'incorrect error message');
+  }
+
+  try {
+    await contacts.add({
+      name: 'test',
+      address: 'A1mphtTqVkpzDJgwASYGya9XaY1GmVYfNeJwpobdmtDACTRTBpW'
+    });
+  } catch (err) {
+    assert((err as Error).message === UINIQE_NAME, 'incorrect error message');
+  }
+
+  contacts = new ContactController();
+
+  assert(contacts.list.length === 0, 'incorrect contacts length');
+
+  await contacts.sync();
+
+  assert(contacts.list.length === 1, 'incorrect contacts length');
+  assert(contacts.list[0].name === 'test', 'incorrect contact name');
+  assert(contacts.list[0].address === 'A1muhtTqVkpzDJgwASYGya9XaY1GmVYfNeJwpobdmtDACTRTBpW', 'incorrect contact address');
+
+  await contacts.remove(0);
+
+  assert(contacts.list.length === 0, 'incorrect contacts length');
+  /// ContactController
 }());
