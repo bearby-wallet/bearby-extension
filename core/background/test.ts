@@ -16,6 +16,8 @@ import { NetworkControl } from './network';
 import { MassaControl } from './provider';
 import { NETWORK } from 'config/network';
 import { BadgeControl } from './notifications';
+import { CurrenciesController, INVALID_CURREENCY } from './settings';
+import { DEFAULT_CURRENCIES } from 'config/currencies';
 
 
 (async function start() {
@@ -369,4 +371,42 @@ import { BadgeControl } from './notifications';
 
   assert(badge.counter === 0, 'invalid badge counter');
   /// BadgeControl
+
+  /// CurrenciesController
+  let currencies = new CurrenciesController();
+
+  assert(currencies.currency === DEFAULT_CURRENCIES[0], 'incorrect started currency');
+
+  currencies.syncCurrency(DEFAULT_CURRENCIES[5]);
+
+  assert(currencies.currency === DEFAULT_CURRENCIES[5], 'incorrect started currency');
+
+  await currencies.resetCurrency();
+
+  assert(currencies.currency === DEFAULT_CURRENCIES[0], 'incorrect started currency');
+
+  try {
+    await currencies.update('incorrect');
+  } catch (err) {
+    assert((err as Error).message === INVALID_CURREENCY, 'invlid error');
+  }
+
+  await currencies.update(DEFAULT_CURRENCIES[10]);
+
+  currencies = new CurrenciesController();
+
+  assert(currencies.currency === DEFAULT_CURRENCIES[0], 'incorrect started currency');
+
+  currencies.syncCurrency(DEFAULT_CURRENCIES[10]);
+
+  assert(currencies.currency === DEFAULT_CURRENCIES[10], 'incorrect started currency');
+
+  currencies.syncCurrency(null);
+
+  assert(currencies.currency === DEFAULT_CURRENCIES[0], 'incorrect started currency');
+
+  currencies.syncCurrency('random');
+
+  assert(currencies.currency === DEFAULT_CURRENCIES[0], 'incorrect started currency');
+  /// CurrenciesController
 }());

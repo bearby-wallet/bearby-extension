@@ -3,7 +3,7 @@ import { Locales } from 'config/locale';
 import { BrowserStorage, buildObject } from 'lib/storage';
 
 
-export class ThemeSettings {
+export class LocaleSettings {
   #locale = Locales.Auto;
 
   get locale() {
