@@ -6,19 +6,27 @@ import type {
   JsonRPCResponseStakers
 } from 'types';
 import type { NetworkControl } from "background/network";
+import type { AccountController } from 'background/account';
+
+import blake3 from 'blake3-js';
+import { utils } from 'aes-js';
+import { sign, verify } from "@noble/ed25519";
 
 import { HttpProvider } from "./http";
-import { REQUEST_FALLED, MassaHttpError } from './errors';
+import { REQUEST_FALLED, MassaHttpError, EMPTY_ACCOUNT, INCORRECT_PUB_KEY } from './errors';
 import { JsonRPCRequestMethods } from './methods';
+import { assert } from 'lib/assert';
 
 
 export class MassaControl {
   #network: NetworkControl;
+  #account: AccountController;
 
   readonly provider = new HttpProvider();
 
-  constructor(network: NetworkControl) {
+  constructor(network: NetworkControl, account: AccountController) {
     this.#network = network;
+    this.#account = account;
   }
 
   async getNodesStatus(): Promise<JsonRPCResponseNodeStatus[]> {
@@ -40,6 +48,23 @@ export class MassaControl {
   async getStakers(): Promise<JsonRPCResponseStakers[]> {
     const body = this.provider.buildBody(JsonRPCRequestMethods.GET_STAKERS, []);
     return await this.sendJson(body);
+  }
+
+  async sign(data: Uint8Array) {
+    const account = this.#account.selectedAccount;
+
+    assert(Boolean(account), EMPTY_ACCOUNT, MassaHttpError);
+
+    const pair = await this.#account.getKeyPair();
+    const messageHashDigest = Uint8Array.from(utils.hex.toBytes(
+      blake3.newRegular().update(data).finalize()
+    ));
+    const sig = await sign(messageHashDigest, pair.privKey);
+    const isVerified = await verify(sig, messageHashDigest, pair.pubKey);
+
+    assert(isVerified, INCORRECT_PUB_KEY, MassaHttpError);
+
+    return sig;
   }
 
   async sendJson(...body: RPCBody[]) {
