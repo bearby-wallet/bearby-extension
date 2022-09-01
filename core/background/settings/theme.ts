@@ -28,6 +28,8 @@ export class ThemeSettings {
   public async syncTheme(content?: string | Themes| null) {
     if (!content) {
       return this.resetTheme();
+    } else if (String(content) !== Themes.Dark && String(content) !== Themes.System && String(content) !== Themes.Light) {
+      return this.resetTheme();
     }
 
     this.#theme = content as Themes;

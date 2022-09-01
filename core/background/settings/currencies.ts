@@ -26,7 +26,7 @@ export class CurrenciesController {
     );
   }
 
-  syncCurrency(content?: string | null) {
+  async syncCurrency(content?: string | null) {
     if (!content || !DEFAULT_CURRENCIES.includes(String(content))) {
       return this.resetCurrency();
     }

@@ -16,8 +16,10 @@ import { NetworkControl } from './network';
 import { MassaControl } from './provider';
 import { NETWORK } from 'config/network';
 import { BadgeControl } from './notifications';
-import { CurrenciesController, INVALID_CURREENCY } from './settings';
+import { CurrenciesController, INVALID_CURREENCY, INVALID_THEME, LocaleSettings, PhishingDetection, ThemeSettings } from './settings';
 import { DEFAULT_CURRENCIES } from 'config/currencies';
+import { Locales } from 'config/locale';
+import { Themes } from 'config/theme';
 
 
 (async function start() {
@@ -373,11 +375,12 @@ import { DEFAULT_CURRENCIES } from 'config/currencies';
   /// BadgeControl
 
   /// CurrenciesController
+  console.log('start testing CurrenciesController');
   let currencies = new CurrenciesController();
 
   assert(currencies.currency === DEFAULT_CURRENCIES[0], 'incorrect started currency');
 
-  currencies.syncCurrency(DEFAULT_CURRENCIES[5]);
+  await currencies.syncCurrency(DEFAULT_CURRENCIES[5]);
 
   assert(currencies.currency === DEFAULT_CURRENCIES[5], 'incorrect started currency');
 
@@ -397,16 +400,88 @@ import { DEFAULT_CURRENCIES } from 'config/currencies';
 
   assert(currencies.currency === DEFAULT_CURRENCIES[0], 'incorrect started currency');
 
-  currencies.syncCurrency(DEFAULT_CURRENCIES[10]);
+  await currencies.syncCurrency(DEFAULT_CURRENCIES[10]);
 
   assert(currencies.currency === DEFAULT_CURRENCIES[10], 'incorrect started currency');
 
-  currencies.syncCurrency(null);
+  await currencies.syncCurrency(null);
 
   assert(currencies.currency === DEFAULT_CURRENCIES[0], 'incorrect started currency');
 
-  currencies.syncCurrency('random');
+  await currencies.syncCurrency('random');
 
   assert(currencies.currency === DEFAULT_CURRENCIES[0], 'incorrect started currency');
   /// CurrenciesController
+
+
+  /// LocaleSettings
+  console.log('start testing LocaleSettings');
+  const locale = new LocaleSettings();
+
+  assert(locale.locale === Locales.Auto, 'incorrect locale');
+
+  await locale.syncLocale(Locales.EN);
+
+  assert(locale.locale === Locales.EN, 'incorrect locale');
+
+  await locale.setLocale(Locales.Auto);
+
+  assert(locale.locale === Locales.Auto, 'incorrect locale');
+  /// LocaleSettings
+
+  /// PhishingDetection
+  console.log('start testing PhishingDetection');
+  const phishing = new PhishingDetection();
+
+  assert(phishing.phishingDetectionEnabled, 'incorrect phishingDetectionEnabled is false');
+
+  await phishing.syncPhishing('true');
+
+  assert(phishing.phishingDetectionEnabled, 'incorrect phishingDetectionEnabled is false');
+
+  await phishing.syncPhishing('false');
+
+  assert(!phishing.phishingDetectionEnabled, 'incorrect phishingDetectionEnabled is ture');
+
+  await phishing.resetPhishing();
+
+  assert(phishing.phishingDetectionEnabled, 'incorrect phishingDetectionEnabled is false');
+
+  await phishing.togglePhishing();
+
+  assert(!phishing.phishingDetectionEnabled, 'incorrect phishingDetectionEnabled is ture');
+  /// PhishingDetection
+
+  /// ThemeSettings
+  console.log('start testing ThemeSettings');
+  const theme = new ThemeSettings();
+
+  assert(theme.theme === Themes.System, 'incorrect selected theme is not System');
+
+  await theme.syncTheme(Themes.Dark);
+
+  assert(theme.theme === Themes.Dark, 'incorrect selected theme is not Dark');
+
+  await theme.setTheme(Themes.Light);
+
+  assert(theme.theme === Themes.Light, 'incorrect selected theme is not Light');
+
+  await theme.syncTheme('');
+
+  assert(theme.theme === Themes.System, 'incorrect selected theme is not System');
+
+  await theme.syncTheme(Themes.Dark);
+
+  assert(theme.theme === Themes.Dark, 'incorrect selected theme is not Dark');
+
+  await theme.syncTheme('incorrect theme');
+
+  assert(theme.theme === Themes.System, 'incorrect selected theme is not System');
+
+  try {
+    await theme.setTheme('incorrect theme' as Themes);
+  } catch (err) {
+    assert((err as Error).message === INVALID_THEME, 'incorrect error');
+  }
+  /// ThemeSettings
 }());
