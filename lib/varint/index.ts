@@ -69,7 +69,7 @@ export class VarintEncode {
   
     out[offset] = num | 0;
     this.#bytes = offset - oldOffset + 1;
-    
+
     return Uint8Array.from(out);
   }
 }
