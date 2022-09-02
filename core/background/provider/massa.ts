@@ -18,6 +18,7 @@ import { HttpProvider } from "./http";
 import { REQUEST_FALLED, MassaHttpError, EMPTY_ACCOUNT, INCORRECT_PUB_KEY } from './errors';
 import { JsonRPCRequestMethods } from './methods';
 import { assert } from 'lib/assert';
+import { base58Encode } from 'lib/address';
 
 
 export class MassaControl {
@@ -70,7 +71,20 @@ export class MassaControl {
 
     assert(isVerified, INCORRECT_PUB_KEY, MassaHttpError);
 
-    return sig;
+    return {
+      sig,
+      pubKey: pair.pubKey
+    };
+  }
+
+  async sendTransaction(byteCode: Uint8Array, sig: Uint8Array, pubKey: Uint8Array) {
+    const signature = base58Encode(sig);
+    const data = {
+      signature,
+      serialized_content: Array.prototype.slice.call(byteCode),
+      creator_public_key: sender.publicKey,
+      signature: signature.base58Encoded,
+  };
   }
 
   async sendJson(...body: RPCBody[]) {

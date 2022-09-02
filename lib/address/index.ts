@@ -5,7 +5,7 @@ import { sha256 } from 'lib/crypto/sha256';
 import { base58ToBinary, binaryToBase58 } from 'lib/crypto/base58';
 import { assert } from 'lib/assert';
 import { INVALID_CHECKSUM } from './errors';
-import { ADDRESS_PREFIX, VERSION_NUMBER } from 'config/common';
+import { ADDRESS_PREFIX, PUBLIC_KEY_PREFIX, VERSION_NUMBER } from 'config/common';
 import { VarintEncode } from 'lib/varint';
 import { utils } from 'aes-js';
 
@@ -86,3 +86,13 @@ export function publicKeyBytesFromPrivateKey(privateKey: Uint8Array): Uint8Array
 
   return keyPair.secretKey.subarray(32);
 };
+
+export async function pubKeyFromBytes(pubKey: Uint8Array) {
+  const version = new VarintEncode().encode(VERSION_NUMBER);
+  const base58 = await base58Encode(Uint8Array.from([
+    ...version,
+    ...pubKey
+  ]));
+
+  return PUBLIC_KEY_PREFIX + base58;
+}

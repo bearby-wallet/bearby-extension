@@ -340,7 +340,7 @@ import { fromByteArray, toByteArray } from 'base64-js';
   const provider = new MassaControl(netwrok, account);
 
   const msg = utils.utf8.toBytes('sign me');
-  const sig = await provider.sign(msg);
+  const { sig } = await provider.sign(msg);
   const shoulbeSig = 'cd5600f739c40c2c1d665c0d1cb2d946697423fd2c17b83aa70983394bfb40acf76a1645b1559eb4985c66223c56cb05e4863dd3ea4cffe5fb03032bab5c5a08';
 
   assert(sig.length === 64, 'incorrect signautre');
@@ -640,6 +640,7 @@ import { fromByteArray, toByteArray } from 'base64-js';
 
   // const pair = await account.fromPrivateKey('S1nDemFSELvbn67dKZBKNNu9ZmmSxY5jvRZmSKcK9AXc3Am8i4V');
   // const result = await provider.getAddresses(pair.base58);
+  const result = await provider.getNodesStatus();
 
-  // console.log(result);
+  console.log(result);
 }());
