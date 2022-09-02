@@ -142,12 +142,14 @@ export class CallSmartContractBuild {
 
     const fee = new VarintEncode().encode(this.fee);
 		const expirePeriod = new VarintEncode().encode(this.expirePeriod);
-		const typeIdEncoded = new VarintEncode().encode(PaymentBuild.operation);
+		const typeIdEncoded = new VarintEncode().encode(CallSmartContractBuild.operation);
     const recipient = (await base58Decode(this.recipientAddress.slice(1))).slice(1);
     const parallelCoins = new VarintEncode().encode(this.parallelCoins);
     const sequentialCoins = new VarintEncode().encode(this.sequentialCoins);
     const gasPrice = new VarintEncode().encode(this.gasPrice);
     const gasLimit = new VarintEncode().encode(this.gasLimit);
+
+    console.log(utils.hex.fromBytes(expirePeriod));
 
     return Uint8Array.from([
       ...fee,

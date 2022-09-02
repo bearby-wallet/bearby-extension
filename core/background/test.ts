@@ -23,7 +23,8 @@ import { Themes } from 'config/theme';
 import { ContactController } from 'core/background/contacts';
 import { SettingsControl } from './settings/settings';
 import { INVALID_BASE58, UINIQE_ADDRESS, UINIQE_NAME } from './contacts/errors';
-import { PaymentBuild } from './provider/transaction';
+import { CallSmartContractBuild, ExecuteSmartContractBuild, PaymentBuild } from './provider/transaction';
+import { fromByteArray, toByteArray } from 'base64-js';
 
 
 (async function start() {
@@ -600,8 +601,46 @@ import { PaymentBuild } from './provider/transaction';
   const bytes0 = await operation0.bytes();
   const shouldBeBytes0 = '80d0dbc3f402e8070065f8808410080d020e07b6023a92cd68d4c275eb9e32c2f582fa5e5fd602aee88094ebdc03';
 
-  console.log(utils.hex.fromBytes(bytes0));
-
   assert(shouldBeBytes0 === utils.hex.fromBytes(bytes0), 'invalid bytes for Payment operation');
   /// PaymentBuild
+
+  /// ExecuteSmartContractBuild
+  console.log('start testing ExecuteSmartContractBuild');
+  const contractBytesArray = utils.hex.toBytes('80d0dbc3f402e8070065f8808410080d020e07b6023a92cd68d4c275eb9e32c2f582fa5e5fd602aee88094ebdc03');
+  const contractBase64 = fromByteArray(contractBytesArray);
+  const bytes1 = await new ExecuteSmartContractBuild(
+    100000000000,
+    1000,
+    contractBase64,
+    10000000,
+    10000000000000,
+    10
+  ).bytes();
+  const shouldBeBytes1 = '80d0dbc3f402e8070380ade20480c0caf384a3020a2e80d0dbc3f402e8070065f8808410080d020e07b6023a92cd68d4c275eb9e32c2f582fa5e5fd602aee88094ebdc03';
+
+  assert(shouldBeBytes1 === utils.hex.fromBytes(bytes1), 'invalid bytes res for ExecuteSmartContractBuild');
+  /// ExecuteSmartContractBuild
+
+  /// CallSmartContractBuild
+  console.log('start testing CallSmartContractBuild');
+  const bytes2 = await new CallSmartContractBuild(
+    'test',
+    'parameter',
+    100000000000,
+    1000,
+    10000000,
+    20000000000000,
+    20000000000000,
+    10,
+    'A1muhtTqVkpzDJgwASYGya9XaY1GmVYfNeJwpobdmtDACTRTBpW'
+  ).bytes();
+  const shouldBeBytes2 = '80d0dbc3f402e8070480ade204808095e789c604808095e789c6040a65f8808410080d020e07b6023a92cd68d4c275eb9e32c2f582fa5e5fd602aee8047465737409706172616d65746572';
+  assert(shouldBeBytes2 === utils.hex.fromBytes(bytes2), 'invalid CallSmartContractBuild bytes');
+  
+  /// CallSmartContractBuild
+
+  // const pair = await account.fromPrivateKey('S1nDemFSELvbn67dKZBKNNu9ZmmSxY5jvRZmSKcK9AXc3Am8i4V');
+  // const result = await provider.getAddresses(pair.base58);
+
+  // console.log(result);
 }());
