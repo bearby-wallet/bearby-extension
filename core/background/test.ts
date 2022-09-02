@@ -6,7 +6,7 @@ import { utils } from 'aes-js';
 import { base58ToBinary, binaryToBase58 } from 'lib/crypto/base58';
 import { base58Encode, base58Decode, addressFromPublicKey, publicKeyBytesFromPrivateKey, pubKeyFromBytes } from 'lib/address';
 import { VarintDecode, VarintEncode } from 'lib/varint';
-import { COUNT_NODES, VERSION_NUMBER } from 'config/common';
+import { COUNT_NODES, PERIOD_OFFSET, VERSION_NUMBER } from 'config/common';
 import { AccountController } from 'core/background/account/account';
 import { randomBytes } from 'lib/crypto/random';
 import { AccountTypes } from 'config/account-type';
@@ -346,7 +346,8 @@ import { fromByteArray, toByteArray } from 'base64-js';
   const provider = new MassaControl(netwrok, account);
 
   const msg = utils.utf8.toBytes('sign me');
-  const { sig } = await provider.sign(msg);
+  const pair1 = await account.getKeyPair();
+  const sig = await provider.sign(msg, pair1);
   const shoulbeSig = 'cd5600f739c40c2c1d665c0d1cb2d946697423fd2c17b83aa70983394bfb40acf76a1645b1559eb4985c66223c56cb05e4863dd3ea4cffe5fb03032bab5c5a08';
 
   assert(sig.length === 64, 'incorrect signautre');
@@ -644,9 +645,37 @@ import { fromByteArray, toByteArray } from 'base64-js';
   assert(shouldBeBytes2 === utils.hex.fromBytes(bytes2), 'invalid CallSmartContractBuild bytes');
   /// CallSmartContractBuild
 
-  // const pair = await account.fromPrivateKey('S1nDemFSELvbn67dKZBKNNu9ZmmSxY5jvRZmSKcK9AXc3Am8i4V');
+  /// Sign and send transaction
+  console.log('Sign and send transaction testing');
+  await account.addAccountFromPrivateKey('S1nDemFSELvbn67dKZBKNNu9ZmmSxY5jvRZmSKcK9AXc3Am8i4V', 'lab');
   // const result = await provider.getAddresses(pair.base58);
-  const result = await provider.getNodesStatus();
+  const [{ result }] = await provider.getNodesStatus();
 
-  console.log(result);
+  assert(Boolean(result), 'node is down');
+
+  const expiryPeriod = Number(result?.next_slot.period) + PERIOD_OFFSET;
+  const bytesCompact = await new PaymentBuild(
+    0,
+    1,
+    'A1muhtTqVkpzDJgwASYGya9XaY1GmVYfNeJwpobdmtDACTRTBpW',
+    expiryPeriod
+  ).bytes();
+  const pari = await account.getKeyPair();
+  const txBytes = Uint8Array.from([
+    ...pari.pubKey,
+    ...bytesCompact
+  ]);
+  const sigTest1 = await provider.sign(txBytes, pari);
+  const txDataObject = await provider.getTransactionData(bytesCompact, sigTest1, pari.pubKey);
+  const [tx] = await provider.sendTransaction(txDataObject);
+
+  assert(Boolean(tx.result), 'invalid resonse from node');
+
+  const hash0 = tx.result ? tx.result[0] : '';
+  const op = await provider.getOperations(hash0);
+
+  console.log(op);
+
+
+  /// Sign and send transaction
 }());

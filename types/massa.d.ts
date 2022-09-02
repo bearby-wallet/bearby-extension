@@ -174,36 +174,48 @@ export interface OperationTransaction {
   }
 }
 
-export interface MassaBlock {
-  id: string; // BlockId,
-  content?: {
-    is_final: boolean;
-    is_stale: boolean;
-    is_in_blockclique: boolean;
-    block: {
-      header: {
-        content: {
-          endorsed_block: string; // Block id
-          index: number;
-          sender_public_key: string;
-          slot: { // endorsed block slot: deifferent from block's slot
-            period: number;
-            thread: Number
+export interface MassaBlock extends JsonRPCResponse {
+  result?: {
+    id: string; // BlockId,
+    content?: {
+      is_final: boolean;
+      is_stale: boolean;
+      is_in_blockclique: boolean;
+      block: {
+        header: {
+          content: {
+            endorsed_block: string; // Block id
+            index: number;
+            sender_public_key: string;
+            slot: { // endorsed block slot: deifferent from block's slot
+              period: number;
+              thread: Number
+            };
           };
+          signature: string;
+        }
+        operation_merkle_root: string; // Hash of all operations
+        parents: string[]; // Block ids, as many as thread count
+        slot: {
+          period: number;
+          thread: number;
         };
         signature: string;
-      }
-      operation_merkle_root: string; // Hash of all operations
-      parents: string[]; // Block ids, as many as thread count
-      slot: {
-        period: number;
-        thread: number;
       };
-      signature: string;
+      operations: OperationTransaction[];
     };
-    operations: OperationTransaction[];
-  };
-  is_final: boolean;
-  is_in_blockclique: boolean;
-  is_stale: boolean;
+    is_final: boolean;
+    is_in_blockclique: boolean;
+    is_stale: boolean;
+  }
+}
+
+export interface OperationResponse extends JsonRPCResponse {
+  result?: string[];
+}
+
+export interface TransactionData {
+  signature: string;
+  serialized_content: number[];
+  creator_public_key: string;
 }

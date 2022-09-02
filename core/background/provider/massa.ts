@@ -5,7 +5,10 @@ import type {
   JsonRPCResponseNodeStatusAddresses,
   JsonRPCResponseStakers,
   OperationTransaction,
-  MassaBlock
+  MassaBlock,
+  KeyPair,
+  TransactionData,
+  OperationResponse
 } from 'types';
 import type { NetworkControl } from "background/network";
 import type { AccountController } from 'background/account';
@@ -57,36 +60,34 @@ export class MassaControl {
     return await this.sendJson(body);
   }
 
-  async sign(data: Uint8Array) {
+  async sign(data: Uint8Array, pair: KeyPair) {
     const account = this.#account.selectedAccount;
 
     assert(Boolean(account), EMPTY_ACCOUNT, MassaHttpError);
 
-    const pair = await this.#account.getKeyPair();
     const messageHashDigest = Uint8Array.from(utils.hex.toBytes(
       blake3.newRegular().update(data).finalize()
     ));
     const sig = await sign(messageHashDigest, pair.privKey);
-    const isVerified = await verify(sig, messageHashDigest, pair.pubKey);
+    const isVerified = await verify(sig, messageHashDigest, Uint8Array.from(pair.pubKey));
 
     assert(isVerified, INCORRECT_PUB_KEY, MassaHttpError);
 
-    return {
-      sig,
-      pubKey: pair.pubKey
-    };
+    return sig;
   }
 
-  async sendTransaction(byteCode: Uint8Array, sig: Uint8Array, pubKey: Uint8Array) {
+  async getTransactionData(byteCode: Uint8Array, sig: Uint8Array, pubKey: Uint8Array): Promise<TransactionData> {
     const signature = await base58Encode(sig);
     const publicKey = await pubKeyFromBytes(pubKey);
-    const data = {
+    return {
       signature,
       serialized_content: Array.prototype.slice.call(byteCode),
       creator_public_key: publicKey
     };
-    const body = this.provider.buildBody(JsonRPCRequestMethods.SEND_OPERATIONS, [data]);
+  }
 
+  async sendTransaction(...data: TransactionData[]): Promise<OperationResponse[]> {
+    const body = this.provider.buildBody(JsonRPCRequestMethods.SEND_OPERATIONS, [data]);
     return await this.sendJson(body);
   }
 
