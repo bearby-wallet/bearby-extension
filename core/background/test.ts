@@ -23,6 +23,7 @@ import { Themes } from 'config/theme';
 import { ContactController } from 'core/background/contacts';
 import { SettingsControl } from './settings/settings';
 import { INVALID_BASE58, UINIQE_ADDRESS, UINIQE_NAME } from './contacts/errors';
+import { PaymentBuild } from './provider/transaction';
 
 
 (async function start() {
@@ -587,4 +588,20 @@ import { INVALID_BASE58, UINIQE_ADDRESS, UINIQE_NAME } from './contacts/errors';
 
   assert(contacts.list.length === 0, 'incorrect contacts length');
   /// ContactController
+
+  /// PaymentBuild
+  console.log('start testing PaymentBuild');
+  const operation0 = new PaymentBuild(
+    100000000000,
+    1000000000,
+    'A1muhtTqVkpzDJgwASYGya9XaY1GmVYfNeJwpobdmtDACTRTBpW',
+    1000
+  );
+  const bytes0 = await operation0.bytes();
+  const shouldBeBytes0 = '80d0dbc3f402e8070065f8808410080d020e07b6023a92cd68d4c275eb9e32c2f582fa5e5fd602aee88094ebdc03';
+
+  console.log(utils.hex.fromBytes(bytes0));
+
+  assert(shouldBeBytes0 === utils.hex.fromBytes(bytes0), 'invalid bytes for Payment operation');
+  /// PaymentBuild
 }());

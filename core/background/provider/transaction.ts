@@ -46,7 +46,6 @@ export class PaymentBuild {
   }
 }
 
-
 export class ExecuteSmartContractBuild {
   static operation = OperationsType.ExecuteSC;
 
