@@ -149,8 +149,6 @@ export class CallSmartContractBuild {
     const gasPrice = new VarintEncode().encode(this.gasPrice);
     const gasLimit = new VarintEncode().encode(this.gasLimit);
 
-    console.log(utils.hex.fromBytes(expirePeriod));
-
     return Uint8Array.from([
       ...fee,
       ...expirePeriod,

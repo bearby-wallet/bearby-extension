@@ -636,7 +636,6 @@ import { fromByteArray, toByteArray } from 'base64-js';
   ).bytes();
   const shouldBeBytes2 = '80d0dbc3f402e8070480ade204808095e789c604808095e789c6040a65f8808410080d020e07b6023a92cd68d4c275eb9e32c2f582fa5e5fd602aee8047465737409706172616d65746572';
   assert(shouldBeBytes2 === utils.hex.fromBytes(bytes2), 'invalid CallSmartContractBuild bytes');
-  
   /// CallSmartContractBuild
 
   // const pair = await account.fromPrivateKey('S1nDemFSELvbn67dKZBKNNu9ZmmSxY5jvRZmSKcK9AXc3Am8i4V');
