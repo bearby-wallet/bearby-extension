@@ -4,7 +4,7 @@ import { assert } from 'lib/assert';
 import { BrowserStorage } from 'lib/storage';
 import { utils } from 'aes-js';
 import { base58ToBinary, binaryToBase58 } from 'lib/crypto/base58';
-import { base58Encode, base58Decode, addressFromPublicKey, publicKeyBytesFromPrivateKey } from 'lib/address';
+import { base58Encode, base58Decode, addressFromPublicKey, publicKeyBytesFromPrivateKey, pubKeyFromBytes } from 'lib/address';
 import { VarintDecode, VarintEncode } from 'lib/varint';
 import { COUNT_NODES, VERSION_NUMBER } from 'config/common';
 import { AccountController } from 'core/background/account/account';
@@ -233,6 +233,12 @@ import { fromByteArray, toByteArray } from 'base64-js';
   assert(account.selectedAccount?.index === 0, 'Incorrect account index');
   assert(account.selectedAccount?.pubKey === 'b9f7fe423a31008e17bccf6a9c96b94bb1c11de0fd0184e3770a40c72c553113', 'Incorrect account pubKey');
   assert(account.selectedAccount?.base58 === 'A12BXgeMYsiCPQKFUoLpsx2U7Zr1TkFTQXa6PRwEKjdz9WVCvYGL', 'Incorrect account address');
+  
+  const base58PubKeyTest = await pubKeyFromBytes(
+    utils.hex.toBytes('b9f7fe423a31008e17bccf6a9c96b94bb1c11de0fd0184e3770a40c72c553113')
+  );
+
+  assert(base58PubKeyTest === 'P12QuKeLW7VBjHz95y1zBhSx32nRFSnxLuyBY3crJiMwzFphEymq', 'invalid pubKey base58');
 
   await account.select(0);
 
