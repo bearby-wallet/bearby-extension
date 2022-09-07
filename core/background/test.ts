@@ -339,7 +339,7 @@ import { fromByteArray, toByteArray } from 'base64-js';
   await netwrok.setConfig({
     ...netwrok.config,
     'custom': {
-      PROVIDERS: ['https://labnet.massa.net/api/v2'],
+      PROVIDERS: ['http://127.0.0.1:33035'],
       VERSION: 1
     }
   });
@@ -651,7 +651,7 @@ import { fromByteArray, toByteArray } from 'base64-js';
 
   /// Sign and send transaction
   console.log('Sign and send transaction testing');
-  await account.addAccountFromPrivateKey('S1nDemFSELvbn67dKZBKNNu9ZmmSxY5jvRZmSKcK9AXc3Am8i4V', 'lab');
+  await account.addAccountFromPrivateKey('S12nCJiCrcrKDnKokjp9sabimvKKccxJEaMs2NZvi1tsa2tZCLz1', 'local');
   // const result = await provider.getAddresses(pair.base58);
   const [{ result }] = await provider.getNodesStatus();
 
@@ -673,17 +673,11 @@ import { fromByteArray, toByteArray } from 'base64-js';
   const txDataObject = await provider.getTransactionData(bytesCompact, sigTest1, pari.pubKey);
   const [tx] = await provider.sendTransaction(txDataObject);
 
-  console.log(tx.result);
-
   assert(Boolean(tx.result), 'invalid resonse from node');
 
   const hash0 = tx.result ? tx.result[0] : '';
 
-  setTimeout(async() => {
-    const op = await provider.getOperations(hash0);
-
-    console.log(op);
-  }, 5000);
+  assert(Boolean(hash0), 'invalid hash of tx');
 
   /// Sign and send transaction
 }());
