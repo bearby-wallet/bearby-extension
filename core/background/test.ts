@@ -513,21 +513,25 @@ import { fromByteArray, toByteArray } from 'base64-js';
   assert(settings.state.currency === DEFAULT_CURRENCIES[0], 'incorrect selected currency');
   assert(settings.state.locale === Locales.Auto, 'incorrect selected locale');
   assert(settings.state.theme === Themes.System, 'incorrect selected themes');
+  assert(settings.state.periodOffset === PERIOD_OFFSET, 'incorrect selected periodOffset');
 
   await settings.sync();
 
   assert(settings.state.currency === DEFAULT_CURRENCIES[0], 'incorrect selected currency');
   assert(settings.state.locale === Locales.Auto, 'incorrect selected locale');
   assert(settings.state.theme === Themes.System, 'incorrect selected themes');
+  assert(settings.state.periodOffset === PERIOD_OFFSET, 'incorrect selected periodOffset');
 
   await settings.currencies.update(DEFAULT_CURRENCIES[11]);
   await settings.locale.setLocale(Locales.EN);
   await settings.phishing.togglePhishing();
   await settings.theme.setTheme(Themes.Light);
+  await settings.period.setPeriodOffset(10);
 
   assert(settings.state.currency === DEFAULT_CURRENCIES[11], 'incorrect selected currency');
   assert(settings.state.locale === Locales.EN, 'incorrect selected locale');
   assert(settings.state.theme === Themes.Light, 'incorrect selected themes');
+  assert(settings.state.periodOffset === 10, 'incorrect selected periodOffset');
 
   await settings.reset();
 
@@ -653,7 +657,7 @@ import { fromByteArray, toByteArray } from 'base64-js';
 
   assert(Boolean(result), 'node is down');
 
-  const expiryPeriod = Number(result?.next_slot.period) + PERIOD_OFFSET;
+  const expiryPeriod = Number(result?.next_slot.period) + settings.period.periodOffset;
   const bytesCompact = await new PaymentBuild(
     0,
     1,
@@ -669,13 +673,17 @@ import { fromByteArray, toByteArray } from 'base64-js';
   const txDataObject = await provider.getTransactionData(bytesCompact, sigTest1, pari.pubKey);
   const [tx] = await provider.sendTransaction(txDataObject);
 
+  console.log(tx.result);
+
   assert(Boolean(tx.result), 'invalid resonse from node');
 
   const hash0 = tx.result ? tx.result[0] : '';
-  const op = await provider.getOperations(hash0);
 
-  console.log(op);
+  setTimeout(async() => {
+    const op = await provider.getOperations(hash0);
 
+    console.log(op);
+  }, 5000);
 
   /// Sign and send transaction
 }());

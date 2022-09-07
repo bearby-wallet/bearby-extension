@@ -133,44 +133,46 @@ export interface JsonRPCResponseStakers extends JsonRPCResponse {
 }
 
 export interface OperationTransaction {
-  id: string; // Operation id
-  in_blocks: string[]; // Block ids
-  in_pool: boolean;
-  is_final: boolean;
-  operation: {
-    content: {
-      expire_period: number;// after that period, the operation become invalid forever
-      fee: string; // represent an Amount in coins
-      op: {
-        Transaction?: {
-          amount: string; // represent an Amount in coins
-          recipient_address: String
+  result?: {
+    id: string; // Operation id
+    in_blocks: string[]; // Block ids
+    in_pool: boolean;
+    is_final: boolean;
+    operation: {
+      content: {
+        expire_period: number;// after that period, the operation become invalid forever
+        fee: string; // represent an Amount in coins
+        op: {
+          Transaction?: {
+            amount: string; // represent an Amount in coins
+            recipient_address: String
+          };
+          RollBuy?: {
+            roll_count: number;
+          };
+          RollSell?: {
+            roll_count: number;
+          };
+          ExecuteSC?: {
+            data: number[]; // vec of bytes to execute
+            max_gas: number; // maximum amount of gas that the execution of the contract is allowed to cost.
+            coins: string; // represent an Amount in coins that are spent by consensus and are available in the execution context of the contract.
+            gas_price: string; // represent an Amount in coins, price per unit of gas that the caller is willing to pay for the execution.
+          };
+          CallSC?: {
+            target_addr: string; // Address
+            target_func: string; // Function name
+            param: string; // Parameter to pass to the function
+            max_gas: number;
+            sequential_coins: number; // Amount
+            parallel_coins: number; // Amount
+            gas_price: number; // Amount
+          };
         };
-        RollBuy?: {
-          roll_count: number;
-        };
-        RollSell?: {
-          roll_count: number;
-        };
-        ExecuteSC?: {
-          data: number[]; // vec of bytes to execute
-          max_gas: number; // maximum amount of gas that the execution of the contract is allowed to cost.
-          coins: string; // represent an Amount in coins that are spent by consensus and are available in the execution context of the contract.
-          gas_price: string; // represent an Amount in coins, price per unit of gas that the caller is willing to pay for the execution.
-        };
-        CallSC?: {
-          target_addr: string; // Address
-          target_func: string; // Function name
-          param: string; // Parameter to pass to the function
-          max_gas: number;
-          sequential_coins: number; // Amount
-          parallel_coins: number; // Amount
-          gas_price: number; // Amount
-        };
+        sender_public_key: string;
       };
-      sender_public_key: string;
-    };
-    signature: string;
+      signature: string;
+    }
   }
 }
 
