@@ -16,5 +16,6 @@ export enum Fields {
   PHISHING_DETECTION = 'phishing-detection-enabled',
   CONNECTIONS_LIST = 'dapp-connections-list',
   CONNECT_DAPP = 'for-connect-app',
-  CONTACTS_LIST = 'contacts-list'
+  CONTACTS_LIST = 'contacts-list',
+  TOKENS = 'tokens-list'
 }

@@ -25,6 +25,7 @@ import { SettingsControl } from './settings/settings';
 import { INVALID_BASE58, UINIQE_ADDRESS, UINIQE_NAME } from './contacts/errors';
 import { CallSmartContractBuild, ExecuteSmartContractBuild, PaymentBuild } from './provider/transaction';
 import { fromByteArray, toByteArray } from 'base64-js';
+import { TokenControl } from './tokens';
 
 
 (async function start() {
@@ -678,6 +679,21 @@ import { fromByteArray, toByteArray } from 'base64-js';
   const hash0 = tx.result ? tx.result[0] : '';
 
   assert(Boolean(hash0), 'invalid hash of tx');
-
   /// Sign and send transaction
+
+  /// TokenControl
+  console.log('start testing TokenControl');
+  const tokenControl = new TokenControl(netwrok, provider, account);
+
+  assert(tokenControl.field === 'tokens-list/custom', 'invalid token field');
+  assert(tokenControl.identities.length === 0, 'invalid token identities');
+
+  await tokenControl.sync();
+
+  assert(tokenControl.identities.length === 2, 'invalid token identities');
+
+  const balances = await tokenControl.getBalances();
+
+  console.log(balances);
+  /// TokenControl
 }());
