@@ -94,8 +94,6 @@ export class MassaControl {
   async sendJson(...body: RPCBody[]) {
     const request = this.provider.json(...body);
 
-    console.log(request);
-
     for (const provider of this.#network.providers) {
       try {
         const responce = await fetch(provider, request);

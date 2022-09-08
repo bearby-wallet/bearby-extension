@@ -26,3 +26,8 @@ export interface KeyPair {
   privKey: Uint8Array;
   base58: string;
 }
+
+export interface GuardType {
+  isEnable: boolean;
+  isReady: boolean;
+};

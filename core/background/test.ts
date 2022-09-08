@@ -695,9 +695,5 @@ import { TokenControl } from './tokens';
   const balances = await tokenControl.getBalances();
 
   console.log(balances);
-
-  const block = await provider.getBlocks('WTrKeWQfGgprZ2BBrRBkbUeefjR5QLkHnhZjtEoMDhqdmhJbf');
-
-  console.log(block);
   /// TokenControl
 }());
