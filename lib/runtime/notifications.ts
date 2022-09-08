@@ -17,7 +17,7 @@ export class Notification {
       const data: chrome.notifications.NotificationOptions<true> = {
         type: 'basic',
         title: this.#title,
-        iconUrl: Runtime.extension.getURL('/icons/icon128.png'),
+        iconUrl: Runtime.extension.getURL('/icons/128.png'),
         message: this.#message
       };
       Runtime.notifications.create(this.#url, data);
