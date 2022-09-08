@@ -1,0 +1,111 @@
+@import "../mixins";
+
+:global(button),
+:global(.btn) {
+  outline: none;
+  border: none;
+  cursor: pointer;
+
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+
+  border-color: var(--button-color);
+  background: var(--button-color);
+  color: var(--primary-color);
+
+  font-family: Demi;
+
+  font-size: 12pt;
+  line-height: 30pt;
+
+  width: inherit;
+
+  border-radius: 6px;
+
+  transition: background-color 250ms linear;
+
+  &:hover {
+    border-color: var(--primary-color);
+    background: var(--primary-color);
+    color: var(--background-color);
+  }
+}
+
+:global(button:disabled) {
+  opacity: 0.6;
+  cursor: auto;
+}
+
+:global(button.primary),
+:global(.btn.primary) {
+  border-color: var(--primary-color);
+  background: var(--primary-color);
+  color: var(--background-color);
+
+  // &:hover:enabled {
+  //   background: linear-gradient(rgba(0, 0, 0, 0.137), rgba(0, 0, 0, 0.137));
+  // }
+}
+
+:global(button.secondary),
+:global(.btn.secondary) {
+  border-color: var(--secondary-color);
+  background: var(--secondary-color);
+  color: var(--background-color);
+
+  &:hover, &:disabled {
+    border-color: var(--button-color);
+    background: var(--button-color);
+    color: var(--Text-color);
+  }
+}
+:global(button.warning),
+:global(.btn.warning) {
+  border-color: var(--warning-color);
+  background: var(--warning-color);
+  color: var(--background-color);
+}
+
+:global(button.loading), :global(span.loading) {
+  color: transparent !important;
+  pointer-events: none;
+  position: relative;
+
+  &::after {
+    animation: loading-button 500ms infinite linear;
+    border: .2rem solid var(--text-color);
+    border-radius: .8rem;
+    border-right-color: transparent;
+    border-top-color: transparent;
+    content: "";
+    display: block;
+    height: 1.2rem;
+    left: 50%;
+    margin-left: -.8rem;
+    margin-top: -.8rem;
+    position: absolute;
+    top: 50%;
+    width: 1.2rem;
+  }
+}
+
+:global(span.add) {
+  cursor: pointer;
+  width: 68px;
+  margin: 4px;
+  &:hover {
+    :global(svg > rect) {
+      fill: var(--background-color);
+    }
+    :global(svg > line) {
+      stroke: var(--success-color);
+    }
+  }
+}

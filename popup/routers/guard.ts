@@ -4,7 +4,7 @@ import { push } from 'svelte-spa-router';
 import guardStore from 'popup/store/guard';
 
 
-export const routerGuard = (e: { location: string; }) => {
+export const routerGuard = () => {
   const guard = get(guardStore);
 
   if (!guard.isReady) {

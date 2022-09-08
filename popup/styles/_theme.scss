@@ -1,0 +1,37 @@
+// @import "./fonts";
+
+:global(:root) {
+  --background-color: #fff;
+  --border-color:  #ac59ff;
+  --notification-color:  #ac59ff;
+  --card-color:  #ac59ff;
+  --button-color:  #ac59ff;
+  --text-color:  #ac59ff;
+  --modal-color:  #ac59ff;
+
+  --secondary-color: #ac59ff;
+  --primary-color: #ac59ff;
+  --success-color:  #ac59ff;
+  --danger-color: #ac59ff;
+  --warning-color: #ac59ff;
+  --muted-color: #ac59ff;
+  --hover-color: #ac59ff;
+}
+
+:global(body[theme="dark"]) {
+  --background-color:  #000000;
+  --border-color:  #ac59ff
+  --notification-color:  #ac59ff;
+  --card-color: #ac59ff;
+  --button-color: #ac59ff;
+  --text-color: #ac59ff;
+  --modal-color: #ac59ff;
+  
+  --primary-color: #ac59ff;
+  --secondary-color: #ac59ff;
+  --success-color: #ac59ff;
+  --danger-color: #ac59ff;
+  --warning-color: #ac59ff;
+  --muted-color: #ac59ff;
+  --hover-color: #ac59ff;
+}

@@ -1,8 +1,7 @@
 // @import "./fonts";
-// @import "./variables";
 @import "./mixins";
-// @import "./theme";
-// @import "./components/index";
+@import "./theme";
+@import "./components/index";
 
 :global(*),
 :global(*:after),
