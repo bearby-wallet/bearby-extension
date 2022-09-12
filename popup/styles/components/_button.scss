@@ -49,9 +49,9 @@
   background: var(--primary-color);
   color: var(--background-color);
 
-  // &:hover:enabled {
-  //   background: linear-gradient(rgba(0, 0, 0, 0.137), rgba(0, 0, 0, 0.137));
-  // }
+  &:hover:enabled {
+    background: linear-gradient(rgba(0, 0, 0, 0.137), rgba(0, 0, 0, 0.137));
+  }
 }
 
 :global(button.secondary),

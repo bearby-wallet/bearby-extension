@@ -20,14 +20,14 @@
 		<a
 			href="/restore"
 			use:link
-			class="btn secondary"
+			class="btn"
 		>
 			{$_('start.btn_restore')}
 		</a>
 		<a
 			href="/create"
 			use:link
-			class="btn primary"
+			class="btn"
 		>
 			{$_('start.btn_create')}
 		</a>
@@ -44,12 +44,13 @@
 
 	h1 {
 		color: var(--text-color);
-		@include fluid-font(320px, 1024px, 22px, 55px);
+		margin-block-end: 0;
+		@include fluid-font(320px, 600px, 22px, 55px);
 	}
 
 	h3 {
 		color: var(--text-color);
-		@include fluid-font(320px, 1024px, 16px, 30px);
+		@include fluid-font(320px, 600px, 16px, 30px);
 	}
 
 	main {

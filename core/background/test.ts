@@ -672,14 +672,19 @@ import { TokenControl } from './tokens';
   ]);
   const sigTest1 = await provider.sign(txBytes, pari);
   const txDataObject = await provider.getTransactionData(bytesCompact, sigTest1, pari.pubKey);
-  const [tx] = await provider.sendTransaction(txDataObject);
+  // const [tx0] = await provider.sendTransaction(txDataObject);
 
-  assert(Boolean(tx.result), 'invalid resonse from node');
+  // setTimeout(async() => {
+  //   const [tx1] = await provider.sendTransaction(txDataObject);
+  //   console.log(tx0, tx1);
+  // }, 20000);
 
-  const hash0 = tx.result ? tx.result[0] : '';
+  // assert(Boolean(tx.result), 'invalid resonse from node');
 
-  assert(Boolean(hash0), 'invalid hash of tx');
-  /// Sign and send transaction
+  // const hash0 = tx.result ? tx.result[0] : '';
+
+  // assert(Boolean(hash0), 'invalid hash of tx');
+  // /// Sign and send transaction
 
   /// TokenControl
   console.log('start testing TokenControl');

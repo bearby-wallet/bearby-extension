@@ -61,7 +61,8 @@ const popup = {
 		})
 	],
 	watch: {
-		clearScreen: false
+		clearScreen: false,
+		include: ["popup/**"]
 	}
 };
 const background = {

@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	import Router from 'svelte-spa-router';
 	import { onMount } from 'svelte';
 
@@ -21,7 +21,8 @@
 					withLocale: $localeStore
 				});
 			}
-		} catch {
+		} catch (err) {
+			console.error(err);
 			await setupI18n({
 				withLocale: Locales.EN
 			});
@@ -30,6 +31,7 @@
 		loaded = true;
 	});
 </script>
+
 
 {#if loaded}
 	<Router  {routes} />

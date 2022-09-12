@@ -3,7 +3,7 @@ import { routerGuard } from './guard';
 
 import Home from '../pages/Home.svelte';
 import LockPage from '../pages/Lock.svelte';
-import StartPage from '../pages/start.svelte';
+import StartPage from '../pages/Start.svelte';
 
 
 export default {
@@ -13,6 +13,14 @@ export default {
       routerGuard
     ]
   }),
-  '/lock': LockPage,
-  '/start': StartPage
+  '/lock': wrap({
+    component: LockPage,
+    conditions: [
+    ]
+  }),
+  '/start': wrap({
+    component: StartPage,
+    conditions: [
+    ]
+  })
 };
