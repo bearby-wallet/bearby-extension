@@ -1,1 +1,2 @@
-import './test';
+// import './test';
+import './background';
