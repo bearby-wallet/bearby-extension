@@ -10,6 +10,7 @@
 
   import BackBar from '../components/BackBar.svelte';
   import PickButton from '../components/PickButton.svelte';
+  import Toggle from '../components/Toggle.svelte';
 
   let length = 128;
   let words = [];
@@ -42,6 +43,11 @@
     }, 500);
   };
 
+  const handleToggle = () => {
+    length = length === 128 ? 256 : 128;
+    hanldeRandomWords();
+  };
+
   onMount(() => {
     hanldeRandomWords();
   });
@@ -59,10 +65,10 @@
     {$_('create.sub_title')}
   </h3>
   <div>
-    <!-- <SwitchButton
-      items={['12', '24']}
-      on:select={hanldeSelectNumber}
-    /> -->
+    <Toggle
+      checked={length === 256}
+      on:toggle={handleToggle}
+    />
   </div>
   <div class="wrapper">
     {#each words as w, i}
