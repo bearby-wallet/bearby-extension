@@ -8,6 +8,7 @@ export const MTypeTabContent = {
 
 export const MTypePopup = {
   GET_LATEST_BLOCK: `@/${app}/get-latest-block-number`,
+  GET_RANDOM_WORDS: `@/${app}/generate-random-words`
 };
 
 export const MTypeTab = {

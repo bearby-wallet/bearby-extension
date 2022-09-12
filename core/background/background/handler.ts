@@ -14,6 +14,8 @@ export function startBackground(core: BackgroundState) {
     switch (msg.type) {
       case MTypePopup.GET_LATEST_BLOCK:
         return true;
+      case MTypePopup.GET_RANDOM_WORDS:
+        return true;
       default:
         sendResponse(null);
         return true;

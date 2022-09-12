@@ -63,6 +63,13 @@ export class Guard {
     return this.#isReady;
   }
 
+  get state() {
+    return {
+      isEnable: this.isEnable,
+      isReady: this.isReady
+    };
+  }
+
   get encryptedMnemonic() {
     return this.#encryptMnemonic;
   }

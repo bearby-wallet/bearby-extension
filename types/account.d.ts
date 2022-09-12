@@ -31,3 +31,9 @@ export interface GuardType {
   isEnable: boolean;
   isReady: boolean;
 };
+
+interface WordsPayloadToEncrypt {
+  words: string;
+  password: string;
+  name: string;
+}

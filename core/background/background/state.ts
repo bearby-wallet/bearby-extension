@@ -18,6 +18,7 @@ export class BackgroundState {
 
   get state() {
     return {
+      guard: this.guard.state,
       settings: this.settings.state,
       netwrok: this.netwrok.state,
       wallet: this.account.wallet,
