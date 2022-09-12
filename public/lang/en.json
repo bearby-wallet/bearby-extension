@@ -6,7 +6,7 @@
     "btn_create": "Create"
   },
   "create": {
-    "title": "Generate secret phrase",
+    "title": "Generate Secret Phrase",
     "sub_title": "Remember your words in order!!!",
     "btns": {
       "refresh": "Randomize",
