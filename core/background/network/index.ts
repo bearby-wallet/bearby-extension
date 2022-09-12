@@ -35,6 +35,13 @@ export class NetworkControl {
     return this.config[this.selected].VERSION;
   }
 
+  get state() {
+    return {
+      selected: this.selected,
+      config: this.config
+    };
+  }
+
   async sync() {
     const data = await BrowserStorage.get(
       Fields.NETWROK_CONFIG,
