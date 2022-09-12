@@ -4,5 +4,23 @@
     "subt_title": "Let's get started.",
     "btn_restore": "Restore",
     "btn_create": "Create"
+  },
+  "create": {
+    "title": "Generate secret phrase",
+    "sub_title": "Remember your words in order!!!",
+    "btns": {
+      "refresh": "Randomize",
+      "continue": "Continue",
+      "print": "Print"
+    },
+    "print": [
+      "Please",
+      "<strong>DO NOT FORGET</strong> to save your mnemonic Secret Phrase. You will need your",
+      "<strong>Mnemonic Secret Phrase</strong> to restore your wallet.",
+      "Your Mnemonic words",
+      "<b>Do not lose it!</b> It cannot be recovered if you lose it.",
+      "<b>Do not share it!</b> Your funds will be stolen if you use this file on a phishing site.",
+      "<b>Make a backup!</b> Secure it like the millions of dollars it may one day be worth."
+    ]
   }
 }
