@@ -1,14 +1,13 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { push } from 'svelte-spa-router';
-  import { fly } from 'svelte/transition';
-  import flyTransition from 'popup/transitions/fly';
 	import { _ } from 'popup/i18n';
-	import { getRandomSeed } from "popup/backend/phrase";
-  import { printMnemonic } from 'lib/utils/printer';
-  import wordsStore from 'popup/store/words';
+	
+  import { getRandomWords } from "popup/backend/wallet";
+  import { printMnemonic } from "popup/utils/printer";
 
-  import SwitchButton from '../components/SwitchButton.svelte';
+  import wordsStore from "popup/store/words";
+
   import BackBar from '../components/BackBar.svelte';
   import PickButton from '../components/PickButton.svelte';
 
@@ -18,8 +17,8 @@
 	$: disabled = words.length < 12;
 
   const hanldeRandomWords = async() => {
-    const seed = await getRandomSeed(length);
-    words = seed.split(' ');
+    const mnemonic = await getRandomWords(length);
+    words = mnemonic.split(' ');
   };
   const hanldeSelectNumber = (e) => {
     const value = e.detail;
@@ -48,7 +47,7 @@
   });
 </script>
 
-<main in:fly={flyTransition.in}>
+<main>
   <BackBar
     length={3}
     selected={0}
@@ -60,10 +59,10 @@
     {$_('create.sub_title')}
   </h3>
   <div>
-    <SwitchButton
+    <!-- <SwitchButton
       items={['12', '24']}
       on:select={hanldeSelectNumber}
-    />
+    /> -->
   </div>
   <div class="wrapper">
     {#each words as w, i}

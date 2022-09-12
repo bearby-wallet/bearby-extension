@@ -15,7 +15,7 @@ import { utils } from 'aes-js';
 export class MnemonicController {
 
   async generateMnemonic(strength = 128) {
-    assert(strength % 32 === 0, INVALID_ENTROPY, Bip39Error);
+    assert(Boolean(strength % 32 === 0), INVALID_ENTROPY, Bip39Error);
 
     return await this.entropyToMnemonic(randomBytes(strength / 8));
   }

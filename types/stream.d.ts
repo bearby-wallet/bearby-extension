@@ -11,7 +11,12 @@ export interface CustomEvent extends Event {
 
 export interface SendResponseParams {
   resolve?: unknown;
-  reject?: unknown;
+  reject?: {
+    message: string;
+    name: string;
+    code?: number;
+    stack?: string;
+  };
 }
 
 export type StreamResponse = (params: SendResponseParams) => void;

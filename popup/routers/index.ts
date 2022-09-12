@@ -4,6 +4,7 @@ import { routerGuard } from './guard';
 import Home from '../pages/Home.svelte';
 import LockPage from '../pages/Lock.svelte';
 import StartPage from '../pages/Start.svelte';
+import CreatePage from '../pages/Create.svelte';
 
 
 export default {
@@ -20,6 +21,11 @@ export default {
   }),
   '/start': wrap({
     component: StartPage,
+    conditions: [
+    ]
+  }),
+  '/create': wrap({
+    component: CreatePage,
     conditions: [
     ]
   })

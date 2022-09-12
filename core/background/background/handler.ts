@@ -21,7 +21,7 @@ export function startBackground(core: BackgroundState) {
         wallet.getState(sendResponse);
         return true;
       case MTypePopup.GET_RANDOM_WORDS:
-        wallet.randomWords(msg.payload, sendResponse);
+        wallet.randomWords(msg.payload.length, sendResponse);
         return true;
       default:
         sendResponse(null);
