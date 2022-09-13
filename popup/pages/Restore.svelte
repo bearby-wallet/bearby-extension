@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { pop, push } from 'svelte-spa-router';
 	import { _ } from 'popup/i18n';
-  import { restorePhrase } from "popup/backend/wallet";
+  import { createWallet } from "popup/backend/wallet";
   import {
     MIN_PASSWORD_LEN,
     MAX_NAME_LEN,
@@ -26,8 +26,7 @@
     loading = true;
 
 		try {
-      // await restorePhrase(words, password);
-      // await createNextSeedAccount(name);
+      await createWallet(words, password, name);
       loading = false;
       push('/created');
 		} catch (err) {
@@ -91,7 +90,7 @@
       required
     >
     <button
-			class="primary"
+			class="outline"
       class:loading={loading}
 			disabled={disabled}
 		>

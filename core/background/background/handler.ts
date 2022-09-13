@@ -23,7 +23,7 @@ export function startBackground(core: BackgroundState) {
       case MTypePopup.GET_RANDOM_WORDS:
         wallet.randomWords(msg.payload.length, sendResponse);
         return true;
-        case MTypePopup.CREATE_WALLET:
+      case MTypePopup.CREATE_WALLET:
         wallet.initSeedWallet(msg.payload, sendResponse);
         return true;
       default:
