@@ -6,6 +6,8 @@ import LockPage from '../pages/Lock.svelte';
 import StartPage from '../pages/Start.svelte';
 import CreatePage from '../pages/Create.svelte';
 import WordsVerifyPage from '../pages/WordsVerify.svelte';
+import SetupAccountPage from '../pages/SetupAccount.svelte';
+import CreateSuccessPage from '../pages/CreateSuccess.svelte';
 
 
 export default {
@@ -32,6 +34,16 @@ export default {
   }),
   '/verify': wrap({
     component: WordsVerifyPage,
+    conditions: [
+    ]
+  }),
+  '/setup-account': wrap({
+    component: SetupAccountPage,
+    conditions: [
+    ]
+  }),
+  '/created': wrap({
+    component: CreateSuccessPage,
     conditions: [
     ]
   })

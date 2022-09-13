@@ -27,5 +27,35 @@
     "title": "Mnemonic words verify",
     "placeholder": "Pick words here in order and recreate your secret phrase.",
     "btn": "Continue"
+  },
+  "setup_acc": {
+    "title": "Account setup",
+    "name_placeholder": "Name of account (3-25 characters)",
+    "name_description": "A first account name.",
+    "pass_description": "A password required for encrypt your wallet."
+  },
+  "restore": {
+    "title": "Restore.",
+    "btn": "Continue",
+    "placeholder": "Input secret words, with a space between words.",
+    "pass_placeholder": "Password",
+    "conf_placeholder": "Confirm Password",
+    "pass_len_error": "Password error, max length is 6"
+  },
+  "wallet_created": {
+    "title": "Wallet is generated!",
+    "subt_title": "Your account has been created - Keep your secret phase safe, it’s your responsibility!",
+    "btn": "Start using!",
+    "tips": {
+      "title": "Tips on storing it safely",
+      "list": {
+        "0": "Save a backup in multiple places",
+        "1": "Never share the words with anyone",
+        "2": "Be careful of phising! bearby will never spontaneously ask for your secret phrase",
+        "3": "If you need to back up your secret phrase again, you can find it in Security",
+        "4": "If you ever have a question or see something fishy, contact us."
+      },
+      "warn": "bearby team cannot recover your secret words!"
+    }
   }
 }

@@ -66,7 +66,6 @@
   </div>
   <button
     class="outline"
-    disabled={disabled}
     on:click={() => push('/setup-account')}
   >
     {$_('verify.btn')}
@@ -81,7 +80,7 @@
     @include fluid-font(320px, 600px, 29px, 55px);
   }
   main {
-		background-color: var(--background-color);
+    background: inherit;
 		height: 100vh;
 
     @include flex-center-top-column;

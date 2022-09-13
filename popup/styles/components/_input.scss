@@ -1,0 +1,32 @@
+@import "../mixins";
+
+:global(input) {
+  outline: none;
+  border: none;
+  font-family: Demi;
+  background: var(--card-color);
+  color: var(--text-color);
+  border: solid 1px var(--card-color);
+  padding: 1.5vh;
+  height: 49px;
+  text-indent: 5px;
+
+  @include fluid-font(320px, 1024px, 13px, 16px);
+  @include border-radius(8px);
+
+  width: inherit;
+
+  &:focus {
+    border: solid 1px var(--text-color);
+  }
+}
+
+:global(input.error) {
+  color: var(--danger-color);
+  border-color: var(--danger-color);
+}
+
+:global(input.loading) {
+  @include loading-gradient(var(--background-color), var(--card-color));
+  border-color: var(--background-color);
+}

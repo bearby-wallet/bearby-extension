@@ -11,7 +11,8 @@ export const MTypePopup = {
   GET_LATEST_BLOCK: `@/${app}/get-latest-block-number`,
   GET_RANDOM_WORDS: `@/${app}/generate-random-words`,
 
-  GET_WALLET_STATE: `@/${app}/get-wallet-state`
+  GET_WALLET_STATE: `@/${app}/get-wallet-state`,
+  CREATE_WALLET: `@/${app}/create-wallet`
 };
 
 export const MTypeTab = {
