@@ -1,8 +1,9 @@
-import type { SendResponseParams } from "types/stream";
+import type { SendResponseParams, WalletState } from "types";
 
 import { MTypePopup } from "config/stream-keys";
 import { Message } from "lib/stream/message";
 import { warpMessage } from "lib/stream/warp-message";
+import { updateState } from "./store-update";
 
 
 export async function getRandomWords(n: number) {
@@ -24,6 +25,16 @@ export async function createWallet(words: string, password: string, name: string
       password
     }
   }).send();
-  console.log(data);
-  return warpMessage(data);
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve
+}
+
+export async function getWalletState() {
+  const data = await Message
+    .signal(MTypePopup.GET_WALLET_STATE)
+    .send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve
 }

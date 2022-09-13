@@ -7,3 +7,4 @@ export * from './massa';
 export * from './connections';
 export * from './contacts';
 export * from './token';
+export * from './wallet';

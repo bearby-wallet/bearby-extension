@@ -5,7 +5,7 @@
 	import { setupI18n } from 'popup/i18n';
   import routes from './routers';
 	
-	import localeStore from 'popup/store/locale';
+	import settingsStore from 'popup/store/settings';
 
 	import { Locales } from 'config/locale';
 
@@ -13,12 +13,13 @@
 	let loaded = false;
 
 	onMount(async () => {
+		const { locale } = $settingsStore;
 		try {
-			if ($localeStore === Locales.Auto) {
+			if (locale === Locales.Auto) {
 				await setupI18n();
 			} else {
 				await setupI18n({
-					withLocale: $localeStore
+					withLocale: locale
 				});
 			}
 		} catch (err) {

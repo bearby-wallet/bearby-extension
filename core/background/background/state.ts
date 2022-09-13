@@ -1,3 +1,5 @@
+import type { WalletState } from "types/wallet";
+
 import { AccountController } from "background/account";
 import { ContactController } from "background/contacts";
 import { Guard } from "background/guard";
@@ -16,7 +18,7 @@ export class BackgroundState {
   readonly massa = new MassaControl(this.netwrok, this.account);
   readonly tokens = new TokenControl(this.netwrok, this.massa, this.account);
 
-  get state() {
+  get state(): WalletState {
     return {
       guard: this.guard.state,
       settings: this.settings.state,
