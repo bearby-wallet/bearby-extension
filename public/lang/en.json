@@ -57,5 +57,12 @@
       },
       "warn": "bearby team cannot recover your secret words!"
     }
+  },
+  "lock": {
+    "title": "Welcome back!",
+    "placeholder": "Password",
+    "btn": "Unlock",
+    "error": "Wrong password!",
+    "restore": "Restore"
   }
 }

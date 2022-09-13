@@ -2,8 +2,10 @@ import { BackgroundState } from './state';
 import { startBackground } from './handler';
 
 
-(function(){
+(async function(){
   const core = new BackgroundState();
+
+  await core.sync();
 
   startBackground(core);
 }());

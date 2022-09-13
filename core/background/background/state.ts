@@ -27,4 +27,13 @@ export class BackgroundState {
       tokens: this.tokens.identities
     };
   }
+
+  async sync() {
+    await this.guard.sync();
+    await this.netwrok.sync();
+    await this.account.sync();
+    await this.tokens.sync();
+    await this.settings.sync();
+    await this.contacts.sync();
+  }
 }

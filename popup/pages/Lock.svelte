@@ -2,6 +2,7 @@
   import { tick, onMount } from 'svelte';
 	import { push } from 'svelte-spa-router';
 	import { _ } from 'popup/i18n';
+	import { linksExpand } from 'popup/mixins/link';
 
 	let inputEl;
 	let password: string | null;
@@ -47,7 +48,7 @@
 
 <main>
 	<img
-		src="/imgs/logo.webp"
+		src="/imgs/logo.png"
 		alt="logo"
 	>
 	<h1>
@@ -68,13 +69,13 @@
 			>
 		</label>
 		<button
-			class="primary"
+			class="outline"
 			class:loading={loading}
-			disabled={disabled}
+			disabled={disabled || error}
 		>
 			{$_('lock.btn')}
 		</button>
-		<span on:click={() => null}>
+		<span on:click={() => linksExpand('/start')}>
 			{$_('lock.restore')}
 		</span>
 	</form>
@@ -85,7 +86,7 @@
 
 	h1 {
 		color: var(--text-color);
-		@include fluid-font(320px, 1024px, 22px, 55px);
+		@include fluid-font(320px, 1024px, 32px, 55px);
 	}
 	span {
 		cursor: pointer;

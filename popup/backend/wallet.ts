@@ -18,7 +18,7 @@ export async function getRandomWords(n: number) {
 
 export async function createWallet(words: string, password: string, name: string) {
   const data = await new Message<SendResponseParams>({
-    type: MTypePopup.GET_WALLET_STATE,
+    type: MTypePopup.CREATE_WALLET,
     payload: {
       words,
       name,

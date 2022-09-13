@@ -31,8 +31,8 @@ export class BackgroundWallet {
 
   async initSeedWallet(payload: WordsPayloadToEncrypt, sendResponse: StreamResponse) {
     try {
-      await this.#core.guard.setupVault(payload.words, payload.password);
       await this.#core.account.reset();
+      await this.#core.guard.setupVault(payload.words, payload.password);
       await this.#core.account.addAccountFromSeed(this.#core.guard.seed, payload.name);
 
       sendResponse({

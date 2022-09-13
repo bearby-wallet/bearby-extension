@@ -66,6 +66,7 @@
   </div>
   <button
     class="outline"
+    disabled={disabled}
     on:click={() => push('/setup-account')}
   >
     {$_('verify.btn')}
