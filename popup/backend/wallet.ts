@@ -38,3 +38,7 @@ export async function getWalletState() {
   updateState(resolve as WalletState);
   return resolve
 }
+
+export async function restorePhrase() {
+
+}

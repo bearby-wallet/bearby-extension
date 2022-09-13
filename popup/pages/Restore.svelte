@@ -1,9 +1,7 @@
 <script lang="ts">
 	import { pop, push } from 'svelte-spa-router';
-  import { fly } from 'svelte/transition';
-  import flyTransition from 'popup/transitions/fly';
 	import { _ } from 'popup/i18n';
-  import { createNextSeedAccount, restorePhrase } from "popup/backend/wallet";
+  import { restorePhrase } from "popup/backend/wallet";
   import {
     MIN_PASSWORD_LEN,
     MAX_NAME_LEN,
@@ -28,8 +26,8 @@
     loading = true;
 
 		try {
-      await restorePhrase(words, password);
-      await createNextSeedAccount(name);
+      // await restorePhrase(words, password);
+      // await createNextSeedAccount(name);
       loading = false;
       push('/created');
 		} catch (err) {
@@ -50,7 +48,7 @@
 	};
 </script>
 
-<main in:fly={flyTransition.in}>
+<main>
   <NavClose title={$_('restore.title')}/>
   <form on:submit={handleSubmit}>
     <label>

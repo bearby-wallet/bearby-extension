@@ -8,6 +8,7 @@ import CreatePage from '../pages/Create.svelte';
 import WordsVerifyPage from '../pages/WordsVerify.svelte';
 import SetupAccountPage from '../pages/SetupAccount.svelte';
 import CreateSuccessPage from '../pages/CreateSuccess.svelte';
+import RestorePage from '../pages/Restore.svelte';
 
 
 export default {
@@ -44,6 +45,11 @@ export default {
   }),
   '/created': wrap({
     component: CreateSuccessPage,
+    conditions: [
+    ]
+  }),
+  '/restore': wrap({
+    component: RestorePage,
     conditions: [
     ]
   })
