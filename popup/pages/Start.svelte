@@ -20,14 +20,14 @@
 		<a
 			href="/restore"
 			use:link
-			class="btn"
+			class="btn outline"
 		>
 			{$_('start.btn_restore')}
 		</a>
 		<a
 			href="/create"
 			use:link
-			class="btn"
+			class="btn primary"
 		>
 			{$_('start.btn_create')}
 		</a>
@@ -54,7 +54,7 @@
 	}
 
 	main {
-		background-color: var(--background-color);
+		background: inherit;
 		height: 100vh;
 
 		@include flex-center-column;

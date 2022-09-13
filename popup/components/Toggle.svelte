@@ -41,11 +41,9 @@
       cursor: pointer;
       user-select: none;
 
-      background: var(--background-color);
       border-radius: 2em;
       padding: 2pt;
       transition: all .4s ease;
-      border: 1px solid var(--border-color);
 
       &:after,
       &:before {
@@ -77,11 +75,11 @@
   }
   .tgl-ios {
     + .tgl-btn {
-      background: var(--background-color);
+      background: transparent;
       border-radius: 2em;
       padding: 2pt;
       transition: all .4s ease;
-      border: 1px solid var(--border-color);
+      border: 1px solid var(--button-color);
       &:after {
         border-radius: 2em;
         background: var(--button-color);

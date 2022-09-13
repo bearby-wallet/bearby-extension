@@ -105,7 +105,7 @@
 <style lang="scss">
   @import "../styles/mixins";
   main {
-		background-color: var(--background-color);
+    background: inherit;
 		height: 100vh;
 
 		@include flex-center-top-column;

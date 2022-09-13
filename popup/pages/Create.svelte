@@ -64,7 +64,10 @@
   <h3>
     {$_('create.sub_title')}
   </h3>
-  <div>
+  <div class="sw">
+    <p>
+      {length === 128 ? 12 : 24}
+    </p>
     <Toggle
       checked={length === 256}
       on:toggle={handleToggle}
@@ -80,19 +83,19 @@
   </div>
   <div class="btns">
     <button
-      class="secondary"
+      class="primary"
       on:click={hanldeRandomWords}
     >
       {$_('create.btns.refresh')}
     </button>
     <button
-      class="secondary"
+      class="primary"
       on:click={handleOnPrint}
     >
       {$_('create.btns.print')}
     </button>
     <button
-      class="primary"
+      class="outline"
       disabled={disabled}
       on:click={hanldeOnContinue}
     >
@@ -104,21 +107,36 @@
 <style lang="scss">
 	@import "../styles/mixins";
   h1, h3 {
+    text-align: center;
     margin-block-start: 0;
     margin-block-end: 0.2em;
   }
   h1 {
-    font-size: 29pt;
+		@include fluid-font(320px, 600px, 29px, 55px);
   }
   h3 {
-    font-size: 16pt;
+    @include fluid-font(320px, 600px, 16px, 29px);
   }
   main {
-		background-color: var(--background-color);
+    background: inherit;
 		height: 100vh;
 
     @include flex-center-top-column;
 	}
+  div.sw {
+    max-height: calc(100vh - 30px);
+    width: 100%;
+    max-width: 450px;
+
+    padding: 5px;
+
+    display: flex;
+    justify-content: flex-end;
+
+    & > p {
+      margin: 5px;
+    }
+  }
   div.btns {
     width: 290px;
     @include flex-center-column;

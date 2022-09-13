@@ -22,5 +22,10 @@
       "<b>Do not share it!</b> Your funds will be stolen if you use this file on a phishing site.",
       "<b>Make a backup!</b> Secure it like the millions of dollars it may one day be worth."
     ]
+  },
+  "verify": {
+    "title": "Mnemonic words verify",
+    "placeholder": "Pick words here in order and recreate your secret phrase.",
+    "btn": "Continue"
   }
 }

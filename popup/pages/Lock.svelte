@@ -99,7 +99,7 @@
     width: calc(100vw - 90px);
 	}
 	main {
-		background-color: var(--background-color);
+		background: inherit;
 		height: 100vh;
 
 		@include flex-center-column;
