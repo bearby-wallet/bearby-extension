@@ -6,7 +6,8 @@
 
   import { linksExpand } from 'popup/mixins/link';
 
-	// import { removeAccount } from 'popup/backend/wallet';
+	import { removeAccount } from 'popup/backend/wallet';
+	import walletStore from 'popup/store/wallet';
 
   import Close from './icons/Close.svelte';
 	import TextElement from './TextElement.svelte';
@@ -16,10 +17,8 @@
 
   export let show = false;
 
-  let canRemove = false
-
-	// $: account = $walletStore.identities[$walletStore.selectedAddress];
-  // $: canRemove = !(account.index === 0 && account.type === AccountTypes.Seed);
+	$: account = $walletStore.identities[$walletStore.selectedAddress];
+  $: canRemove = !(account.index === 0 && account.type === AccountTypes.Seed);
 
   const onClose = () => {
     dispatch('close');
@@ -32,7 +31,7 @@
 
 <nav class:show={show}>
   <h1>
-    {'account.name'}
+    {account.name}
     <span on:click={onClose}>
       <Close />
     </span>

@@ -59,6 +59,24 @@ export class BackgroundWallet {
     }
   }
 
+  async removeAccount(sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+
+      await this.#core.account.remove(
+        this.#core.account.wallet.selectedAddress
+      );
+
+      sendResponse({
+        resolve: this.#core.state
+      });
+    } catch (err) {
+      sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
   async balanceUpdate(sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();

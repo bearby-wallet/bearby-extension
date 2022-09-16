@@ -35,6 +35,9 @@ export function startBackground(core: BackgroundState) {
       case MTypePopup.BALANCE_UPDATE:
         wallet.balanceUpdate(sendResponse);
         return true;
+      case MTypePopup.REMOVE_ACCOUNT:
+        wallet.removeAccount(sendResponse);
+        return true;
       default:
         sendResponse(null);
         return true;

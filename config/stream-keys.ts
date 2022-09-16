@@ -16,6 +16,8 @@ export const MTypePopup = {
   UNLOCK_WALLET: `@/${app}/unlock-wallet`,
   WALET_LOGOUT: `@/${app}/wallet-logout`,
 
+  REMOVE_ACCOUNT: `@/${app}/remove-account`,
+
   BALANCE_UPDATE: `@/${app}/balance-update`
 };
 
