@@ -32,6 +32,9 @@ export function startBackground(core: BackgroundState) {
       case MTypePopup.WALET_LOGOUT:
         wallet.logout(sendResponse);
         return true;
+      case MTypePopup.BALANCE_UPDATE:
+        wallet.balanceUpdate(sendResponse);
+        return true;
       default:
         sendResponse(null);
         return true;

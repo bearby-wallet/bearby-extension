@@ -64,5 +64,15 @@
     "btn": "Unlock",
     "error": "Wrong password!",
     "restore": "Restore"
+  },
+  "home": {
+    "btns": {
+      "send": "Send",
+      "receive": "Receive"
+    },
+    "clipboard": {
+      "copy": "Copy",
+      "copied": "Copied"
+    }
   }
 }

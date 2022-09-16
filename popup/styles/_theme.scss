@@ -8,6 +8,7 @@
   --text-negative: #fff;
   --muted-color: #D5D3EB;
   --card-color:  #ECFAFF;
+  --hover-color: #f3f3f890;
 
   --success-color:  #a4ec6d;
 
@@ -22,7 +23,6 @@
   --primary-color: #814BD9;
   --danger-color: #FF2C2E;
   --warning-color: #ac59ff;
-  --hover-color: #000000;
 }
 
 :global(body[theme="dark"]) {

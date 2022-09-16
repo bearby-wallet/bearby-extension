@@ -1,0 +1,61 @@
+<script lang="ts">
+  import { trim } from 'popup/filters/trim';
+  import { clipboardCopy } from 'popup/mixins/clipboard';
+	import { _ } from 'popup/i18n';
+
+	import walletStore from 'popup/store/wallet';
+
+  import Tooltip from './Tooltip.svelte';
+
+  let tip = $_('home.clipboard.copy');
+
+  $: account = $walletStore.identities[$walletStore.selectedAddress];
+
+  const handleOnCopy = () => {
+    clipboardCopy(account.base58);
+    tip = $_('home.clipboard.copied');
+    setTimeout(() => {
+      tip = $_('home.clipboard.copy');
+    }, 500);
+  };
+</script>
+
+<Tooltip
+  tip={tip}
+  bottom
+>
+  <div on:click={handleOnCopy}>
+    <h1>
+      {account.name}
+    </h1>
+    <p>
+      {trim(account.base58)}
+    </p>
+  </div>
+</Tooltip>
+
+<style lang="scss">
+  @import "../styles/mixins";
+  div {
+    text-align: center;
+    cursor: pointer;
+
+    padding: 8px;
+    margin: 5px;
+    border-radius: 8px;
+
+    & > h1 {
+      margin-block-start: 0;
+      margin-block-end: 0.2em;
+      font-size: clamp(0.8rem, 2vw, 1rem);
+    }
+    & > p {
+      font-size: 9pt;
+      color: var(--text-color);
+      margin: 0;
+    }
+    &:hover {
+      background-color: var(--hover-color);
+    }
+  }
+</style>

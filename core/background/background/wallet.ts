@@ -59,6 +59,23 @@ export class BackgroundWallet {
     }
   }
 
+  async balanceUpdate(sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+      const balances = await this.#core.tokens.getBalances();
+
+      console.log(balances);
+
+      return sendResponse({
+        resolve: this.#core.state
+      });
+    } catch (err) {
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
   async logout(sendResponse: StreamResponse) {
     await this.#core.guard.logout();
 

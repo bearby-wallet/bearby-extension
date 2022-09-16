@@ -14,7 +14,9 @@ export const MTypePopup = {
   GET_WALLET_STATE: `@/${app}/get-wallet-state`,
   CREATE_WALLET: `@/${app}/create-wallet`,
   UNLOCK_WALLET: `@/${app}/unlock-wallet`,
-  WALET_LOGOUT: `@/${app}/wallet-logout`
+  WALET_LOGOUT: `@/${app}/wallet-logout`,
+
+  BALANCE_UPDATE: `@/${app}/balance-update`
 };
 
 export const MTypeTab = {

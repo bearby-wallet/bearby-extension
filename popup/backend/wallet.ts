@@ -59,3 +59,12 @@ export async function logout() {
   updateState(resolve as WalletState);
   return resolve;
 }
+
+export async function balanceUpdate() {
+  const data = await Message
+    .signal(MTypePopup.BALANCE_UPDATE)
+    .send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}
