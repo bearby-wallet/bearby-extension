@@ -5,11 +5,10 @@ import { getWalletState } from './backend/wallet';
 let app = {};
 
 getWalletState()
-	.then(() => {
+	.finally(() => {
 		app = new App({
 			target: document.body
 		});
-	})
-	.catch(console.error);
+	});
 
 export default app;
