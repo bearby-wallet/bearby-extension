@@ -29,6 +29,9 @@ export function startBackground(core: BackgroundState) {
       case MTypePopup.UNLOCK_WALLET:
         wallet.unlock(msg.payload.password, sendResponse);
         return true;
+      case MTypePopup.WALET_LOGOUT:
+        wallet.logout(sendResponse);
+        return true;
       default:
         sendResponse(null);
         return true;

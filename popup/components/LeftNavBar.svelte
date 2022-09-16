@@ -1,0 +1,170 @@
+<script lang="ts">
+  import { createEventDispatcher } from 'svelte';
+  import { link } from 'svelte-spa-router';
+	import { _ } from 'popup/i18n';
+  import { AccountTypes } from 'config/account-type';
+
+  import { linksExpand } from 'popup/mixins/link';
+
+	// import { removeAccount } from 'popup/backend/wallet';
+
+  import Close from './icons/Close.svelte';
+	import TextElement from './TextElement.svelte';
+  import Toggle from './Toggle.svelte';
+
+  const dispatch = createEventDispatcher();
+
+  export let show = false;
+
+  let canRemove = false
+
+	// $: account = $walletStore.identities[$walletStore.selectedAddress];
+  // $: canRemove = !(account.index === 0 && account.type === AccountTypes.Seed);
+
+  const onClose = () => {
+    dispatch('close');
+  };
+  const onRemoveAccount = async () => {
+    await removeAccount();
+    onClose();
+  };
+</script>
+
+<nav class:show={show}>
+  <h1>
+    {'account.name'}
+    <span on:click={onClose}>
+      <Close />
+    </span>
+  </h1>
+  <hr />
+  <a href="/add-account" use:link>
+    <TextElement
+      title={$_('home.nav.options.add.title')}
+      description={$_('home.nav.options.add.description')}
+    />
+  </a>
+  <a href="/import-privkey" use:link>
+    <TextElement
+      title={$_('home.nav.options.import.title')}
+      description={$_('home.nav.options.import.description')}
+    />
+  </a>
+  <span on:click={() => linksExpand('/ledger-device-finder')}>
+    <TextElement
+      title={$_('home.nav.options.connect.title')}
+      description={$_('home.nav.options.connect.description')}
+    />
+  </span>
+  <hr />
+  {#if canRemove}
+    <span
+      class="remove"
+      on:click={onRemoveAccount}
+    >
+      <TextElement
+        title={$_('home.nav.options.remove.title')}
+        description={$_('home.nav.options.remove.description')}
+      />
+    </span>
+    <hr />
+  {/if}
+  <div class="toggles">
+    <div>
+      <b>
+        {$_('advanced.popup.title')}
+      </b>
+      <Toggle
+        checked={false}
+        on:toggle={() => null}
+      />
+    </div>
+  </div>
+</nav>
+<div
+  class="close"
+  class:show={show}
+  on:click={onClose}
+/>
+
+<style lang="scss">
+  @import "../styles/mixins";
+  :global(span.close:hover > svg > line) {
+    stroke: var(--primary-color) !important;
+	}
+  div.toggles {
+    width: 100%;
+
+    @include flex-column;
+    align-items: flex-end;
+
+    & > div {
+      padding-left: 15px;
+      padding-right: 15px;
+      margin-block-end: 5px;
+
+      @include flex-right-horiz;
+      align-items: center;
+
+      & > b {
+        margin: 8px;
+      }
+    }
+  }
+  div.close {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+
+    z-index: 4;
+
+    display: none;
+    backdrop-filter: blur(3px);
+    cursor: pointer;
+    background-color: #0000008f;
+
+    &.show {
+      display: block;
+    }
+  }
+  h1 {
+    margin-block-end: 0;
+    font-size: 15pt;
+    @include flex-between-row;
+
+    & > span {
+      cursor: pointer;
+      margin-right: 15px;
+    }
+  }
+  nav {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    padding-left: 15px;
+
+    display: none;
+    min-width: 270px;
+    max-width: 400px;
+    width: calc(100vw - 30px);
+    height: 100vh;
+    z-index: 5;
+
+    background-color: var(--background-color);
+
+    @include border-right-radius(16px);
+
+    &.show {
+      @include flex-left-column;
+    }
+    animation: back-in-left 0.4s;
+    animation-timing-function: cubic-bezier(.3,.17,.23,.96);
+  }
+  span {
+    cursor: pointer;
+  }
+</style>

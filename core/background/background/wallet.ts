@@ -68,6 +68,7 @@ export class BackgroundWallet {
   }
 
   getState(sendResponse: StreamResponse) {
+    console.log(this.#core.state);
     sendResponse({
       resolve: this.#core.state
     });

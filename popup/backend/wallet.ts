@@ -50,3 +50,12 @@ export async function unlockWallet(password: string) {
   updateState(resolve as WalletState);
   return resolve;
 }
+
+export async function logout() {
+  const data = await Message
+    .signal(MTypePopup.WALET_LOGOUT)
+    .send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}
