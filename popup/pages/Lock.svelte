@@ -3,6 +3,7 @@
 	import { push } from 'svelte-spa-router';
 	import { _ } from 'popup/i18n';
 	import { linksExpand } from 'popup/mixins/link';
+	import { unlockWallet } from 'popup/backend/wallet';
 
 	let inputEl;
 	let password: string | null;
@@ -33,7 +34,7 @@
 
 		try {
 			loading = true;
-			const state = false //; await unlockWallet(password);
+			const state = await unlockWallet(password);
 
 			if (state.guard.isEnable && state.guard.isReady) {
 				loading = false;

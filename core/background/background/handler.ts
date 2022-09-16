@@ -26,6 +26,9 @@ export function startBackground(core: BackgroundState) {
       case MTypePopup.CREATE_WALLET:
         wallet.initSeedWallet(msg.payload, sendResponse);
         return true;
+      case MTypePopup.UNLOCK_WALLET:
+        wallet.unlock(msg.payload.password, sendResponse);
+        return true;
       default:
         sendResponse(null);
         return true;

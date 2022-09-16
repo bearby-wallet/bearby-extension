@@ -27,7 +27,7 @@ export async function createWallet(words: string, password: string, name: string
   }).send();
   const resolve = warpMessage(data);
   updateState(resolve as WalletState);
-  return resolve
+  return resolve;
 }
 
 export async function getWalletState() {
@@ -36,8 +36,21 @@ export async function getWalletState() {
     .send();
   const resolve = warpMessage(data);
   updateState(resolve as WalletState);
-  return resolve
+  return resolve;
 }
+
+export async function unlockWallet(password: string) {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.UNLOCK_WALLET,
+    payload: {
+      password
+    }
+  }).send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}
+
 
 export async function restorePhrase() {
 

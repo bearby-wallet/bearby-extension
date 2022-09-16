@@ -2,14 +2,15 @@
 
 :global(:root) {
   --background-gradient: linear-gradient(180deg, #EAF0FD 12.15%, #EEDEDE 100%);
+  --background-color: #FFFFFF;
   --button-color:  #814BD9;
   --border-color:  #FF6768;
   --text-negative: #fff;
+  --muted-color: #D5D3EB;
 
   --success-color:  #a4ec6d;
 
 
-  --background-color: #F3F3F8;
   --border-color:  #FF6768;
   --notification-color:  #ECFAFF;
   --card-color:  #c8ff00;
@@ -21,7 +22,6 @@
   --primary-color: #814BD9;
   --danger-color: #FF2C2E;
   --warning-color: #ac59ff;
-  --muted-color: #91AEBE;
   --hover-color: #000000;
 }
 

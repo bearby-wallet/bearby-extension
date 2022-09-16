@@ -12,7 +12,8 @@ export const MTypePopup = {
   GET_RANDOM_WORDS: `@/${app}/generate-random-words`,
 
   GET_WALLET_STATE: `@/${app}/get-wallet-state`,
-  CREATE_WALLET: `@/${app}/create-wallet`
+  CREATE_WALLET: `@/${app}/create-wallet`,
+  UNLOCK_WALLET: `@/${app}/unlock-wallet`
 };
 
 export const MTypeTab = {
