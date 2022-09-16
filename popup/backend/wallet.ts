@@ -50,8 +50,3 @@ export async function unlockWallet(password: string) {
   updateState(resolve as WalletState);
   return resolve;
 }
-
-
-export async function restorePhrase() {
-
-}
