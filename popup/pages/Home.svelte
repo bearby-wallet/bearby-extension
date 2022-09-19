@@ -104,6 +104,7 @@
 <style lang="scss">
 	@import "../styles/mixins";
 	main {
+    background: inherit;
 		height: calc(100vh - 86px);
 		z-index: 3;
 
@@ -117,10 +118,9 @@
 		left: auto;
 		right: auto;
 		top: -47px;
-		opacity: 0.5;
+		opacity: 0.1;
 	}
 	section {
-		background-color: var(--background-color);
 		@include flex-center-top-column;
 	}
 	div.bar-wrapper {
@@ -129,7 +129,7 @@
 		@include flex-between-row;
 
 		& > span.burger {
-			width: 49px;
+			width: 43px;
 		}
 	}
 	button.action {
@@ -139,8 +139,8 @@
 	a.acc {
 		border: solid 2px var(--muted-color);
 
-		width: 49px;
-    height: 49px;
+		width: 43px;
+    height: 43px;
 
 		@include border-radius(200px);
 

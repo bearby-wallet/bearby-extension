@@ -6,7 +6,7 @@ export function generateBlockies(address: string, element: Document) {
     seed: address,
     color: '#ac59ff',
     bgcolor: '#000000',
-    size: 15,
+    size: 13,
     scale: 3
   });
 
