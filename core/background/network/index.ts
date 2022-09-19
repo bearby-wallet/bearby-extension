@@ -5,7 +5,6 @@ import { Fields } from 'config/fields';
 import { BrowserStorage, buildObject, StorageKeyValue } from 'lib/storage';
 import { assert } from 'lib/assert';
 import { FAIL_SYNC, INVALID_CONFIG, INVALID_NODES_COUNTER, INVALID_SELECTED, NetworkError } from './errors';
-import { COUNT_NODES } from 'config/common';
 
 
 const [mainnet] = NETWORK_KEYS;
@@ -13,14 +12,13 @@ const [mainnet] = NETWORK_KEYS;
 export class NetworkControl {
   #config = NETWORK;
   #selected = mainnet;
-  #count = COUNT_NODES;
 
   get config() {
     return this.#config;
   }
 
   get count() {
-    return this.#count;
+    return this.#config[this.selected].LIMIT;
   }
 
   get selected() {
@@ -45,8 +43,7 @@ export class NetworkControl {
   async sync() {
     const data = await BrowserStorage.get(
       Fields.NETWROK_CONFIG,
-      Fields.NETWROK_SELECTED,
-      Fields.NETWROK_NODES_COUNT
+      Fields.NETWROK_SELECTED
     ) as StorageKeyValue;
 
     try {
@@ -58,14 +55,6 @@ export class NetworkControl {
         this.#config = JSON.parse(data[Fields.NETWROK_CONFIG]);
       }
 
-      if (data[Fields.NETWROK_NODES_COUNT]) {
-        const count = Number(data[Fields.NETWROK_NODES_COUNT]);
-
-        if (!isNaN(count)) {
-          this.#count = count;
-        }
-      }
-
       assert(Boolean(this.providers && this.providers.length > 0), FAIL_SYNC, NetworkError);
     } catch {
       await this.reset();
@@ -75,12 +64,10 @@ export class NetworkControl {
   async reset() {
     this.#selected = mainnet;
     this.#config = NETWORK;
-    this.#count = COUNT_NODES;
 
     await BrowserStorage.set(
       buildObject(Fields.NETWROK_CONFIG, this.config),
-      buildObject(Fields.NETWROK_SELECTED, this.selected),
-      buildObject(Fields.NETWROK_NODES_COUNT, String(this.#count))
+      buildObject(Fields.NETWROK_SELECTED, this.selected)
     );
   }
 
@@ -120,10 +107,10 @@ export class NetworkControl {
   async setNodesCount(newCount: number) {
     assert(newCount > 0 && newCount < 255, INVALID_NODES_COUNTER, NetworkError);
 
-    this.#count = newCount;
+    this.#config[this.selected].LIMIT = newCount;
 
     await BrowserStorage.set(
-      buildObject(Fields.NETWROK_NODES_COUNT, String(this.#count))
+      buildObject(Fields.NETWROK_CONFIG, this.config)
     );
   }
 

@@ -56,6 +56,9 @@ export function startBackground(core: BackgroundState) {
       case MTypePopup.GET_NETWORK_CONFIG:
         network.getNetwrokConfig(sendResponse);
         return true;
+      case MTypePopup.SET_COUNT:
+        network.upadteCount(msg.payload.count, sendResponse);
+        return true;
       default:
         sendResponse({
           reject: 'unexpected method'

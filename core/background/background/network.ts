@@ -27,12 +27,26 @@ export class BackgroundNetwork {
     }
   }
 
+  async upadteCount(count: number, sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+
+      await this.#core.netwrok.setNodesCount(count);
+
+      return sendResponse({
+        resolve: this.#core.state
+      });
+    } catch (err) {
+      console.error(err);
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
   async getNetwrokConfig(sendResponse: StreamResponse) {
     return sendResponse({
-      resolve: {
-        config: this.#core.netwrok.config,
-        count: this.#core.netwrok.count
-      }
+      resolve: this.#core.netwrok.config
     });
   }
 }

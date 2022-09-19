@@ -11,11 +11,15 @@
   import netwrokStore from 'popup/store/netwrok';
   import settingsStore from 'popup/store/settings';
 
-  import { selectNetwrok, getNetworkConfig } from 'popup/backend/netwrok';
+  import {
+    selectNetwrok,
+    getNetworkConfig,
+    updateCount
+  } from 'popup/backend/netwrok';
 
   const [mainnet, testnet, custom] = NETWORK_KEYS;
 
-  let networkState;
+  let networkConfig;
   let periodOffset = $settingsStore.periodOffset;
 
   async function handleOnSelectNet(event) {
@@ -33,16 +37,19 @@
   async function handleInputCount(event) {
     const count = Number(event.target.value);
 
-    if (count > networkState.config[$netwrokStore].PROVIDERS.length) {
-      networkState.count = networkState.config[$netwrokStore].PROVIDERS.length;
+    if (count > networkConfig[$netwrokStore].PROVIDERS.length) {
+      networkConfig[$netwrokStore].LIMIT = networkConfig[$netwrokStore].PROVIDERS.length;
     } else if (count <= 0) {
-      networkState.count = COUNT_NODES;
+      networkConfig[$netwrokStore].LIMIT = COUNT_NODES;
     } else {
-      networkState.count = count;
+      networkConfig[$netwrokStore].LIMIT = count;
     }
+
+    await updateCount(networkConfig[$netwrokStore].LIMIT);
   }
 
-  async function handleAddNode() {
+  async function handleAddNode(e) {
+    e.preventDefault();
   }
 
   async function handleRemoveNode() {
@@ -50,7 +57,9 @@
   }
 
   onMount(async() => {
-    networkState = await getNetworkConfig();
+    networkConfig = await getNetworkConfig();
+    console.log(networkConfig[$netwrokStore]);
+    
   });
 </script>
 
@@ -73,14 +82,14 @@
 			</select>
 		</Jumbotron>
   </div>
-  {#if networkState}
+  {#if networkConfig}
     <div>
       <Jumbotron
         title={$_('netwrok.config.title')}
         description={$_('netwrok.config.description')}
       >
         <select on:input={handleSortHttps}>
-          {#each networkState.config[$netwrokStore].PROVIDERS as http}
+          {#each networkConfig[$netwrokStore].PROVIDERS as http}
             <option value={http}>
               {http}
             </option>
@@ -108,9 +117,9 @@
         <div class="input">
           <label>
             <input
-              bind:value={networkState.count}
+              bind:value={networkConfig[$netwrokStore].LIMIT}
               type="number"
-              max={networkState.config[$netwrokStore].PROVIDERS.length}
+              max={networkConfig[$netwrokStore].PROVIDERS.length}
               min={1}
               on:input={handleInputCount}
             >

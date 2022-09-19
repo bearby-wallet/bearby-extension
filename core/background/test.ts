@@ -298,7 +298,8 @@ import { TokenControl } from './tokens';
     ...netwrok.config,
     'custom': {
       PROVIDERS: ['localhost:3333', 'localhost:2355', 'localhost:634', '127.0.0.1:80'],
-      VERSION: 1
+      VERSION: 1,
+      LIMIT: COUNT_NODES
     }
   });
 
@@ -341,7 +342,8 @@ import { TokenControl } from './tokens';
     ...netwrok.config,
     'custom': {
       PROVIDERS: ['http://127.0.0.1:33035'],
-      VERSION: 1
+      VERSION: 1,
+      LIMIT: COUNT_NODES
     }
   });
   const provider = new MassaControl(netwrok, account);

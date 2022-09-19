@@ -2,6 +2,7 @@ export interface NetwrokConfig {
   [key: string]: {
     PROVIDERS: string[];
     VERSION: number;
+    LIMIT: number;
   };
 }
 

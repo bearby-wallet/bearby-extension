@@ -27,3 +27,15 @@ export async function getNetworkConfig() {
     count: number;
   };
 }
+
+export async function updateCount(count: number) {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.SET_COUNT,
+    payload: {
+      count
+    }
+  }).send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}
