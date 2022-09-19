@@ -142,7 +142,6 @@ export class BackgroundWallet {
         resolve: this.#core.state
       });
     } catch (err) {
-      console.error(err);
       return sendResponse({
         reject: (err as BaseError).serialize()
       });

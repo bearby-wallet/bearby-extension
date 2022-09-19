@@ -14,11 +14,13 @@
   import {
     selectNetwrok,
     getNetworkConfig,
-    updateCount
+    updateCount,
+    addNodeAPI
   } from 'popup/backend/netwrok';
 
   const [mainnet, testnet, custom] = NETWORK_KEYS;
 
+  let nodeURL = '';
   let networkConfig;
   let periodOffset = $settingsStore.periodOffset;
 
@@ -30,26 +32,37 @@
 
   async function handleSortHttps(event) {
     const http = String(event.target.value);
-    // var valid = /^(ftp|http|https):\/\/[^ "]+$/.test(url);
     console.log(http);
   }
 
   async function handleInputCount(event) {
     const count = Number(event.target.value);
 
-    if (count > networkConfig[$netwrokStore].PROVIDERS.length) {
-      networkConfig[$netwrokStore].LIMIT = networkConfig[$netwrokStore].PROVIDERS.length;
-    } else if (count <= 0) {
+    try {
+      if (count > networkConfig[$netwrokStore].PROVIDERS.length) {
+        networkConfig[$netwrokStore].LIMIT = networkConfig[$netwrokStore].PROVIDERS.length;
+      } else if (count <= 0) {
+        networkConfig[$netwrokStore].LIMIT = COUNT_NODES;
+      } else {
+        networkConfig[$netwrokStore].LIMIT = count;
+      }
+      await updateCount(networkConfig[$netwrokStore].LIMIT);
+    } catch {
       networkConfig[$netwrokStore].LIMIT = COUNT_NODES;
-    } else {
-      networkConfig[$netwrokStore].LIMIT = count;
+      await updateCount(COUNT_NODES);
     }
-
-    await updateCount(networkConfig[$netwrokStore].LIMIT);
   }
 
   async function handleAddNode(e) {
     e.preventDefault();
+
+    try {
+      await addNodeAPI(nodeURL);
+      networkConfig = await getNetworkConfig();
+      nodeURL = '';
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   async function handleRemoveNode() {
@@ -58,8 +71,6 @@
 
   onMount(async() => {
     networkConfig = await getNetworkConfig();
-    console.log(networkConfig[$netwrokStore]);
-    
   });
 </script>
 
@@ -95,19 +106,22 @@
             </option>
           {/each}
         </select>
-        {#if $netwrokStore === custom}
+        {#if $netwrokStore === custom && networkConfig[$netwrokStore].PROVIDERS.length > 1}
           <button
             class="outline"
             on:click={handleRemoveNode}
           >
             {$_('netwrok.config.remove')}
           </button>
+        {/if}
+        {#if $netwrokStore === custom}
           <form
             class="input"
             on:submit={handleAddNode}
           >
             <label>
               <input
+                bind:value={nodeURL}
                 type="url"
                 placeholder={$_('netwrok.config.add_placeholder')}
               >

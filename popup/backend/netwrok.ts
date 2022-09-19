@@ -39,3 +39,15 @@ export async function updateCount(count: number) {
   updateState(resolve as WalletState);
   return resolve;
 }
+
+export async function addNodeAPI(node: string) {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.ADD_NODE,
+    payload: {
+      node
+    }
+  }).send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}

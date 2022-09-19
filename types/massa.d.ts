@@ -66,63 +66,12 @@ export interface JsonRPCResponseNodeStatus extends JsonRPCResponse {
 }
 
 export interface AddressInfo {
-  address: string;
-  block_draws: Array<string>;
-  blocks_created: Array<string>;
-  candidate_balance_info: string;
-  candidate_datastore_keys: Array<string>;
-  endorsement_draws: Array<string>;
-  final_balance_info: string;
-  final_datastore_keys: Array<string>;
-  involved_in_endorsements: Array<string>;
-  involved_in_operations: Array<string>;
-  ledger_info: {
-      candidate_ledger_info: {
-          balance: string;
-      },
-      final_ledger_info: {
-          balance: string;
-      },
-      locked_balance: string;
-  },
-  production_stats: [
-      {
-          cycle: number;
-          is_final: boolean;
-          nok_count: number;
-          ok_count: number;
-      },
-      {
-          cycle: number;
-          is_final: boolean;
-          nok_count: number;
-          ok_count: number;
-      },
-      {
-          cycle: number;
-          is_final: boolean;
-          nok_count: number;
-          ok_count: number;
-      },
-      {
-          cycle: number;
-          is_final: boolean;
-          nok_count: number;
-          ok_count: number;
-      },
-      {
-          cycle: number;
-          is_final: boolean;
-          nok_count: number;
-          ok_count: number;
-      }
-  ],
-  rolls: {
-      active_rolls: number;
-      candidate_rolls: number;
-      final_rolls: number;
-  },
-  thread: number;
+  final_parallel_balance: string;
+  final_roll_count: number;
+  final_sequential_balance: string;
+  candidate_parallel_balance: string;
+  candidate_roll_count: number;
+  candidate_sequential_balance: string;
 }
 
 export interface JsonRPCResponseNodeStatusAddresses extends JsonRPCResponse {

@@ -1,3 +1,4 @@
+import { assert } from "lib/assert";
 import type { BaseError } from "lib/error";
 import type { StreamResponse } from "types";
 import type { BackgroundState } from "./state";
@@ -32,6 +33,23 @@ export class BackgroundNetwork {
       this.#core.guard.checkSession();
 
       await this.#core.netwrok.setNodesCount(count);
+
+      return sendResponse({
+        resolve: this.#core.state
+      });
+    } catch (err) {
+      console.error(err);
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
+  async addNode(node: string, sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+
+      await this.#core.netwrok.addProvider(node);
 
       return sendResponse({
         resolve: this.#core.state

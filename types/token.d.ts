@@ -10,6 +10,5 @@ export interface Balance {
   [key: string]: {
     candidate: string;
     final: string;
-    locked: string;
   }
 }

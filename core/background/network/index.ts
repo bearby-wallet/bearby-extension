@@ -4,7 +4,7 @@ import { NETWORK, NETWORK_KEYS } from 'config/network';
 import { Fields } from 'config/fields';
 import { BrowserStorage, buildObject, StorageKeyValue } from 'lib/storage';
 import { assert } from 'lib/assert';
-import { FAIL_SYNC, INVALID_CONFIG, INVALID_NODES_COUNTER, INVALID_SELECTED, NetworkError } from './errors';
+import { FAIL_SYNC, INVALID_CONFIG, INVALID_NODES_COUNTER, INVALID_SELECTED, NetworkError, UNIQUE_PROVIDER } from './errors';
 
 
 const [mainnet] = NETWORK_KEYS;
@@ -95,9 +95,25 @@ export class NetworkControl {
     for (const key in newConfig) {
       assert(Boolean(newConfig[key].PROVIDERS), INVALID_CONFIG, NetworkError);
       assert(!isNaN(Number(newConfig[key].VERSION)), INVALID_CONFIG, NetworkError);
+      assert(!isNaN(Number(newConfig[key].LIMIT)), INVALID_CONFIG, NetworkError);
     }
 
     this.#config = newConfig;
+
+    await BrowserStorage.set(
+      buildObject(Fields.NETWROK_CONFIG, this.config)
+    );
+  }
+
+  async addProvider(node: string) {
+    const providers = this.config[this.selected].PROVIDERS;
+    const unique = providers.some(
+      (n) => n.toLowerCase() === node.toLowerCase()
+    );
+
+    assert(!unique, UNIQUE_PROVIDER, NetworkError);
+
+    this.#config[this.selected].PROVIDERS.push(node);
 
     await BrowserStorage.set(
       buildObject(Fields.NETWROK_CONFIG, this.config)

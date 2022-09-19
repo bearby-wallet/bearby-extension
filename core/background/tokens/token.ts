@@ -69,17 +69,15 @@ export class TokenControl {
     if (resonses.result) {
       for (let index = 0; index < resonses.result.length; index++) {
         const resonse = resonses.result[index];
-  
+
         balances.push({
           [XMA.base58]: {
-            final: resonse.ledger_info.final_ledger_info.balance,
-            candidate: resonse.ledger_info.candidate_ledger_info.balance,
-            locked: resonse.ledger_info.locked_balance
+            final: resonse.final_sequential_balance,
+            candidate: resonse.candidate_sequential_balance
           },
           [ROLL.base58]: {
-            final: String(resonse.rolls.final_rolls),
-            candidate: String(resonse.rolls.candidate_rolls),
-            locked: String(resonse.rolls.active_rolls)
+            final: String(resonse.final_roll_count),
+            candidate: String(resonse.candidate_roll_count)
           }
         });
       }
