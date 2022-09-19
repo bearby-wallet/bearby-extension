@@ -1,5 +1,5 @@
 import type { BaseError } from "lib/error";
-import type { WordsPayloadToEncrypt } from "types/account";
+import type { KeyAccountPayload, WordsPayloadToEncrypt } from "types/account";
 import type { StreamResponse } from "types/stream";
 import type { BackgroundState } from "./state";
 
@@ -100,6 +100,25 @@ export class BackgroundWallet {
       await this.#core.account.addAccountFromSeed(
         this.#core.guard.seed,
         name
+      );
+
+      sendResponse({
+        resolve: this.#core.state
+      });
+    } catch (err) {
+      sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
+  async restoreKey(payload: KeyAccountPayload, sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+
+      await this.#core.account.addAccountFromPrivateKey(
+        payload.key,
+        payload.name
       );
 
       sendResponse({

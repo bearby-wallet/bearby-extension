@@ -101,3 +101,16 @@ export async function createNextSeedAccount(name: string) {
   updateState(resolve as WalletState);
   return resolve;
 }
+
+export async function restoreSecretKey(key: string, name: string) {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.RESTORE_KEY,
+    payload: {
+      name,
+      key
+    }
+  }).send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}

@@ -32,8 +32,13 @@ export interface GuardType {
   isReady: boolean;
 };
 
-interface WordsPayloadToEncrypt {
+export interface WordsPayloadToEncrypt {
   words: string;
   password: string;
   name: string;
+}
+
+export interface KeyAccountPayload {
+  name: string;
+  key: string;
 }

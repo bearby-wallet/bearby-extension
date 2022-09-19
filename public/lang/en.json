@@ -96,5 +96,9 @@
     "title": "Accounts",
     "no_accounts": "No accounts with name:",
     "placeholder": "Search"
+  },
+  "restore_secret": {
+    "title": "Secret Key",
+    "placeholder": "Enter Secret key"
   }
 }

@@ -19,6 +19,7 @@ export const MTypePopup = {
   REMOVE_ACCOUNT: `@/${app}/remove-account`,
   SELECT_ACCOUNT: `@/${app}/select-account`,
   ADD_ACCOUNT: `@/${app}/add-account`,
+  RESTORE_KEY: `@/${app}/restore-key`,
 
   BALANCE_UPDATE: `@/${app}/balance-update`
 };

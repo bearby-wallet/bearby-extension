@@ -43,7 +43,7 @@
       description={$_('home.nav.options.add.description')}
     />
   </a>
-  <a href="/import-privkey" use:link>
+  <a href="/import" use:link>
     <TextElement
       title={$_('home.nav.options.import.title')}
       description={$_('home.nav.options.import.description')}

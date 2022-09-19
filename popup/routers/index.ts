@@ -4,6 +4,7 @@ import { routerGuard } from './guard';
 import Home from '../pages/Home.svelte';
 import AccountsPage from '../pages/Accounts.svelte';
 import AddSeedAccountPage from '../pages/AddAccount.svelte';
+import RestorePrivateKeyPage from '../pages/KeyRestore.svelte';
 
 import LockPage from '../pages/Lock.svelte';
 import StartPage from '../pages/Start.svelte';
@@ -29,6 +30,12 @@ export default {
   }),
   '/add': wrap({
     component: AddSeedAccountPage,
+    conditions: [
+      routerGuard
+    ]
+  }),
+  '/import': wrap({
+    component: RestorePrivateKeyPage,
     conditions: [
       routerGuard
     ]
