@@ -6,6 +6,7 @@
   import { viewIcon } from 'popup/utils/icon-view';
 
   import walletStore from 'popup/store/wallet';
+  import settingsStore from 'popup/store/settings';
 
   const dispatch = createEventDispatcher();
 
@@ -41,7 +42,7 @@
       {formatNumber(balance)}
     </p>
     <p class="conv">
-      {formatNumber(converted)}
+      {formatNumber(converted, $settingsStore.currency)}
     </p>
   </div>
   <div class="img-wrapper">
