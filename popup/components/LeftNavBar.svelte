@@ -49,13 +49,6 @@
       description={$_('home.nav.options.import.description')}
     />
   </a>
-  <span on:click={() => linksExpand('/ledger-device-finder')}>
-    <TextElement
-      title={$_('home.nav.options.connect.title')}
-      description={$_('home.nav.options.connect.description')}
-    />
-  </span>
-  <hr />
   {#if canRemove}
     <span
       class="remove"

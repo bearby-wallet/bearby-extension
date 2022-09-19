@@ -73,6 +73,22 @@
     "clipboard": {
       "copy": "Copy",
       "copied": "Copied"
+    },
+    "nav": {
+      "options": {
+        "add": {
+          "title": "Add account",
+          "description": "Generate next account from secret phrase."
+        },
+        "import": {
+          "title": "Import account",
+          "description": "Restore your account from PrivateKey."
+        },
+        "remove": {
+          "title": "Remove account.",
+          "description": "Remove/Hide your selected account."
+        }
+      }
     }
   },
   "accounts": {

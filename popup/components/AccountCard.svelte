@@ -13,12 +13,14 @@
 	import { uuidv4 } from 'lib/crypto/uuid';
 
   import settingsStore from 'popup/store/settings';
+  import tokensStore from 'popup/store/tokens';
 
 
   const uid = uuidv4();
 
   export let account: Account;
 
+  $: massa = $tokensStore[0];
   $: balance = account.tokens && account.tokens[ZERO_ADDRESS] ?
     account.tokens[ZERO_ADDRESS].final : 0;
 
@@ -42,10 +44,10 @@
     </div>
     <div>
       <h2>
-        {formatNumber(balance, $settingsStore.currency)}
+        {formatNumber(balance, massa.symbol)}
       </h2>
       <p>
-        0
+        {formatNumber(0, $settingsStore.currency)}
       </p>
     </div>
   </div>
@@ -66,6 +68,9 @@
       width: 100%;
 
       @include flex-between-row;
+    }
+    & > div > div:nth-of-type(2) {
+      text-align: right;
     }
   }
 </style>
