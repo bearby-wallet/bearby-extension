@@ -77,6 +77,22 @@ export class BackgroundWallet {
     }
   }
 
+  async selectAccount(index: number, sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+
+      await this.#core.account.select(index);
+
+      sendResponse({
+        resolve: this.#core.state
+      });
+    } catch (err) {
+      sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
   async balanceUpdate(sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();

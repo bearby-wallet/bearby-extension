@@ -77,3 +77,15 @@ export async function removeAccount() {
   updateState(resolve as WalletState);
   return resolve;
 }
+
+export async function selectAccount(index: number) {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.SELECT_ACCOUNT,
+    payload: {
+      index
+    }
+  }).send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}

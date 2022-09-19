@@ -17,6 +17,7 @@ export const MTypePopup = {
   WALET_LOGOUT: `@/${app}/wallet-logout`,
 
   REMOVE_ACCOUNT: `@/${app}/remove-account`,
+  SELECT_ACCOUNT: `@/${app}/select-account`,
 
   BALANCE_UPDATE: `@/${app}/balance-update`
 };

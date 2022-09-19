@@ -8,8 +8,11 @@
 	import NavClose from '../components/NavClose.svelte';
 	import AccountsModal from '../modals/Accounts.svelte';
 
+	import { selectAccount } from 'popup/backend/wallet';
+
+
 	const onSelectAccount = async ({ detail }) => {
-		console.log(detail);
+		await selectAccount(detail);
 		push('/');
 	};
 </script>

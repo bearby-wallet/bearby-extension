@@ -6,6 +6,7 @@
 	import AccountCard from '../components/AccountCard.svelte';
 	import SearchBox from '../components/SearchBox.svelte';
 
+
   const dispatch = createEventDispatcher();
 
   export let list = [];
@@ -41,11 +42,11 @@
 {/if}
 <ul>
 	{#each identities as account, index}
-		<li on:click={() => onSelectAccount(account)}>
-			<AccountCard
-				account={account}
-				selected={account.base58 === selectedAccount.base58}
-			/>
+		<li
+			class:selected={account.base58 === selectedAccount.base58}
+			on:click={() => onSelectAccount(account)}
+		>
+			<AccountCard account={account} />
 		</li>
 	{/each}
 </ul>
@@ -73,6 +74,10 @@
 			padding-right: 10px;
 
 			@include flex-between-row;
+
+			&.selected {
+				border: solid 1px var(--primary-color);
+			}
 
 			&:hover {
 				border: solid 1px var(--primary-color);
