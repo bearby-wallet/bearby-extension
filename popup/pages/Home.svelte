@@ -6,6 +6,7 @@
 	import TopBar from '../components/TopBar.svelte';
 	import LeftNavBar from '../components/LeftNavBar.svelte';
 	import Burger from '../components/Burger.svelte';
+	import TokenCard from '../components/TokenCard.svelte';
 	import CopyAccount from '../components/CopyAccount.svelte';
 
 	import { balanceUpdate } from 'popup/backend/wallet';
@@ -13,6 +14,7 @@
 	import { generateBlockies } from 'popup/mixins/blockies';
 
 	import walletStore from 'popup/store/wallet';
+	import tokensStore from 'popup/store/tokens';
 
 	let uuid = uuidv4();
 	let loading = false;
@@ -73,6 +75,29 @@
 				<div id={uuid}/>
 			</a>
 		</div>
+		<div class="btns">
+			<button
+				class="action primary"
+				on:click={() => push(`/send/`)}
+			>
+				{$_('home.btns.send')}
+			</button>
+			<button
+				class="action primary"
+				on:click={() => push('/account')}
+			>
+				{$_('home.btns.receive')}
+			</button>
+		</div>
+		<div class="wrapper">
+			{#each $tokensStore as token, index}
+        <TokenCard
+					token={token}
+					loading={loading}
+					on:select={() => push(`/send/${index}`)}
+				/>
+      {/each}
+		</div>
 	</main>
 </section>
 
@@ -107,6 +132,10 @@
 			width: 49px;
 		}
 	}
+	button.action {
+		min-width: 120px;
+		line-height: 30px;
+	}
 	a.acc {
 		border: solid 2px var(--muted-color);
 
@@ -118,5 +147,21 @@
 		&:hover {
 			border: solid 2px var(--primary-color);
 		}
+	}
+	div.wrapper {
+		margin-top: 15px;
+		padding-left: 10px;
+		padding-right: 10px;
+
+		min-width: 290px;
+		max-width: 320px;
+		width: fit-content;
+
+		flex-wrap: wrap;
+
+    display: flex;
+    justify-content: flex-start;
+
+		overflow-y: scroll;
 	}
 </style>

@@ -80,14 +80,16 @@ export class BackgroundWallet {
   async balanceUpdate(sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();
+      await this.#core.netwrok.setNetwork('custom');
       const balances = await this.#core.tokens.getBalances();
 
-      console.log(balances);
+      await this.#core.account.updateBalance(balances);
 
       return sendResponse({
         resolve: this.#core.state
       });
     } catch (err) {
+      console.error(err);
       return sendResponse({
         reject: (err as BaseError).serialize()
       });

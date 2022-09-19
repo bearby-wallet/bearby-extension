@@ -1,5 +1,5 @@
 import type { Guard } from 'core/background/guard';
-import type { Wallet, Account, KeyPair } from 'types';
+import type { Wallet, Account, KeyPair, Balance } from 'types';
 
 import { utils } from 'aes-js';
 
@@ -188,6 +188,17 @@ export class AccountController {
       base58,
       privKey: bufPrivateKey
     };
+  }
+
+  async updateBalance(balances: Balance[]) {
+    for (let index = 0; index < balances.length; index++) {
+      const balance = balances[index];
+      this.#wallet.identities[index].tokens = balance;
+    }
+
+    await BrowserStorage.set(
+      buildObject(Fields.WALLET, this.#wallet)
+    );
   }
 
   getAccount(index: number) {

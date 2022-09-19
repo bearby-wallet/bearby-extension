@@ -1,4 +1,6 @@
 import type { AccountTypes } from 'config/account-type';
+import type { Balance } from './token';
+
 
 export interface Account {
   name: string;
@@ -8,9 +10,7 @@ export interface Account {
   privKey?: string;
   pubKey: string;
   productId?: number;
-  tokens: {
-    [key: string]: string;
-  };
+  tokens: Balance;
   nft: {
     [key: string]: object[];
   };

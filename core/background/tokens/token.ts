@@ -84,7 +84,11 @@ export class TokenControl {
         });
       }
     } else if (resonses.error) {
-      throw new TokenError(String(resonses.error));
+      if (resonses.error.message) {
+        throw new TokenError(`code: ${resonses.error.code}, ${resonses.error.message}`);
+      }
+
+      throw new TokenError(JSON.stringify(resonses.error));
     }
 
     return balances;
