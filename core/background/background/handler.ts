@@ -53,6 +53,9 @@ export function startBackground(core: BackgroundState) {
       case MTypePopup.SELECT_NETWORK:
         network.selectNetwork(msg.payload.net, sendResponse);
         return true;
+      case MTypePopup.GET_NETWORK_CONFIG:
+        network.getNetwrokConfig(sendResponse);
+        return true;
       default:
         sendResponse({
           reject: 'unexpected method'

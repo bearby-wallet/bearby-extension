@@ -26,11 +26,10 @@
 
 		& > h2 {
 			margin: 0;
-      font-size: 11pt;
-
       @include fluid-font(320px, 1024px, 20px, 29px);
 		}
     & > p {
+      margin-block-start: 0;
       @include fluid-font(320px, 1024px, 12px, 15px);
     }
     & > :global(.right) {

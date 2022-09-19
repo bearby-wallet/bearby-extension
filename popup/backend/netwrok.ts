@@ -1,4 +1,4 @@
-import type { SendResponseParams, WalletState } from "types";
+import type { NetwrokConfig, SendResponseParams, WalletState } from "types";
 
 import { MTypePopup } from "config/stream-keys";
 import { Message } from "lib/stream/message";
@@ -16,4 +16,14 @@ export async function selectNetwrok(net: string) {
   const resolve = warpMessage(data);
   updateState(resolve as WalletState);
   return resolve;
+}
+
+export async function getNetworkConfig() {
+  const data = await Message
+    .signal(MTypePopup.GET_NETWORK_CONFIG)
+    .send();
+  return warpMessage(data) as {
+    config: NetwrokConfig;
+    count: number;
+  };
 }

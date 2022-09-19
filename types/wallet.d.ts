@@ -9,10 +9,7 @@ export interface WalletState {
       theme: Themes;
       periodOffset: number;
   };
-  netwrok: {
-      selected: string;
-      config: NetwrokConfig;
-  };
+  netwrok: string;
   wallet: Wallet;
   tokens: Token[];
 }

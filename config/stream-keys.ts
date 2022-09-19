@@ -23,7 +23,8 @@ export const MTypePopup = {
 
   BALANCE_UPDATE: `@/${app}/balance-update`,
 
-  SELECT_NETWORK: `@/${app}/select-network`
+  SELECT_NETWORK: `@/${app}/select-network`,
+  GET_NETWORK_CONFIG: `@/${app}/get-network-config`
 };
 
 export const MTypeTab = {

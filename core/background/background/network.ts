@@ -26,4 +26,13 @@ export class BackgroundNetwork {
       });
     }
   }
+
+  async getNetwrokConfig(sendResponse: StreamResponse) {
+    return sendResponse({
+      resolve: {
+        config: this.#core.netwrok.config,
+        count: this.#core.netwrok.count
+      }
+    });
+  }
 }

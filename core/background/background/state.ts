@@ -22,7 +22,7 @@ export class BackgroundState {
     return {
       guard: this.guard.state,
       settings: this.settings.state,
-      netwrok: this.netwrok.state,
+      netwrok: this.netwrok.selected,
       wallet: this.account.wallet,
       tokens: this.tokens.identities
     };

@@ -13,7 +13,7 @@ export function updateState(state: WalletState) {
   console.log(state);
   guardStore.set(state.guard);
   settingsStore.set(state.settings);
-  netwrokStore.set(state.netwrok.selected);
+  netwrokStore.set(state.netwrok);
   walletStore.set(state.wallet);
   tokensStore.set(state.tokens);
 }

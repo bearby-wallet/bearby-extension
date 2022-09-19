@@ -109,7 +109,12 @@
     },
     "config": {
       "title": "Node settings",
-      "placeholder": "Manage node public-API."
+      "description": "All nodes are automatically updated and a few of the fastest ones are selected",
+      "count_description": "limited by the node being used."
+    },
+    "period": {
+      "title": "Period offset",
+      "description": "The number of blocks for which a transaction should confirm."
     }
   }
 }
