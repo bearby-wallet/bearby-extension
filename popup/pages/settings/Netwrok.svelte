@@ -13,6 +13,8 @@
 
   import { selectNetwrok, getNetworkConfig } from 'popup/backend/netwrok';
 
+  const [mainnet, testnet, custom] = NETWORK_KEYS;
+
   let networkState;
   let periodOffset = $settingsStore.periodOffset;
 
@@ -24,7 +26,7 @@
 
   async function handleSortHttps(event) {
     const http = String(event.target.value);
-
+    // var valid = /^(ftp|http|https):\/\/[^ "]+$/.test(url);
     console.log(http);
   }
 
@@ -38,7 +40,14 @@
     } else {
       networkState.count = count;
     }
-  }  
+  }
+
+  async function handleAddNode() {
+  }
+
+  async function handleRemoveNode() {
+    
+  }
 
   onMount(async() => {
     networkState = await getNetworkConfig();
@@ -77,7 +86,26 @@
             </option>
           {/each}
         </select>
-        <div class="count">
+        {#if $netwrokStore === custom}
+          <button
+            class="outline"
+            on:click={handleRemoveNode}
+          >
+            {$_('netwrok.config.remove')}
+          </button>
+          <form
+            class="input"
+            on:submit={handleAddNode}
+          >
+            <label>
+              <input
+                type="url"
+                placeholder={$_('netwrok.config.add_placeholder')}
+              >
+            </label>
+          </form>
+        {/if}
+        <div class="input">
           <label>
             <input
               bind:value={networkState.count}
@@ -99,7 +127,7 @@
 			title={$_('netwrok.period.title')}
 			description={$_('netwrok.period.description')}
 		>
-      <div class="count">
+      <div class="input">
         <label>
           <input
             bind:value={periodOffset}
@@ -122,9 +150,13 @@
 
 		@include flex-center-top-column;
   }
-  div.count {
-    margin-block-start: 10px;
-    margin-block-end: 10px;
+  button {
+    margin-block-start: 5px;
+    width: 100%;
+  }
+  .input {
+    margin-block-start: 15px;
+    margin-block-end: 15px;
 
     & > label {
       width: 100%;
