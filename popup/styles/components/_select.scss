@@ -1,0 +1,21 @@
+:global(select) {
+  outline: none;
+  width: 100%;
+  min-width: 270px;
+  color: var(--text-color);
+  border: 1px solid var(--background-color);
+  padding: 0.25em 0.5em;
+  cursor: pointer;
+  background: var(--background-color);
+  font-family: Demi;
+
+  padding-block-start: 5px;
+  padding-block-end: 5px;
+
+  @include border-radius(8px);
+  @include fluid-font(320px, 720px, 15px, 20px);
+}
+
+:global(select > option) {
+  color: var(--text-color);
+}

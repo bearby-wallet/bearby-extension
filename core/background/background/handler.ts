@@ -3,10 +3,12 @@ import type { BackgroundState } from "./state";
 import { MTypePopup } from "config/stream-keys";
 import { Runtime } from "lib/runtime";
 import { BackgroundWallet } from "./wallet";
+import { BackgroundNetwork } from './network';
 
 
 export function startBackground(core: BackgroundState) {
   const wallet = new BackgroundWallet(core);
+  const network = new BackgroundNetwork(core);
 
   Runtime.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (sender.id !== Runtime.runtime.id) {
@@ -47,8 +49,14 @@ export function startBackground(core: BackgroundState) {
       case MTypePopup.RESTORE_KEY:
         wallet.restoreKey(msg.payload, sendResponse);
         return true;
+
+      case MTypePopup.SELECT_NETWORK:
+        network.selectNetwork(msg.payload.net, sendResponse);
+        return true;
       default:
-        sendResponse(null);
+        sendResponse({
+          reject: 'unexpected method'
+        });
         return true;
     }
   });

@@ -100,5 +100,16 @@
   "restore_secret": {
     "title": "Secret Key",
     "placeholder": "Enter Secret key"
+  },
+  "netwrok": {
+    "title": "Netwrok",
+    "selected": {
+      "title": "Selected Netwrok",
+      "description": "Change netwrok for testing!"
+    },
+    "config": {
+      "title": "Node settings",
+      "placeholder": "Manage node public-API."
+    }
   }
 }

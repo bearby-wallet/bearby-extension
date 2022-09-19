@@ -134,7 +134,6 @@ export class BackgroundWallet {
   async balanceUpdate(sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();
-      await this.#core.netwrok.setNetwork('custom');
       const balances = await this.#core.tokens.getBalances();
 
       await this.#core.account.updateBalance(balances);

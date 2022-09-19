@@ -21,7 +21,9 @@ export const MTypePopup = {
   ADD_ACCOUNT: `@/${app}/add-account`,
   RESTORE_KEY: `@/${app}/restore-key`,
 
-  BALANCE_UPDATE: `@/${app}/balance-update`
+  BALANCE_UPDATE: `@/${app}/balance-update`,
+
+  SELECT_NETWORK: `@/${app}/select-network`
 };
 
 export const MTypeTab = {

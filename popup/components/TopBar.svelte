@@ -41,9 +41,9 @@
 
 <nav>
   <a
-    class="netwrok"
+    class="network"
     class:mainnet={false}
-    href="/netwrok"
+    href="/network"
     use:link
   >
     <span />
@@ -99,7 +99,7 @@
       @include border-bottom-radius(8px);
     }
   }
-  a.netwrok {
+  a.network {
     height: 15px;
     width: 15px;
 
@@ -115,34 +115,5 @@
   .icons-warp {
     text-align: end;
     width: 200px;
-  }
-  span {
-    cursor: pointer;
-
-    &.lock {
-      margin-right: 10px;
-    }
-
-    :global(svg.icon > path) {
-      fill: var(--muted-color);
-    }
-
-    &:hover {
-      :global(svg.icon-view > circle) {
-        stroke: var(--primary-color);
-      }
-      :global(svg.icon-view > line) {
-        stroke: var(--primary-color);
-      }
-      :global(svg.icon-view > path) {
-        stroke: var(--primary-color);
-      }
-      :global(svg.icon-lock > path) {
-        fill: var(--primary-color);
-      }
-      :global(svg.icon > path) {
-        fill: var(--primary-color);
-      }
-    }
   }
 </style>
