@@ -2,6 +2,8 @@ import { wrap } from 'svelte-spa-router/wrap';
 import { routerGuard } from './guard';
 
 import Home from '../pages/Home.svelte';
+import AccountsPage from '../pages/Accounts.svelte';
+
 import LockPage from '../pages/Lock.svelte';
 import StartPage from '../pages/Start.svelte';
 import CreatePage from '../pages/Create.svelte';
@@ -14,6 +16,12 @@ import RestorePage from '../pages/Restore.svelte';
 export default {
   '/': wrap({
     component: Home,
+    conditions: [
+      routerGuard
+    ]
+  }),
+  '/accounts': wrap({
+    component: AccountsPage,
     conditions: [
       routerGuard
     ]

@@ -74,5 +74,10 @@
       "copy": "Copy",
       "copied": "Copied"
     }
+  },
+  "accounts": {
+    "title": "Accounts",
+    "no_accounts": "No accounts with name:",
+    "placeholder": "Search"
   }
 }
