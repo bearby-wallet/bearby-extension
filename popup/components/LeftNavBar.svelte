@@ -37,7 +37,7 @@
     </span>
   </h1>
   <hr />
-  <a href="/add-account" use:link>
+  <a href="/add" use:link>
     <TextElement
       title={$_('home.nav.options.add.title')}
       description={$_('home.nav.options.add.description')}

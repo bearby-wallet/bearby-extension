@@ -41,6 +41,9 @@ export function startBackground(core: BackgroundState) {
       case MTypePopup.SELECT_ACCOUNT:
         wallet.selectAccount(msg.payload.index, sendResponse);
         return true;
+      case MTypePopup.ADD_ACCOUNT:
+        wallet.createAccountFromSeed(msg.payload.name, sendResponse);
+        return true;
       default:
         sendResponse(null);
         return true;

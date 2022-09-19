@@ -21,7 +21,8 @@
 
   $: account = $walletStore.identities[$walletStore.selectedAddress];
   $: img = viewIcon(token.base58);
-  $: balance = account.tokens[token.base58].final;
+  $: balance = account.tokens && account.tokens[token.base58] ?
+    account.tokens[token.base58].final : 0;
   $: converted = 0;
 
   const onClick = () => {

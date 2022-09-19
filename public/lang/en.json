@@ -32,6 +32,7 @@
     "title": "Account setup",
     "name_placeholder": "Name of account (3-25 characters)",
     "name_description": "A first account name.",
+    "name": "An account name.",
     "pass_description": "A password required for encrypt your wallet."
   },
   "restore": {

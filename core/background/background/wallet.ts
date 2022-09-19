@@ -93,6 +93,25 @@ export class BackgroundWallet {
     }
   }
 
+  async createAccountFromSeed(name: string, sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+
+      await this.#core.account.addAccountFromSeed(
+        this.#core.guard.seed,
+        name
+      );
+
+      sendResponse({
+        resolve: this.#core.state
+      });
+    } catch (err) {
+      sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
   async balanceUpdate(sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();

@@ -89,3 +89,15 @@ export async function selectAccount(index: number) {
   updateState(resolve as WalletState);
   return resolve;
 }
+
+export async function createNextSeedAccount(name: string) {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.ADD_ACCOUNT,
+    payload: {
+      name
+    }
+  }).send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}
