@@ -5,7 +5,8 @@ import Home from '../pages/Home.svelte';
 import AccountsPage from '../pages/Accounts.svelte';
 import AddSeedAccountPage from '../pages/AddAccount.svelte';
 import RestorePrivateKeyPage from '../pages/KeyRestore.svelte';
-import Netwrokpage from '../pages/settings/Netwrok.svelte';
+import NetwrokPage from '../pages/settings/Netwrok.svelte';
+import SendPage from '../pages/Send.svelte';
 
 import LockPage from '../pages/Lock.svelte';
 import StartPage from '../pages/Start.svelte';
@@ -29,6 +30,12 @@ export default {
       routerGuard
     ]
   }),
+  '/send/:index/:recipient?': wrap({
+    component: SendPage,
+    conditions: [
+      routerGuard
+    ]
+  }),
   '/add': wrap({
     component: AddSeedAccountPage,
     conditions: [
@@ -42,7 +49,7 @@ export default {
     ]
   }),
   '/network': wrap({
-    component: Netwrokpage,
+    component: NetwrokPage,
     conditions: [
       routerGuard
     ]

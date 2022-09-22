@@ -78,7 +78,7 @@
 		<div class="btns">
 			<button
 				class="action primary"
-				on:click={() => push(`/send/`)}
+				on:click={() => push(`/send/0`)}
 			>
 				{$_('home.btns.send')}
 			</button>

@@ -118,5 +118,9 @@
       "title": "Period offset",
       "description": "The number of blocks for which a transaction should confirm."
     }
+  },
+  "send": {
+    "title": "Send",
+    "sender": "Sender"
   }
 }
