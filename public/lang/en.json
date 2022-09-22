@@ -121,6 +121,10 @@
   },
   "send": {
     "title": "Send",
-    "sender": "Sender"
+    "sender": "Sender",
+    "recipient": {
+      "title": "Recipient",
+      "placeholder": "Input base58 address"
+    }
   }
 }

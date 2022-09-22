@@ -13,7 +13,7 @@
 	import NavClose from '../components/NavClose.svelte';
   import SmartInput from '../components/SmartInput.svelte';
   import SelectCard from '../components/SelectCard.svelte';
-
+  import ContactIcon from '../components/icons/Contact.svelte';
 
   export let params = {
     index: 0,
@@ -23,8 +23,11 @@
 	let uuid = uuidv4();
   let loading = false;
   let amount = 0;
+  let recipient = params.recipient;
   let accountIndex = $walletStore.selectedAddress;
   let accountsModal = false;
+  let contactsModal = false;
+  let recipientError = '';
 
   $: token = $tokensStore[params.index];
 	$: account = $walletStore.identities[accountIndex];
@@ -36,6 +39,8 @@
   function hanldeOnSelect(index: number) {
     console.log(index);
   }
+
+  function onInput() {}
 
   onMount(() => {
     const ctx = document.getElementById(uuid);
@@ -56,16 +61,36 @@
     </SelectCard>
   </div>
   <div>
-    <SmartInput
-      img={viewIcon(token.base58)}
-      symbol={token.symbol}
-      max={account.tokens[token.base58].final}
-      value={amount}
-      loading={loading}
-      on:select={() => hanldeOnSelect(0)}
-      on:input={hanldeOnInput}
-    />
+    <div class="input">
+      <p>
+        {$_('send.recipient.title')}
+      </p>
+      <label class:error={recipientError}>
+        <div on:click={() => contactsModal = !contactsModal}>
+          <ContactIcon className="cont-icon" />
+        </div>
+        <input
+          bind:value={recipient}
+          placeholder={$_('send.recipient.placeholder')}
+          on:input={onInput}
+        >
+      </label>
+    </div>
+    <div class="smart-input">
+      <SmartInput
+        img={viewIcon(token.base58)}
+        symbol={token.symbol}
+        max={account.tokens[token.base58].final}
+        value={amount}
+        loading={loading}
+        on:select={() => hanldeOnSelect(0)}
+        on:input={hanldeOnInput}
+      />
+    </div>
   </div>
+  <button class="outline">
+    {$_('send.sender')}
+  </button>
 </main>
 
 <style lang="scss">
@@ -82,5 +107,74 @@
       padding-left: 5px;
       padding-right: 5px;
     }
+    & > button {
+      width: 100%;
+      max-width: 310px;
+    }
 	}
+  div.smart-input {
+    width: 100%;
+    margin-block-end: 16px;
+  }
+  div.input {
+    width: 100%;
+    margin-block-start: 16px;
+    margin-block-end: 16px;
+
+    @include flex-column;
+
+    & > div.percentage {
+      margin-block-start: 10px;
+      margin-block-end: 10px;
+      padding-left: 30px;
+      padding-right: 30px;
+
+      @include flex-between-row;
+
+      & > span {
+        font-family: Demi;
+        color: var(--text-color);
+        cursor: pointer;
+
+        @include fluid-font(320px, 1024px, 13px, 16px);
+
+        &:hover {
+          color: var(--primary-color);
+        }
+      }
+    }
+    & > label {
+      background-color: var(--card-color);
+      border: solid 1px var(--card-color);
+
+      @include flex-between-row;
+      @include border-radius(8px);
+
+      &.error {
+        border-color: var(--danger-color);
+        input {
+          color: var(--danger-color);
+        }
+      }
+      & > input {
+        width: 100%;
+        padding-left: 0;
+        border-color: var(--card-color);
+        background: transparent;
+      }
+      & > div {
+        cursor: pointer;
+        padding: 13px;
+
+        &:hover {
+          :global(svg.cont-icon > path) {
+            fill: var(--primary-color);
+          }
+        }
+      }
+      &:focus-within {
+        border: solid 1px var(--text-color);
+      }
+    }
+  }
 </style>
