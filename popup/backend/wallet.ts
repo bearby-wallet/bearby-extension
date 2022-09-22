@@ -71,7 +71,7 @@ export async function balanceUpdate() {
 
 export async function removeAccount() {
   const data = await Message
-    .signal(MTypePopup.BALANCE_UPDATE)
+    .signal(MTypePopup.REMOVE_ACCOUNT)
     .send();
   const resolve = warpMessage(data);
   updateState(resolve as WalletState);
