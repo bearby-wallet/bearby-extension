@@ -120,6 +120,22 @@ export class NetworkControl {
     );
   }
 
+  async sortProvider(node: string) {
+    const providers = this.config[this.selected].PROVIDERS;
+
+    this.#config[this.selected].PROVIDERS = providers.sort((a, b) => {
+      if (a === node) {
+        return -1;
+      }
+
+      return 0;
+    });
+
+    await BrowserStorage.set(
+      buildObject(Fields.NETWROK_CONFIG, this.config)
+    );
+  }
+
   async setNodesCount(newCount: number) {
     assert(newCount > 0 && newCount < 255, INVALID_NODES_COUNTER, NetworkError);
 

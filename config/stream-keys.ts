@@ -27,7 +27,8 @@ export const MTypePopup = {
   SELECT_NETWORK: `@/${app}/select-network`,
   GET_NETWORK_CONFIG: `@/${app}/get-network-config`,
   SET_COUNT: `@/${app}/set-network-count`,
-  ADD_NODE: `@/${app}/add-network-node`
+  ADD_NODE: `@/${app}/add-network-node`,
+  SORT_NODES: `@/${app}/sort-nodes-apis`
 };
 
 export const MTypeTab = {

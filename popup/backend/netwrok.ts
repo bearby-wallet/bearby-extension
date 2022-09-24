@@ -51,3 +51,15 @@ export async function addNodeAPI(node: string) {
   updateState(resolve as WalletState);
   return resolve;
 }
+
+export async function sortNodes(node: string) {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.SORT_NODES,
+    payload: {
+      node
+    }
+  }).send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}

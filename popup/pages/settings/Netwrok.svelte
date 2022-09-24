@@ -15,7 +15,8 @@
     selectNetwrok,
     getNetworkConfig,
     updateCount,
-    addNodeAPI
+    addNodeAPI,
+    sortNodes
   } from 'popup/backend/netwrok';
 
   const [mainnet, testnet, custom] = NETWORK_KEYS;
@@ -30,9 +31,9 @@
     await selectNetwrok(net);
   }
 
-  async function handleSortHttps(event) {
+  async function handleSortNodes(event) {
     const http = String(event.target.value);
-    console.log(http);
+    await sortNodes(http);
   }
 
   async function handleInputCount(event) {
@@ -99,7 +100,7 @@
         title={$_('netwrok.config.title')}
         description={$_('netwrok.config.description')}
       >
-        <select on:input={handleSortHttps}>
+        <select on:input={handleSortNodes}>
           {#each networkConfig[$netwrokStore].PROVIDERS as http}
             <option value={http}>
               {http}

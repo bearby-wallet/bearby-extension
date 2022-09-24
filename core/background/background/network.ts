@@ -21,7 +21,22 @@ export class BackgroundNetwork {
         resolve: this.#core.state
       });
     } catch (err) {
-      console.error(err);
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
+  async sortNodes(node: string, sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+
+      await this.#core.netwrok.sortProvider(node);
+
+      return sendResponse({
+        resolve: this.#core.state
+      });
+    } catch (err) {
       return sendResponse({
         reject: (err as BaseError).serialize()
       });
