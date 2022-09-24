@@ -8,6 +8,7 @@ export interface WalletState {
       locale: Locales;
       theme: Themes;
       periodOffset: number;
+      downgradeNode: boolean;
   };
   netwrok: string;
   wallet: Wallet;

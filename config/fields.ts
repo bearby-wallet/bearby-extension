@@ -11,6 +11,7 @@ export enum Fields {
   UI_THEME = 'ui-theme',
   SELECTED_CURRENCY = 'selected-currency',
   LOCALE = 'locale',
+  NETWORK_DOWNGRADE = 'network-downgrade-flag',
   PERIOD_OFFSET = 'period-offset',
   PHISHING_DETECTION = 'phishing-detection-enabled',
   CONNECTIONS_LIST = 'dapp-connections-list',
