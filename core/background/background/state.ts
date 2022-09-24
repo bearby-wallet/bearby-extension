@@ -15,7 +15,7 @@ export class BackgroundState {
   readonly settings = new SettingsControl();
   readonly contacts = new ContactController();
   readonly account = new AccountController(this.guard);
-  readonly massa = new MassaControl(this.netwrok, this.account);
+  readonly massa = new MassaControl(this.netwrok, this.account, this.settings);
   readonly tokens = new TokenControl(this.netwrok, this.massa, this.account);
 
   get state(): WalletState {
