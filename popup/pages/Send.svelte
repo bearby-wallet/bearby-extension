@@ -14,6 +14,9 @@
   import SmartInput from '../components/SmartInput.svelte';
   import SelectCard from '../components/SelectCard.svelte';
   import ContactIcon from '../components/icons/Contact.svelte';
+  import Modal from '../components/Modal.svelte';
+  import AccountsModal from '../modals/Accounts.svelte';
+
 
   export let params = {
     index: 0,
@@ -42,6 +45,11 @@
     console.log(index);
   }
 
+  const onSelectAccount = async ({ detail }) => {
+		accountIndex = detail;
+    accountsModal = !accountsModal;
+	};
+
   function onInput() {}
 
   onMount(() => {
@@ -50,6 +58,20 @@
   });
 </script>
 
+
+<Modal
+  show={accountsModal}
+  title={$_('account.modal.title')}
+  on:close={() => accountsModal = !accountsModal}
+>
+  <div class="m-warp">
+    <AccountsModal
+      list={$walletStore.identities}
+      index={accountIndex}
+      on:selected={onSelectAccount}
+    />
+  </div>
+</Modal>
 <main>
 	<NavClose title={$_('send.title')}/>
   <div>
