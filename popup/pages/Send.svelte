@@ -16,6 +16,7 @@
   import ContactIcon from '../components/icons/Contact.svelte';
   import Modal from '../components/Modal.svelte';
   import AccountsModal from '../modals/Accounts.svelte';
+  import TokensModal from '../modals/Tokens.svelte';
 
 
   export let params = {
@@ -28,11 +29,13 @@
   let amount = 0;
   let recipient = params.recipient;
   let accountIndex = $walletStore.selectedAddress;
+  let selectedToken = Number(params.index);
+  let tokensModal = false;
   let accountsModal = false;
   let contactsModal = false;
   let recipientError = '';
 
-  $: token = $tokensStore[params.index];
+  $: token = $tokensStore[selectedToken];
 	$: account = $walletStore.identities[accountIndex];
   $: balance = account.tokens && account.tokens[token.base58] ?
     account.tokens[token.base58].final : 0;
@@ -41,14 +44,15 @@
     amount = detail;
   }
 
-  function hanldeOnSelect(index: number) {
-    console.log(index);
-  }
-
   const onSelectAccount = async ({ detail }) => {
 		accountIndex = detail;
     accountsModal = !accountsModal;
 	};
+
+  const onSelectToken = async ({ detail }) => {
+    selectedToken = detail;
+    tokensModal = !tokensModal;
+  };
 
   function onInput() {}
 
@@ -72,49 +76,65 @@
     />
   </div>
 </Modal>
+<Modal
+  show={tokensModal}
+  title={$_('send.cards.token')}
+  on:close={() => tokensModal = !tokensModal}
+>
+  <div class="m-warp">
+    <TokensModal
+      list={$tokensStore}
+      index={selectedToken}
+      account={account}
+      on:selected={onSelectToken}
+    />
+  </div>
+</Modal>
 <main>
 	<NavClose title={$_('send.title')}/>
-  <div>
-    <SelectCard
-      title={$_('send.sender')}
-      header={account.name}
-      text={trim(account.base58, 10)}
-      on:click={() => accountsModal = !accountsModal}
-    >
-      <div id={uuid}/>
-    </SelectCard>
-  </div>
-  <div>
-    <div class="input">
-      <p>
-        {$_('send.recipient.title')}
-      </p>
-      <label class:error={recipientError}>
-        <div on:click={() => contactsModal = !contactsModal}>
-          <ContactIcon className="cont-icon" />
-        </div>
-        <input
-          bind:value={recipient}
-          placeholder={$_('send.recipient.placeholder')}
-          on:input={onInput}
-        >
-      </label>
+  <div class="wrapper">
+    <div>
+      <SelectCard
+        title={$_('send.sender')}
+        header={account.name}
+        text={trim(account.base58, 10)}
+        on:click={() => accountsModal = !accountsModal}
+      >
+        <div id={uuid}/>
+      </SelectCard>
     </div>
-    <div class="smart-input">
-      <SmartInput
-        img={viewIcon(token.base58)}
-        symbol={token.symbol}
-        max={balance}
-        value={amount}
-        loading={loading}
-        on:select={() => hanldeOnSelect(0)}
-        on:input={hanldeOnInput}
-      />
+    <div>
+      <div class="input">
+        <p>
+          {$_('send.recipient.title')}
+        </p>
+        <label class:error={recipientError}>
+          <div on:click={() => contactsModal = !contactsModal}>
+            <ContactIcon className="cont-icon" />
+          </div>
+          <input
+            bind:value={recipient}
+            placeholder={$_('send.recipient.placeholder')}
+            on:input={onInput}
+          >
+        </label>
+      </div>
+      <div class="smart-input">
+        <SmartInput
+          img={viewIcon(token.base58)}
+          symbol={token.symbol}
+          max={balance}
+          value={amount}
+          loading={loading}
+          on:select={() => tokensModal = !tokensModal}
+          on:input={hanldeOnInput}
+        />
+      </div>
+      <button class="outline">
+        {$_('send.sender')}
+      </button>
     </div>
   </div>
-  <button class="outline">
-    {$_('send.sender')}
-  </button>
 </main>
 
 <style lang="scss">
@@ -131,11 +151,22 @@
       padding-left: 5px;
       padding-right: 5px;
     }
-    & > button {
-      width: 100%;
-      max-width: 310px;
-    }
 	}
+  button {
+    width: 100%;
+    max-width: 310px;
+  }
+  div.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    max-height: 500px;
+
+    & > div {
+      @include flex-center-top-column;
+    }
+  }
   div.smart-input {
     width: 100%;
     margin-block-end: 16px;
