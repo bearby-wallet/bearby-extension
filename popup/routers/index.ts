@@ -8,6 +8,8 @@ import RestorePrivateKeyPage from '../pages/KeyRestore.svelte';
 import NetwrokPage from '../pages/settings/Netwrok.svelte';
 import SendPage from '../pages/Send.svelte';
 import AccountPage from '../pages/settings/Account.svelte';
+import SettingsPage from '../pages/Settings.svelte';
+import HistoryPage from '../pages/History.svelte';
 
 import LockPage from '../pages/Lock.svelte';
 import StartPage from '../pages/Start.svelte';
@@ -31,8 +33,20 @@ export default {
       routerGuard
     ]
   }),
+  '/history': wrap({
+    component: HistoryPage,
+    conditions: [
+      routerGuard
+    ]
+  }),
   '/account': wrap({
     component: AccountPage,
+    conditions: [
+      routerGuard
+    ]
+  }),
+  '/settings': wrap({
+    component: SettingsPage,
     conditions: [
       routerGuard
     ]
