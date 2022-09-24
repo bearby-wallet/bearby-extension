@@ -114,6 +114,11 @@
       "add_placeholder": "Add a new Node (public-API)",
       "remove": "Remove current public-API"
     },
+    "downgrade": {
+      "title": "Smart request",
+      "description": "The wallet automatically chose the faster node.",
+      "toggle": "Enable smart request"
+    },
     "period": {
       "title": "Period offset",
       "description": "The number of blocks for which a transaction should confirm."

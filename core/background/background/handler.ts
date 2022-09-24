@@ -4,11 +4,13 @@ import { MTypePopup } from "config/stream-keys";
 import { Runtime } from "lib/runtime";
 import { BackgroundWallet } from "./wallet";
 import { BackgroundNetwork } from './network';
+import { BackgroundSettings } from "./settings";
 
 
 export function startBackground(core: BackgroundState) {
   const wallet = new BackgroundWallet(core);
   const network = new BackgroundNetwork(core);
+  const settings = new BackgroundSettings(core);
 
   Runtime.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (sender.id !== Runtime.runtime.id) {
@@ -70,6 +72,10 @@ export function startBackground(core: BackgroundState) {
         return true;
       case MTypePopup.ADD_NODE:
         network.addNode(msg.payload.node, sendResponse);
+        return true;
+
+      case MTypePopup.SET_DOWNGRADE_NODE:
+        settings.setNodeDowngrade(msg.payload.flag, sendResponse);
         return true;
       default:
         sendResponse({

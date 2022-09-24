@@ -10,6 +10,7 @@ import type {
   TransactionData,
   OperationResponse
 } from 'types';
+import type { SettingsControl } from 'background/settings';
 import type { NetworkControl } from "background/network";
 import type { AccountController } from 'background/account';
 
@@ -27,12 +28,18 @@ import { base58Encode, pubKeyFromBytes } from 'lib/address';
 export class MassaControl {
   #network: NetworkControl;
   #account: AccountController;
+  #settings: SettingsControl;
 
   readonly provider = new HttpProvider();
 
-  constructor(network: NetworkControl, account: AccountController) {
+  constructor(
+    network: NetworkControl,
+    account: AccountController,
+    settings: SettingsControl
+  ) {
     this.#network = network;
     this.#account = account;
+    this.#settings = settings;
   }
 
   async getNodesStatus(): Promise<JsonRPCResponseNodeStatus[]> {
@@ -103,7 +110,9 @@ export class MassaControl {
         const data = await responce.json();
         return data;
       } catch(err) {
-        await this.#network.downgradeNodeStatus(provider);
+        if (this.#settings.network.downgrade) {
+          await this.#network.downgradeNodeStatus(provider);
+        }
         continue;
       }
     }

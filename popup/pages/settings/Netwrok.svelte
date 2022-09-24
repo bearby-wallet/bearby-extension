@@ -7,6 +7,7 @@
 
 	import NavClose from '../../components/NavClose.svelte';
   import Jumbotron from '../../components/Jumbotron.svelte';
+  import Toggle from '../../components/Toggle.svelte';
 
   import netwrokStore from 'popup/store/netwrok';
   import settingsStore from 'popup/store/settings';
@@ -19,6 +20,7 @@
     sortNodes,
     removeNode
   } from 'popup/backend/netwrok';
+  import { setDowngradeNodeFlag } from 'popup/backend/settings';
 
   const [mainnet, testnet, custom] = NETWORK_KEYS;
 
@@ -73,6 +75,10 @@
     await removeNode(node);
 
     networkConfig = await getNetworkConfig();
+  }
+
+  async function toggleDowngrade() {
+    await setDowngradeNodeFlag(!$settingsStore.downgradeNode);
   }
 
   onMount(async() => {
@@ -153,6 +159,22 @@
   {/if}
   <div>
     <Jumbotron
+      title={$_('netwrok.downgrade.title')}
+      description={$_('netwrok.downgrade.description')}
+    >
+      <div class="toggle">
+        <b>
+          {$_('netwrok.downgrade.toggle')}
+        </b>
+        <Toggle
+          checked={$settingsStore.downgradeNode}
+          on:toggle={toggleDowngrade}
+        />
+      </div>
+    </Jumbotron>
+  </div>
+  <div>
+    <Jumbotron
 			title={$_('netwrok.period.title')}
 			description={$_('netwrok.period.description')}
 		>
@@ -182,6 +204,15 @@
   button {
     margin-block-start: 5px;
     width: 100%;
+  }
+  div.toggle {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    & > b {
+      padding: 5px;
+    }
   }
   .input {
     margin-block-start: 15px;

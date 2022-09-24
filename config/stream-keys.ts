@@ -29,7 +29,9 @@ export const MTypePopup = {
   SET_COUNT: `@/${app}/set-network-count`,
   ADD_NODE: `@/${app}/add-network-node`,
   SORT_NODES: `@/${app}/sort-nodes-apis`,
-  REMOVE_NODES: `@/${app}/remove-nodes-api`
+  REMOVE_NODES: `@/${app}/remove-nodes-api`,
+
+  SET_DOWNGRADE_NODE: `@/${app}/set-downgrade-node-flag`
 };
 
 export const MTypeTab = {
