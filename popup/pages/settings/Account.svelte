@@ -47,6 +47,7 @@
 	const onSelectAccount = async ({ detail }) => {
 		index = detail;
 		await selectAccount(detail);
+		name = account.name;
     accountsModal = !accountsModal;
 	};
 	const hanldeOnChangeName = async () => {
@@ -54,8 +55,6 @@
 			return;
 		}
 		await changeAccountName(name, index);
-
-		name = $walletStore.identities[index].name;
 	};
 </script>
 
