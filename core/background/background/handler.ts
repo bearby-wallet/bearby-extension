@@ -46,6 +46,9 @@ export function startBackground(core: BackgroundState) {
       case MTypePopup.ADD_ACCOUNT:
         wallet.createAccountFromSeed(msg.payload.name, sendResponse);
         return true;
+      case MTypePopup.SET_ACCOUNT_NAME:
+        wallet.updateAccountName(msg.payload.name, msg.payload.index, sendResponse);
+        return true;
       case MTypePopup.RESTORE_KEY:
         wallet.restoreKey(msg.payload, sendResponse);
         return true;

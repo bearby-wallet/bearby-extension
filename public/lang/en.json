@@ -126,5 +126,11 @@
       "title": "Recipient",
       "placeholder": "Input base58 address"
     }
+  },
+  "account": {
+    "title": "Account",
+    "modal": {
+      "title": "Accounts"
+    }
   }
 }

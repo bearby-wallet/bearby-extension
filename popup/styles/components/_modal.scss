@@ -1,0 +1,5 @@
+:global(div.m-warp) {
+  height: 600px;
+  @include border-radius(8px);
+  @include flex-center-top-column;
+}

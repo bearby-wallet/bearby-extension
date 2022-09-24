@@ -114,3 +114,16 @@ export async function restoreSecretKey(key: string, name: string) {
   updateState(resolve as WalletState);
   return resolve;
 }
+
+export async function changeAccountName(name: string, index: number) {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.SET_ACCOUNT_NAME,
+    payload: {
+      name,
+      index
+    }
+  }).send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}

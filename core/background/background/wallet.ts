@@ -77,6 +77,22 @@ export class BackgroundWallet {
     }
   }
 
+  async updateAccountName(name: string, index: number, sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+
+      await this.#core.account.changeAccountName(index, name);
+
+      sendResponse({
+        resolve: this.#core.state
+      });
+    } catch (err) {
+      sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
   async selectAccount(index: number, sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();

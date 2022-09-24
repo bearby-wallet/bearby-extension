@@ -31,6 +31,8 @@
 
   $: token = $tokensStore[params.index];
 	$: account = $walletStore.identities[accountIndex];
+  $: balance = account.tokens && account.tokens[token.base58] ?
+    account.tokens[token.base58].final : 0;
 
   function hanldeOnInput({ detail }) {
     amount = detail;
@@ -80,7 +82,7 @@
       <SmartInput
         img={viewIcon(token.base58)}
         symbol={token.symbol}
-        max={account.tokens[token.base58].final}
+        max={balance}
         value={amount}
         loading={loading}
         on:select={() => hanldeOnSelect(0)}
@@ -123,26 +125,6 @@
 
     @include flex-column;
 
-    & > div.percentage {
-      margin-block-start: 10px;
-      margin-block-end: 10px;
-      padding-left: 30px;
-      padding-right: 30px;
-
-      @include flex-between-row;
-
-      & > span {
-        font-family: Demi;
-        color: var(--text-color);
-        cursor: pointer;
-
-        @include fluid-font(320px, 1024px, 13px, 16px);
-
-        &:hover {
-          color: var(--primary-color);
-        }
-      }
-    }
     & > label {
       background-color: var(--card-color);
       border: solid 1px var(--card-color);
