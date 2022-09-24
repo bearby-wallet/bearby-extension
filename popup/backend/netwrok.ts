@@ -63,3 +63,15 @@ export async function sortNodes(node: string) {
   updateState(resolve as WalletState);
   return resolve;
 }
+
+export async function removeNode(node: string) {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.REMOVE_NODES,
+    payload: {
+      node
+    }
+  }).send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}

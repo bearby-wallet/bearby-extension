@@ -59,6 +59,9 @@ export function startBackground(core: BackgroundState) {
       case MTypePopup.SORT_NODES:
         network.sortNodes(msg.payload.node, sendResponse);
         return true;
+      case MTypePopup.REMOVE_NODES:
+        network.removeNode(msg.payload.node, sendResponse);
+        return true;
       case MTypePopup.GET_NETWORK_CONFIG:
         network.getNetwrokConfig(sendResponse);
         return true;

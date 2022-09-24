@@ -43,6 +43,22 @@ export class BackgroundNetwork {
     }
   }
 
+  async removeNode(node: string, sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+
+      await this.#core.netwrok.removeProvider(node);
+
+      return sendResponse({
+        resolve: this.#core.state
+      });
+    } catch (err) {
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
   async upadteCount(count: number, sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();

@@ -16,7 +16,8 @@
     getNetworkConfig,
     updateCount,
     addNodeAPI,
-    sortNodes
+    sortNodes,
+    removeNode
   } from 'popup/backend/netwrok';
 
   const [mainnet, testnet, custom] = NETWORK_KEYS;
@@ -67,7 +68,11 @@
   }
 
   async function handleRemoveNode() {
+    const [node] = networkConfig[$netwrokStore].PROVIDERS;
     
+    await removeNode(node);
+
+    networkConfig = await getNetworkConfig();
   }
 
   onMount(async() => {
