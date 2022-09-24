@@ -28,8 +28,8 @@
 	$: selected = list[index];
 
   const getBalance = (token) => {
-    return account.tokens && account.tokens[token.base16] ?
-      account.tokens[token.base16] : 0;
+    return account.tokens && account.tokens[token.base58] ?
+      account.tokens[token.base58].final : 0;
   };
 
 	const onSelectToken = async (token) => {
