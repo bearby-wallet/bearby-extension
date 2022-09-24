@@ -44,8 +44,13 @@
     amount = detail;
   }
 
+
   const onSelectAccount = async ({ detail }) => {
 		accountIndex = detail;
+    const ctx = document.getElementById(uuid);
+
+    ctx.textContent = '';
+		generateBlockies($walletStore.identities[accountIndex].pubKey, ctx);
     accountsModal = !accountsModal;
 	};
 
