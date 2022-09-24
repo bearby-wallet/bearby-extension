@@ -8,6 +8,7 @@
 	import Burger from '../components/Burger.svelte';
 	import TokenCard from '../components/TokenCard.svelte';
 	import CopyAccount from '../components/CopyAccount.svelte';
+	import BottomTabs from '../components/BottomTabs.svelte';
 
 	import { balanceUpdate } from 'popup/backend/wallet';
 	import { uuidv4 } from 'lib/crypto/uuid';
@@ -15,6 +16,7 @@
 
 	import walletStore from 'popup/store/wallet';
 	import tokensStore from 'popup/store/tokens';
+
 
 	let uuid = uuidv4();
 	let loading = false;
@@ -99,6 +101,7 @@
       {/each}
 		</div>
 	</main>
+	<BottomTabs />
 </section>
 
 <style lang="scss">

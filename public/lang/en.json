@@ -140,5 +140,46 @@
     "modal": {
       "title": "Accounts"
     }
+  },
+  "settings": {
+    "account": {
+      "title": "Account",
+      "description": "Account information, qrcode."
+    },
+    "general": {
+      "title": "General",
+      "description": "Currency conversion, language, theme."
+    },
+    "contacts": {
+      "title": "Contacts",
+      "description": "Add, edit, remove, and manage your contacts."
+    },
+    "advanced": {
+      "title": "Advanced",
+      "description": "Gas controller, popup settings."
+    },
+    "networks": {
+      "title": "Networks",
+      "description": "Add and edit custom node API networks."
+    },
+    "connections": {
+      "title": "Connections",
+      "description": "Dapps list, manage your connections, add, remove."
+    },
+    "security": {
+      "title": "Security & Privacy",
+      "description": "Privacy settings and wallet Secret Recovery Phrase."
+    },
+    "about": {
+      "title": "About",
+      "description": "Version, support center, and contact info."
+    }
+  },
+  "history": {
+    "title": "Transactions",
+    "no_txns": "You have no transactions yet.",
+    "queue": "Queue",
+    "history": "History",
+    "clear": "Clear All"
   }
 }
