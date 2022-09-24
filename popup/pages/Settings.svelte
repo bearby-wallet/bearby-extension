@@ -30,7 +30,7 @@
 		{
 			title: $_('settings.networks.title'),
 			description: $_('settings.networks.description'),
-			link: '/netwrok'
+			link: '/network'
 		},
 		{
 			title: $_('settings.connections.title'),
