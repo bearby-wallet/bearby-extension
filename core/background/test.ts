@@ -346,7 +346,7 @@ import { TokenControl } from './tokens';
       LIMIT: COUNT_NODES
     }
   });
-  const provider = new MassaControl(netwrok, account);
+  const provider = new MassaControl(netwrok, account, new SettingsControl());
 
   const msg = utils.utf8.toBytes('sign me');
   const pair1 = await account.getKeyPair();
