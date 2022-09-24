@@ -54,6 +54,8 @@
 			return;
 		}
 		await changeAccountName(name, index);
+
+		name = $walletStore.identities[index].name;
 	};
 </script>
 
