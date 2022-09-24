@@ -39,6 +39,7 @@
 	$: account = $walletStore.identities[accountIndex];
   $: balance = account.tokens && account.tokens[token.base58] ?
     account.tokens[token.base58].final : 0;
+  $: disabled = amount < 0 || amount > balance || !recipient;
 
   function hanldeOnInput({ detail }) {
     amount = detail;
@@ -83,7 +84,7 @@
 </Modal>
 <Modal
   show={tokensModal}
-  title={$_('send.cards.token')}
+  title={$_('send.modal.tokens')}
   on:close={() => tokensModal = !tokensModal}
 >
   <div class="m-warp">
@@ -135,7 +136,10 @@
           on:input={hanldeOnInput}
         />
       </div>
-      <button class="outline">
+      <button
+        class="outline"
+        disabled={disabled}
+      >
         {$_('send.sender')}
       </button>
     </div>
