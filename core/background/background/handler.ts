@@ -5,12 +5,14 @@ import { Runtime } from "lib/runtime";
 import { BackgroundWallet } from "./wallet";
 import { BackgroundNetwork } from './network';
 import { BackgroundSettings } from "./settings";
+import { BackgroundContacts } from "./contacts";
 
 
 export function startBackground(core: BackgroundState) {
   const wallet = new BackgroundWallet(core);
   const network = new BackgroundNetwork(core);
   const settings = new BackgroundSettings(core);
+  const contacts = new BackgroundContacts(core);
 
   Runtime.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (sender.id !== Runtime.runtime.id) {
@@ -85,6 +87,16 @@ export function startBackground(core: BackgroundState) {
         return true;
       case MTypePopup.SET_LOCALE:
         settings.setLocale(msg.payload.locale, sendResponse);
+        return true;
+
+      case MTypePopup.ADD_CONTACT:
+        contacts.addContact(msg.payload.contact, sendResponse);
+        return true;
+      case MTypePopup.GET_CONTACTS:
+        contacts.getContacts(sendResponse);
+        return true;
+      case MTypePopup.REMOVE_CONTACT:
+        contacts.removeContact(msg.payload.index, sendResponse);
         return true;
       default:
         sendResponse({

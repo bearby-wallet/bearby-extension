@@ -196,5 +196,19 @@
       "title": "Interface language.",
       "description": "Use your prefer language."
     }
+  },
+  "contacts": {
+    "title": "Contacts",
+    "add_btn": "Add a new one",
+    "new_contact": "A new contact",
+    "items": {
+      "rm": "Remove",
+      "copy": "Copy"
+    },
+    "no_content": "No contacts yet!",
+    "form": {
+      "add": "Add to contacts",
+      "name_placeholder": "Enter contact name"
+    }
   }
 }
