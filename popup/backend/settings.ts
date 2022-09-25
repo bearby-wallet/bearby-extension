@@ -17,3 +17,15 @@ export async function setDowngradeNodeFlag(flag: boolean) {
   updateState(resolve as WalletState);
   return resolve;
 }
+
+export async function setCurrency(currency: string) {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.SET_CURRENCY,
+    payload: {
+      currency
+    }
+  }).send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}

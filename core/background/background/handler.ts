@@ -77,6 +77,9 @@ export function startBackground(core: BackgroundState) {
       case MTypePopup.SET_DOWNGRADE_NODE:
         settings.setNodeDowngrade(msg.payload.flag, sendResponse);
         return true;
+      case MTypePopup.SET_CURRENCY:
+        settings.setCurrency(msg.payload.currency, sendResponse);
+        return true;
       default:
         sendResponse({
           reject: 'unexpected method'

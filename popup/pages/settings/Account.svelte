@@ -110,7 +110,6 @@
 	@import "../../styles/mixins";
 	main {
 		height: 100vh;
-		background-color: var(--background-color);
 		@include flex-center-top-column;
 	}
 	img {

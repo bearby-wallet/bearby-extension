@@ -181,5 +181,20 @@
     "queue": "Queue",
     "history": "History",
     "clear": "Clear All"
+  },
+  "general": {
+    "title": "General",
+    "currency": {
+      "title": "Currency Conversion",
+      "description": "You can switch to another currency to track your balance."
+    },
+    "theme": {
+      "title": "Interface theme.",
+      "description": "You can change color theme, by default it detect system theme automatically."
+    },
+    "lang": {
+      "title": "Interface language.",
+      "description": "Use your prefer language."
+    }
   }
 }

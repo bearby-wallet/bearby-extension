@@ -5,11 +5,13 @@ import Home from '../pages/Home.svelte';
 import AccountsPage from '../pages/Accounts.svelte';
 import AddSeedAccountPage from '../pages/AddAccount.svelte';
 import RestorePrivateKeyPage from '../pages/KeyRestore.svelte';
-import NetwrokPage from '../pages/settings/Netwrok.svelte';
 import SendPage from '../pages/Send.svelte';
-import AccountPage from '../pages/settings/Account.svelte';
 import SettingsPage from '../pages/Settings.svelte';
 import HistoryPage from '../pages/History.svelte';
+
+import NetwrokPage from '../pages/settings/Netwrok.svelte';
+import AccountPage from '../pages/settings/Account.svelte';
+import GeneralPage from '../pages/settings/General.svelte';
 
 import LockPage from '../pages/Lock.svelte';
 import StartPage from '../pages/Start.svelte';
@@ -47,6 +49,12 @@ export default {
   }),
   '/settings': wrap({
     component: SettingsPage,
+    conditions: [
+      routerGuard
+    ]
+  }),
+  '/general': wrap({
+    component: GeneralPage,
     conditions: [
       routerGuard
     ]

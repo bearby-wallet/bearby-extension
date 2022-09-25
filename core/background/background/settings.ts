@@ -26,4 +26,20 @@ export class BackgroundSettings {
     }
   }
 
+  async setCurrency(currency: string, sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+
+      await this.#core.settings.currencies.update(currency);
+
+      return sendResponse({
+        resolve: this.#core.state
+      });
+    } catch (err) {
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
 }
