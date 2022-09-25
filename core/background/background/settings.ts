@@ -1,3 +1,4 @@
+import type { Locales } from "config/locale";
 import type { Themes } from "config/theme";
 import type { BaseError } from "lib/error";
 import type { StreamResponse } from "types";
@@ -48,6 +49,22 @@ export class BackgroundSettings {
       this.#core.guard.checkSession();
 
       await this.#core.settings.theme.setTheme(theme);
+
+      return sendResponse({
+        resolve: this.#core.state
+      });
+    } catch (err) {
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+  
+  async setLocale(locale: Locales, sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+
+      await this.#core.settings.locale.setLocale(locale);
 
       return sendResponse({
         resolve: this.#core.state

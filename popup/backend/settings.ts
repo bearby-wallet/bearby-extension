@@ -41,3 +41,15 @@ export async function setTheme(theme: string) {
   updateState(resolve as WalletState);
   return resolve;
 }
+
+export async function setLocale(locale: string) {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.SET_LOCALE,
+    payload: {
+      locale
+    }
+  }).send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}

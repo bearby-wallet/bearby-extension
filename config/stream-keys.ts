@@ -33,7 +33,8 @@ export const MTypePopup = {
 
   SET_DOWNGRADE_NODE: `@/${app}/set-downgrade-node-flag`,
   SET_CURRENCY:`@/${app}/set-currency`,
-  SET_THEME:`@/${app}/set-theme`
+  SET_THEME:`@/${app}/set-theme`,
+  SET_LOCALE:`@/${app}/set-locale`
 };
 
 export const MTypeTab = {

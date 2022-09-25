@@ -83,6 +83,9 @@ export function startBackground(core: BackgroundState) {
       case MTypePopup.SET_THEME:
         settings.setTheme(msg.payload.theme, sendResponse);
         return true;
+      case MTypePopup.SET_LOCALE:
+        settings.setLocale(msg.payload.locale, sendResponse);
+        return true;
       default:
         sendResponse({
           reject: 'unexpected method'

@@ -7,7 +7,7 @@
 	import { setupI18n } from 'popup/i18n';
 
 	import settingsStore from 'popup/store/settings';
-  import { setCurrency, setTheme } from 'popup/backend/settings';
+  import { setCurrency, setTheme, setLocale } from 'popup/backend/settings';
 
 	import NavClose from '../../components/NavClose.svelte';
   import Jumbotron from '../../components/Jumbotron.svelte';
@@ -26,7 +26,7 @@
 	};
 	const hanldeChangeLocale = async (e) => {
 		const locale = e.target.value;
-		await changeLocale(locale);
+		await setLocale(locale);
 		try {
 			if (locale === Locales.Auto) {
 				await setupI18n();
