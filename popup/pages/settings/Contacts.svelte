@@ -47,7 +47,7 @@
 	};
 
 	const hanldeOnSelect = (address: String) => {
-		push(`/send/0`);
+		push(`/send/0/${address}`);
 	};
 
   onMount(async() => {
