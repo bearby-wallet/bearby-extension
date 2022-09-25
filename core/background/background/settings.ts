@@ -1,3 +1,4 @@
+import type { Themes } from "config/theme";
 import type { BaseError } from "lib/error";
 import type { StreamResponse } from "types";
 import type { BackgroundState } from "./state";
@@ -31,6 +32,22 @@ export class BackgroundSettings {
       this.#core.guard.checkSession();
 
       await this.#core.settings.currencies.update(currency);
+
+      return sendResponse({
+        resolve: this.#core.state
+      });
+    } catch (err) {
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
+  async setTheme(theme: Themes, sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+
+      await this.#core.settings.theme.setTheme(theme);
 
       return sendResponse({
         resolve: this.#core.state

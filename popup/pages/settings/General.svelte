@@ -7,7 +7,7 @@
 	import { setupI18n } from 'popup/i18n';
 
 	import settingsStore from 'popup/store/settings';
-  import { setCurrency } from 'popup/backend/settings';
+  import { setCurrency, setTheme } from 'popup/backend/settings';
 
 	import NavClose from '../../components/NavClose.svelte';
   import Jumbotron from '../../components/Jumbotron.svelte';
@@ -22,7 +22,7 @@
 	};
 	const hanldeChangeTheme = async (e) => {
 		const theme = e.target.value;
-		await changeTheme(theme);
+		await setTheme(theme);
 	};
 	const hanldeChangeLocale = async (e) => {
 		const locale = e.target.value;

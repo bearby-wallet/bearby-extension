@@ -32,7 +32,8 @@ export const MTypePopup = {
   REMOVE_NODES: `@/${app}/remove-nodes-api`,
 
   SET_DOWNGRADE_NODE: `@/${app}/set-downgrade-node-flag`,
-  SET_CURRENCY:`@/${app}/set-currency`
+  SET_CURRENCY:`@/${app}/set-currency`,
+  SET_THEME:`@/${app}/set-theme`
 };
 
 export const MTypeTab = {

@@ -80,6 +80,9 @@ export function startBackground(core: BackgroundState) {
       case MTypePopup.SET_CURRENCY:
         settings.setCurrency(msg.payload.currency, sendResponse);
         return true;
+      case MTypePopup.SET_THEME:
+        settings.setTheme(msg.payload.theme, sendResponse);
+        return true;
       default:
         sendResponse({
           reject: 'unexpected method'

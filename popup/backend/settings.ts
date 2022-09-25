@@ -29,3 +29,15 @@ export async function setCurrency(currency: string) {
   updateState(resolve as WalletState);
   return resolve;
 }
+
+export async function setTheme(theme: string) {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.SET_THEME,
+    payload: {
+      theme
+    }
+  }).send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}
