@@ -6,6 +6,7 @@
   import { trim } from 'popup/filters/trim';
   import { viewIcon } from 'popup/utils/icon-view';
 	import { generateBlockies } from 'popup/mixins/blockies';
+  import { getContacts } from 'popup/backend/contacts';
 
 	import walletStore from 'popup/store/wallet';
 	import tokensStore from 'popup/store/tokens';
@@ -17,6 +18,7 @@
   import Modal from '../components/Modal.svelte';
   import AccountsModal from '../modals/Accounts.svelte';
   import TokensModal from '../modals/Tokens.svelte';
+  import AccountSelectorModal from '../modals/AccountSelector.svelte';
 
 
   export let params = {
@@ -60,11 +62,16 @@
     tokensModal = !tokensModal;
   };
 
+  function onSelectRecipient({ detail }) {
+    console.log(detail);
+  }
+
   function onInput() {}
 
-  onMount(() => {
+  onMount(async() => {
     const ctx = document.getElementById(uuid);
 		generateBlockies(account.pubKey, ctx);
+    await getContacts();
   });
 </script>
 
@@ -80,6 +87,15 @@
       index={accountIndex}
       on:selected={onSelectAccount}
     />
+  </div>
+</Modal>
+<Modal
+  show={contactsModal}
+  title={$_('send.recipient.title')}
+  on:close={() => contactsModal = !contactsModal}
+>
+  <div class="m-warp">
+    <AccountSelectorModal on:selected={onSelectRecipient}/>
   </div>
 </Modal>
 <Modal

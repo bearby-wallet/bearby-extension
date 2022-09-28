@@ -129,6 +129,7 @@
     "sender": "Sender",
     "recipient": {
       "title": "Recipient",
+      "accounts": "My Accounts",
       "placeholder": "Input base58 address"
     },
     "modal": {
