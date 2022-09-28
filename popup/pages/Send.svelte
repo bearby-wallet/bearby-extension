@@ -43,10 +43,10 @@
     account.tokens[token.base58].final : 0;
   $: disabled = amount < 0 || amount > balance || !recipient;
 
+
   function hanldeOnInput({ detail }) {
     amount = detail;
   }
-
 
   const onSelectAccount = async ({ detail }) => {
 		accountIndex = detail;
@@ -63,14 +63,18 @@
   };
 
   function onSelectRecipient({ detail }) {
-    console.log(detail);
+    recipient = detail;
+    contactsModal = !contactsModal;
   }
 
-  function onInput() {}
+  function onInputRecipient(e) {
+    recipient = e.target.value;
+  }
+
 
   onMount(async() => {
-    const ctx = document.getElementById(uuid);
-		generateBlockies(account.pubKey, ctx);
+    const ctxAccount = document.getElementById(uuid);
+		generateBlockies(account.pubKey, ctxAccount);
     await getContacts();
   });
 </script>
@@ -116,14 +120,30 @@
 	<NavClose title={$_('send.title')}/>
   <div class="wrapper">
     <div>
-      <SelectCard
-        title={$_('send.sender')}
-        header={account.name}
-        text={trim(account.base58, 10)}
-        on:click={() => accountsModal = !accountsModal}
-      >
-        <div id={uuid}/>
-      </SelectCard>
+      <div>
+        <SelectCard
+          title={$_('send.sender')}
+          header={account.name}
+          text={trim(account.base58, 10)}
+          on:click={() => accountsModal = !accountsModal}
+        >
+          <div id={uuid}/>
+        </SelectCard>
+      </div>
+      <div>
+        <SelectCard
+          title={$_('send.token')}
+          header={token.name}
+          text={trim(token.base58, 10)}
+          on:click={() => tokensModal = !tokensModal}
+        >
+          <img
+            src={viewIcon(token.base58)}
+            height="45"
+            alt={token.symbol}
+          />
+        </SelectCard>
+      </div>
     </div>
     <div>
       <div class="input">
@@ -137,7 +157,7 @@
           <input
             bind:value={recipient}
             placeholder={$_('send.recipient.placeholder')}
-            on:input={onInput}
+            on:input={onInputRecipient}
           >
         </label>
       </div>
@@ -184,7 +204,6 @@
   div.wrapper {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     height: 100%;
     max-height: 500px;
 

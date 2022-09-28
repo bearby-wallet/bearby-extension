@@ -127,6 +127,7 @@
   "send": {
     "title": "Send",
     "sender": "Sender",
+    "token": "Token transfer",
     "recipient": {
       "title": "Recipient",
       "accounts": "My Accounts",
