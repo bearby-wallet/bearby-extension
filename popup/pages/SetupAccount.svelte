@@ -132,6 +132,7 @@
     & > label > p {
       margin-block: 2px;
       text-indent: 8px;
+      font-size: 11px;
     }
 
     & > label, button {

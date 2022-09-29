@@ -81,7 +81,7 @@
 
     & > svg {
       line {
-        stroke: var(--notification-color);
+        stroke: var(--text-color);
       }
       &:hover {
         line {

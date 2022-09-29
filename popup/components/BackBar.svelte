@@ -40,7 +40,7 @@
     & > li {
       font-size: 30px;
       margin: 10px;
-      color: var(--border-color);
+      color: var(--muted-color);
 
       &.selected {
         color: var(--primary-color);

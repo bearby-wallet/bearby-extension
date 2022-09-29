@@ -24,16 +24,16 @@
     cursor: pointer;
 
     rect {
-      fill: var(--secondary-color);
+      fill: var(--primary-color);
       transition: fill 200ms linear;
     }
     path {
-      fill: var(--primary-color);
+      fill: var(--text-negative);
     }
 
     &:hover {
       rect {
-        fill: var(--card-color);
+        fill: var(--text-negative);
       }
       path {
         fill: var(--text-color);

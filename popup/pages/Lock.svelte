@@ -92,8 +92,12 @@
 	span {
 		cursor: pointer;
 		margin-block-start: 16px;
-		color: var(--primary-color);
-		font-size: 12pt;
+		font-size: 12px;
+		color: var(--muted-color);
+
+		&:hover {
+			color: var(--primary-color);
+		}
 	}
 	img {
 		max-width: 500px;

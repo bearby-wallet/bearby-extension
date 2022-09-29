@@ -61,7 +61,6 @@
     @include fluid-font(320px, 1024px, 17px, 25px);
   }
   main {
-    background-color: var(--background-color);
     height: 100vh;
 
 		@include flex-center-top-column;
