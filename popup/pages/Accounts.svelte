@@ -23,7 +23,6 @@
 		list={$walletStore.identities}
 		index={$walletStore.selectedAddress}
 		on:selected={onSelectAccount}
-		negativeHover
 	/>
 </main>
 

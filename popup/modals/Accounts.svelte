@@ -11,7 +11,6 @@
 
   export let list = [];
   export let index = 0;
-	export let negativeHover = false;
 
 	let search = '';
 
@@ -41,7 +40,7 @@
 		{$_('accounts.no_accounts')} {search}
 	</p>
 {/if}
-<ul class:negative={negativeHover}>
+<ul>
 	{#each identities as account, index}
 		<li
 			class:selected={account.base58 === selectedAccount.base58}
@@ -67,18 +66,6 @@
 		width: 100%;
     min-height: 530px;
 
-		&.negative {
-			& > li {
-				&.selected {
-					background-color: var(--text-negative);
-				}
-
-				&:hover {
-					background-color: var(--text-negative);
-				}
-			}
-		}
-
 		& > li {
 			cursor: pointer;
 
@@ -88,11 +75,11 @@
 			@include flex-between-row;
 
 			&.selected {
-				background-color: var(--hover-color);
+				background-color: var(--card-color);
 			}
 
 			&:hover {
-				background-color: var(--hover-color);
+				background-color: var(--card-color);
 			}
 		}
 	}

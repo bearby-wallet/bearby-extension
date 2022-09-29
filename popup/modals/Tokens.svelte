@@ -90,11 +90,11 @@
 			cursor: pointer;
 
       &.selected {
-        opacity: 0.5;
+        background-color: var(--card-color);
       }
 
       &:hover {
-        background-color: var(--hover-color);
+        background-color: var(--card-color);
       }
 		}
 	}
