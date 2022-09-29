@@ -73,7 +73,7 @@
 </Modal>
 <main>
 	<NavClose title={$_('account.title')}/>
-  <div>
+  <div class="account-card">
     <SelectCard
       header={account.name}
       text={trim(account.base58, 10)}
@@ -115,6 +115,12 @@
 	img {
 		max-width: 500px;
 		width: calc(100vw - 50px);
+
+		@include border-radius(16px);
+	}
+	div.account-card {
+		margin-block-start: 16px;
+    margin-block-end: 16px;
 	}
 	label {
 		background-color: var(--card-color);
