@@ -125,7 +125,7 @@
 		margin-block-start: 15px;
 		margin-block-end: 10px;
 
-		@include border-radius(8px);
+		@include border-radius(16px);
 		@include flex-between-row;
 
 		& > div {

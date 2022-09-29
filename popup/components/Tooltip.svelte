@@ -42,17 +42,18 @@
     opacity: 0;
     visibility: hidden;
     transition: opacity 150ms, visibility 150ms;
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    box-shadow: rgb(0 0 0 / 1%) 0px 0px 1px, rgb(0 0 0 / 4%) 0px 4px 8px, rgb(0 0 0 / 4%) 0px 16px 24px, rgb(0 0 0 / 1%) 0px 24px 32px;
   }
 
   .default-tip {
     display: inline-block;
     padding: 8px 16px;
-    border-radius: 6px;
     background-color: var(--card-color);
     color: var(--text-color);
     min-width: 100px;
     text-align: center;
+
+    @include border-radius(16px);
 
     &:before {
       content: '';

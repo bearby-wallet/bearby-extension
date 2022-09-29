@@ -86,7 +86,7 @@
 		border: solid 1px var(--card-color);
 		width: 100%;
 		
-		@include border-radius(8px);
+		@include border-radius(16px);
 
 		&.loading {
 			border: solid 1px transparent;
@@ -160,7 +160,7 @@
 		}
 
 		&:focus-within {
-			border: solid 1px var(--text-color);
+			border: solid 1px var(--muted-color);
 		}
 	}
 </style>

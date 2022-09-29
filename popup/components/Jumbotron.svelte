@@ -39,7 +39,7 @@
     }
 
 		@media screen and (min-width: 400px) {
-			@include border-radius(8px);
+			@include border-radius(16x);
     }
 	}
 </style>

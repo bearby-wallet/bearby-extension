@@ -12,12 +12,12 @@
   text-indent: 5px;
 
   @include fluid-font(320px, 1024px, 13px, 16px);
-  @include border-radius(8px);
+  @include border-radius(16px);
 
   width: inherit;
 
   &:focus {
-    border: solid 1px var(--text-color);
+    border: solid 1px var(--muted-color);
   }
 }
 

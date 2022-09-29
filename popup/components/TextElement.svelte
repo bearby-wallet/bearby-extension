@@ -36,7 +36,7 @@
     width: inherit;
 
     @include flex-between-row;
-    @include border-radius(8px);
+    @include border-radius(16px);
 
     & > div {
       width: 100%;

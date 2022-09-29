@@ -19,6 +19,7 @@
   const uid = uuidv4();
 
   export let account: Account;
+  export let selected = false;
 
   $: massa = $tokensStore[0];
   $: balance = account.tokens && account.tokens[ZERO_ADDRESS] ?
@@ -32,20 +33,22 @@
 </script>
 
 <div class="wrapper">
-  <span id={uid}/>
+  <span class:selected={selected}>
+    <span id={uid}/>
+  </span>
   <div>
     <div>
-      <h2>
+      <h3>
         {account.name}
-      </h2>
+      </h3>
       <p>
-        {trim(account.base58)}
+        {trim(account.base58, 10)}
       </p>
     </div>
     <div>
-      <h2>
+      <h3>
         {formatNumber(balance, massa.symbol)}
-      </h2>
+      </h3>
       <p>
         {formatNumber(0, $settingsStore.currency)}
       </p>
@@ -56,15 +59,29 @@
 <style lang="scss">
 	@import "../styles/mixins";
 
-  h2, p {
-    margin: 0;
+  h3 {
+    margin-block-end: 0;
+  }
+  p {
+    margin-block-start: 0;
   }
   div.wrapper {
     width: 100%;
     @include flex-between-row;
 
+    & > span {
+      margin-right: 10px;
+
+      border: solid 2px transparent;
+      border-radius: 100%;
+      width: 43px;
+      height: 43px;
+
+      &.selected {
+        border-color: var(--primary-color);
+      }
+    }
     & > div {
-      margin: 10px;
       width: 100%;
 
       @include flex-between-row;

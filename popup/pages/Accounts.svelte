@@ -23,6 +23,7 @@
 		list={$walletStore.identities}
 		index={$walletStore.selectedAddress}
 		on:selected={onSelectAccount}
+		negativeHover
 	/>
 </main>
 
@@ -33,5 +34,9 @@
 		height: 100vh;
 
 		@include flex-center-top-column;
+
+		:global(ul) {
+			max-width: 500px;
+		}
 	}
 </style>

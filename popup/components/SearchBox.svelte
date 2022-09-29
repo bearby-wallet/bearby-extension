@@ -47,7 +47,7 @@
 
     width: 280px;
     // width: calc(100vw - 30px);
-    @include border-radius(8px);
+    @include border-radius(16px);
     @include flex-center-vert;
 
     & > input {
@@ -60,7 +60,7 @@
       margin: 10px;
     }
     &:focus-within {
-      border: solid 1px var(--text-color);
+      border: solid 1px var(--primary-color);
     }
   }
 </style>

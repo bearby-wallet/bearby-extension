@@ -79,10 +79,10 @@
       border-radius: 2em;
       padding: 2pt;
       transition: all .4s ease;
-      border: 1px solid var(--button-color);
+      border: 1px solid var(--primary-color);
       &:after {
         border-radius: 2em;
-        background: var(--button-color);
+        background: var(--primary-color);
         transition:
           left .3s cubic-bezier(
             0.175, 0.885, 0.320, 1.275

@@ -55,10 +55,10 @@
         <ul>
           {#each queue as tx, index}
             <li on:click={() => showTx = tx}>
-              <Transaction
+              <!-- <Transaction
                 tx={tx}
                 loading={loading}
-              />
+              /> -->
             </li>
           {/each}
         </ul>

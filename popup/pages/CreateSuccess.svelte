@@ -71,9 +71,10 @@
   }
   div.tips {
     padding: 30px;
-    border-radius: 16px;
     border: solid 2px var(--muted-color);
     max-width: calc(100vw - 16px);
+			
+    @include border-radius(16px);
 
     h2 {
       color: var(--primary-color);

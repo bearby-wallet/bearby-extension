@@ -145,6 +145,7 @@
         </SelectCard>
       </div>
     </div>
+    <hr />
     <div>
       <div class="input">
         <p>
@@ -172,6 +173,7 @@
           on:input={hanldeOnInput}
         />
       </div>
+      <hr />
       <button
         class="outline"
         disabled={disabled}
@@ -209,6 +211,10 @@
 
     & > div {
       @include flex-center-top-column;
+
+      & > div {
+        margin: 5px;
+      }
     }
   }
   div.smart-input {
@@ -227,7 +233,7 @@
       border: solid 1px var(--card-color);
 
       @include flex-between-row;
-      @include border-radius(8px);
+      @include border-radius(16px);
 
       &.error {
         border-color: var(--danger-color);
@@ -252,7 +258,7 @@
         }
       }
       &:focus-within {
-        border: solid 1px var(--text-color);
+        border: solid 1px var(--muted-color);
       }
     }
   }

@@ -56,7 +56,7 @@
     z-index: 50;
 
     display: block;
-    background: rgb(0 0 0 / 59%);
+    background: rgba(0, 0, 0, 0.3);
 
     & > div.modal {
       right: 0;
@@ -64,6 +64,7 @@
       max-width: 500px;
       width: 100%;
       background: var(--modal-color);
+      border: 1px solid rgb(247, 248, 250);
       padding: 0;
       z-index: 100;
 
@@ -79,7 +80,7 @@
 
       @media screen and (min-width: 899px) {
         margin: 10% auto 50px;
-        @include border-radius(8px);
+        @include border-radius(16px);
       }
     }
   }

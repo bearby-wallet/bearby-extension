@@ -20,9 +20,9 @@
 			margin-bottom: 5px;
 
 			height: 4px;
-			border-radius: 8px;
-
       width: 25px;
+
+      @include border-radius(8px);
 
 			&:last-child {
         margin-bottom: 0;

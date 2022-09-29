@@ -42,7 +42,8 @@
 
     padding: 8px;
     margin: 5px;
-    border-radius: 8px;
+
+    @include border-radius(16px);
 
     & > h1 {
       margin-block-start: 0;

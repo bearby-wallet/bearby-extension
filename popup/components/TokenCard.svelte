@@ -68,10 +68,10 @@
 
     border: solid 2px var(--card-color);
     background-color: var(--card-color);
-    box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+    box-shadow: rgb(0 0 0 / 1%) 0px 0px 1px, rgb(0 0 0 / 4%) 0px 4px 8px, rgb(0 0 0 / 4%) 0px 16px 24px, rgb(0 0 0 / 1%) 0px 24px 32px;
 
     @include flex-between-row;
-    @include border-radius(8px);
+    @include border-radius(16px);
 
     &.loading {
       @include loading-gradient(var(--background-color), var(--card-color));

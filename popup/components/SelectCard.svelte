@@ -64,8 +64,6 @@
     }
   }
   div.card {
-    margin: 5px;
-
     & > p {
       margin: 0;
     }

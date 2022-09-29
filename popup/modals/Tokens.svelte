@@ -1,6 +1,5 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
-	import { fly } from 'svelte/transition';
 	import { _ } from 'popup/i18n';
 
   import { viewIcon } from 'popup/utils/icon-view';
@@ -54,13 +53,9 @@
 	</p>
 {/if}
 <ul>
-	{#each identities as token, index}
+	{#each identities as token, i}
 		<li
-      in:fly={{
-        delay: 100 * index,
-        duration: 400,
-        y: -20
-      }}
+      class:selected={i === index}
       on:click={() => onSelectToken(token)}
     >
       <SelectCard
@@ -88,24 +83,18 @@
 		padding-block-end: 70px;
 		padding-block-start: 10px;
 
-		max-width: 390px;
 		width: 100%;
     min-height: 450px;
 
-    padding-left: 5px;
-    padding-right: 5px;
-
 		& > li {
 			cursor: pointer;
-			background-color: var(--card-color);
-      border: solid 1px var(--card-color);
 
-      margin: 5px;
-
-			@include border-radius(8px);
+      &.selected {
+        opacity: 0.5;
+      }
 
       &:hover {
-        border-color: var(--primary-color);
+        background-color: var(--hover-color);
       }
 		}
 	}

@@ -98,6 +98,6 @@
 
     align-items: flex-end;
     @include flex-column;
-    @include border-radius(8px);
+    @include border-radius(16px);
   }
 </style>
