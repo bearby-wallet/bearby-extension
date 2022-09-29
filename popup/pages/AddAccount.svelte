@@ -80,10 +80,16 @@
     width: 100%;
     @include flex-center-column;
 
-    & > label, button {
+    & > label,
+    & > button {
       width: 100%;
       max-width: 290px;
       margin: 10px;
+    }
+
+    & > label > p {
+      margin: 0;
+      text-indent: 8px;
     }
   }
 </style>

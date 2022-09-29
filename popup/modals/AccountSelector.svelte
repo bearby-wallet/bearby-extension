@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
-	import { fly } from 'svelte/transition';
+  import { createEventDispatcher, onMount } from 'svelte';
 	import { _ } from 'popup/i18n';
   import { trim } from 'popup/filters/trim';
 
@@ -9,6 +8,9 @@
 
 	import AccountCard from '../components/AccountCard.svelte';
 	import SearchBox from '../components/SearchBox.svelte';
+
+	import { generateBlockies } from 'popup/mixins/blockies';
+
 
   const dispatch = createEventDispatcher();
 
@@ -27,6 +29,21 @@
 	const onInputSearch = (e) => {
 		search = e.detail;
 	};
+
+	onMount(() => {
+		for (let index = 0; index < contacts.length; index++) {
+			const contact = contacts[index];
+			const ctx = document.getElementById(contact.address);
+
+			generateBlockies(contact.address, ctx);
+		}
+		for (let index = 0; index < accounts.length; index++) {
+			const account = accounts[index];
+			const ctx = document.getElementById(account.pubKey);
+
+			generateBlockies(account.pubKey, ctx);
+		}
+	});
 </script>
 
 <SearchBox
@@ -36,15 +53,12 @@
 />
 <ul>
 	{#if contacts.length > 0}
+		<p>
+			{$_('send.recipient.contacts')}
+		</p>
 		{#each contacts as contact, i}
-			<li
-				in:fly={{
-					delay: 100 * i,
-					duration: 400,
-					y: -20
-				}}
-				on:click={() => onSelect(contact.address)}
-			>
+			<li on:click={() => onSelect(contact.address)}>
+				<span id={contact.address}/>
 				<div class="text">
 					<b>
 						{contact.name}
@@ -56,19 +70,13 @@
 			</li>
 		{/each}
 	{/if}
-	<b>
-		{$_('send.recipient.accounts')}:
-	</b>
 	{#if accounts.length > 0}
+		<p>
+			{$_('send.recipient.accounts')}
+		</p>
 		{#each accounts as account, i}
-			<li
-				in:fly={{
-					delay: 100 * i,
-					duration: 400,
-					y: -20
-				}}
-				on:click={() => onSelect(account.base58)}
-			>
+			<li on:click={() => onSelect(account.base58)}>
+				<span id={account.pubKey}/>
 				<div class="text">
 					<b>
 						{account.name}
@@ -90,32 +98,24 @@
     overflow-y: scroll;
 		padding-block-end: 70px;
 
-		max-width: 390px;
+		max-width: 500px;
 		width: 100%;
-    min-height: 530px;
 		height: 100%;
-		padding-left: 15px;
-		padding-right: 15px;
 
-		& > b {
-			color: var(--text-color);
+		& > p {
+			text-align: center;
 		}
 
 		& > li {
 			cursor: pointer;
-			margin: 5px;
-			background-color: var(--card-color);
-			border-radius: 8px;
-			border: solid 1px var(--card-color);
 
-			padding-left: 30px;
-			padding-right: 10px;
-      padding-top: 10px;
+			padding: 8px;
 
 			@include flex-between-row;
 
-			&:hover {
-				border: solid 1px var(--primary-color);
+			& > span {
+				margin-right: 10px;
+				margin-left: 10px;
 			}
 			& > div {
 				cursor: pointer;
@@ -130,6 +130,9 @@
 				& > p {
 					font-size: 13px;
 				}
+			}
+			&:hover {
+				background-color: var(--card-color);
 			}
 		}
 	}

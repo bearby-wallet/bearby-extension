@@ -130,7 +130,8 @@
     "token": "Token transfer",
     "recipient": {
       "title": "Recipient",
-      "accounts": "My Accounts",
+      "accounts": "Accounts",
+      "contacts": "Cccounts",
       "placeholder": "Input base58 address"
     },
     "modal": {
