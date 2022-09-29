@@ -37,11 +37,11 @@
 :global(button.outline),
 :global(.btn.outline) {
   background: transparent;
-  color: var(--border-color);
-  border: 1px solid var(--border-color);
+  color: var(--secondary-color);
+  border: 1px solid var(--secondary-color);
 
   &:hover {
-    background: var(--border-color);
+    background: var(--secondary-color);
     color: var(--text-negative);
   }
 }

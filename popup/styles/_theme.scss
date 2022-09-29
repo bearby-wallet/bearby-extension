@@ -3,21 +3,20 @@
 :global(:root) {
   --background-gradient: linear-gradient(180deg, rgb(234, 240, 253) 12.15%, rgb(238, 222, 222) 100%);
   --background-color: rgb(255, 255, 255);
-  --border-color:  #FF6768;
-  --text-color:  #32335A;
-  --text-negative: #fff;
+  --text-color:  rgb(50, 51, 90);
+  --text-negative: rgb(255, 255, 255);
   --muted-color: rgb(110, 114, 125);
   --card-color:  #ECFAFF;
   --hover-color: rgb(237, 238, 242);
   --modal-color:  rgb(255, 255, 255);
 
-  --secondary-color: #ac59ff;
+  --secondary-color: rgb(172, 89, 255);
   --primary-color: rgb(232, 0, 111);
 
-  --danger-color: #FF2C2E;
+  --danger-color: rgb(255, 44, 46);
 
-  --success-color:  #a4ec6d;
-  --warning-color: #ccff00;
+  --success-color:  rgb(0, 255, 43);
+  --warning-color: rgb(255, 208, 0);
 }
 
 :global(body[theme="dark"]) {

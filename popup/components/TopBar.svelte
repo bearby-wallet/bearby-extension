@@ -7,6 +7,7 @@
   import { logout } from 'popup/backend/wallet';
 
   import { linksExpand, openTab } from 'popup/mixins/link';
+  import netwrokStore from 'popup/store/netwrok';
 
   // import Refresh from './icons/Refresh.svelte';
   // import ExpandIcon from './icons/Expand.svelte';
@@ -24,7 +25,7 @@
   export let lock = false;
 
   // $: account = $walletStore.identities[$walletStore.selectedAddress];
-  // $: isMainnet = $netStore.selected === NETWORK_KEYS[0];
+  $: isMainnet = $netwrokStore === NETWORK_KEYS[0];
 
   const onRefresh = () => {
     dispatch('refresh');
@@ -42,7 +43,7 @@
 <nav>
   <a
     class="network"
-    class:mainnet={false}
+    class:mainnet={isMainnet}
     href="/network"
     use:link
   >
@@ -109,7 +110,7 @@
     background-color: var(--warning-color);
 
     &.mainnet {
-      background-color: var(--primary-color);
+      background-color: var(--success-color);
     }
   }
   .icons-warp {
