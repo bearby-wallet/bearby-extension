@@ -46,12 +46,11 @@
     @include border-radius(16px);
 
     & > h1 {
-      margin-block-start: 0;
-      margin-block-end: 0.2em;
-      font-size: clamp(0.8rem, 2vw, 1rem);
+      margin: 0;
+      font-size: 14px;
     }
     & > p {
-      font-size: 9pt;
+      font-size: 11px;
       color: var(--text-color);
       margin: 0;
     }

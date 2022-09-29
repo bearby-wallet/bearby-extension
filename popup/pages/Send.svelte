@@ -7,6 +7,7 @@
   import { viewIcon } from 'popup/utils/icon-view';
 	import { generateBlockies } from 'popup/mixins/blockies';
   import { getContacts } from 'popup/backend/contacts';
+  import { addConfirmTransaction } from 'popup/mixins/transaction';
 
 	import walletStore from 'popup/store/wallet';
 	import tokensStore from 'popup/store/tokens';
@@ -41,7 +42,7 @@
 	$: account = $walletStore.identities[accountIndex];
   $: balance = account.tokens && account.tokens[token.base58] ?
     account.tokens[token.base58].final : 0;
-  $: disabled = amount < 0 || amount > balance || !recipient;
+  $: disabled = amount <= 0 || amount > balance || !recipient;
 
 
   function hanldeOnInput({ detail }) {
@@ -69,6 +70,21 @@
 
   function onInputRecipient(e) {
     recipient = e.target.value;
+  }
+
+  async function onSubmin() {
+    loading = true;
+    try {
+      await addConfirmTransaction(
+        amount,
+        recipient,
+        accountIndex,
+        token.base58
+      );
+    } catch (err) {
+      console.error(err);
+    }
+    loading = false;
   }
 
 
@@ -177,7 +193,9 @@
       <hr />
       <button
         class="outline"
+        class:loading={loading}
         disabled={disabled}
+        on:click={onSubmin}
       >
         {$_('send.continue')}
       </button>

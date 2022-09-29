@@ -123,6 +123,18 @@
 		top: -47px;
 		opacity: 0.1;
 	}
+	div.btns {
+		display: flex;
+    justify-content: space-around;
+    width: 100%;
+		max-width: 270px;
+
+		margin-block-end: 15px;
+
+		& > button {
+			max-width: 120px;
+		}
+	}
 	section {
 		@include flex-center-top-column;
 	}

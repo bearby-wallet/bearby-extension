@@ -41,8 +41,6 @@
 		inputEl.value = newValue;
 		value = newValue;
 		dispatch('input', newValue);
-
-		console.log(newValue);
   };
 	const onPercentInput = (n: number) => {
 		try {

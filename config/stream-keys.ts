@@ -38,7 +38,9 @@ export const MTypePopup = {
 
   GET_CONTACTS: `@/${app}/get-contacts`,
   ADD_CONTACT: `@/${app}/add-contact`,
-  REMOVE_CONTACT: `@/${app}/remove-contact`
+  REMOVE_CONTACT: `@/${app}/remove-contact`,
+
+  ADD_TX_FOR_CONFIRM: `@/${app}/add-transaction-for-confirm`
 };
 
 export const MTypeTab = {
