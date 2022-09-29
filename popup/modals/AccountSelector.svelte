@@ -125,7 +125,6 @@
 				& > b {
 					font-size: 16px;
 					color: var(--text-color);
-					font-family: Bold;
 				}
 				& > p {
 					font-size: 13px;

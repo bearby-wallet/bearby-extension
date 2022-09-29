@@ -56,7 +56,7 @@
       margin: 0;
     }
     &:hover {
-      background-color: var(--hover-color);
+      background-color: var(--card-color);
     }
   }
 </style>

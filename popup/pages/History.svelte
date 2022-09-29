@@ -119,7 +119,6 @@
     }
   }
   section {
-		background-color: var(--background-color);
 		@include flex-center-top-column;
 	}
   h2,

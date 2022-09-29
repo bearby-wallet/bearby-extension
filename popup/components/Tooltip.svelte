@@ -35,7 +35,6 @@
 
   .tooltip {
     position: absolute;
-    font-family: inherit;
     display: inline-block;
     white-space: nowrap;
     color: inherit;

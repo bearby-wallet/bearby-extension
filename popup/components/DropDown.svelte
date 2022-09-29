@@ -67,7 +67,6 @@
     color: var(--text-color);
     margin-block-end: 10px;
     font-size: 13px;
-    font-family: Demi;
     cursor: pointer;
     &:hover {
       color: var(--primary-color);

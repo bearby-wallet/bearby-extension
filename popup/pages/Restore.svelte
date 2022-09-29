@@ -120,7 +120,6 @@
     color: var(--danger-color);
 		@include fluid-font(320px, 600px, 13px, 20px);
     @include flex-center-column;
-    font-family: Regular;
 
     & > input {
       min-width: 290px;

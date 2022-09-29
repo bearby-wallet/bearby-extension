@@ -42,7 +42,7 @@
   @import "../styles/mixins";
 
   div.search-box {
-    background: var(--background-color);
+    background: var(--card-color);
     border: solid 1px var(--card-color);
 
     width: 280px;
@@ -54,7 +54,7 @@
       margin: 0;
       padding: 0;
       padding-left: 0;
-      border-color: var(--background-color);
+      border-color: var(--card-color);
     }
     & > div {
       margin: 10px;

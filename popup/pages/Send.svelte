@@ -148,12 +148,13 @@
     <hr />
     <div>
       <div class="input">
-        <p>
-          {$_('send.recipient.title')}
-        </p>
         <label class:error={recipientError}>
           <div on:click={() => contactsModal = !contactsModal}>
-            <ContactIcon className="cont-icon" />
+            <ContactIcon
+              width="23"
+              height="26"
+              className="cont-icon"
+            />
           </div>
           <input
             bind:value={recipient}
@@ -202,6 +203,8 @@
   button {
     width: 100%;
     max-width: 310px;
+
+    @include border-radius(12px);
   }
   div.wrapper {
     display: flex;
@@ -231,6 +234,8 @@
     & > label {
       background-color: var(--card-color);
       border: solid 1px var(--card-color);
+
+      height: 66px;
 
       @include flex-between-row;
       @include border-radius(16px);

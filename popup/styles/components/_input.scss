@@ -3,8 +3,7 @@
 :global(input) {
   outline: none;
   border: none;
-  font-family: Demi;
-  background: var(--background-color);
+  background-color: var(--card-color);
   color: var(--text-color);
   border: solid 1px var(--muted-color);
   padding: 1.5vh;

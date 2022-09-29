@@ -94,7 +94,6 @@
 		margin-block-start: 16px;
 		color: var(--primary-color);
 		font-size: 12pt;
-		font-family: Regular;
 	}
 	img {
 		max-width: 500px;
@@ -108,7 +107,6 @@
 	}
 	label {
 		width: inherit;
-
 		& > input.error {
 			outline-color: var(--danger-color);
 			animation: shake .4s linear;

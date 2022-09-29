@@ -75,11 +75,11 @@
   }
   .tgl-ios {
     + .tgl-btn {
-      background: transparent;
+      background: var(--card-color);
       border-radius: 2em;
       padding: 2pt;
       transition: all .4s ease;
-      border: 1px solid var(--primary-color);
+      border: 1px solid var(--card-color);
       &:after {
         border-radius: 2em;
         background: var(--primary-color);
@@ -105,7 +105,7 @@
     }
 
     &:checked + .tgl-btn {
-      background: var(--success-color);
+      // background: var(--modal-color);
       &:active {
         box-shadow: none;
         &:after {

@@ -129,7 +129,6 @@
     "sender": "Sender",
     "token": "Token transfer",
     "recipient": {
-      "title": "Recipient",
       "accounts": "Accounts",
       "contacts": "Cccounts",
       "placeholder": "Input base58 address"

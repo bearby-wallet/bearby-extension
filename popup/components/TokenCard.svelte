@@ -82,20 +82,20 @@
   }
   p.symbol {
     font-size: 16px;
+    font-weight: bold;
+
     line-height: 0;
     margin-block-end: 20px;
-    font-family: Demi;
   }
   p.balance {
-    font-size: 13px;
+    font-size: 14px;
     line-height: 0px;
-    font-family: Bold;
     color: var(--text-color);
     margin-block-end: 10px;
     margin-block-start: 30px;
   }
   p.conv {
-    font-size: 12px;
+    font-size: 11px;
     line-height: 5px;
   }
   div.img-wrapper {

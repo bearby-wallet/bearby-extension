@@ -96,7 +96,7 @@
     @include flex-between-row;
 
     @media screen and (min-width: 899px) {
-      @include border-bottom-radius(8px);
+      @include border-bottom-radius(16px);
     }
   }
   a.network {

@@ -42,7 +42,7 @@
         {account.name}
       </h3>
       <p>
-        {trim(account.base58, 10)}
+        {trim(account.base58)}
       </p>
     </div>
     <div>

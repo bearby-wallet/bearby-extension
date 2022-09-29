@@ -46,8 +46,7 @@
     @include flex-center-vert;
 
     @media screen and (min-width: 400px) {
-      border-top-left-radius: 8px;
-      border-top-right-radius: 8px;
+      @include border-top-radius(16px);
     }
   }
 </style>

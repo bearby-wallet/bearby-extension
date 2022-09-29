@@ -81,7 +81,6 @@
     }
   }
   li {
-    font-family: Regular;
     color: var(--text-color);
     font-size: 16px;
   }

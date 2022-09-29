@@ -2,6 +2,7 @@
 @import "./mixins";
 @import "./theme";
 @import "./components/index";
+@import "./fonts";
 
 :global(*),
 :global(*:after),
@@ -12,6 +13,8 @@
 :global(*) {
   user-select: none;
   scrollbar-width: none;
+
+  font-family: 'Inter custom', sans-serif;
 }
 
 :global(body),
@@ -22,10 +25,17 @@
   text-rendering: optimizeLegibility;
   font-kerning: normal;
 
+  font-variant: none;
+  font-smooth: always;
+
   min-width: 320px;
   min-height: 600px;
 
   background: var(--background-gradient);
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 :global(a:link),
