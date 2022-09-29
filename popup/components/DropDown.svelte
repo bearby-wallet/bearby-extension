@@ -88,7 +88,7 @@
   }
   div.menu {
     position: absolute;
-    background-color: var(--notification-color);
+    background-color: var(--card-color);
     transform: translate(-35%, -56%);
     padding: 5px;
     z-index: 20;

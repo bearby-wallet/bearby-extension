@@ -179,7 +179,7 @@
         class="outline"
         disabled={disabled}
       >
-        {$_('send.sender')}
+        {$_('send.continue')}
       </button>
     </div>
   </div>
