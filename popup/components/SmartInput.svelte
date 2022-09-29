@@ -22,15 +22,27 @@
   export let symbol;
 	export let value;
 
+	let inputEl;
+
 	const onClick = () => {
     dispatch('select');
   };
 	const onInput = (e) => {
-		if (isNaN(Number(value))) {
+		if (e.target.value.endsWith('.')) {
 			return;
 		}
 
-		dispatch('input', Number(value));
+		const newValue = Number(e.target.value);
+
+		if (isNaN(newValue)) {
+			return;
+		}
+
+		inputEl.value = newValue;
+		value = newValue;
+		dispatch('input', newValue);
+
+		console.log(newValue);
   };
 	const onPercentInput = (n: number) => {
 		try {
@@ -59,6 +71,7 @@
   <div class="column">
     <input
 			bind:value={value}
+			bind:this={inputEl}
 			id={uuid}
 			placeholder={placeholder}
 			disabled={loading || disabled}
