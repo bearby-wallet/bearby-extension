@@ -7,6 +7,7 @@
   import { uuidv4 } from 'lib/crypto/uuid';
 
 	import walletStore from 'popup/store/wallet';
+  import confirmStore from 'app/store/confirm';
 
   import SelectCard from '../components/SelectCard.svelte';
   import Modal from '../components/Modal.svelte';
@@ -55,6 +56,7 @@
   >
     <div id={uuid}/>
   </SelectCard>
+  <hr />
   <main>
   </main>
 </section>
@@ -64,6 +66,8 @@
   section {
 		height: 100vh;
     padding-block-start: 16px;
+    padding-left: 10px;
+    padding-right: 10px;
 
 		@include flex-center-top-column;
 	}
