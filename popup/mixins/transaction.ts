@@ -7,11 +7,11 @@ export async function addConfirmTransaction(amount: number, recipient: string, s
   console.log(amount, recipient, sender, token);
   const params: TransactionParam = {
     recipient,
-    fee: 0,
     contractDataBase64: '',
     parameters: '',
     amount: amount * 10**MASSA_DECIMAL,
     gasPrice: 0,
+    gasLimit: 0
   };
 
   await addToConfirmTransaction(params);

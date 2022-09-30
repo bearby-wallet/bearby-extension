@@ -1,3 +1,6 @@
+import type { TransactionParam } from "./transaction";
+
+
 export interface WalletState {
   guard: {
     isEnable: boolean;
@@ -13,4 +16,5 @@ export interface WalletState {
   netwrok: string;
   wallet: Wallet;
   tokens: Token[];
+  confirm: TransactionParam[];
 }

@@ -7,6 +7,7 @@ import tokensStore from 'popup/store/tokens';
 import netwrokStore from 'popup/store/netwrok';
 import { Themes } from 'config/theme';
 import { themeDetect } from 'app/mixins/theme';
+import confirmStore from 'app/store/confirm';
 
 
 export function updateState(state: WalletState) {
@@ -24,4 +25,5 @@ export function updateState(state: WalletState) {
   netwrokStore.set(state.netwrok);
   walletStore.set(state.wallet);
   tokensStore.set(state.tokens);
+  confirmStore.set(state.confirm);
 }
