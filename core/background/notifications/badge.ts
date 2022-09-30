@@ -11,6 +11,16 @@ export class BadgeControl {
     return this.#counter;
   }
 
+  async setCounter(n = 0) {
+    this.#counter = n;
+
+    this.#showBadge();
+
+    await BrowserStorage.set(
+      buildObject(Fields.BADGE_COUNTER, String(this.counter))
+    );
+  }
+
   async increase(n = 1) {
     this.#counter += n;
 

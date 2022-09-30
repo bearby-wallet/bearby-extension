@@ -151,6 +151,8 @@ export class TransactionsController {
     } catch (err) {
       this.#history = [];
     }
+
+    await this.#badge.setCounter(this.#confirm.length);
   }
 
 }

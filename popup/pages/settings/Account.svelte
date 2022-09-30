@@ -47,6 +47,10 @@
 	const onSelectAccount = async ({ detail }) => {
 		index = detail;
 		await selectAccount(detail);
+
+		const ctx = document.getElementById(uuid);
+		ctx.textContent = '';
+		generateBlockies(account.pubKey, ctx);
 		name = account.name;
     accountsModal = !accountsModal;
 	};
