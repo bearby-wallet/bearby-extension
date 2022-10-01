@@ -7,7 +7,7 @@
   import { trim } from 'popup/filters/trim';
   import { uuidv4 } from 'lib/crypto/uuid';
   import { closePopup } from 'popup/mixins/popup';
-  import { rejectConfirmTransaction } from 'popup/backend/transactions';
+  import { rejectConfirmTransaction, bordercastTransaction } from 'popup/backend/transactions';
 
 	import walletStore from 'popup/store/wallet';
   import confirmStore from 'app/store/confirm';
@@ -59,8 +59,15 @@
 		}
 	};
 
-  function handleOnConfirm() {
-    console.log('handleOnConfirm');
+  async function handleOnConfirm() {
+    loading = true;
+    try {
+      await bordercastTransaction(transaction);
+      await onNextTx();
+    } catch (err) {
+      console.error(err);
+    }
+    loading = false;
   }
 
   async function handleOnReject() {

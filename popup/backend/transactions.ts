@@ -1,4 +1,4 @@
-import type { SendResponseParams, TransactionParam, WalletState } from "types";
+import type { SendResponseParams, MinTransactionParams, ConfirmParams, WalletState } from "types";
 
 import { MTypePopup } from "config/stream-keys";
 import { Message } from "lib/stream/message";
@@ -6,7 +6,7 @@ import { warpMessage } from "lib/stream/warp-message";
 import { updateState } from "./store-update";
 
 
-export async function addToConfirmTransaction(transaction: TransactionParam) {
+export async function addToConfirmTransaction(transaction: MinTransactionParams) {
   const data = await new Message<SendResponseParams>({
     type: MTypePopup.ADD_TX_FOR_CONFIRM,
     payload: {
@@ -23,6 +23,18 @@ export async function rejectConfirmTransaction(index: number) {
     type: MTypePopup.REJECT_TX_FOR_CONFIRM,
     payload: {
       index
+    }
+  }).send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}
+
+export async function bordercastTransaction(tx: ConfirmParams) {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.SIGN_AND_SEND_TX,
+    payload: {
+      tx
     }
   }).send();
   const resolve = warpMessage(data);

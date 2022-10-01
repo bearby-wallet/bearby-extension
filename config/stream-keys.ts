@@ -41,7 +41,8 @@ export const MTypePopup = {
   REMOVE_CONTACT: `@/${app}/remove-contact`,
 
   ADD_TX_FOR_CONFIRM: `@/${app}/add-transaction-for-confirm`,
-  REJECT_TX_FOR_CONFIRM: `@/${app}/reject-transaction-for-confirm`
+  REJECT_TX_FOR_CONFIRM: `@/${app}/reject-transaction-for-confirm`,
+  SIGN_AND_SEND_TX: `@/${app}/sign-and-send-tx`
 };
 
 export const MTypeTab = {
