@@ -11,7 +11,9 @@ export async function addConfirmTransaction(amount: number, recipient: string, s
     parameters: '',
     amount: amount * 10**MASSA_DECIMAL,
     gasPrice: 0,
-    gasLimit: 0
+    gasLimit: 0,
+    icon: '/icons/128.png',
+    title: 'BearBy'
   };
 
   await addToConfirmTransaction(params);

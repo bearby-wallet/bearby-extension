@@ -26,4 +26,20 @@ export class BackgroundTransaction {
     }
   }
 
+  async removeConfirmTx(index: number, sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+
+      await this.#core.transaction.rmConfirm(index);
+
+      return sendResponse({
+        resolve: this.#core.state
+      });
+    } catch (err) {
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
 }

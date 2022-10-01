@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
 	import { _ } from 'popup/i18n';
   import { uuidv4 } from 'lib/crypto/uuid';
+  import { push } from 'svelte-spa-router';
 
   import { trim } from 'popup/filters/trim';
   import { viewIcon } from 'popup/utils/icon-view';
@@ -81,6 +82,7 @@
         accountIndex,
         token.base58
       );
+      push('/confirm');
     } catch (err) {
       console.error(err);
     }

@@ -17,3 +17,15 @@ export async function addToConfirmTransaction(transaction: TransactionParam) {
   updateState(resolve as WalletState);
   return resolve;
 }
+
+export async function rejectConfirmTransaction(index: number) {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.REJECT_TX_FOR_CONFIRM,
+    payload: {
+      index
+    }
+  }).send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}

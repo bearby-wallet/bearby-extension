@@ -214,5 +214,12 @@
       "add": "Add to contacts",
       "name_placeholder": "Enter contact name"
     }
+  },
+  "confirm": {
+    "btns": {
+      "reject": "Reject",
+      "confirm": "Confirm",
+      "edit": "Edit"
+    }
   }
 }
