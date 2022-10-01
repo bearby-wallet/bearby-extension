@@ -1,5 +1,6 @@
+import { OperationsType } from "background/provider/operations";
 import type { BaseError } from "lib/error";
-import type { StreamResponse, TransactionParam } from "types";
+import type { StreamResponse, MinTransactionParams, ConfirmParams } from "types";
 import type { BackgroundState } from "./state";
 
 
@@ -10,11 +11,17 @@ export class BackgroundTransaction {
     this.#core = state;
   }
 
-  async addToConfirm(params: TransactionParam, sendResponse: StreamResponse) {
+  async addToConfirm(params: MinTransactionParams, sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();
+      const confirmParams: ConfirmParams = {
+        ...params,
+        tokenAmount: String(params.amount),
+        fee: params.gasLimit * params.gasPrice,
+        recipient: params.toAddr,
+      };
 
-      await this.#core.transaction.addConfirm(params);
+      await this.#core.transaction.addConfirm(confirmParams);
 
       return sendResponse({
         resolve: this.#core.state

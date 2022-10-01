@@ -1,3 +1,4 @@
+import type { ConfirmParams } from 'types/transaction';
 import type { BadgeControl } from 'background/notifications';
 import type { NetworkControl } from 'core/background/network';
 
@@ -6,7 +7,6 @@ import { Fields } from 'config/fields';
 import { TransactionsError } from './errors';
 import { MAX_TX_QUEUE } from 'config/common';
 import { BrowserStorage, buildObject } from 'lib/storage';
-import type { TransactionParam } from 'types/transaction';
 
 
 export class TransactionsController {
@@ -15,7 +15,7 @@ export class TransactionsController {
   readonly #badge: BadgeControl;
 
   #history: object[] = [];
-  #confirm: TransactionParam[] = [];
+  #confirm: ConfirmParams[] = [];
   #message?: object;
 
   get history() {
@@ -88,7 +88,7 @@ export class TransactionsController {
     );
   }
 
-  async addConfirm(params: TransactionParam) {
+  async addConfirm(params: ConfirmParams) {
     this.#confirm.push(params);
     this.#badge.increase();
     await BrowserStorage.set(

@@ -220,6 +220,19 @@
       "reject": "Reject",
       "confirm": "Confirm",
       "edit": "Edit"
+    },
+    "params": {
+      "amount": "Amount",
+      "teg": "Teg",
+      "fee": "Fee",
+      "to": "Recipient",
+      "types": {
+        "0": "Payment",
+        "1": "Buy Rolls",
+        "2": "Sell Rolls",
+        "3": "Deploy Contract",
+        "4": "Call Contract"
+      }
     }
   }
 }

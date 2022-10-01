@@ -15,6 +15,7 @@
   import SelectCard from '../components/SelectCard.svelte';
   import Modal from '../components/Modal.svelte';
   import AccountsModal from '../modals/Accounts.svelte';
+  import TransactionParams from '../components/TransactionParams.svelte';
 
 
   let uuid = uuidv4();
@@ -76,6 +77,8 @@
 	onMount(() => {
     const ctx = document.getElementById(uuid);
 		generateBlockies(account.pubKey, ctx);
+    console.log(transaction);
+    
   });
 </script>
 
@@ -100,7 +103,9 @@
   >
     <div id={uuid}/>
   </SelectCard>
-  <hr />
+  <div>
+    <hr />
+  </div>
   {#if transaction}
     <main>
       <div class="warp">
@@ -125,6 +130,7 @@
         <h3 on:click={() => editModal = !editModal}>
           ({$_('confirm.btns.edit')})
         </h3>
+        <TransactionParams tx={transaction}/>
       </div>
       <div class="btns">
         <button
@@ -151,10 +157,14 @@
   section {
 		height: 100vh;
     padding-block-start: 16px;
-    padding-left: 10px;
-    padding-right: 10px;
 
 		@include flex-center-top-column;
+
+    & > div {
+      width: 100%;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
 	}
 	main {
 		height: calc(100vh - 36px);

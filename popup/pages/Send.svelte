@@ -80,7 +80,7 @@
         amount,
         recipient,
         accountIndex,
-        token.base58
+        token
       );
       push('/confirm');
     } catch (err) {
