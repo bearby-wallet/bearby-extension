@@ -3,7 +3,7 @@
 	import { push } from 'svelte-spa-router';
 	import { _ } from 'popup/i18n';
 
-  import { getTransactionHistory } from 'popup/backend/transactions';
+  import { getTransactionHistory, clearAllTransactions } from 'popup/backend/transactions';
   import historyStore from "app/store/history";
 
 	import BottomTabs from '../components/BottomTabs.svelte';
@@ -28,7 +28,7 @@
   };
 
   const hanldeOnClear = async () => {
-    // await clearAllTxns();
+    await clearAllTransactions();
   };
 
   onMount(async() => {
@@ -67,7 +67,7 @@
             <li on:click={() => showTx = tx}>
               <Transaction
                 tx={tx}
-                loading={true}
+                loading
               />
             </li>
           {/each}
@@ -87,7 +87,10 @@
               }}
               on:click={() => showTx = tx}
             >
-              <Transaction tx={tx}/>
+              <Transaction
+                tx={tx}
+                loading={loading}
+              />
             </li>
           {/each}
         </ul>

@@ -51,6 +51,22 @@ export class BackgroundTransaction {
     }
   }
 
+  async clearAllHistory(sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+
+      await this.#core.transaction.clearHistory();
+
+      return sendResponse({
+        resolve: this.#core.transaction.history
+      });
+    } catch (err) {
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
   async removeConfirmTx(index: number, sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();

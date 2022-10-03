@@ -52,3 +52,12 @@ export async function getTransactionHistory() {
   historyStore.set(resolve);
   return resolve;
 }
+
+export async function clearAllTransactions() {
+  const data = await Message
+    .signal(MTypePopup.CLEAR_ALL_HISTORY)
+    .send();
+  const resolve = warpMessage(data);
+  historyStore.set([]);
+  return resolve;
+}
