@@ -5,7 +5,7 @@ Massa's plugin of Chrome and FireFox.
 ## Installation:
  
 * Download the extension using git: git clone `https://github.com/bearby-wallet/bearby-extension.git` or as a zip file.
-* 
+* You can download ready from [realeses page](https://github.com/bearby-wallet/bearby-extension/releases)
 * Install extension into browser.
 
 ```bash
