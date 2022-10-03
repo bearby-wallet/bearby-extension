@@ -8,6 +8,7 @@
   import { uuidv4 } from 'lib/crypto/uuid';
   import { closePopup } from 'popup/mixins/popup';
   import { rejectConfirmTransaction, bordercastTransaction } from 'popup/backend/transactions';
+	import { selectAccount } from 'popup/backend/wallet';
 
 	import walletStore from 'popup/store/wallet';
   import confirmStore from 'app/store/confirm';
@@ -30,14 +31,22 @@
   $: account = $walletStore.identities[index];
 
   async function onSelectAccount({ detail }) {
-		index = detail;
-    accountsModal = !accountsModal;
+    loading = true;
+    try {
+      loading = false;
+      index = detail;
+      accountsModal = !accountsModal;
 
-    const ctx = document.getElementById(uuid);
-    ctx.textContent = '';
-		generateBlockies($walletStore.identities[index].pubKey, ctx);
+      const ctx = document.getElementById(uuid);
+      ctx.textContent = '';
+      generateBlockies($walletStore.identities[index].pubKey, ctx);
 
-    err = '';
+      err = '';
+
+      await selectAccount(detail);
+    } catch (e) {
+      err = e.message;
+    }
 	};
 
   async function onNextTx() {
@@ -63,8 +72,8 @@
     loading = true;
     try {
       await bordercastTransaction(txIndex);
-      transaction = $confirmStore[txIndex];
       await onNextTx();
+      transaction = $confirmStore[txIndex];
     } catch (e) {
       err = e.message;
     }
