@@ -1,7 +1,7 @@
 {
   "name": "BearBy",
   "author": "Rinat",
-  "manifest_version": 3,
+  "manifest_version": 2,
   "icons": {
     "16": "icons/16.png",
     "19": "icons/19.png",
@@ -14,23 +14,18 @@
   "commands": {
     "_execute_browser_action": {
       "suggested_key": {
-        "chromeos": "Alt+Shift+Z",
-        "linux": "Alt+Shift+Z",
-        "mac": "Alt+Shift+Z",
-        "windows": "Alt+Shift+Z"
+        "chromeos": "Alt+Shift+M",
+        "linux": "Alt+Shift+M",
+        "mac": "Alt+Shift+M",
+        "windows": "Alt+Shift+M"
       }
     }
   },
-  "host_permissions": [
-    "https://massa.net/api/v2",
-    "https://test.massa.net/api/v2",
-    "http://127.0.0.1/*"
-  ],
   "permissions": [
     "storage",
     "notifications",
     "alarms",
-    "tabs"
+    "activeTab"
   ],
   "content_scripts": [
     {
@@ -45,12 +40,9 @@
     }
   ],
   "web_accessible_resources": [
-    {
-      "resources": ["phishing.html"],
-      "matches": ["*://*/*"]
-    }
+    "phishing.html"
   ],
-  "action": {
+  "browser_action": {
     "default_icon": {
       "19": "icons/19.png",
       "38": "icons/38.png"
@@ -59,6 +51,8 @@
     "default_popup": "index.html"
   },
   "background": {
-    "service_worker": "background.js"
+    "scripts": [
+      "background.js"
+    ]
   }
 }

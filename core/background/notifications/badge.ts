@@ -1,7 +1,9 @@
 import { Fields } from 'config/fields';
 import { Runtime } from 'lib/runtime';
+import { manifestVersion } from 'lib/runtime/manifest';
 import { BrowserStorage, buildObject } from 'lib/storage';
 import { TypeOf } from 'lib/type';
+import { ManifestVersions } from 'config/manifest-versions';
 
 
 export class BadgeControl {
@@ -74,8 +76,14 @@ export class BadgeControl {
   #showBadge() {
     const text = this.counter === 0 ? '' : String(this.counter);
 
-    Runtime.action.setBadgeText({
-      text
-    });
+    if (ManifestVersions.V2 === manifestVersion) {
+      Runtime.browserAction.setBadgeText({
+        text
+      });
+    } else if (ManifestVersions.V3 === manifestVersion) {
+      Runtime.action.setBadgeText({
+        text
+      });
+    }
   }
 }
