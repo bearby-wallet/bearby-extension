@@ -8,6 +8,8 @@
 
 	import BottomTabs from '../components/BottomTabs.svelte';
 	import TopBar from '../components/TopBar.svelte';
+	import Transaction from '../components/Transaction.svelte';
+
 
   let loading = false;
   let showTx = null;
@@ -63,10 +65,10 @@
         <ul>
           {#each queue as tx, index}
             <li on:click={() => showTx = tx}>
-              <!-- <Transaction
+              <Transaction
                 tx={tx}
-                loading={loading}
-              /> -->
+                loading={true}
+              />
             </li>
           {/each}
         </ul>
@@ -76,7 +78,7 @@
           {$_('history.history')} ({history.length})
         </b>
         <ul>
-          <!-- {#each history as tx, index}
+          {#each history as tx, index}
             <li
               in:fly={{
                 delay: 100 * index,
@@ -87,7 +89,7 @@
             >
               <Transaction tx={tx}/>
             </li>
-          {/each} -->
+          {/each}
         </ul>
       {/if}
     </div>

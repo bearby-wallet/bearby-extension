@@ -46,7 +46,9 @@ export interface HistoryTransaction {
   nextSlot: number;
   period: number;
   confirmed: boolean;
+  success: boolean;
   icon?: string;
   title?: string;
   error?: string;
+  teg?: string;
 }

@@ -124,7 +124,8 @@ export class BackgroundTransaction {
         code: confirmParams.code,
         params: confirmParams.params,
         period: this.#core.settings.period.periodOffset,
-        confirmed: false
+        confirmed: false,
+        success: false
       };
 
       await this.#core.transaction.addHistory(newHistoryTx);
