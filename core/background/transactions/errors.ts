@@ -6,3 +6,4 @@ export class TransactionsError extends BaseError {
 
 export const NOT_FOUND_CONFIRM = 'No transaction with such index';
 export const UNKONOW_TX_TYPE = 'Unknow tx type';
+export const INCORRECT_NODE_RESPONSE = 'Node response is incorrect';

@@ -7,6 +7,10 @@ import type { BackgroundState } from "./state";
 export class BackgroundWallet {
   readonly #core: BackgroundState;
 
+  #worker?: {
+    unsubscribe(): void;
+  };
+
   constructor(state: BackgroundState) {
     this.#core = state;
   }
@@ -35,6 +39,8 @@ export class BackgroundWallet {
       await this.#core.guard.setupVault(payload.words, payload.password);
       await this.#core.account.addAccountFromSeed(this.#core.guard.seed, payload.name);
 
+      this.#startWorker();
+
       sendResponse({
         resolve: this.#core.state
       });
@@ -48,6 +54,8 @@ export class BackgroundWallet {
   async unlock(password: string, sendResponse: StreamResponse) {
     try {
       await this.#core.guard.unlock(password);
+
+      this.#startWorker();
 
       return sendResponse({
         resolve: this.#core.state
@@ -167,15 +175,31 @@ export class BackgroundWallet {
   async logout(sendResponse: StreamResponse) {
     await this.#core.guard.logout();
 
+    this.#stopWorker();
+
     sendResponse({
       resolve: this.#core.state
     });
   }
 
   getState(sendResponse: StreamResponse) {
-    console.log(this.#core.state);
+    if (!this.#core.state.guard.isEnable) {
+      this.#stopWorker();
+    }
+
     sendResponse({
       resolve: this.#core.state
     });
+  }
+
+  #startWorker() {
+    this.#stopWorker();
+    this.#worker = this.#core.worker.subscribe();
+  }
+
+  #stopWorker() {
+    if (this.#worker && this.#worker.unsubscribe) {
+      this.#worker.unsubscribe();
+    }
   }
 }

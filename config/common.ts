@@ -11,3 +11,4 @@ export const PERIOD_OFFSET = 5;
 export const ZERO_ADDRESS = 'A11111111111111111111116iowaD';
 export const ROLL_ADDRESS = 'A111111111111111111111Awmv8x';
 export const PROMT_PAGE = 'index.html';
+export const WORKER_POOLING = 8000; // Seconds

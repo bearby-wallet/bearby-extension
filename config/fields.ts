@@ -17,5 +17,6 @@ export enum Fields {
   CONNECTIONS_LIST = 'dapp-connections-list',
   CONNECT_DAPP = 'for-connect-app',
   CONTACTS_LIST = 'contacts-list',
-  TOKENS = 'tokens-list'
+  TOKENS = 'tokens-list',
+  PERIOD = 'current-period'
 }

@@ -40,7 +40,7 @@ export interface JsonRPCResponseNodeStatus extends JsonRPCResponse {
     },
     current_cycle: number;
     current_time: number;
-    last_slot: {
+    last_slot?: {
         period: number;
         thread: number;
     },
@@ -62,7 +62,7 @@ export interface JsonRPCResponseNodeStatus extends JsonRPCResponse {
         operation_count: number;
     },
     version: string;
-  }
+  };
 }
 
 export interface AddressInfo {
@@ -82,7 +82,7 @@ export interface JsonRPCResponseStakers extends JsonRPCResponse {
   result?: Array<[string, number]>;
 }
 
-export interface OperationTransaction {
+export interface OperationTransaction extends JsonRPCResponse {
   result?: {
     id: string; // Operation id
     in_blocks: string[]; // Block ids

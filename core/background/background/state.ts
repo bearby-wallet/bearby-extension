@@ -9,6 +9,7 @@ import { SettingsControl } from "background/settings";
 import { TokenControl } from "background/tokens";
 import { TransactionsController } from "background/transactions/transactions";
 import { BadgeControl } from "background/notifications";
+import { WorkerController } from "background/worker";
 
 
 export class BackgroundState {
@@ -25,6 +26,11 @@ export class BackgroundState {
     this.account,
     this.badge
   );
+  readonly worker = new WorkerController(
+    this.massa,
+    this.transaction
+  );
+
 
   get state(): WalletState {
     return {
