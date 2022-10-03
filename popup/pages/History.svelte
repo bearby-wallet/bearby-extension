@@ -1,6 +1,10 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { push } from 'svelte-spa-router';
 	import { _ } from 'popup/i18n';
+
+  import { getTransactionHistory } from 'popup/backend/transactions';
+  import historyStore from "app/store/history";
 
 	import BottomTabs from '../components/BottomTabs.svelte';
 	import TopBar from '../components/TopBar.svelte';
@@ -8,15 +12,15 @@
   let loading = false;
   let showTx = null;
 
-  $: history = [];
-  $: queue = [];
+  $: history = $historyStore.filter((t) => t.confirmed);
+  $: queue = $historyStore.filter((t) => !t.confirmed);
 
   const hanldeOnUpdate = async () => {
     loading = true;
     try {
-      // await getLatestBlockNumber();
-    } catch {
-      ////
+      await getTransactionHistory();
+    } catch (err) {
+      console.error(err);
     }
     loading = false;
   };
@@ -24,6 +28,10 @@
   const hanldeOnClear = async () => {
     // await clearAllTxns();
   };
+
+  onMount(async() => {
+    await hanldeOnUpdate();
+  });
 </script>
 
 

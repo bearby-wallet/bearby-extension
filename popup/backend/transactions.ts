@@ -1,9 +1,11 @@
-import type { SendResponseParams, MinTransactionParams, WalletState } from "types";
+import type { SendResponseParams, MinTransactionParams, WalletState, HistoryTransaction } from "types";
 
 import { MTypePopup } from "config/stream-keys";
 import { Message } from "lib/stream/message";
 import { warpMessage } from "lib/stream/warp-message";
 import { updateState } from "./store-update";
+
+import historyStore from "app/store/history";
 
 
 export async function addToConfirmTransaction(transaction: MinTransactionParams) {
@@ -39,5 +41,14 @@ export async function bordercastTransaction(index: number) {
   }).send();
   const resolve = warpMessage(data);
   updateState(resolve as WalletState);
+  return resolve;
+}
+
+export async function getTransactionHistory() {
+  const data = await Message
+    .signal(MTypePopup.GET_TX_HISTORY)
+    .send();
+  const resolve = warpMessage(data) as HistoryTransaction[];
+  historyStore.set(resolve);
   return resolve;
 }

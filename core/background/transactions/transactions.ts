@@ -1,4 +1,4 @@
-import type { ConfirmParams } from 'types/transaction';
+import type { ConfirmParams, HistoryTransaction } from 'types/transaction';
 import type { BadgeControl } from 'background/notifications';
 import type { NetworkControl } from 'core/background/network';
 
@@ -14,7 +14,7 @@ export class TransactionsController {
   readonly #account: AccountController;
   readonly #badge: BadgeControl;
 
-  #history: object[] = [];
+  #history: HistoryTransaction[] = [];
   #confirm: ConfirmParams[] = [];
   #message?: object;
 
@@ -52,7 +52,7 @@ export class TransactionsController {
     this.#badge = badge;
   }
 
-  async addHistory(tx: object) {
+  async addHistory(tx: HistoryTransaction) {
     const newList = [tx, ...this.history];
 
     // Circumcision Array.
@@ -65,7 +65,7 @@ export class TransactionsController {
     );
   }
 
-  async updateHistory(history: object[]) {
+  async updateHistory(history: HistoryTransaction[]) {
     this.#history = history;
     await BrowserStorage.set(
       buildObject(this.#historyField, this.history)

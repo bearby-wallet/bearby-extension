@@ -1,5 +1,10 @@
 import type { OperationsType } from "background/provider/operations";
 
+export interface TransactionToken {
+  decimals: number;
+  symbol: string;
+  base58: string;
+}
 
 export interface MinTransactionParams {
   code: string;
@@ -13,15 +18,35 @@ export interface MinTransactionParams {
   icon?: string;
   uuid?: string;
   title?: string;
-  token?: {
-    decimals: number;
-    symbol: string;
-    base58: string;
-  };
+  token?: TransactionToken;
 }
 
 export interface ConfirmParams extends MinTransactionParams {
   tokenAmount: string;
   fee: number;
   recipient: string;
+}
+
+export interface HistoryTransaction {
+  type: OperationsType;
+  token: TransactionToken;
+  fee: number;
+  gasLimit: number;
+  gasPrice: number;
+  toAddr: string;
+  from: string;
+  hash: string;
+  tokenAmount: string;
+  timestamp: number;
+  recipient: string;
+  amount: number;
+  code: string;
+  params: string;
+  expiryPeriod: number;
+  nextSlot: number;
+  period: number;
+  confirmed: boolean;
+  icon?: string;
+  title?: string;
+  error?: string;
 }

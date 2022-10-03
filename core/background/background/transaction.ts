@@ -1,5 +1,5 @@
 import type { BaseError } from "lib/error";
-import type { StreamResponse, MinTransactionParams, ConfirmParams } from "types";
+import type { StreamResponse, MinTransactionParams, ConfirmParams, TransactionToken, HistoryTransaction } from "types";
 import type { BackgroundState } from "./state";
 
 import { assert } from "lib/assert";
@@ -13,6 +13,20 @@ export class BackgroundTransaction {
 
   constructor(state: BackgroundState) {
     this.#core = state;
+  }
+
+  async getTransactionHistory(sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+
+      return sendResponse({
+        resolve: this.#core.transaction.history
+      });
+    } catch (err) {
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
   }
 
   async addToConfirm(params: MinTransactionParams, sendResponse: StreamResponse) {
@@ -61,8 +75,15 @@ export class BackgroundTransaction {
 
       assert(Boolean(confirmParams), NOT_FOUND_CONFIRM, TransactionsError);
 
+      const [slotResponse] = await this.#core.massa.getNodesStatus();
+
+      assert(!slotResponse.error, `code: ${slotResponse.error?.code} message: ${slotResponse.error?.message}`, TransactionsError);
+
+      const [massaToken] = this.#core.tokens.identities;
       const pair = await this.#core.account.getKeyPair();
-      const bytesCompact = await this.#confirmToBytes(confirmParams);
+      const nextSlot = Number(slotResponse.result?.next_slot.period);
+      const expiryPeriod = nextSlot + this.#core.settings.period.periodOffset;
+      const bytesCompact = await this.#confirmToBytes(confirmParams, expiryPeriod);
       const txBytes = Uint8Array.from([
         ...pair.pubKey,
         ...bytesCompact
@@ -75,26 +96,52 @@ export class BackgroundTransaction {
       );
       const [{ result, error }] = await this.#core.massa.sendTransaction(txDataObject);
 
-      assert(Boolean(error), `code: ${error?.code} message: ${error?.message}`, TransactionsError);
+      assert(!error, `code: ${error?.code} message: ${error?.message}`, TransactionsError);
 
       const [hash] = result as string[];
+      const token = confirmParams.token ? confirmParams.token : {
+        decimals: massaToken.decimals,
+        symbol: massaToken.symbol,
+        base58: massaToken.base58
+      };
+      const newHistoryTx: HistoryTransaction = {
+        token,
+        hash,
+        expiryPeriod,
+        nextSlot,
+        type: confirmParams.type,
+        fee: confirmParams.fee,
+        gasLimit: confirmParams.gasLimit,
+        gasPrice: confirmParams.gasPrice,
+        icon: confirmParams.icon,
+        title: confirmParams.title,
+        toAddr: confirmParams.toAddr,
+        from: String(this.#core.account.selectedAccount?.base58),
+        tokenAmount: confirmParams.tokenAmount,
+        timestamp: new Date().getTime(),
+        recipient: confirmParams.recipient,
+        amount: confirmParams.amount,
+        code: confirmParams.code,
+        params: confirmParams.params,
+        period: this.#core.settings.period.periodOffset,
+        confirmed: false
+      };
 
-      console.log(hash);
+      await this.#core.transaction.addHistory(newHistoryTx);
+      await this.#core.transaction.rmConfirm(index);
 
       return sendResponse({
         resolve: this.#core.state
       });
     } catch (err) {
+      console.error(err);
       return sendResponse({
         reject: (err as BaseError).serialize()
       });
     }
   }
 
-  async #confirmToBytes(confirmParams: ConfirmParams) {
-    const [{ result }] = await this.#core.massa.getNodesStatus();
-    const expiryPeriod = Number(result?.next_slot.period) + this.#core.settings.period.periodOffset;
-
+  async #confirmToBytes(confirmParams: ConfirmParams, expiryPeriod: number) {
     switch (confirmParams.type) {
       case OperationsType.Payment:
         return await new PaymentBuild(

@@ -1,3 +1,5 @@
 import { Runtime } from './index';
 
-export const manifestVersion = Runtime.runtime.getManifest().manifest_version;
+export function getManifestVersion() {
+  return Runtime.runtime.getManifest().manifest_version;
+}

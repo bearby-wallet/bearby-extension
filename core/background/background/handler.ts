@@ -101,6 +101,9 @@ export function startBackground(core: BackgroundState) {
         contacts.removeContact(msg.payload.index, sendResponse);
         return true;
 
+      case MTypePopup.GET_TX_HISTORY:
+        transaction.getTransactionHistory(sendResponse);
+        return true;
       case MTypePopup.ADD_TX_FOR_CONFIRM:
         transaction.addToConfirm(msg.payload.transaction, sendResponse);
         return true;
