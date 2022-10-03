@@ -123,7 +123,7 @@ export interface OperationTransaction extends JsonRPCResponse {
       };
       signature: string;
     }
-  }
+  }[];
 }
 
 export interface MassaBlock extends JsonRPCResponse {

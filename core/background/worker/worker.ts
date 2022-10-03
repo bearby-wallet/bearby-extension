@@ -1,8 +1,9 @@
-import { INCORRECT_NODE_RESPONSE, TransactionsController, TransactionsError } from "background/transactions";
 import type { MassaControl } from "background/provider";
+
 import { WORKER_POOLING } from "config/common";
 import { BrowserStorage, buildObject } from "lib/storage";
 import { Fields } from "config/fields";
+import  { TransactionsController, HASH_OUT_OF_STORAGE } from "background/transactions";
 
 
 export class WorkerController {
@@ -91,12 +92,17 @@ export class WorkerController {
         continue;
       }
 
-      if (!result) {
-        throw new TransactionsError(INCORRECT_NODE_RESPONSE);
+      if (!result || result.length === 0) {
+        list[listIndex].confirmed = true;
+        list[listIndex].error = HASH_OUT_OF_STORAGE;
+        list[listIndex].success = false;
+        continue;
       }
 
-      list[listIndex].confirmed = result.is_final;
-      list[listIndex].success = result.is_final;
+      const [transaction] = result;
+
+      list[listIndex].confirmed = transaction.is_final;
+      list[listIndex].success = transaction.is_final;
     }
 
     await this.#transactions.updateHistory(list);
