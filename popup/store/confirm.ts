@@ -1,6 +1,6 @@
-import type { TransactionParam } from 'types';
+import type { ConfirmParams } from 'types';
 import { writable } from 'svelte/store';
 
 
-export default writable<TransactionParam[]>([]);
+export default writable<ConfirmParams[]>([]);
 

@@ -1,4 +1,4 @@
-import type { TransactionParam } from "./transaction";
+import type { ConfirmParams } from "./transaction";
 
 
 export interface WalletState {
@@ -16,5 +16,5 @@ export interface WalletState {
   netwrok: string;
   wallet: Wallet;
   tokens: Token[];
-  confirm: TransactionParam[];
+  confirm: ConfirmParams[];
 }

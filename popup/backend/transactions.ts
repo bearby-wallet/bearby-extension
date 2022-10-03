@@ -1,4 +1,4 @@
-import type { SendResponseParams, MinTransactionParams, ConfirmParams, WalletState } from "types";
+import type { SendResponseParams, MinTransactionParams, WalletState } from "types";
 
 import { MTypePopup } from "config/stream-keys";
 import { Message } from "lib/stream/message";
@@ -30,11 +30,11 @@ export async function rejectConfirmTransaction(index: number) {
   return resolve;
 }
 
-export async function bordercastTransaction(tx: ConfirmParams) {
+export async function bordercastTransaction(index: number) {
   const data = await new Message<SendResponseParams>({
     type: MTypePopup.SIGN_AND_SEND_TX,
     payload: {
-      tx
+      index
     }
   }).send();
   const resolve = warpMessage(data);

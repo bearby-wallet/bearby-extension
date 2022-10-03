@@ -62,10 +62,10 @@
   async function handleOnConfirm() {
     loading = true;
     try {
-      await bordercastTransaction(transaction);
+      await bordercastTransaction(txIndex);
       await onNextTx();
-    } catch (err) {
-      console.error(err);
+    } catch (e) {
+      err = e.message;
     }
     loading = false;
   }
@@ -75,8 +75,8 @@
     try {
       await rejectConfirmTransaction(txIndex);
       await onNextTx();
-    } catch (err) {
-      console.error(err);
+    } catch (e) {
+      err = e.message;
     }
     loading = false;
   }
@@ -116,9 +116,6 @@
   {#if transaction}
     <main>
       <div class="warp">
-        <p class="error">
-          {err}
-        </p>
         <h2>
           {transaction.title || 'BearBy'}
         </h2>
@@ -129,6 +126,9 @@
             alt="icon"
           />
         {/if}
+        <p class="error">
+          {err}
+        </p>
       </div>
       <div
         class="params"
@@ -199,6 +199,7 @@
       }
     }
     & > div.params {
+      margin: 8px;
       box-shadow: rgb(0 0 0 / 1%) 0px 0px 1px, rgb(0 0 0 / 4%) 0px 4px 8px, rgb(0 0 0 / 4%) 0px 16px 24px, rgb(0 0 0 / 1%) 0px 24px 32px;
 
       background-color: var(--card-color);

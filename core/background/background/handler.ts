@@ -107,6 +107,9 @@ export function startBackground(core: BackgroundState) {
       case MTypePopup.REJECT_TX_FOR_CONFIRM:
         transaction.removeConfirmTx(msg.payload.index, sendResponse);
         return true;
+      case MTypePopup.SIGN_AND_SEND_TX:
+        transaction.signAndSendTx(msg.payload.index, sendResponse);
+        return true;
       default:
         sendResponse({
           reject: 'unexpected method'

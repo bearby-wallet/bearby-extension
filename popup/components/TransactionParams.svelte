@@ -30,7 +30,8 @@
     <span>
       <img
         src={img}
-        width="15"
+        width="20"
+        height="20"
         alt="app"
       />
       {formatNumber(amount)} {tx.token.symbol} <span>
@@ -75,7 +76,8 @@
 		margin: 0;
     padding: 5px;
 
-    width: 300px;
+    width: calc(100vw - 16px);
+    max-width: 500px;
 
 		& > li {
 			line-height: 20px;
@@ -90,11 +92,18 @@
 			&:last-child {
 				border-bottom: solid 1px transparent;
 			}
+      & > span {
+        align-items: center;
+        @include flex-center-horiz;
+      }
 			& > span:last-child {
 				font-weight: 600;
 
         & > span {
           color: var(--muted-color);
+        }
+        & > img {
+          margin: 5px;
         }
         & > a {
           color: inherit;
