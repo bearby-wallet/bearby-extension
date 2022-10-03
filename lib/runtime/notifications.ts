@@ -1,7 +1,7 @@
 import { Runtime } from 'lib/runtime';
 
 
-export class Notification {
+export class NotificationController {
   readonly #url: string;
   readonly #title: string;
   readonly #message: string;

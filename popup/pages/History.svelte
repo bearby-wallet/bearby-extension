@@ -11,20 +11,17 @@
 	import Transaction from '../components/Transaction.svelte';
 
 
-  let loading = false;
   let showTx = null;
 
   $: history = $historyStore.filter((t) => t.confirmed);
   $: queue = $historyStore.filter((t) => !t.confirmed);
 
   const hanldeOnUpdate = async () => {
-    loading = true;
     try {
       await getTransactionHistory();
     } catch (err) {
       console.error(err);
     }
-    loading = false;
   };
 
   const hanldeOnClear = async () => {
@@ -79,18 +76,8 @@
         </b>
         <ul>
           {#each history as tx, index}
-            <li
-              in:fly={{
-                delay: 100 * index,
-                duration: 400,
-                y: -20
-              }}
-              on:click={() => showTx = tx}
-            >
-              <Transaction
-                tx={tx}
-                loading={loading}
-              />
+            <li on:click={() => showTx = tx}>
+              <Transaction tx={tx} />
             </li>
           {/each}
         </ul>

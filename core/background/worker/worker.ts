@@ -4,6 +4,7 @@ import { WORKER_POOLING } from "config/common";
 import { BrowserStorage, buildObject } from "lib/storage";
 import { Fields } from "config/fields";
 import  { TransactionsController, HASH_OUT_OF_STORAGE } from "background/transactions";
+import { NotificationController } from "lib/runtime/notifications";
 
 
 export class WorkerController {
@@ -89,6 +90,11 @@ export class WorkerController {
         list[listIndex].confirmed = true;
         list[listIndex].error = error.message;
         list[listIndex].success = false;
+        this.#makeNotify(
+          String(list[listIndex].title),
+          list[listIndex].hash,
+          error.message
+        );
         continue;
       }
 
@@ -96,6 +102,11 @@ export class WorkerController {
         list[listIndex].confirmed = true;
         list[listIndex].error = HASH_OUT_OF_STORAGE;
         list[listIndex].success = false;
+        this.#makeNotify(
+          String(list[listIndex].title),
+          list[listIndex].hash,
+          HASH_OUT_OF_STORAGE
+        );
         continue;
       }
 
@@ -103,6 +114,14 @@ export class WorkerController {
 
       list[listIndex].confirmed = transaction.is_final;
       list[listIndex].success = transaction.is_final;
+
+      if (list[listIndex].confirmed) {
+        this.#makeNotify(
+          String(list[listIndex].title),
+          list[listIndex].hash,
+          'Confirmed'
+        );
+      }
     }
 
     await this.#transactions.updateHistory(list);
@@ -129,5 +148,14 @@ export class WorkerController {
     await BrowserStorage.set(
       buildObject(Fields.PERIOD, String(this.#period))
     );
+  }
+
+  #makeNotify(title: string, hash: string, message: string) {
+    const url = hash;
+    new NotificationController(
+      url,
+      title,
+      message
+    ).create();
   }
 }

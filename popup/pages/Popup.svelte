@@ -84,7 +84,6 @@
     loading = true;
     try {
       await rejectConfirmTransaction(txIndex);
-      transaction = $confirmStore[txIndex];
       await onNextTx();
     } catch (e) {
       err = e.message;

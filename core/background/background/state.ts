@@ -50,6 +50,7 @@ export class BackgroundState {
     await this.tokens.sync();
     await this.transaction.sync();
     await this.settings.sync();
+    await this.worker.sync();
     await this.contacts.sync();
   }
 }

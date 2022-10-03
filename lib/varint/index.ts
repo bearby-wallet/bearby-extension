@@ -1,3 +1,4 @@
+import { BaseError } from 'lib/error';
 import { RANGE_DECODE, RANGE_ENCODE } from './errors';
 
 const MSB = 0x80;
@@ -24,7 +25,7 @@ export class VarintDecode {
     do {
       if (counter >= l || shift > 49) {
         this.#bytes = 0;
-        throw new RangeError(RANGE_DECODE);
+        throw new BaseError(RANGE_DECODE);
       }
   
       b = buf[counter++];
@@ -52,7 +53,7 @@ export class VarintEncode {
   encode(num: number, out: number[] = [], offset = 0) {
     if (Number.MAX_SAFE_INTEGER && num > Number.MAX_SAFE_INTEGER) {
       this.#bytes = 0;
-      throw new RangeError(RANGE_ENCODE);
+      throw new BaseError(RANGE_ENCODE);
     }
 
     const oldOffset = offset;
