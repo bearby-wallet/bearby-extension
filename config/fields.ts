@@ -14,6 +14,7 @@ export enum Fields {
   NETWORK_DOWNGRADE = 'network-downgrade-flag',
   PERIOD_OFFSET = 'period-offset',
   PHISHING_DETECTION = 'phishing-detection-enabled',
+  POPUP_ENABLED = 'enabled-popup',
   CONNECTIONS_LIST = 'dapp-connections-list',
   CONNECT_DAPP = 'for-connect-app',
   CONTACTS_LIST = 'contacts-list',

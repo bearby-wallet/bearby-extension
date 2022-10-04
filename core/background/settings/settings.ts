@@ -1,3 +1,5 @@
+import type { SettingsState } from 'types/settings';
+
 import { CurrenciesController } from './currencies';
 import { LocaleSettings } from './locale';
 import { PhishingDetection } from './phishing';
@@ -6,6 +8,7 @@ import { ThemeSettings } from './theme';
 import { BrowserStorage, StorageKeyValue } from "lib/storage";
 import { Fields } from 'config/fields';
 import { NetworkSettings } from './network';
+import { PopupSettings } from './popup';
 
 
 export class SettingsControl {
@@ -15,15 +18,17 @@ export class SettingsControl {
   readonly theme = new ThemeSettings();
   readonly period = new PeriodOffset();
   readonly network = new NetworkSettings();
+  readonly popup = new PopupSettings();
 
-  get state() {
+  get state(): SettingsState {
     return {
       currency: this.currencies.selected,
       locale: this.locale.selected,
       theme: this.theme.selected,
       downgradeNode: this.network.downgrade,
       periodOffset: this.period.periodOffset,
-      phishing: this.phishing.phishingDetectionEnabled
+      phishing: this.phishing.phishingDetectionEnabled,
+      popup: this.popup.enabledPopup
     };
   }
 
@@ -34,7 +39,8 @@ export class SettingsControl {
       Fields.PHISHING_DETECTION,
       Fields.UI_THEME,
       Fields.PERIOD_OFFSET,
-      Fields.NETWORK_DOWNGRADE
+      Fields.NETWORK_DOWNGRADE,
+      Fields.POPUP_ENABLED
     ) as StorageKeyValue;
 
     await this.currencies.sync(data[Fields.SELECTED_CURRENCY]);
@@ -43,6 +49,7 @@ export class SettingsControl {
     await this.theme.sync(data[Fields.UI_THEME]);
     await this.period.sync(data[Fields.PERIOD_OFFSET]);
     await this.network.sync(data[Fields.NETWORK_DOWNGRADE]);
+    await this.popup.sync(data[Fields.POPUP_ENABLED]);
   }
 
   async reset() {
@@ -52,5 +59,6 @@ export class SettingsControl {
     await this.theme.reset();
     await this.period.reset();
     await this.network.reset();
+    await this.popup.reset();
   }
 }

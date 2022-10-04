@@ -87,3 +87,13 @@ export async function setLockTimer(timer: number) {
   updateState(resolve as WalletState);
   return resolve;
 }
+
+export async function togglePopupEnabled() {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.TOGGLE_POPUP_ENABLED,
+    payload: {}
+  }).send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}

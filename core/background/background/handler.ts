@@ -105,6 +105,9 @@ export function startBackground(core: BackgroundState) {
       case MTypePopup.SET_LOCK_TIMER:
         settings.setLogOutTimer(msg.payload.timer, sendResponse);
         return true;
+      case MTypePopup.TOGGLE_POPUP_ENABLED:
+        settings.togglePopupEnabled(sendResponse);
+        return true;
 
       case MTypePopup.ADD_CONTACT:
         contacts.addContact(msg.payload.contact, sendResponse);

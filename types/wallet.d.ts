@@ -1,5 +1,6 @@
 import type { ConfirmParams } from "./transaction";
 import type { GasState } from './gas';
+import type { SettingsState } from './settings';
 
 
 export interface WalletState {

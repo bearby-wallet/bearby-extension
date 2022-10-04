@@ -60,6 +60,22 @@ export class BackgroundSettings {
     }
   }
 
+  async togglePopupEnabled(sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+
+      await this.#core.settings.popup.togglePopupEnabled();
+
+      return sendResponse({
+        resolve: this.#core.state
+      });
+    } catch (err) {
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
   async setCurrency(currency: string, sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();

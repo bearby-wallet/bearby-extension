@@ -5,4 +5,5 @@ export interface SettingsState {
   periodOffset: number;
   downgradeNode: boolean;
   phishing: boolean;
+  popup: boolean;
 }

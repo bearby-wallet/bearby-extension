@@ -2,10 +2,11 @@
 	import { onMount, tick } from 'svelte';
 	import { _ } from 'popup/i18n';
 
-	import { setGasConfig, setLockTimer } from 'popup/backend/settings';
+	import { setGasConfig, setLockTimer, togglePopupEnabled } from 'popup/backend/settings';
 
 	import gasStore from 'popup/store/gas';
 	import lockTimerStore from 'app/store/lock-timer';
+	import settingsStore from 'popup/store/settings';
 
 	import NavClose from '../../components/NavClose.svelte';
 	import GasControl from '../../components/GasControl.svelte';
@@ -27,9 +28,7 @@
 		}
   };
 	const handleOnChangePromt = async () => {
-		console.log('handleOnChangePromt');
-		
-		// await changePromtEnabled(!$promtStore);
+		await togglePopupEnabled();
 	};
 </script>
 
@@ -66,7 +65,7 @@
 		>
 			<div class="right">
 				<Toggle
-					checked={false}
+					checked={$settingsStore.popup}
 					on:toggle={handleOnChangePromt}
 				/>
 			</div>
