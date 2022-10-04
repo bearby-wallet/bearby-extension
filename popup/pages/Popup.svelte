@@ -12,11 +12,13 @@
 
 	import walletStore from 'popup/store/wallet';
   import confirmStore from 'app/store/confirm';
+	import gasStore from 'popup/store/gas';
 
   import SelectCard from '../components/SelectCard.svelte';
   import Modal from '../components/Modal.svelte';
   import AccountsModal from '../modals/Accounts.svelte';
   import TransactionParams from '../components/TransactionParams.svelte';
+	import GasControl from '../components/GasControl.svelte';
 
 
   let uuid = uuidv4();
@@ -48,6 +50,10 @@
       err = e.message;
     }
 	};
+
+  async function handleOnChangeGasMultiplier({ detail }) {
+    console.log(detail);
+  }
 
   async function onNextTx() {
 		const isExtends = Boolean(transaction.uuid);
@@ -144,6 +150,12 @@
         class="params"
         class:loading={loading}
       >
+        <GasControl
+          multiplier={$gasStore.multiplier}
+          gasLimit={$gasStore.gasLimit}
+          gasPrice={transaction.gasPrice}
+          on:select={handleOnChangeGasMultiplier}
+        />
         <h3 on:click={() => editModal = !editModal}>
           ({$_('confirm.btns.edit')})
         </h3>

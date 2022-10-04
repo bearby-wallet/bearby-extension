@@ -35,7 +35,7 @@
         alt="app"
       />
       {formatNumber(amount)} {tx.token.symbol} <span>
-        + {tx.fee} {$tokensStore[0].symbol}
+        +{tx.fee} {$tokensStore[0].symbol}
       </span>
     </span>
   </li>
