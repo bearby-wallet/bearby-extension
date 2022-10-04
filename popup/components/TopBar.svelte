@@ -10,7 +10,7 @@
   import netwrokStore from 'popup/store/netwrok';
 
   // import Refresh from './icons/Refresh.svelte';
-  // import ExpandIcon from './icons/Expand.svelte';
+  import ExpandIcon from './icons/Expand.svelte';
   // import ViewIcon from './icons/View.svelte';
   // import LockIcon from './icons/Lock.svelte';
 
@@ -50,14 +50,14 @@
     <span />
   </a>
   <div class="icons-warp">
-    <!-- {#if expand}
+    {#if expand}
       <span
         class="expand"
         on:click={() => linksExpand($location)}
       >
         <ExpandIcon className="icon" />
       </span>
-    {/if} -->
+    {/if}
     <!-- {#if refresh}
       <span
         class="refresh"
@@ -94,6 +94,8 @@
     background-color: var(--card-color);
     z-index: 2;
 
+    box-shadow: rgb(0 0 0 / 1%) 0px 0px 1px, rgb(0 0 0 / 4%) 0px 4px 8px, rgb(0 0 0 / 4%) 0px 16px 24px, rgb(0 0 0 / 1%) 0px 24px 32px;
+
     @include flex-between-row;
 
     @media screen and (min-width: 899px) {
@@ -105,6 +107,7 @@
     width: 15px;
 
     margin: 11px;
+    margin-left: 16px;
 
     border-radius: 100%;
     background-color: var(--warning-color);
@@ -116,5 +119,34 @@
   .icons-warp {
     text-align: end;
     width: 200px;
+  }
+  span {
+    cursor: pointer;
+
+    :global(svg.icon > path) {
+      fill: var(--muted-color);
+    }
+
+    &.expand {
+      margin-right: 16px;
+    }
+
+    &:hover {
+      :global(svg.icon-view > circle) {
+        stroke: var(--primary-color);
+      }
+      :global(svg.icon-view > line) {
+        stroke: var(--primary-color);
+      }
+      :global(svg.icon-view > path) {
+        stroke: var(--primary-color);
+      }
+      :global(svg.icon-lock > path) {
+        fill: var(--primary-color);
+      }
+      :global(svg.icon > path) {
+        fill: var(--primary-color);
+      }
+    }
   }
 </style>

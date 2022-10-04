@@ -42,6 +42,8 @@
     background-color: var(--card-color);
     z-index: 2;
 
+    box-shadow: rgb(0 0 0 / 1%) 0px 0px 1px, rgb(0 0 0 / 4%) 0px 4px 8px, rgb(0 0 0 / 4%) 0px 16px 24px, rgb(0 0 0 / 1%) 0px 24px 32px;
+
     justify-content: space-around;
     @include flex-center-vert;
 
