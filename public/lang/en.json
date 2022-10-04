@@ -234,5 +234,11 @@
         "4": "Call Contract"
       }
     }
+  },
+  "about": {
+    "title": "About",
+    "issues": "Issues",
+    "manifest_version": "Manifest version",
+    "version": "bearby version"
   }
 }

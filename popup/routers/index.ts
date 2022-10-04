@@ -14,6 +14,7 @@ import NetwrokPage from '../pages/settings/Netwrok.svelte';
 import AccountPage from '../pages/settings/Account.svelte';
 import GeneralPage from '../pages/settings/General.svelte';
 import ContactsPage from '../pages/settings/Contacts.svelte';
+import AboutPage from '../pages/settings/About.svelte';
 
 import LockPage from '../pages/Lock.svelte';
 import StartPage from '../pages/Start.svelte';
@@ -63,6 +64,12 @@ export default {
   }),
   '/settings': wrap({
     component: SettingsPage,
+    conditions: [
+      routerGuard
+    ]
+  }),
+  '/about': wrap({
+    component: AboutPage,
     conditions: [
       routerGuard
     ]
