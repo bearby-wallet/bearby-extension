@@ -59,6 +59,12 @@
 
 <style lang="scss">
   @import "../styles/mixins";
+
+  :global(body[theme="dark"]) {
+    div.token-card {
+      box-shadow: none;
+    }
+  }
   div.token-card {
     cursor: pointer;
 
@@ -68,6 +74,7 @@
 
     border: solid 2px var(--card-color);
     background-color: var(--card-color);
+
     box-shadow: rgb(0 0 0 / 1%) 0px 0px 1px, rgb(0 0 0 / 4%) 0px 4px 8px, rgb(0 0 0 / 4%) 0px 16px 24px, rgb(0 0 0 / 1%) 0px 24px 32px;
 
     @include flex-between-row;
@@ -81,7 +88,8 @@
     }
   }
   p.symbol {
-    font-size: 14pt;
+    font-size: 13pt;
+    opacity: 0.5;
     font-weight: bold;
 
     line-height: 0;
@@ -97,6 +105,7 @@
   p.conv {
     font-size: 9pt;
     line-height: 5px;
+    opacity: 0.5;
   }
   div.img-wrapper {
     height: 100%;

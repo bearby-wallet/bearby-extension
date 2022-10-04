@@ -20,20 +20,21 @@
 }
 
 :global(body[theme="dark"]) {
-  --background-gradient: linear-gradient(0.05deg, #8B003A 0.03%, #093372 89.11%);
-  --background-color:  #000000;
-  --border-color:  #ac59ff
-  --notification-color:  #ac59ff;
-  --card-color: #ac59ff;
-  --button-color: #ac59ff;
-  --text-color: #ac59ff;
-  --modal-color: #ac59ff;
-  
-  --primary-color: #ac59ff;
-  --secondary-color: #ac59ff;
-  --success-color: #ac59ff;
-  --danger-color: #ac59ff;
-  --warning-color: #ac59ff;
-  --muted-color: #ac59ff;
-  --hover-color: #ac59ff;
+  --background-gradient: rgb(33, 36, 41);
+
+  --background-color: rgb(0, 0, 0);
+  --text-color:  rgb(255, 255, 255);
+  --text-negative: rgb(0, 0, 0);
+  --muted-color: rgb(110, 114, 125);
+  --card-color:  rgb(25, 27, 31);
+  --hover-color: rgb(52, 52, 52);
+  --modal-color:  rgb(0, 0, 0);
+
+  --secondary-color: rgb(7, 190, 248);
+  --primary-color: rgb(232, 0, 111);
+
+  --danger-color: rgb(255, 44, 46);
+
+  --success-color:  rgb(0, 255, 43);
+  --warning-color: rgb(255, 208, 0);
 }

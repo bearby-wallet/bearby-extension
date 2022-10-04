@@ -113,14 +113,19 @@
 
 		@include flex-center-top-column;
 	}
+	:global(body[theme="dark"]) {
+		img {
+			display: none;
+		}
+  }
 	img {
 		position: fixed;
 		max-width: 900px;
-		width: 130vw;
+		width: 110vw;
 		margin: 0% auto;
 		left: auto;
 		right: auto;
-		top: -47px;
+		top: -67px;
 		opacity: 0.1;
 	}
 	div.btns {
