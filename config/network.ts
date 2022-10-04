@@ -14,7 +14,7 @@ export const NETWORK: NetwrokConfig = {
     LIMIT: COUNT_NODES
   },
   custom: {
-    PROVIDERS: ['http://127.0.0.1:33034'],
+    PROVIDERS: ['http://127.0.0.1:33035'],
     VERSION: 0,
     LIMIT: COUNT_NODES
   }
