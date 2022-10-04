@@ -46,6 +46,10 @@
   color: initial;
 }
 
+:global(ul) {
+  list-style-type: none;
+}
+
 :global(::-webkit-scrollbar) { 
   display: none; 
 }
