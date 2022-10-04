@@ -15,7 +15,7 @@
   max-width: 600px;
 
   background-color: var(--card-color);
-  border-color: var(--muted-color);
+  border: 2px solid transparent;
   color: var(--text-color);
 
   @include fluid-font(320px, 600px, 16px, 33px);

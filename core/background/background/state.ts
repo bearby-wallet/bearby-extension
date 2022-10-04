@@ -10,6 +10,8 @@ import { TokenControl } from "background/tokens";
 import { TransactionsController } from "background/transactions/transactions";
 import { BadgeControl } from "background/notifications";
 import { WorkerController } from "background/worker";
+import { Runtime } from "lib/runtime";
+import { PROMT_PAGE } from "config/common";
 
 
 export class BackgroundState {
@@ -44,6 +46,7 @@ export class BackgroundState {
   }
 
   async sync() {
+    console.log('start sync');
     await this.guard.sync();
     await this.netwrok.sync();
     await this.account.sync();
@@ -52,5 +55,17 @@ export class BackgroundState {
     await this.settings.sync();
     await this.worker.sync();
     await this.contacts.sync();
+    
+    Runtime.runtime.onInstalled.addListener(console.log);
+
+    console.log('end sync');
+  }
+
+  #onInstalled(event: chrome.runtime.InstalledDetails) {
+    if(event.reason === Runtime.runtime.OnInstalledReason.INSTALL) {
+      const url = Runtime.runtime.getURL(PROMT_PAGE);
+      Runtime.tabs.create({ url });
+      Runtime.runtime.onInstalled.removeListener(this.#onInstalled);
+    }
   }
 }
