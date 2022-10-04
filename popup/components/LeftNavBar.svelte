@@ -59,8 +59,8 @@
         description={$_('home.nav.options.remove.description')}
       />
     </span>
-    <hr />
   {/if}
+  <hr />
   <div class="toggles">
     <div>
       <b>

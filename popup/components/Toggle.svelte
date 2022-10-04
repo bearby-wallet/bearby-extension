@@ -105,7 +105,8 @@
     }
 
     &:checked + .tgl-btn {
-      // background: var(--modal-color);
+      background: var(--success-color);
+      border-color: var(--success-color);
       &:active {
         box-shadow: none;
         &:after {

@@ -46,16 +46,18 @@
   }
 }
 
+:global(body[theme="dark"]) {
+  :global(button.primary),
+  :global(.btn.primary) {
+    color: var(--text-color);
+  }
+}
+
 :global(button.primary),
 :global(.btn.primary) {
   border-color: var(--primary-color);
   background: var(--primary-color);
-  color: var(--text-color);
-
-  &:hover {
-    color: var(--text-negative);
-    opacity: 0.9;
-  }
+  color: var(--text-negative);
 }
 
 :global(button.loading),
