@@ -10,5 +10,7 @@ export default writable<SettingsState>({
   currency: "usd",
   locale: Locales.Auto,
   periodOffset: PERIOD_OFFSET,
-  theme: Themes.System
+  theme: Themes.System,
+  phishing: true,
+  downgradeNode: true
 });

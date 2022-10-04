@@ -6,13 +6,7 @@ export interface WalletState {
     isEnable: boolean;
     isReady: boolean;
   };
-  settings: {
-      currency: string;
-      locale: Locales;
-      theme: Themes;
-      periodOffset: number;
-      downgradeNode: boolean;
-  };
+  settings: SettingsState;
   netwrok: string;
   wallet: Wallet;
   tokens: Token[];

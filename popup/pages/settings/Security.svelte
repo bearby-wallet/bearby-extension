@@ -3,8 +3,10 @@
 	import { _ } from 'popup/i18n';
 
   import { AccountTypes } from 'config/account-type';
+	import { setPhishingDetection } from 'popup/backend/settings';
 
 	import walletStore from 'popup/store/wallet';
+	import settingsStore from 'popup/store/settings';
 
 	import NavClose from '../../components/NavClose.svelte';
 	import Toggle from '../../components/Toggle.svelte';
@@ -18,7 +20,7 @@
 	$: keybtndisbaled = account.type !== AccountTypes.PrivateKey && account.type !== AccountTypes.Seed;
 
 	const hanldeOnTogglePhishingDetection = async () => {
-		// await setPhishingDetection(!enabled);
+		await setPhishingDetection();
 	};
 </script>
 
@@ -70,7 +72,7 @@
 		>
 			<div class="right">
 				<Toggle
-					checked={false}
+					checked={$settingsStore.phishing}
 					on:toggle={hanldeOnTogglePhishingDetection}
 				/>
 			</div>

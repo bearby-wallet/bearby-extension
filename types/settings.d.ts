@@ -1,6 +1,8 @@
 export interface SettingsState {
   currency: string;
-  locale: string;
+  locale: Locales;
+  theme: Themes;
   periodOffset: number;
-  theme: string;
+  downgradeNode: boolean;
+  phishing: boolean;
 }

@@ -53,3 +53,13 @@ export async function setLocale(locale: string) {
   updateState(resolve as WalletState);
   return resolve;
 }
+
+export async function setPhishingDetection() {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.SET_PHISHING,
+    payload: {}
+  }).send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}

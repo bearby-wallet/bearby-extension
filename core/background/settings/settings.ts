@@ -22,7 +22,8 @@ export class SettingsControl {
       locale: this.locale.selected,
       theme: this.theme.selected,
       downgradeNode: this.network.downgrade,
-      periodOffset: this.period.periodOffset
+      periodOffset: this.period.periodOffset,
+      phishing: this.phishing.phishingDetectionEnabled
     };
   }
 
