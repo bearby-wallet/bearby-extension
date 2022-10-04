@@ -240,5 +240,27 @@
     "issues": "Issues",
     "manifest_version": "Manifest version",
     "version": "bearby version"
+  },
+  "security": {
+    "title": "Security",
+    "p_modal": {
+      "title": "Secret Recovery Phrase",
+      "warn": "DO NOT share this phrase with anyone! These words can be used to steal all your accounts."
+    },
+    "phrase": {
+      "title": "Reveal Secret Recovery Phrase",
+      "description": "If you ever change browsers or move computers, you will need this Secret Recovery Phrase to access your accounts. Save them somewhere safe and secret.",
+      "label": "Enter password to continue",
+      "btn": "Reveal"
+    },
+    "key": {
+      "title": "Show Private Keys",
+      "warn": "Warning: Never disclose this key. Anyone with your private keys can steal any assets held in your account.",
+      "btn": "Export"
+    },
+    "phishing": {
+      "title": "Use Phishing Detection",
+      "warn": "Display a warning for phishing domains targeting Massa users"
+    }
   }
 }

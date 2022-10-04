@@ -13,9 +13,6 @@
 			url: 'https://github.com/bearby-wallet/bearby-extension/issues'
 		}
 	];
-
-  console.log(manifest);
-  
 </script>
 
 <main>
