@@ -12,10 +12,16 @@
   font-size: 14px;
 }
 
+
+:global(h3) {
+  font-size: 12pt;
+}
+:global(h1) {
+  font-size: 24pt;
+}
+
 :global(h1, h2, h3) {
   color: var(--text-color);
-
-  text-shadow:0 0 1px var(--muted-color);
 }
 
 :global(b) {

@@ -63,6 +63,7 @@
     margin-block-end: 0;
   }
   p {
+    font-size: 8pt;
     margin-block-start: 0;
   }
   div.wrapper {

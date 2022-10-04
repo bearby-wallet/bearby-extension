@@ -35,7 +35,9 @@
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-tap-highlight-color: var(--text-negative);
+
+  font-size-adjust:0.5;
 }
 
 :global(a:link),
