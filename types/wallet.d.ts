@@ -1,4 +1,5 @@
 import type { ConfirmParams } from "./transaction";
+import type { GasState } from './gas';
 
 
 export interface WalletState {
@@ -11,4 +12,5 @@ export interface WalletState {
   wallet: Wallet;
   tokens: Token[];
   confirm: ConfirmParams[];
+  gas: GasState;
 }

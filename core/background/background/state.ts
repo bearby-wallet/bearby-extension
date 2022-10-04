@@ -12,10 +12,12 @@ import { BadgeControl } from "background/notifications";
 import { WorkerController } from "background/worker";
 import { Runtime } from "lib/runtime";
 import { PROMT_PAGE } from "config/common";
+import { GasControl } from "background/gas";
 
 
 export class BackgroundState {
   readonly netwrok = new NetworkControl();
+  readonly gas = new GasControl();
   readonly guard = new Guard();
   readonly badge = new BadgeControl();
   readonly settings = new SettingsControl();
@@ -41,7 +43,8 @@ export class BackgroundState {
       netwrok: this.netwrok.selected,
       wallet: this.account.wallet,
       tokens: this.tokens.identities,
-      confirm: this.transaction.confirm
+      confirm: this.transaction.confirm,
+      gas: this.gas.state
     };
   }
 
@@ -49,6 +52,7 @@ export class BackgroundState {
     console.log('start sync');
     await this.guard.sync();
     await this.netwrok.sync();
+    await this.gas.sync();
     await this.account.sync();
     await this.tokens.sync();
     await this.transaction.sync();
@@ -56,7 +60,7 @@ export class BackgroundState {
     await this.worker.sync();
     await this.contacts.sync();
     
-    Runtime.runtime.onInstalled.addListener(console.log);
+    Runtime.runtime.onInstalled.addListener(this.#onInstalled);
 
     console.log('end sync');
   }

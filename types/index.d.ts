@@ -9,3 +9,4 @@ export * from './contacts';
 export * from './token';
 export * from './wallet';
 export * from './transaction';
+export * from './gas';

@@ -18,5 +18,6 @@ export enum Fields {
   CONNECT_DAPP = 'for-connect-app',
   CONTACTS_LIST = 'contacts-list',
   TOKENS = 'tokens-list',
-  PERIOD = 'current-period'
+  PERIOD = 'current-period',
+  GAS = 'gas-config'
 }
