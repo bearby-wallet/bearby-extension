@@ -1,4 +1,6 @@
+import { pubKeyFromBytes } from "lib/address";
 import type { BaseError } from "lib/error";
+import { privateKeyBytesToBase58 } from "lib/validator";
 import type { KeyAccountPayload, WordsPayloadToEncrypt } from "types/account";
 import type { StreamResponse } from "types/stream";
 import type { BackgroundState } from "./state";
@@ -164,6 +166,27 @@ export class BackgroundWallet {
 
       return sendResponse({
         resolve: this.#core.state
+      });
+    } catch (err) {
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
+  async exportPrivateKey(password: string, sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.unlock(password);
+      this.#core.guard.checkSession();
+
+      const pair =  await this.#core.account.getKeyPair();
+
+      return sendResponse({
+        resolve: {
+          base58: pair.base58,
+          privKey: await privateKeyBytesToBase58(pair.privKey),
+          pubKey: await pubKeyFromBytes(pair.pubKey)
+        }
       });
     } catch (err) {
       return sendResponse({

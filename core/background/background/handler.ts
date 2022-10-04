@@ -58,6 +58,9 @@ export function startBackground(core: BackgroundState) {
       case MTypePopup.RESTORE_KEY:
         wallet.restoreKey(msg.payload, sendResponse);
         return true;
+      case MTypePopup.EXPORT_KEY:
+        wallet.exportPrivateKey(msg.payload.password, sendResponse);
+        return true;
 
       case MTypePopup.SELECT_NETWORK:
         network.selectNetwork(msg.payload.net, sendResponse);

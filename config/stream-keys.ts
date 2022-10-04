@@ -21,6 +21,7 @@ export const MTypePopup = {
   ADD_ACCOUNT: `@/${app}/add-account`,
   RESTORE_KEY: `@/${app}/restore-key`,
   SET_ACCOUNT_NAME: `@/${app}/set-account-name`,
+  EXPORT_KEY: `@/${app}/export-privatekey`,
 
   BALANCE_UPDATE: `@/${app}/balance-update`,
 

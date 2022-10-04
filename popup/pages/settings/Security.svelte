@@ -12,6 +12,8 @@
 	import Toggle from '../../components/Toggle.svelte';
   import Modal from '../../components/Modal.svelte';
   import Jumbotron from '../../components/Jumbotron.svelte';
+  import ExportKeyModal from '../../modals/ExportKey.svelte';
+
 
 	let phraseModal = false;
 	let keyModal = false;
@@ -36,7 +38,7 @@
   title={$_('security.key.title')}
   on:close={() => keyModal = !keyModal}
 >
-	<!-- <ExportKeyModal /> -->
+	<ExportKeyModal />
 </Modal>
 <main>
 	<NavClose title={$_('security.title')}/>

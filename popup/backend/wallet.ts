@@ -127,3 +127,13 @@ export async function changeAccountName(name: string, index: number) {
   updateState(resolve as WalletState);
   return resolve;
 }
+
+export async function exportPrivateKey(password: string) {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.EXPORT_KEY,
+    payload: {
+      password
+    }
+  }).send();
+  return warpMessage(data);
+}
