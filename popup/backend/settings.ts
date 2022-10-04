@@ -1,4 +1,4 @@
-import type { SendResponseParams, WalletState } from "types";
+import type { GasState, SendResponseParams, WalletState } from "types";
 
 import { MTypePopup } from "config/stream-keys";
 import { Message } from "lib/stream/message";
@@ -58,6 +58,18 @@ export async function setPhishingDetection() {
   const data = await new Message<SendResponseParams>({
     type: MTypePopup.SET_PHISHING,
     payload: {}
+  }).send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}
+
+export async function setGasConfig(config: GasState) {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.SET_GAS_CONFIG,
+    payload: {
+      config
+    }
   }).send();
   const resolve = warpMessage(data);
   updateState(resolve as WalletState);

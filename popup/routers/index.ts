@@ -13,6 +13,7 @@ import PopupPage from '../pages/Popup.svelte';
 import NetwrokPage from '../pages/settings/Netwrok.svelte';
 import AccountPage from '../pages/settings/Account.svelte';
 import GeneralPage from '../pages/settings/General.svelte';
+import AdvancedPage from '../pages/settings/Advanced.svelte';
 import ContactsPage from '../pages/settings/Contacts.svelte';
 import SecurityPage from '../pages/settings/Security.svelte';
 import AboutPage from '../pages/settings/About.svelte';
@@ -83,6 +84,12 @@ export default {
   }),
   '/general': wrap({
     component: GeneralPage,
+    conditions: [
+      routerGuard
+    ]
+  }),
+  '/advanced': wrap({
+    component: AdvancedPage,
     conditions: [
       routerGuard
     ]

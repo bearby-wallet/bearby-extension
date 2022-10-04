@@ -38,6 +38,7 @@ export const MTypePopup = {
   SET_THEME: `@/${app}/set-theme`,
   SET_LOCALE: `@/${app}/set-locale`,
   SET_PHISHING: `@/${app}/set-phishing-flag`,
+  SET_GAS_CONFIG: `@/${app}/set-gas-config`,
 
   GET_CONTACTS: `@/${app}/get-contacts`,
   ADD_CONTACT: `@/${app}/add-contact`,

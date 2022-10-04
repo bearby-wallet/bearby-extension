@@ -1,66 +1,40 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
-	import { push } from 'svelte-spa-router';
-	import { getState } from "popup/backend";
 	import { _ } from 'popup/i18n';
-	import { Formats } from 'config/formats';
 
-	import {
-		changeGasMultiplier,
-		resetGas
-	} from 'popup/backend/gas';
-	import {
-		changeLockTimer,
-		changeAddressFormat,
-		changePromtEnabled
-	} from 'popup/backend/settings';
+	import { setGasConfig } from 'popup/backend/settings';
 
 	import gasStore from 'popup/store/gas';
-	import timeLock from 'popup/store/lock-time';
-	import addressFormatStore from 'popup/store/format';
-	import promtStore from 'app/store/promt';
 
 	import NavClose from '../../components/NavClose.svelte';
 	import GasControl from '../../components/GasControl.svelte';
   import Jumbotron from '../../components/Jumbotron.svelte';
 	import Toggle from '../../components/Toggle.svelte';
 
-	let base16 = $addressFormatStore === Formats.Base16;
-	let time = $timeLock;
+	let time = 0;
 
 	const handleOnChangeGasMultiplier = async ({ detail }) => {
-		await changeGasMultiplier(detail);
+		await setGasConfig({
+			...$gasStore,
+			multiplier: detail
+		});
 	};
 	const handleBlurLockTimer = async (_) => {
-		if (time !== $timeLock) {
-			await tick();
-			const t = Math.round(time)
-			await changeLockTimer(Math.abs(t));
-		}
+		console.log('handleBlurLockTimer');
+		// if (time !== $timeLock) {
+		// 	const t = Math.round(time)
+		// 	await changeLockTimer(Math.abs(t));
+		// }
   };
-	const handleToggleAddressFormat = async () => {
-		if (base16) {
-			await changeAddressFormat(Formats.Bech32);
-		} else {
-			await changeAddressFormat(Formats.Base16);
-		}
-		base16 = $addressFormatStore === Formats.base16;
-	};
 	const handleOnChangePromt = async () => {
-		await changePromtEnabled(!$promtStore);
-	};
-	const hanldeOnReset = async () => {
-		await resetGas();
-		await changeLockTimer();
-		await changeAddressFormat();
-		await changePromtEnabled();
-		time = $timeLock;
-		base16 = $addressFormatStore === Formats.Base16;
+		console.log('handleOnChangePromt');
+		
+		// await changePromtEnabled(!$promtStore);
 	};
 </script>
 
 <main>
-	<NavClose title={'Advanced'}/>
+	<NavClose title={$_('advanced.title')}/>
 	<div>
 		<Jumbotron
 			title={$_('advanced.gas.title')}
@@ -92,7 +66,7 @@
 		>
 			<div class="right">
 				<Toggle
-					checked={$promtStore}
+					checked={false}
 					on:toggle={handleOnChangePromt}
 				/>
 			</div>
@@ -115,9 +89,5 @@
 		&:focus {
 			border-color: var(--text-color);
 		}
-	}
-	button.warning {
-		width: 290px;
-		margin-block-end: 16px;
 	}
 </style>

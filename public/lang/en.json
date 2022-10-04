@@ -263,5 +263,19 @@
       "title": "Use Phishing Detection",
       "warn": "Display a warning for phishing domains targeting Massa users"
     }
+  },
+  "advanced": {
+    "title": "Advanced",
+    "gas": {
+      "title": "GasPrice.",
+      "description": "Choose your default gas price, all your transactions will use these gas parameters."
+    },
+    "popup": {
+      "title": "Popup",
+      "description": "You can disable the appearance of the transaction confirmation window."
+    },
+    "time": {
+      "title": "Auto logout time (hours)"
+    }
   }
 }

@@ -99,6 +99,9 @@ export function startBackground(core: BackgroundState) {
       case MTypePopup.SET_PHISHING:
         settings.setPthishing(sendResponse);
         return true;
+      case MTypePopup.SET_GAS_CONFIG:
+        settings.setGasConfig(msg.payload.config, sendResponse);
+        return true;
 
       case MTypePopup.ADD_CONTACT:
         contacts.addContact(msg.payload.contact, sendResponse);
