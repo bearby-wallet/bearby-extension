@@ -195,6 +195,23 @@ export class BackgroundWallet {
     }
   }
 
+  async exportSecretWords(password: string, sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.unlock(password);
+      this.#core.guard.checkSession();
+
+      const words = await this.#core.guard.exportMnemonic(password);
+
+      return sendResponse({
+        resolve: words
+      });
+    } catch (err) {
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
   async logout(sendResponse: StreamResponse) {
     await this.#core.guard.logout();
 

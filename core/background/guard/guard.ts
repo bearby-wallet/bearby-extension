@@ -94,6 +94,23 @@ export class Guard {
     }
   }
 
+  async exportMnemonic(password: string) {
+    assert(this.isReady, WALLET_NOT_READY, GuardError);
+
+    try {
+      assert(Boolean(this.#encryptMnemonic), WALLET_NOT_SYNC, GuardError);
+
+      const passwordBytes = utils.utf8.toBytes(password);
+      const hash = await sha256(passwordBytes);
+      const mnemonicBytes = Cipher.decrypt(this.#encryptMnemonic as Uint8Array, hash);
+      
+      return utils.utf8.fromBytes(mnemonicBytes);
+    } catch (err) {
+      this.logout();
+      throw new GuardError(INCORRECT_PASSWORD);
+    }
+  }
+
   async unlock(password: string) {
     assert(this.isReady, WALLET_NOT_READY, GuardError);
 

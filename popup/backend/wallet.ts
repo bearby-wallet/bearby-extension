@@ -137,3 +137,13 @@ export async function exportPrivateKey(password: string) {
   }).send();
   return warpMessage(data);
 }
+
+export async function exportSecrePhrase(password: string) {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.EXPORT_SECRET_WORDS,
+    payload: {
+      password
+    }
+  }).send();
+  return warpMessage(data);
+}

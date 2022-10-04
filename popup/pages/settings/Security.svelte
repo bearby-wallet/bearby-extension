@@ -13,7 +13,7 @@
   import Modal from '../../components/Modal.svelte';
   import Jumbotron from '../../components/Jumbotron.svelte';
   import ExportKeyModal from '../../modals/ExportKey.svelte';
-
+	import RevealPhraseModal from '../../modals/RevealPhrase.svelte';
 
 	let phraseModal = false;
 	let keyModal = false;
@@ -31,7 +31,7 @@
   title={$_('security.p_modal.title')}
   on:close={() => phraseModal = !phraseModal}
 >
-	<!-- <RevealPhraseModal /> -->
+	<RevealPhraseModal />
 </Modal>
 <Modal
   show={keyModal}
