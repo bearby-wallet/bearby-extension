@@ -240,14 +240,16 @@
       }
     }
   }
-  div.smart-input {
-    width: 100%;
+  div.smart-input,
+  div.input {
+    max-width: 400px;
+    width: calc(100vw - 20px);
     margin-block-end: 16px;
   }
+  div.smart-input {
+  }
   div.input {
-    width: 100%;
     margin-block-start: 16px;
-    margin-block-end: 16px;
 
     @include flex-column;
 
