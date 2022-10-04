@@ -24,7 +24,10 @@
   tip={tip}
   bottom
 >
-  <div on:click={handleOnCopy}>
+  <div
+    class="warp-tip"
+    on:click={handleOnCopy}
+  >
     <h1>
       {account.name}
     </h1>
@@ -36,12 +39,13 @@
 
 <style lang="scss">
   @import "../styles/mixins";
-  div {
+  div.warp-tip {
     text-align: center;
     cursor: pointer;
 
     padding: 8px;
     margin: 5px;
+    max-width: 200px;
 
     @include border-radius(16px);
 

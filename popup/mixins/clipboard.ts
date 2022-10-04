@@ -1,11 +1,17 @@
 export async function clipboardCopy(text: string) {
   // Put the text to copy into a <span>
   const span = document.createElement('span');
-  span.textContent = text;
+  span.style.display = 'none';
 
   // Preserve consecutive spaces and newlines
+  span.style.height = '1px';
+  span.style.width = '1px';
   span.style.whiteSpace = 'pre';
   span.style.userSelect = 'all';
+
+  span.textContent = text;
+
+  span.style.display = 'block';
 
   // Add the <span> to the page
   document.body.appendChild(span);

@@ -49,7 +49,6 @@
     padding: 8px 16px;
     background-color: var(--card-color);
     color: var(--text-color);
-    min-width: 100px;
     text-align: center;
 
     @include border-radius(16px);
