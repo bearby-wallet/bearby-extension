@@ -81,21 +81,21 @@
     }
   }
   p.symbol {
-    font-size: 16px;
+    font-size: 14pt;
     font-weight: bold;
 
     line-height: 0;
     margin-block-end: 20px;
   }
   p.balance {
-    font-size: 14px;
+    font-size: 11pt;
     line-height: 0px;
     color: var(--text-color);
     margin-block-end: 10px;
     margin-block-start: 30px;
   }
   p.conv {
-    font-size: 11px;
+    font-size: 9pt;
     line-height: 5px;
   }
   div.img-wrapper {

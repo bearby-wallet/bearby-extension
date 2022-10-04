@@ -136,4 +136,7 @@
     text-indent: 15px;
     font-size: 11pt;
   }
+  b {
+    font-size: 9pt;
+  }
 </style>
