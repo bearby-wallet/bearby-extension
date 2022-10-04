@@ -121,6 +121,14 @@ export class TransactionsController {
     );
   }
 
+  async updateConfirm(txns: ConfirmParams[]) {
+    this.#confirm = txns;
+
+    await BrowserStorage.set(
+      buildObject(this.#confirmField, this.confirm)
+    );
+  }
+
   async resetNonce(nonce: number) {
     this.#history = this.history.map((t) => ({
       ...t,

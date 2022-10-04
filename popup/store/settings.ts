@@ -12,5 +12,6 @@ export default writable<SettingsState>({
   periodOffset: PERIOD_OFFSET,
   theme: Themes.System,
   phishing: true,
-  downgradeNode: true
+  downgradeNode: true,
+  popup: true
 });

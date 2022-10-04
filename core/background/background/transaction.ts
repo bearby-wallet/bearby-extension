@@ -83,6 +83,28 @@ export class BackgroundTransaction {
     }
   }
 
+  async updateConfirmTx(confirmParams: ConfirmParams, index: number, sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+
+      const confirmTxns = this.#core.transaction.confirm;
+
+      assert(Boolean(confirmTxns[index]), NOT_FOUND_CONFIRM, TransactionsError);
+
+      confirmTxns[index] = confirmParams;
+
+      await this.#core.transaction.updateConfirm(confirmTxns);
+
+      return sendResponse({
+        resolve: this.#core.state
+      });
+    } catch (err) {
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
   async signAndSendTx(index: number, sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();

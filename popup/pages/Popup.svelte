@@ -7,7 +7,11 @@
   import { trim } from 'popup/filters/trim';
   import { uuidv4 } from 'lib/crypto/uuid';
   import { closePopup } from 'popup/mixins/popup';
-  import { rejectConfirmTransaction, bordercastTransaction } from 'popup/backend/transactions';
+  import {
+    rejectConfirmTransaction,
+    bordercastTransaction,
+    updateConfirm
+  } from 'popup/backend/transactions';
 	import { selectAccount } from 'popup/backend/wallet';
 
 	import walletStore from 'popup/store/wallet';
@@ -25,6 +29,7 @@
   let txIndex = 0;
 	let index = $walletStore.selectedAddress;
   let transaction = $confirmStore[txIndex];
+  let startGasPrice = Number(transaction.gasPrice);
   let accountsModal = false;
   let editModal = false;
   let loading = false;
@@ -52,7 +57,10 @@
 	};
 
   async function handleOnChangeGasMultiplier({ detail }) {
-    console.log(detail);
+    gasMultiplier = detail;
+    tx.gasPrice = startGasPrice * gasMultiplier;
+
+    await updateConfirm(tx, txIndex);
   }
 
   async function onNextTx() {

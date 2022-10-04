@@ -134,6 +134,13 @@ export function startBackground(core: BackgroundState) {
       case MTypePopup.CLEAR_ALL_HISTORY:
         transaction.clearAllHistory(sendResponse);
         return true;
+      case MTypePopup.UPDATE_TX_FOR_CONFIRM:
+        transaction.updateConfirmTx(
+          msg.payload.transaction,
+          msg.payload.index,
+          sendResponse
+        );
+        return true;
       default:
         sendResponse({
           reject: 'unexpected method'
