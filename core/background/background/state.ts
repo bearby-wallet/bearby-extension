@@ -44,7 +44,8 @@ export class BackgroundState {
       wallet: this.account.wallet,
       tokens: this.tokens.identities,
       confirm: this.transaction.confirm,
-      gas: this.gas.state
+      gas: this.gas.state,
+      lockTime: this.guard.lockTime
     };
   }
 

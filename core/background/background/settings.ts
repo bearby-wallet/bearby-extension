@@ -44,6 +44,22 @@ export class BackgroundSettings {
     }
   }
 
+  async setLogOutTimer(timer: number, sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+
+      await this.#core.guard.setLogOutTimer(timer);
+
+      return sendResponse({
+        resolve: this.#core.state
+      });
+    } catch (err) {
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
   async setCurrency(currency: string, sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();

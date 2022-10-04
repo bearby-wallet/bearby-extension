@@ -7,7 +7,8 @@ import {
   WALLET_NOT_READY,
   WALLET_NOT_SYNC,
   INCORRECT_PASSWORD,
-  WALLET_NOT_ENABLED
+  WALLET_NOT_ENABLED,
+  TIMER_MUST_BE_INT
 } from './error';
 import { Cipher } from 'lib/crypto/aes';
 import { MnemonicController } from 'lib/bip39';
@@ -16,6 +17,7 @@ import { BrowserStorage, buildObject, StorageKeyValue } from 'lib/storage';
 import { Fields } from 'config/fields';
 import { TIME_BEFORE_LOCK } from 'config/common';
 import { isPrivateKey } from 'lib/validator';
+import { TypeOf } from 'lib/type';
 
 
 export class Guard {
@@ -92,6 +94,17 @@ export class Guard {
         buildObject(Fields.LOCK_TIME, String(TIME_BEFORE_LOCK))
       );
     }
+  }
+
+  async setLogOutTimer(timer: number) {
+    assert(TypeOf.isInt(timer), TIMER_MUST_BE_INT, GuardError);
+    assert(timer > 0, TIMER_MUST_BE_INT, GuardError);
+
+    this.#time = timer;
+
+    await BrowserStorage.set(
+      buildObject(Fields.LOCK_TIME, String(this.lockTime))
+    );
   }
 
   async exportMnemonic(password: string) {

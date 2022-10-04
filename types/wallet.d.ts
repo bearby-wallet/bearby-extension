@@ -13,4 +13,5 @@ export interface WalletState {
   tokens: Token[];
   confirm: ConfirmParams[];
   gas: GasState;
+  lockTime: number;
 }

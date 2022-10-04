@@ -2,16 +2,17 @@
 	import { onMount, tick } from 'svelte';
 	import { _ } from 'popup/i18n';
 
-	import { setGasConfig } from 'popup/backend/settings';
+	import { setGasConfig, setLockTimer } from 'popup/backend/settings';
 
 	import gasStore from 'popup/store/gas';
+	import lockTimerStore from 'app/store/lock-timer';
 
 	import NavClose from '../../components/NavClose.svelte';
 	import GasControl from '../../components/GasControl.svelte';
   import Jumbotron from '../../components/Jumbotron.svelte';
 	import Toggle from '../../components/Toggle.svelte';
 
-	let time = 0;
+	let time = $lockTimerStore;
 
 	const handleOnChangeGasMultiplier = async ({ detail }) => {
 		await setGasConfig({
@@ -20,11 +21,10 @@
 		});
 	};
 	const handleBlurLockTimer = async (_) => {
-		console.log('handleBlurLockTimer');
-		// if (time !== $timeLock) {
-		// 	const t = Math.round(time)
-		// 	await changeLockTimer(Math.abs(t));
-		// }
+		if (time !== $lockTimerStore) {
+			const t = Math.round(time)
+			await setLockTimer(Math.abs(t));
+		}
   };
 	const handleOnChangePromt = async () => {
 		console.log('handleOnChangePromt');

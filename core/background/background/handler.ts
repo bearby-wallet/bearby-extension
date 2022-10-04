@@ -102,6 +102,9 @@ export function startBackground(core: BackgroundState) {
       case MTypePopup.SET_GAS_CONFIG:
         settings.setGasConfig(msg.payload.config, sendResponse);
         return true;
+      case MTypePopup.SET_LOCK_TIMER:
+        settings.setLogOutTimer(msg.payload.timer, sendResponse);
+        return true;
 
       case MTypePopup.ADD_CONTACT:
         contacts.addContact(msg.payload.contact, sendResponse);

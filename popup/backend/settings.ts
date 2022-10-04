@@ -75,3 +75,15 @@ export async function setGasConfig(config: GasState) {
   updateState(resolve as WalletState);
   return resolve;
 }
+
+export async function setLockTimer(timer: number) {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.SET_LOCK_TIMER,
+    payload: {
+      timer
+    }
+  }).send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}
