@@ -2,7 +2,7 @@ import { Runtime } from 'lib/runtime';
 
 
 export class PhishingDetect {
-  #host = String(window.location.host).replace('www.', '');
+  #host = String(globalThis.location.host).replace('www.', '');
   #url = Runtime.extension.getURL('phishing.html');
   #checked = false;
 

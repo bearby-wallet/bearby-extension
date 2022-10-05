@@ -16,10 +16,6 @@ export class ContentTabStream {
   readonly #domain = globalThis.document.domain;
 
   #phishing = true;
-  #enabled = false;
-  #connected = false;
-  #providers: string[] = [];
-  #base58?: string;
 
   get stream() {
     return this.#stream;
@@ -36,7 +32,7 @@ export class ContentTabStream {
   }
 
   #fromInpage(msg: ReqBody) {
-    if (!msg) return null;
+    if (!msg || !msg.type) return;
 
     switch (msg.type) {
       case MTypeTab.GET_DATA:
@@ -70,10 +66,6 @@ export class ContentTabStream {
     const resolve = warpMessage(data) as ContentWalletData;
 
     this.#phishing = resolve.phishing;
-    this.#connected = resolve.connected;
-    this.#providers = resolve.providers;
-    this.#enabled = resolve.enabled;
-    this.#base58 = resolve.base58;
 
     if (resolve.connected) {
       new ContentMessage({

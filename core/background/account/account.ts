@@ -21,8 +21,6 @@ import {
 } from './errors';
 import { addressFromPublicKey, publicKeyBytesFromPrivateKey } from 'lib/address';
 import { base58PrivateKeyToBytes, isPrivateKey } from 'lib/validator';
-import { MTypeTab } from 'config/stream-keys';
-import { TabsMessage } from 'lib/stream/tabs-message';
 import { TypeOf } from 'lib/type';
 
 
@@ -103,7 +101,6 @@ export class AccountController {
       this.wallet.selectedAddress -= 1;
     }
 
-    await this.#trigger();
     await BrowserStorage.set(
       buildObject(Fields.WALLET, this.#wallet)
     );
@@ -232,8 +229,6 @@ export class AccountController {
 
     this.#wallet.selectedAddress = index;
 
-    await this.#trigger();
-
     await BrowserStorage.set(
       buildObject(Fields.WALLET, this.#wallet)
     );
@@ -258,7 +253,6 @@ export class AccountController {
     this.#wallet
       .selectedAddress = this.wallet.identities.length - 1;
 
-    await this.#trigger();
     await BrowserStorage.set(
       buildObject(Fields.WALLET, this.#wallet)
     );
@@ -284,14 +278,5 @@ export class AccountController {
     assert(!isUniqueAddress, ACCOUNT_MUST_UNIQUE, AccountError);
     assert(!isUniqueName, ACCOUNT_NAME_MUST_UNIQUE, AccountError);
     assert(!isUniqueProductId, ACCOUNT_PRODUCT_ID_MUST_UNIQUE, AccountError);
-  }
-
-  async #trigger() {
-    await new TabsMessage({
-      type: MTypeTab.ACCOUNT_CHANGED,
-      payload: {
-        account: (this.selectedAccount?.base58) || null
-      }
-    }).send();
   }
 }

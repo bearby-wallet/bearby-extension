@@ -14,6 +14,8 @@ import { Runtime } from "lib/runtime";
 import { PROMT_PAGE } from "config/common";
 import { GasControl } from "background/gas";
 import { AppConnectController } from "background/connections";
+import { MTypeTab } from "config/stream-keys";
+import { TabsMessage } from "lib/stream/tabs-message";
 
 
 export class BackgroundState {
@@ -66,6 +68,17 @@ export class BackgroundState {
     Runtime.runtime.onInstalled.addListener(this.#onInstalled);
 
     console.log('end sync');
+  }
+
+  triggerState() {
+    const account = this.account.selectedAccount;
+
+    new TabsMessage({
+      type: MTypeTab.ACCOUNT_CHANGED,
+      payload: {
+        base58: account?.base58
+      }
+    }).send();
   }
 
   #onInstalled(event: chrome.runtime.InstalledDetails) {

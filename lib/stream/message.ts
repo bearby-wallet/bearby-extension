@@ -19,8 +19,7 @@ import { Runtime } from 'lib/runtime';
    */
   public static signal(type: string): Message<object> {
     return new Message({
-      type,
-      domain: window.document.domain
+      type
     });
   }
 
