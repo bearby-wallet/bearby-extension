@@ -31,7 +31,7 @@
 		} catch (err) {
 			console.error(err.message);
 		}
-		// loading = false;
+		loading = false;
 	};
 	const onToggleLeftBar = () => {
 		leftBar = !leftBar;
