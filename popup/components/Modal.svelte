@@ -64,7 +64,6 @@
       max-width: 500px;
       width: 100%;
       background: var(--modal-color);
-      border: 1px solid rgb(247, 248, 250);
       padding: 0;
       z-index: 100;
 
