@@ -35,7 +35,7 @@ export function updateState(state: WalletState) {
   tokensStore.set(state.tokens);
   confirmStore.set(state.confirm);
 
-  if (!state.guard.isReady && globalThis.screen.height === 600 && globalThis.screen.width === 320) {
+  if (!state.guard.isReady && globalThis.innerHeight === 600 && globalThis.innerWidth === 320) {
     openTab(PROMT_PAGE);
     closePopup();
   }
