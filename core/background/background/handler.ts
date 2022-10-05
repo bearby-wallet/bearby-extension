@@ -1,6 +1,6 @@
 import type { BackgroundState } from "./state";
 
-import { MTypePopup } from "config/stream-keys";
+import { MTypePopup, MTypeTab } from "config/stream-keys";
 import { Runtime } from "lib/runtime";
 import { BackgroundWallet } from "./wallet";
 import { BackgroundNetwork } from './network';
@@ -25,6 +25,10 @@ export function startBackground(core: BackgroundState) {
     }
 
     switch (msg.type) {
+      case MTypeTab.GET_DATA:
+        connections.resolveContentData(msg.payload.domain, sendResponse);
+        return true;
+
       case MTypePopup.GET_LATEST_BLOCK:
         return true;
       case MTypePopup.GET_WALLET_STATE:

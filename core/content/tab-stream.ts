@@ -16,6 +16,7 @@ export class ContentTabStream {
   readonly #domain = globalThis.document.domain;
 
   #phishing = true;
+  #enabled = false;
   #connected = false;
   #providers: string[] = [];
   #base58?: string;
@@ -71,6 +72,7 @@ export class ContentTabStream {
     this.#phishing = resolve.phishing;
     this.#connected = resolve.connected;
     this.#providers = resolve.providers;
+    this.#enabled = resolve.enabled;
     this.#base58 = resolve.base58;
 
     if (resolve.connected) {

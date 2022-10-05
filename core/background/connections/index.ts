@@ -25,7 +25,7 @@ export class AppConnectController {
     this.#badge = badge;
   }
 
-  isConnected(domain: string) {
+  has(domain: string) {
     return this.#identities.some((a) => a.domain === domain);
   }
 

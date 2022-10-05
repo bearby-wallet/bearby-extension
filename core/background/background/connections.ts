@@ -1,5 +1,5 @@
 import type { BaseError } from "lib/error";
-import type { StreamResponse } from "types";
+import type { ContentWalletData, StreamResponse } from "types";
 import type { BackgroundState } from "./state";
 
 
@@ -38,5 +38,23 @@ export class BackgroundConnection {
         reject: (err as BaseError).serialize()
       });
     }
+  }
+
+  async resolveContentData(domain: string, sendResponse: StreamResponse) {
+    const enabled = this.#core.guard.isEnable;
+    const connected = this.#core.connections.has(domain);
+    const account = this.#core.account.selectedAccount;
+    const base58 = (connected && enabled && account) ? account.base58 : undefined;
+
+    const data: ContentWalletData = {
+      base58,
+      connected,
+      enabled,
+      phishing: this.#core.settings.phishing.phishingDetectionEnabled,
+      providers: this.#core.netwrok.providers
+    };
+    return sendResponse({
+      resolve: data
+    });
   }
 }
