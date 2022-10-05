@@ -277,5 +277,9 @@
     "time": {
       "title": "Auto logout time (hours)"
     }
+  },
+  "connections": {
+    "title": "Connections",
+    "no_apps": "You have no connections yet!"
   }
 }

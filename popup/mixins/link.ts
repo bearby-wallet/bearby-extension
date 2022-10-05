@@ -10,3 +10,11 @@ export function linksExpand(url = '') {
 export function openTab(url: string) {
   Runtime.tabs.create({ url });
 }
+
+export function linkToDomain(domain: string) {
+  if (!domain.includes('http')) {
+    domain = `http://${domain}`;
+  }
+
+  Runtime.tabs.create({ url: domain });
+}

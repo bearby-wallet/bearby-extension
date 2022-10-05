@@ -51,7 +51,10 @@ export const MTypePopup = {
   REJECT_TX_FOR_CONFIRM: `@/${app}/reject-transaction-for-confirm`,
   SIGN_AND_SEND_TX: `@/${app}/sign-and-send-tx`,
   GET_TX_HISTORY: `@/${app}/get-transactions-history`,
-  CLEAR_ALL_HISTORY: `@/${app}/clear-all-transactions-history`
+  CLEAR_ALL_HISTORY: `@/${app}/clear-all-transactions-history`,
+
+  GET_CONNECTIONS: `@/${app}/get-connections`,
+  REMOVE_CONNECTION: `@/${app}/remove-connection`
 };
 
 export const MTypeTab = {

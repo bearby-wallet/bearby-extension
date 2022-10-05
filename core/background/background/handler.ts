@@ -7,6 +7,7 @@ import { BackgroundNetwork } from './network';
 import { BackgroundSettings } from "./settings";
 import { BackgroundContacts } from "./contacts";
 import { BackgroundTransaction } from "./transaction";
+import { BackgroundConnection } from './connections';
 
 
 export function startBackground(core: BackgroundState) {
@@ -15,6 +16,7 @@ export function startBackground(core: BackgroundState) {
   const settings = new BackgroundSettings(core);
   const contacts = new BackgroundContacts(core);
   const transaction = new BackgroundTransaction(core);
+  const connections = new BackgroundConnection(core);
 
   Runtime.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     if (sender.id !== Runtime.runtime.id) {
@@ -117,6 +119,13 @@ export function startBackground(core: BackgroundState) {
         return true;
       case MTypePopup.REMOVE_CONTACT:
         contacts.removeContact(msg.payload.index, sendResponse);
+        return true;
+
+      case MTypePopup.GET_CONNECTIONS:
+        connections.getConnections(sendResponse);
+        return true;
+      case MTypePopup.REMOVE_CONNECTION:
+        connections.removeConnections(msg.payload.index, sendResponse);
         return true;
 
       case MTypePopup.GET_TX_HISTORY:

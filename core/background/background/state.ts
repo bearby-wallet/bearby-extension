@@ -13,6 +13,7 @@ import { WorkerController } from "background/worker";
 import { Runtime } from "lib/runtime";
 import { PROMT_PAGE } from "config/common";
 import { GasControl } from "background/gas";
+import { AppConnectController } from "background/connections";
 
 
 export class BackgroundState {
@@ -22,6 +23,7 @@ export class BackgroundState {
   readonly badge = new BadgeControl();
   readonly settings = new SettingsControl();
   readonly contacts = new ContactController();
+  readonly connections = new AppConnectController(this.badge);
   readonly account = new AccountController(this.guard);
   readonly massa = new MassaControl(this.netwrok, this.account, this.settings);
   readonly tokens = new TokenControl(this.netwrok, this.massa, this.account);
