@@ -37,6 +37,15 @@
 		leftBar = !leftBar;
 	};
 
+	function onToken(index: number) {
+		if (index === 1) {
+			// index = 1 is Roll Token
+			return push('/rolls');
+		}
+
+		return push(`/send/${index}`);
+	}
+
 	onMount(async() => {
 		const ctx = document.getElementById(uuid);
 		generateBlockies(account.pubKey, ctx);
@@ -96,7 +105,7 @@
         <TokenCard
 					token={token}
 					loading={loading}
-					on:select={() => push(`/send/${index}`)}
+					on:select={() => onToken(index)}
 				/>
       {/each}
 		</div>

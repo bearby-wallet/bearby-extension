@@ -79,7 +79,6 @@
       await addConfirmTransaction(
         amount,
         recipient,
-        accountIndex,
         token
       );
       push('/confirm');

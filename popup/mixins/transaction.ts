@@ -9,7 +9,7 @@ import gasStore from 'popup/store/gas';
 import { GAS_PRICE } from "config/gas";
 
 
-export async function addConfirmTransaction(amount: number, recipient: string, sender: number, token: Token) {
+export async function addConfirmTransaction(amount: number, recipient: string, token: Token) {
   const gas = get(gasStore);
   const params: MinTransactionParams = {
     type: OperationsType.Payment,
@@ -17,6 +17,50 @@ export async function addConfirmTransaction(amount: number, recipient: string, s
     code: '',
     params: '',
     amount: amount * 10**token.decimals,
+    gasPrice: GAS_PRICE,
+    gasLimit: gas.gasLimit,
+    icon: viewIcon(token.base58),
+    title: token.name,
+    token: {
+      decimals: token.decimals,
+      symbol: token.symbol,
+      base58: token.base58
+    }
+  };
+
+  await addToConfirmTransaction(params);
+}
+
+export async function addConfirmBuyRolls(rolls: number, recipient: string, token: Token) {
+  const gas = get(gasStore);
+  const params: MinTransactionParams = {
+    type: OperationsType.RollBuy,
+    toAddr: recipient,
+    code: '',
+    params: '',
+    amount: rolls,
+    gasPrice: GAS_PRICE,
+    gasLimit: gas.gasLimit,
+    icon: viewIcon(token.base58),
+    title: token.name,
+    token: {
+      decimals: token.decimals,
+      symbol: token.symbol,
+      base58: token.base58
+    }
+  };
+
+  await addToConfirmTransaction(params);
+}
+
+export async function addConfirmSellRolls(rolls: number, recipient: string, token: Token) {
+  const gas = get(gasStore);
+  const params: MinTransactionParams = {
+    type: OperationsType.RollSell,
+    toAddr: recipient,
+    code: '',
+    params: '',
+    amount: rolls,
     gasPrice: GAS_PRICE,
     gasLimit: gas.gasLimit,
     icon: viewIcon(token.base58),

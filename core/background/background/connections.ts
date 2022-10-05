@@ -1,5 +1,5 @@
 import type { BaseError } from "lib/error";
-import type { Contact, StreamResponse } from "types";
+import type { StreamResponse } from "types";
 import type { BackgroundState } from "./state";
 
 

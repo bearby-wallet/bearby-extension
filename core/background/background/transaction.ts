@@ -5,7 +5,7 @@ import type { BackgroundState } from "./state";
 import { assert } from "lib/assert";
 import { NOT_FOUND_CONFIRM, TransactionsError, UNKONOW_TX_TYPE } from "background/transactions/errors";
 import { OperationsType } from "background/provider/operations";
-import { PaymentBuild } from "background/provider/transaction";
+import { BuyRollsBuild, PaymentBuild, SellRollsBuild } from "background/provider/transaction";
 
 
 export class BackgroundTransaction {
@@ -36,7 +36,7 @@ export class BackgroundTransaction {
         ...params,
         tokenAmount: String(params.amount),
         fee: params.gasLimit * params.gasPrice,
-        recipient: params.toAddr,
+        recipient: params.toAddr
       };
 
       await this.#core.transaction.addConfirm(confirmParams);
@@ -187,6 +187,18 @@ export class BackgroundTransaction {
           confirmParams.fee,
           confirmParams.amount,
           confirmParams.toAddr,
+          expiryPeriod
+        ).bytes();
+      case OperationsType.RollBuy:
+        return await new BuyRollsBuild(
+          confirmParams.fee,
+          confirmParams.amount,
+          expiryPeriod
+        ).bytes();
+      case OperationsType.RollSell:
+        return await new SellRollsBuild(
+          confirmParams.fee,
+          confirmParams.amount,
           expiryPeriod
         ).bytes();
       default:

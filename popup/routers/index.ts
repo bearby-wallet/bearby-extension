@@ -9,6 +9,7 @@ import SendPage from '../pages/Send.svelte';
 import SettingsPage from '../pages/Settings.svelte';
 import HistoryPage from '../pages/History.svelte';
 import PopupPage from '../pages/Popup.svelte';
+import RollsPage from '../pages/Rolls.svelte';
 
 import NetwrokPage from '../pages/settings/Netwrok.svelte';
 import AccountPage from '../pages/settings/Account.svelte';
@@ -49,6 +50,12 @@ export default {
   }),
   '/history': wrap({
     component: HistoryPage,
+    conditions: [
+      routerGuard
+    ]
+  }),
+  '/rolls': wrap({
+    component: RollsPage,
     conditions: [
       routerGuard
     ]

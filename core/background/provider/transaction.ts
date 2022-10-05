@@ -46,6 +46,70 @@ export class PaymentBuild {
   }
 }
 
+export class BuyRollsBuild {
+  static operation = OperationsType.RollBuy;
+
+  fee: number;
+  amount: number;
+  expirePeriod: number;
+
+  constructor(
+    fee: number,
+    amount: number,
+    expirePeriod: number
+  ) {
+    this.fee = fee;
+    this.amount = amount;
+    this.expirePeriod = expirePeriod;
+  }
+
+  async bytes() {
+		const fee = new VarintEncode().encode(this.fee);
+		const expirePeriod = new VarintEncode().encode(this.expirePeriod);
+		const typeIdEncoded = new VarintEncode().encode(BuyRollsBuild.operation);
+    const amount = new VarintEncode().encode(this.amount);
+
+    return Uint8Array.from([
+      ...fee,
+      ...expirePeriod,
+      ...typeIdEncoded,
+      ...amount
+    ]);
+  }
+}
+
+export class SellRollsBuild {
+  static operation = OperationsType.RollSell;
+
+  fee: number;
+  amount: number;
+  expirePeriod: number;
+
+  constructor(
+    fee: number,
+    amount: number,
+    expirePeriod: number
+  ) {
+    this.fee = fee;
+    this.amount = amount;
+    this.expirePeriod = expirePeriod;
+  }
+
+  async bytes() {
+		const fee = new VarintEncode().encode(this.fee);
+		const expirePeriod = new VarintEncode().encode(this.expirePeriod);
+		const typeIdEncoded = new VarintEncode().encode(SellRollsBuild.operation);
+    const amount = new VarintEncode().encode(this.amount);
+
+    return Uint8Array.from([
+      ...fee,
+      ...expirePeriod,
+      ...typeIdEncoded,
+      ...amount
+    ]);
+  }
+}
+
 export class ExecuteSmartContractBuild {
   static operation = OperationsType.ExecuteSC;
 

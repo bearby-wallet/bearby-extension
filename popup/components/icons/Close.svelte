@@ -12,7 +12,7 @@
   <rect
     width={width}
     height={height}
-    rx="8"
+    rx="13"
   />
   <line
     x1="11.8195"
