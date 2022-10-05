@@ -58,8 +58,6 @@
       border-left: solid 5px var(--danger-color);
     }
     &.loading {
-			// border: solid 1px transparent;
-
       @include loading-gradient(var(--loading-color), var(--card-color));
     }
     & > div {
