@@ -29,8 +29,8 @@
 <style lang="scss">
 	@import "../styles/mixins";
 	main {
-    background: inherit;
 		height: 100vh;
+		overflow: hidden;
 
 		@include flex-center-top-column;
 

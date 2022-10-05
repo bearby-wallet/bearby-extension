@@ -119,6 +119,7 @@
     }
   }
   section {
+		overflow: hidden;
 		@include flex-center-top-column;
 	}
   h2,

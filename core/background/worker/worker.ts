@@ -128,18 +128,19 @@ export class WorkerController {
   }
 
   async sync() {
-    const content = await BrowserStorage.get(Fields.PERIOD);
-    const block = Number(content);
+    // TODO: enable only when mainnet will launch.
+    // const content = await BrowserStorage.get(Fields.PERIOD);
+    // const block = Number(content);
 
-    if (isNaN(block)) {
-      await BrowserStorage.set(
-        buildObject(Fields.PERIOD, String(this.#period))
-      );
+    // if (isNaN(block)) {
+    //   await BrowserStorage.set(
+    //     buildObject(Fields.PERIOD, String(this.#period))
+    //   );
 
-      return;
-    }
+    //   return;
+    // }
 
-    this.#period = block;
+    // this.#period = block;
   }
 
   async #setPeriod(block: number) {
