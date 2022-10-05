@@ -101,7 +101,7 @@
 
 		&.loading {
 			border: solid 1px transparent;
-      @include loading-gradient(var(--background-color), var(--card-color));
+      @include loading-gradient(var(--loading-color), var(--card-color));
 
 			& > span {
 				cursor: inherit;

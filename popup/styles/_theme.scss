@@ -17,6 +17,7 @@
 
   --success-color:  rgb(0, 255, 43);
   --warning-color: rgb(255, 208, 0);
+  --loading-color: rgba(255, 235, 164, 0.529);
 }
 
 :global(body[theme="dark"]) {
@@ -37,4 +38,5 @@
 
   --success-color:  rgb(39, 174, 96);
   --warning-color: rgb(255, 208, 0);
+  --loading-color: rgba(255, 235, 164, 0.277);
 }

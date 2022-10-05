@@ -58,7 +58,9 @@
       border-left: solid 5px var(--danger-color);
     }
     &.loading {
-      @include loading-gradient(var(--background-color), var(--card-color));
+			border-color: transparent;
+
+      @include loading-gradient(var(--loading-color), var(--card-color));
     }
     & > div {
       padding-left: 10px;

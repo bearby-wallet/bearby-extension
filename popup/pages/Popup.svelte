@@ -236,7 +236,7 @@
       @include border-radius(16px);
 
       &.loading {
-        @include loading-gradient(var(--background-color), var(--card-color));
+        @include loading-gradient(var(--loading-color), var(--card-color));
       }
 
       & > h3 {

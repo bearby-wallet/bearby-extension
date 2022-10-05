@@ -19,7 +19,7 @@
 
 
 	let uuid = uuidv4();
-	let loading = false;
+	let loading = true;
 	let leftBar = false;
 
 	$: account = $walletStore.identities[$walletStore.selectedAddress];
@@ -31,7 +31,7 @@
 		} catch (err) {
 			console.error(err.message);
 		}
-		loading = false;
+		// loading = false;
 	};
 	const onToggleLeftBar = () => {
 		leftBar = !leftBar;

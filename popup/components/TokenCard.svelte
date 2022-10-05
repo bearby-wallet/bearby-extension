@@ -81,7 +81,9 @@
     @include border-radius(16px);
 
     &.loading {
-      @include loading-gradient(var(--background-color), var(--card-color));
+			border-color: transparent;
+
+      @include loading-gradient(var(--loading-color), var(--card-color));
     }
     &:hover {
       border-color: var(--primary-color);
