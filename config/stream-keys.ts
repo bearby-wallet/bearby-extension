@@ -58,6 +58,9 @@ export const MTypePopup = {
 };
 
 export const MTypeTab = {
-  GET_WALLET_DATA: `@/${app}/injected-get-wallet-data`,
-  ACCOUNT_CHANGED: `@/${app}/accounts-just-changed`
+  GET_DATA: `@/${app}/get-wallet-data`,
+  ACCOUNT_CHANGED: `@/${app}/accounts-just-changed`,
+  CONTENT_PROXY_MEHTOD: `@/${app}/proxy-method`,
+  CONNECT_APP: `@/${app}/connect-app`,
+  DISCONNECT_APP: `@/${app}/disconnect-app`
 };

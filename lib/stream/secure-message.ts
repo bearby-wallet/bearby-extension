@@ -5,25 +5,25 @@ import type { TabStream } from './tab-stream';
  * Can send encrypted msg.
  */
  export class ContentMessage {
-  private readonly _body: ReqBody;
+  readonly #body: ReqBody;
 
-  public get type() {
-    return this._body.type;
+  get type() {
+    return this.#body.type;
   }
 
-  public get payload() {
-    return this._body.payload;
+  get payload() {
+    return this.#body.payload;
   }
 
   constructor(msg: ReqBody) {
-    this._body = msg;
+    this.#body = msg;
   }
 
   /**
    * Method for send message.
    */
-  public send(stream: TabStream, recipient: string) {
-    const seralized = JSON.stringify(this._body);
+  send(stream: TabStream, recipient: string) {
+    const seralized = JSON.stringify(this.#body);
     const deserialized = JSON.parse(seralized);
 
     stream.send(deserialized, recipient);

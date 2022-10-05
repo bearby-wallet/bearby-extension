@@ -1,1 +1,4 @@
-console.log('hello content');
+import { startStream } from "./stream";
+
+
+startStream();
