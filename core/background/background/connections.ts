@@ -1,7 +1,10 @@
-import type { BaseError } from "lib/error";
-import { PromptService } from "lib/prompt";
 import type { AppConnection, ContentWalletData, StreamResponse } from "types";
 import type { BackgroundState } from "./state";
+import type { BaseError } from "lib/error";
+
+import { MTypeTab } from "config/stream-keys";
+import { PromptService } from "lib/prompt";
+import { TabsMessage } from "lib/stream/tabs-message";
 
 
 export class BackgroundConnection {
@@ -74,6 +77,13 @@ export class BackgroundConnection {
         resolve: true
       });
     } catch (err) {
+      new TabsMessage({
+        type: MTypeTab.RESPONSE_CONNECT_APP,
+        payload: {
+          uuid: app.uuid,
+          reject: (err as BaseError).message
+        }
+      }).send();
       return sendResponse({
         reject: (err as BaseError).serialize()
       });

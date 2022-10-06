@@ -37,7 +37,7 @@ export class AppConnectController {
 
     const has = this.#confirm.some((a) => a.domain === connect.domain);
 
-    assert(has, QUEUED, ConnectionsError);
+    assert(!has, QUEUED, ConnectionsError);
 
     this.#confirm.push(connect);
 
