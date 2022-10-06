@@ -4,14 +4,14 @@ import type { AppConnection } from 'types';
 import { assert } from 'lib/assert';
 import { Fields } from 'config/fields';
 import { BrowserStorage, buildObject, StorageKeyValue } from 'lib/storage';
-import { APP_UNIQUE, ConnectionsError } from './errors';
+import { APP_UNIQUE, ConnectionsError, INCORRECT_PARAM } from './errors';
 
 
 export class AppConnectController {
   readonly #badge: BadgeControl;
 
   #identities: AppConnection[] = [];
-  #confirm?: AppConnection;
+  #confirm: AppConnection[] = [];
 
   get identities() {
     return this.#identities;
@@ -30,7 +30,12 @@ export class AppConnectController {
   }
 
   async addAppFroConfirm(connect: AppConnection) {
-    this.#confirm = connect;
+    assert(Boolean(connect.domain), INCORRECT_PARAM + 'domain', ConnectionsError);
+    assert(Boolean(connect.icon), INCORRECT_PARAM + 'icon', ConnectionsError);
+    assert(Boolean(connect.title), INCORRECT_PARAM + 'title', ConnectionsError);
+    assert(Boolean(connect.uuid), INCORRECT_PARAM + 'uuid', ConnectionsError);
+
+    this.#confirm.push(connect);
 
     await this.#badge.increase();
     await BrowserStorage.set(
@@ -41,9 +46,13 @@ export class AppConnectController {
   async add(connect: AppConnection) {
     this.#isUnique(connect);
 
-    connect.uuid = undefined;
-    this.#identities.push(connect);
-    this.#confirm = undefined;
+    this.#identities.push({
+      ...connect,
+      uuid: undefined
+    });
+    this.#confirm = this.#confirm.filter(
+      (a) => a.domain !== connect.domain
+    );
 
     await this.#badge.decrease();
     await BrowserStorage.set(
@@ -53,7 +62,7 @@ export class AppConnectController {
   }
 
   async rejectConfirm() {
-    this.#confirm = undefined;
+    this.#confirm = [];
     await this.#badge.decrease();
     await BrowserStorage.rm(Fields.CONNECT_DAPP);
   }
@@ -79,7 +88,9 @@ export class AppConnectController {
         this.#confirm = JSON.parse(String(jsonData[Fields.CONNECT_DAPP]));
       }
     } catch (err) {
-      await BrowserStorage.rm(Fields.CONNECT_DAPP);
+      await BrowserStorage.set(
+        buildObject(Fields.CONNECT_DAPP, [])
+      );
     }
 
     try {

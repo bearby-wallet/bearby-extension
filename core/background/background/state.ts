@@ -64,7 +64,12 @@ export class BackgroundState {
     await this.settings.sync();
     await this.worker.sync();
     await this.contacts.sync();
-    
+    await this.connections.sync();
+
+    this.badge.setCounter(
+      this.transaction.confirm.length + this.connections.confirm.length
+    );
+
     Runtime.runtime.onInstalled.addListener(this.#onInstalled);
 
     console.log('end sync');

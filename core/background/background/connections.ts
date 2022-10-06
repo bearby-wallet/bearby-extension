@@ -1,5 +1,5 @@
 import type { BaseError } from "lib/error";
-import type { ContentWalletData, StreamResponse } from "types";
+import type { AppConnection, ContentWalletData, StreamResponse } from "types";
 import type { BackgroundState } from "./state";
 
 
@@ -60,5 +60,19 @@ export class BackgroundConnection {
     return sendResponse({
       resolve: data
     });
+  }
+
+  async addConnectAppConfirm(app: AppConnection, sendResponse: StreamResponse) {
+    try {
+      await this.#core.connections.addAppFroConfirm(app);
+
+      return sendResponse({
+        resolve: true
+      });
+    } catch (err) {
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
   }
 }

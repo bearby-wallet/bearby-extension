@@ -55,6 +55,7 @@ export class ContentTabStream {
         this.#proxy(msg.payload);
         break;
       case MTypeTab.CONNECT_APP:
+        msg.payload.domain = this.domain;
         new Message(msg).send();
         break;
       case MTypeTab.DISCONNECT_APP:
