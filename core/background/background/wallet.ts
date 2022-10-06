@@ -42,7 +42,8 @@ export class BackgroundWallet {
       await this.#core.account.addAccountFromSeed(this.#core.guard.seed, payload.name);
 
       this.#startWorker();
-      this.#core.triggerState();
+      this.#core.triggerAccount();
+      this.#core.triggerLock();
 
       sendResponse({
         resolve: this.#core.state
@@ -59,7 +60,8 @@ export class BackgroundWallet {
       await this.#core.guard.unlock(password);
 
       this.#startWorker();
-      this.#core.triggerState();
+      this.#core.triggerAccount();
+      this.#core.triggerLock();
 
       return sendResponse({
         resolve: this.#core.state
@@ -78,7 +80,7 @@ export class BackgroundWallet {
       await this.#core.account.remove(
         this.#core.account.wallet.selectedAddress
       );
-      this.#core.triggerState();
+      this.#core.triggerAccount();
 
       sendResponse({
         resolve: this.#core.state
@@ -111,7 +113,7 @@ export class BackgroundWallet {
       this.#core.guard.checkSession();
 
       await this.#core.account.select(index);
-      this.#core.triggerState();
+      this.#core.triggerAccount();
 
       sendResponse({
         resolve: this.#core.state
@@ -131,7 +133,7 @@ export class BackgroundWallet {
         this.#core.guard.seed,
         name
       );
-      this.#core.triggerState();
+      this.#core.triggerAccount();
 
       sendResponse({
         resolve: this.#core.state
@@ -151,7 +153,7 @@ export class BackgroundWallet {
         payload.key,
         payload.name
       );
-      this.#core.triggerState();
+      this.#core.triggerAccount();
 
       sendResponse({
         resolve: this.#core.state
@@ -222,7 +224,7 @@ export class BackgroundWallet {
     await this.#core.guard.logout();
 
     this.#stopWorker();
-    this.#core.triggerState();
+    this.#core.triggerAccount();
 
     sendResponse({
       resolve: this.#core.state

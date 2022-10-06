@@ -70,13 +70,31 @@ export class BackgroundState {
     console.log('end sync');
   }
 
-  triggerState() {
+  triggerAccount() {
     const account = this.account.selectedAccount;
 
     new TabsMessage({
       type: MTypeTab.ACCOUNT_CHANGED,
       payload: {
         base58: account?.base58
+      }
+    }).send();
+  }
+
+  triggerNetwork() {
+    new TabsMessage({
+      type: MTypeTab.NETWORK_CHANGED,
+      payload: {
+        net: this.netwrok.selected
+      }
+    }).send();
+  }
+
+  triggerLock() {
+    new TabsMessage({
+      type: MTypeTab.LOCKED,
+      payload: {
+        enabled: this.guard.isEnable
       }
     }).send();
   }

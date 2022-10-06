@@ -1,4 +1,3 @@
-import { assert } from "lib/assert";
 import type { BaseError } from "lib/error";
 import type { StreamResponse } from "types";
 import type { BackgroundState } from "./state";
@@ -16,6 +15,7 @@ export class BackgroundNetwork {
       this.#core.guard.checkSession();
 
       await this.#core.netwrok.setNetwork(net);
+      this.#core.triggerNetwork();
 
       return sendResponse({
         resolve: this.#core.state

@@ -63,5 +63,7 @@ export const MTypeTab = {
   CONTENT_PROXY_MEHTOD: `@/${app}/proxy-method`,
   CONTENT_PROXY_RESULT: `@/${app}/response-from-content`,
   CONNECT_APP: `@/${app}/connect-app`,
-  DISCONNECT_APP: `@/${app}/disconnect-app`
+  DISCONNECT_APP: `@/${app}/disconnect-app`,
+  NETWORK_CHANGED: `@/${app}/network-just-changed`,
+  LOCKED: `@/${app}/guard-just-lock`
 };

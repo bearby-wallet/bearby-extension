@@ -23,6 +23,7 @@ export class ContentTabStream {
 
   #provider: ContentProvider;
   #phishing = new PhishingDetect();
+  #connected = false;
 
   get stream() {
     return this.#stream;
@@ -30,6 +31,10 @@ export class ContentTabStream {
 
   get domain() {
     return this.#domain;
+  }
+
+  get connected() {
+    return this.#connected;
   }
 
   constructor() {
@@ -125,18 +130,17 @@ export class ContentTabStream {
     const resolve = warpMessage(data) as ContentWalletData;
 
     this.#phishing.phishing = resolve.phishing;
+    this.#connected = resolve.connected;
 
     this.#provider = new ContentProvider(
       resolve.smartRequest,
       resolve.providers
     );
 
-    if (resolve.connected) {
-      new ContentMessage({
-        type: MTypeTab.GET_DATA,
-        payload: resolve,
-      }).send(this.#stream, MTypeTabContent.INJECTED);
-    }
+    new ContentMessage({
+      type: MTypeTab.GET_DATA,
+      payload: resolve,
+    }).send(this.#stream, MTypeTabContent.INJECTED);
 
     if (!this.#phishing.checked) {
       await this.#phishing.check(this.#provider);

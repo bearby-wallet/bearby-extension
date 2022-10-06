@@ -1,9 +1,7 @@
 import type { ReqBody } from 'types';
 import type { TabStream } from './tab-stream';
 
-/**
- * Can send encrypted msg.
- */
+
  export class ContentMessage {
   readonly #body: ReqBody;
 
