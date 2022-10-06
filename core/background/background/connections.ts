@@ -44,6 +44,41 @@ export class BackgroundConnection {
     }
   }
 
+  async approveConnections(index: number, sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+
+      const connection = this.#core.connections.confirm[index];
+
+      await this.#core.connections.add(connection);
+      await this.#core.connections.removeConfirmConnection(index);
+
+      return sendResponse({
+        resolve: this.#core.state
+      });
+    } catch (err) {
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
+  async rejectConnections(index: number, sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+
+      await this.#core.connections.removeConfirmConnection(index);
+
+      return sendResponse({
+        resolve: this.#core.state
+      });
+    } catch (err) {
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
   async resolveContentData(domain: string, sendResponse: StreamResponse) {
     const enabled = this.#core.guard.isEnable;
     const connected = this.#core.connections.has(domain);

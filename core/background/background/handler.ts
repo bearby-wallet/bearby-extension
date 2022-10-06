@@ -134,6 +134,12 @@ export function startBackground(core: BackgroundState) {
       case MTypePopup.REMOVE_CONNECTION:
         connections.removeConnections(msg.payload.index, sendResponse);
         return true;
+      case MTypePopup.APPROVE_CONNECTION:
+        connections.approveConnections(msg.payload.index, sendResponse);
+        return true;
+      case MTypePopup.REJECT_CONNECTION:
+        connections.rejectConnections(msg.payload.index, sendResponse);
+        return true;
 
       case MTypePopup.GET_TX_HISTORY:
         transaction.getTransactionHistory(sendResponse);

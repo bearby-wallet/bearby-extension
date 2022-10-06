@@ -15,4 +15,5 @@ export interface WalletState {
   confirm: ConfirmParams[];
   gas: GasState;
   lockTime: number;
+  confirmApps: AppConnection[];
 }

@@ -49,7 +49,8 @@ export class BackgroundState {
       tokens: this.tokens.identities,
       confirm: this.transaction.confirm,
       gas: this.gas.state,
-      lockTime: this.guard.lockTime
+      lockTime: this.guard.lockTime,
+      confirmApps: this.connections.confirm
     };
   }
 

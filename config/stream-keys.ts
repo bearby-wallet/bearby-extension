@@ -54,7 +54,9 @@ export const MTypePopup = {
   CLEAR_ALL_HISTORY: `@/${app}/clear-all-transactions-history`,
 
   GET_CONNECTIONS: `@/${app}/get-connections`,
-  REMOVE_CONNECTION: `@/${app}/remove-connection`
+  REMOVE_CONNECTION: `@/${app}/remove-connection`,
+  APPROVE_CONNECTION: `@/${app}/approve-connection`,
+  REJECT_CONNECTION: `@/${app}/reject-connection`
 };
 
 export const MTypeTab = {

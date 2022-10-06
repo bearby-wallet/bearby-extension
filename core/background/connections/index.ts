@@ -65,8 +65,13 @@ export class AppConnectController {
     await BrowserStorage.rm(Fields.CONNECT_DAPP);
   }
 
-  async rejectConfirm() {
-    this.#confirm = [];
+  async removeConfirmConnection(index: number) {
+    const app = this.confirm[index];
+
+    this.#confirm = this.confirm.filter(
+      (a) => a.domain !== app.domain
+    );
+
     await this.#badge.decrease();
     await BrowserStorage.rm(Fields.CONNECT_DAPP);
   }

@@ -14,6 +14,7 @@ import { Themes } from 'config/theme';
 import confirmStore from 'app/store/confirm';
 import gasStore from 'app/store/gas';
 import lockTimerStore from 'app/store/lock-timer';
+import confirmApps from 'app/store/confirm-apps';
 
 
 export function updateState(state: WalletState) {
@@ -34,6 +35,7 @@ export function updateState(state: WalletState) {
   walletStore.set(state.wallet);
   tokensStore.set(state.tokens);
   confirmStore.set(state.confirm);
+  confirmApps.set(state.confirmApps);
 
   if (!state.guard.isReady && globalThis.innerHeight === 600 && globalThis.innerWidth === 320) {
     openTab(PROMT_PAGE);

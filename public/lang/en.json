@@ -288,5 +288,16 @@
     "pay": "You Pay",
     "receive": "You Receive",
     "button": "Continue"
+  },
+  "connect": {
+    "question": {
+      "0": "Would you like to connect to",
+      "1": "application?"
+    },
+    "btns": {
+      "conf": "Approve",
+      "reject": "Reject"
+    },
+    "warn": "After confirmation, this application will be able to request data from the blockchain and see your accounts."
   }
 }
