@@ -51,9 +51,6 @@ export class BackgroundConnection {
 
       const connection = this.#core.connections.confirm[index];
 
-      await this.#core.connections.add(connection);
-      await this.#core.connections.removeConfirmConnection(index);
-
       new TabsMessage({
         type: MTypeTab.RESPONSE_CONNECT_APP,
         payload: {
@@ -62,6 +59,17 @@ export class BackgroundConnection {
           resolve: true
         }
       }).send();
+
+      if (this.#core.connections.has(connection.domain)) {
+        await this.#core.connections.removeConfirmConnection(index);
+
+        return sendResponse({
+          resolve: this.#core.state
+        });
+      }
+
+      await this.#core.connections.add(connection);
+      await this.#core.connections.removeConfirmConnection(index);
 
       return sendResponse({
         resolve: this.#core.state
@@ -88,6 +96,17 @@ export class BackgroundConnection {
       }).send();
 
       await this.#core.connections.removeConfirmConnection(index);
+
+      if (this.#core.connections.has(app.domain)) {
+        const foundIndex = this.#core.connections.identities.findIndex(
+          (a) => a.domain === app.domain
+        );
+        await this.#core.connections.rm(foundIndex);
+
+        return sendResponse({
+          resolve: this.#core.state
+        });
+      }
 
       return sendResponse({
         resolve: this.#core.state
