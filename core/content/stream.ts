@@ -9,6 +9,7 @@ export function startStream() {
   const tabStream = new ContentTabStream();
 
   Runtime.runtime.onMessage.addListener((req, sender, sendResponse) => {
+    // listing from background.js
     if (sender.id !== Runtime.runtime.id) {
       return;
     }

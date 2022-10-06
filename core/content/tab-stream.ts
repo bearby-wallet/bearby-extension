@@ -36,7 +36,7 @@ export class ContentTabStream {
     this.#provider = new ContentProvider(true, []);
     this.#stream = new TabStream(MTypeTabContent.CONTENT);
     this.#stream.listen((msg) => this.#fromInpage(msg));
-    this.#start();
+    this.#updateState();
   }
 
   #fromInpage(msg: ReqBody) {
@@ -44,7 +44,7 @@ export class ContentTabStream {
 
     switch (msg.type) {
       case MTypeTab.GET_DATA:
-        this.#start();
+        this.#updateState();
         break;
       case MTypeTab.CONTENT_PROXY_MEHTOD:
         this.#proxy(msg.payload);
@@ -115,7 +115,7 @@ export class ContentTabStream {
     }).send(this.#stream, recipient);
   }
 
-  async #start() {
+  async #updateState() {
     const data = await new Message<SendResponseParams>({
       type: MTypeTab.GET_DATA,
       payload: {
