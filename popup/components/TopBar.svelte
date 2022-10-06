@@ -19,17 +19,17 @@
 
   const dispatch = createEventDispatcher();
 
-  export let refresh = false;
+  // export let refresh = false;
   export let expand = true;
-  export let view = false;
-  export let lock = false;
+  // export let view = false;
+  // export let lock = false;
 
   // $: account = $walletStore.identities[$walletStore.selectedAddress];
   $: isMainnet = $netwrokStore === NETWORK_KEYS[0];
 
-  const onRefresh = () => {
-    dispatch('refresh');
-  };
+  // const onRefresh = () => {
+  //   dispatch('refresh');
+  // };
   const viewOnViewBlock = () => {
     // const url = viewAddress(account.bech32, $netStore.selected);
     // openTab(url);

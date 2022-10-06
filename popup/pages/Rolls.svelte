@@ -23,11 +23,6 @@
   const selectedToken = 1; // ROLS.
   const rolls = $tokensStore[selectedToken];
 
-  export let params = {
-    index: 0,
-    recipient: ''
-  };
-
 	let uuid = uuidv4();
   let loading = false;
   let rollPrice = 100; // TODO: fetch from nodeStatus.

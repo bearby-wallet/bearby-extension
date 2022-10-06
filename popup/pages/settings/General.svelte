@@ -107,7 +107,4 @@
 	select {
 		text-transform: uppercase;
 	}
-	button {
-		width: 290px;
-	}
 </style>
