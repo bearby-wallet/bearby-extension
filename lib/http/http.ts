@@ -2,7 +2,7 @@ import type { RPCBody, Params } from 'types';
 
 
 export class HttpProvider {
-  readonly #rpc = {
+  readonly rpc = {
     id: 0,
     jsonrpc: '2.0'
   };
@@ -21,7 +21,7 @@ export class HttpProvider {
 
   buildBody(method: string, params: Params) {
     return {
-      ...this.#rpc,
+      ...this.rpc,
       method,
       params
     };

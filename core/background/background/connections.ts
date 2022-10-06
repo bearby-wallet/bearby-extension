@@ -51,7 +51,8 @@ export class BackgroundConnection {
       connected,
       enabled,
       phishing: this.#core.settings.phishing.phishingDetectionEnabled,
-      providers: this.#core.netwrok.providers
+      providers: this.#core.netwrok.providers,
+      smartRequest: this.#core.settings.network.downgrade
     };
     return sendResponse({
       resolve: data

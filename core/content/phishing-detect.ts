@@ -1,4 +1,5 @@
 import { Runtime } from 'lib/runtime';
+import type { ContentProvider } from './http-provider';
 
 
 export class PhishingDetect {
@@ -11,8 +12,11 @@ export class PhishingDetect {
   }
 
   phishing = false;
-  http = '';
 
-  async check() {
+  async check(provider: ContentProvider) {
+    // TODO: deploy a contract which check the domain on phishing domains
+    console.log(
+      `host: ${this.#host}, url: ${this.#url}, checked: ${this.#checked}, providers: ${provider.providers.join('.')}`
+    );
   }
 }

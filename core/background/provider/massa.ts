@@ -18,7 +18,7 @@ import blake3 from 'blake3-js';
 import { utils } from 'aes-js';
 import { sign, verify } from "@noble/ed25519";
 
-import { HttpProvider } from "./http";
+import { HttpProvider } from "../../../lib/http/http";
 import { REQUEST_FALLED, MassaHttpError, EMPTY_ACCOUNT, INCORRECT_PUB_KEY } from './errors';
 import { JsonRPCRequestMethods } from './methods';
 import { assert } from 'lib/assert';
