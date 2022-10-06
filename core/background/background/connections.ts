@@ -5,6 +5,7 @@ import type { BaseError } from "lib/error";
 import { MTypeTab } from "config/stream-keys";
 import { PromptService } from "lib/prompt";
 import { TabsMessage } from "lib/stream/tabs-message";
+import { REJECTED } from "background/connections/errors";
 
 
 export class BackgroundConnection {
@@ -53,6 +54,15 @@ export class BackgroundConnection {
       await this.#core.connections.add(connection);
       await this.#core.connections.removeConfirmConnection(index);
 
+      new TabsMessage({
+        type: MTypeTab.RESPONSE_CONNECT_APP,
+        payload: {
+          uuid: connection.uuid,
+          base58: this.#core.account.selectedAccount?.base58,
+          resolve: true
+        }
+      }).send();
+
       return sendResponse({
         resolve: this.#core.state
       });
@@ -64,8 +74,18 @@ export class BackgroundConnection {
   }
 
   async rejectConnections(index: number, sendResponse: StreamResponse) {
+    const app = this.#core.connections.confirm[index];
+
     try {
       this.#core.guard.checkSession();
+
+      new TabsMessage({
+        type: MTypeTab.RESPONSE_CONNECT_APP,
+        payload: {
+          uuid: app.uuid,
+          reject: REJECTED
+        }
+      }).send();
 
       await this.#core.connections.removeConfirmConnection(index);
 
@@ -73,6 +93,13 @@ export class BackgroundConnection {
         resolve: this.#core.state
       });
     } catch (err) {
+      new TabsMessage({
+        type: MTypeTab.RESPONSE_CONNECT_APP,
+        payload: {
+          uuid: app.uuid,
+          reject: REJECTED
+        }
+      }).send();
       return sendResponse({
         reject: (err as BaseError).serialize()
       });
@@ -103,6 +130,21 @@ export class BackgroundConnection {
 
   async addConnectAppConfirm(app: AppConnection, sendResponse: StreamResponse) {
     try {
+      if (this.#core.guard.isEnable && this.#core.connections.has(app.domain)) {
+        new TabsMessage({
+          type: MTypeTab.RESPONSE_CONNECT_APP,
+          payload: {
+            uuid: app.uuid,
+            base58: this.#core.account.selectedAccount?.base58,
+            resolve: true
+          }
+        }).send();
+
+        return sendResponse({
+          resolve: true
+        });
+      }
+
       const prompt = new PromptService(this.#core.settings.popup.enabledPopup);
 
       await this.#core.connections.addAppFroConfirm(app);
