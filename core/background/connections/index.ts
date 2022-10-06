@@ -4,7 +4,7 @@ import type { AppConnection } from 'types';
 import { assert } from 'lib/assert';
 import { Fields } from 'config/fields';
 import { BrowserStorage, buildObject, StorageKeyValue } from 'lib/storage';
-import { APP_UNIQUE, ConnectionsError, INCORRECT_PARAM } from './errors';
+import { APP_UNIQUE, ConnectionsError, INCORRECT_PARAM, QUEUED } from './errors';
 
 
 export class AppConnectController {
@@ -34,6 +34,10 @@ export class AppConnectController {
     assert(Boolean(connect.icon), INCORRECT_PARAM + 'icon', ConnectionsError);
     assert(Boolean(connect.title), INCORRECT_PARAM + 'title', ConnectionsError);
     assert(Boolean(connect.uuid), INCORRECT_PARAM + 'uuid', ConnectionsError);
+
+    const has = this.#confirm.some((a) => a.domain === connect.domain);
+
+    assert(has, QUEUED, ConnectionsError);
 
     this.#confirm.push(connect);
 

@@ -1,4 +1,5 @@
 import type { BaseError } from "lib/error";
+import { PromptService } from "lib/prompt";
 import type { AppConnection, ContentWalletData, StreamResponse } from "types";
 import type { BackgroundState } from "./state";
 
@@ -64,7 +65,10 @@ export class BackgroundConnection {
 
   async addConnectAppConfirm(app: AppConnection, sendResponse: StreamResponse) {
     try {
+      const prompt = new PromptService(this.#core.settings.popup.enabledPopup);
+
       await this.#core.connections.addAppFroConfirm(app);
+      await prompt.open();
 
       return sendResponse({
         resolve: true

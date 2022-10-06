@@ -55,6 +55,7 @@ export class BackgroundState {
 
   async sync() {
     console.log('start sync');
+
     await this.guard.sync();
     await this.netwrok.sync();
     await this.gas.sync();
