@@ -1,4 +1,4 @@
-import type { Params } from 'types';
+import type { Params, RPCBody } from 'types';
 
 
 export interface ContentWalletData {
@@ -12,7 +12,6 @@ export interface ContentWalletData {
 }
 
 export interface ProxyContentType {
-  params: Params;
-  method: string;
+  body: RPCBody[];
   uuid: string;
 }

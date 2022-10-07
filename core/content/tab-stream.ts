@@ -58,16 +58,13 @@ export class ContentTabStream {
         msg.payload.domain = this.domain;
         new Message(msg).send();
         break;
-      case MTypeTab.DISCONNECT_APP:
-        new Message(msg).send();
-        break;
       default:
         break;
     }
   }
 
   async #proxy(payload: ProxyContentType) {
-    const { params, method, uuid } = payload;
+    const { body, uuid } = payload;
     const recipient = MTypeTabContent.INJECTED;
     const data = await new Message<SendResponseParams>({
       type: MTypeTab.GET_DATA,
@@ -75,11 +72,9 @@ export class ContentTabStream {
         domain: this.domain
       }
     }).send();
-    let result: JsonRPCResponse = {
-      ...this.#provider.rpc,
-      result: undefined,
-      error: undefined
-    };
+    const bodies = body.map(
+      ({ method, params }) => this.#provider.buildBody(method, params)
+    );
 
     try {
       const resolve = warpMessage(data) as ContentWalletData;
@@ -92,33 +87,24 @@ export class ContentTabStream {
       assert(resolve.connected, WALLET_NOT_CONNECTED);
       assert(resolve.enabled, WALLET_NOT_ENABLED);
 
-      const body = this.#provider.buildBody(method, params);
+      const responses = await this.#provider.sendJson(...bodies);
 
-      result = await this.#provider.sendJson(body);
-    } catch (err) {
-      result.error = {
-        code: -1,
-        message: (err as Error).message
-      };
-    }
-
-    if (result.error) {
       return new ContentMessage({
         type: MTypeTab.CONTENT_PROXY_RESULT,
         payload: {
-          reject: result.error.message,
+          resolve: responses,
+          uuid
+        }
+      }).send(this.#stream, recipient);
+    } catch (err) {
+      return new ContentMessage({
+        type: MTypeTab.CONTENT_PROXY_RESULT,
+        payload: {
+          reject: (err as Error).message,
           uuid
         }
       }).send(this.#stream, recipient);
     }
-
-    return new ContentMessage({
-      type: MTypeTab.CONTENT_PROXY_RESULT,
-      payload: {
-        resolve: result,
-        uuid
-      }
-    }).send(this.#stream, recipient);
   }
 
   async #updateState() {

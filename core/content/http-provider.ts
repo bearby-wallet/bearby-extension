@@ -1,8 +1,8 @@
+import type { JsonRPCResponse } from "types/massa";
 import type { RPCBody } from "types/network";
 
 import { HttpProvider } from "lib/http";
 import { NODE_IS_DOWN } from "./errors";
-import type { JsonRPCResponse } from "types/massa";
 
 
 export class ContentProvider extends HttpProvider {
@@ -16,7 +16,7 @@ export class ContentProvider extends HttpProvider {
     this.providers = providers;
   }
 
-  async sendJson(...body: RPCBody[]) {
+  async sendJson(...body: RPCBody[]): Promise<JsonRPCResponse[]> {
     const request = this.json(...body);
 
     for (const provider of this.providers) {

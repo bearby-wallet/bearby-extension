@@ -1,5 +1,3 @@
-import type { number } from svelte-i18n;
-
 export interface JsonRPCResponse {
   error?: {
     code: number;
