@@ -56,7 +56,10 @@ export const MTypePopup = {
   GET_CONNECTIONS: `@/${app}/get-connections`,
   REMOVE_CONNECTION: `@/${app}/remove-connection`,
   APPROVE_CONNECTION: `@/${app}/approve-connection`,
-  REJECT_CONNECTION: `@/${app}/reject-connection`
+  REJECT_CONNECTION: `@/${app}/reject-connection`,
+
+  REJECT_MESSAGE: `@/${app}/reject-message`,
+  APPROVE_MESSAGE: `@/${app}/approve-message`
 };
 
 export const MTypeTab = {
@@ -67,5 +70,9 @@ export const MTypeTab = {
   CONNECT_APP: `@/${app}/connect-app`,
   RESPONSE_CONNECT_APP: `@/${app}/respoonse-connect-app`,
   NETWORK_CHANGED: `@/${app}/network-just-changed`,
-  LOCKED: `@/${app}/guard-just-lock`
+  LOCKED: `@/${app}/guard-just-lock`,
+  TX_TO_SEND: `@/${app}/add-tx-to-send`,
+  TX_TO_SEND_RESULT: `@/${app}/response-tx-result`,
+  SIGN_MESSAGE: `@/${app}/sign-message-call`,
+  SING_MESSAGE_RESULT: `@/${app}/sign-message-response`
 };

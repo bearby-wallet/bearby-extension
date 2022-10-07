@@ -74,3 +74,22 @@ export async function clearAllTransactions() {
   historyStore.set([]);
   return resolve;
 }
+
+
+export async function rejectSignMessage() {
+  const data = await Message
+    .signal(MTypePopup.REJECT_MESSAGE)
+    .send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}
+
+export async function signMessageApprove() {
+  const data = await Message
+    .signal(MTypePopup.APPROVE_MESSAGE)
+    .send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}

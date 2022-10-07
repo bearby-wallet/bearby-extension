@@ -11,6 +11,7 @@ import HistoryPage from '../pages/History.svelte';
 import PopupPage from '../pages/Popup.svelte';
 import RollsPage from '../pages/Rolls.svelte';
 import ConnectPage from '../pages/Connect.svelte';
+import SignMessagePage from '../pages/SignMessage.svelte';
 
 import NetwrokPage from '../pages/settings/Netwrok.svelte';
 import AccountPage from '../pages/settings/Account.svelte';
@@ -57,6 +58,12 @@ export default {
   }),
   '/rolls': wrap({
     component: RollsPage,
+    conditions: [
+      routerGuard
+    ]
+  }),
+  '/sign-message': wrap({
+    component: SignMessagePage,
     conditions: [
       routerGuard
     ]

@@ -2,7 +2,6 @@ import { Counter, ModeOfOperation, utils } from 'aes-js';
 import { assert } from 'lib/assert';
 import { randomBytes } from 'lib/crypto/random';
 import { AesError, INCORRECT_ARGS } from './errors';
-import { sha256 } from './sha256';
 
 
 export const Cipher = Object.freeze({

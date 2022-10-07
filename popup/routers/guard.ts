@@ -4,12 +4,14 @@ import { push } from 'svelte-spa-router';
 import guardStore from 'popup/store/guard';
 import confirmStore from 'app/store/confirm';
 import connectAppStore from 'popup/store/confirm-apps';
+import messageStore from 'popup/store/message';
 
 
 export const routerGuard = () => {
   const guard = get(guardStore);
   const confirm = get(confirmStore);
   const appsConnect = get(connectAppStore);
+  const message = get(messageStore);
 
   if (!guard.isReady) {
     push('/start');
@@ -31,6 +33,12 @@ export const routerGuard = () => {
 
   if (confirm.length > 0) {
     push('/confirm');
+
+    return guard.isEnable && guard.isReady;
+  }
+
+  if (message) {
+    push('/sign-message');
 
     return guard.isEnable && guard.isReady;
   }

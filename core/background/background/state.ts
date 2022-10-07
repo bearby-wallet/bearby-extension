@@ -50,7 +50,8 @@ export class BackgroundState {
       confirm: this.transaction.confirm,
       gas: this.gas.state,
       lockTime: this.guard.lockTime,
-      confirmApps: this.connections.confirm
+      confirmApps: this.connections.confirm,
+      signMessage: this.transaction.message
     };
   }
 
@@ -68,8 +69,9 @@ export class BackgroundState {
     await this.contacts.sync();
     await this.connections.sync();
 
+    const counter = this.transaction.message ? 1 : 0;
     this.badge.setCounter(
-      this.transaction.confirm.length + this.connections.confirm.length
+      this.transaction.confirm.length + this.connections.confirm.length + counter
     );
 
     Runtime.runtime.onInstalled.addListener(this.#onInstalled);

@@ -25,6 +25,7 @@
 	import GasControl from '../components/GasControl.svelte';
 
 
+  const url = new URL(window.location.href);
   let uuid = uuidv4();
   let txIndex = 0;
 	let index = $walletStore.selectedAddress;

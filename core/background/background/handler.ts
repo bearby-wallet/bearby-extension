@@ -31,6 +31,12 @@ export function startBackground(core: BackgroundState) {
       case MTypeTab.CONNECT_APP:
         connections.addConnectAppConfirm(msg.payload, sendResponse);
         return true;
+      case MTypeTab.TX_TO_SEND:
+        transaction.addToConfirm(msg.payload, sendResponse);
+        return true;
+      case MTypeTab.SIGN_MESSAGE:
+        transaction.addSignMessage(msg.payload, sendResponse);
+        return true;
 
       case MTypePopup.GET_LATEST_BLOCK:
         return true;
@@ -153,6 +159,14 @@ export function startBackground(core: BackgroundState) {
       case MTypePopup.SIGN_AND_SEND_TX:
         transaction.signAndSendTx(msg.payload.index, sendResponse);
         return true;
+
+      case MTypePopup.APPROVE_MESSAGE:
+        transaction.approveMessage(sendResponse);
+        return true;
+      case MTypePopup.REJECT_MESSAGE:
+        transaction.rejectMessage(sendResponse);
+        return true;
+
       case MTypePopup.CLEAR_ALL_HISTORY:
         transaction.clearAllHistory(sendResponse);
         return true;

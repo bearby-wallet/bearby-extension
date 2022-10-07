@@ -6,19 +6,36 @@ export interface TransactionToken {
   base58: string;
 }
 
+export interface SignMessageParams {
+  message: string;
+  uuid: string;
+  title: string;
+  icon: string;
+  hash?: string;
+}
+
+export interface SignedMessage {
+  publicKey: string;
+  signature: string;
+  message: string;
+}
+
+
 export interface MinTransactionParams {
-  code: string;
-  params: string;
   amount: number;
   gasPrice: number;
   gasLimit: number;
   toAddr: string;
   type: OperationsType;
+  token: TransactionToken;
   //
   icon?: string;
   uuid?: string;
   title?: string;
-  token?: TransactionToken;
+  domain?: string;
+  func?: string;
+  code?: string;
+  params?: string;
 }
 
 export interface ConfirmParams extends MinTransactionParams {
@@ -40,15 +57,15 @@ export interface HistoryTransaction {
   timestamp: number;
   recipient: string;
   amount: number;
-  code: string;
-  params: string;
   expiryPeriod: number;
   nextSlot: number;
   period: number;
   confirmed: boolean;
   success: boolean;
+  code?: string;
+  params?: string;
+  func?: string;
   icon?: string;
   title?: string;
   error?: string;
-  teg?: string;
 }

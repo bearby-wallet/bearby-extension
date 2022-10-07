@@ -11,10 +11,11 @@ import walletStore from 'popup/store/wallet';
 import tokensStore from 'popup/store/tokens';
 import netwrokStore from 'popup/store/netwrok';
 import { Themes } from 'config/theme';
-import confirmStore from 'app/store/confirm';
-import gasStore from 'app/store/gas';
-import lockTimerStore from 'app/store/lock-timer';
-import confirmApps from 'app/store/confirm-apps';
+import confirmStore from 'popup/store/confirm';
+import gasStore from 'popup/store/gas';
+import lockTimerStore from 'popup/store/lock-timer';
+import confirmApps from 'popup/store/confirm-apps';
+import messageStore from 'popup/store/message';
 
 
 export function updateState(state: WalletState) {
@@ -36,6 +37,7 @@ export function updateState(state: WalletState) {
   tokensStore.set(state.tokens);
   confirmStore.set(state.confirm);
   confirmApps.set(state.confirmApps);
+  messageStore.set(state.signMessage);
 
   if (!state.guard.isReady && globalThis.innerHeight === 600 && globalThis.innerWidth === 320) {
     openTab(PROMT_PAGE);

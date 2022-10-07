@@ -1,4 +1,4 @@
-import type { ConfirmParams, HistoryTransaction } from 'types/transaction';
+import type { ConfirmParams, HistoryTransaction, SignMessageParams } from 'types/transaction';
 import type { BadgeControl } from 'background/notifications';
 import type { NetworkControl } from 'core/background/network';
 
@@ -16,7 +16,7 @@ export class TransactionsController {
 
   #history: HistoryTransaction[] = [];
   #confirm: ConfirmParams[] = [];
-  #message?: object;
+  #message?: SignMessageParams;
 
   get history() {
     return this.#history;
@@ -96,7 +96,7 @@ export class TransactionsController {
     );
   }
 
-  async addMessage(message: object) {
+  async addMessage(message: SignMessageParams) {
     this.#message = message;
     this.#badge.increase();
     await BrowserStorage.set(

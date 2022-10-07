@@ -47,6 +47,8 @@ export class ContentTabStream {
   #fromInpage(msg: ReqBody) {
     if (!msg || !msg.type) return;
 
+    msg.payload.domain = this.domain;
+
     switch (msg.type) {
       case MTypeTab.GET_DATA:
         this.#updateState();
@@ -55,7 +57,12 @@ export class ContentTabStream {
         this.#proxy(msg.payload);
         break;
       case MTypeTab.CONNECT_APP:
-        msg.payload.domain = this.domain;
+        new Message(msg).send();
+        break;
+      case MTypeTab.TX_TO_SEND:
+        new Message(msg).send();
+        break;
+      case MTypeTab.SIGN_MESSAGE:
         new Message(msg).send();
         break;
       default:

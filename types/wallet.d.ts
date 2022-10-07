@@ -16,4 +16,5 @@ export interface WalletState {
   gas: GasState;
   lockTime: number;
   confirmApps: AppConnection[];
+  signMessage: SignMessageParams;
 }

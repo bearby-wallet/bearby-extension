@@ -299,5 +299,14 @@
       "reject": "Reject"
     },
     "warn": "After confirmation, this application will be able to request data from the blockchain and see your accounts."
+  },
+  "sig_message": {
+    "title": "Signature Request",
+    "hash": "Show sha256",
+    "signer": "Signer",
+    "btns": {
+      "confirm": "Sign",
+      "reject": "Reject"
+    }
   }
 }
