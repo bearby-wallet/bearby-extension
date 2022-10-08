@@ -1,4 +1,15 @@
+import { get } from 'svelte/store';
+
+import settingsStore from 'popup/store/settings';
+
+
 export function formatNumber(balance: number | string, currency?: string) {
+  const { format } = get(settingsStore);
+
+  if (!format) {
+    return `${currency || ''} ${balance}`;
+  }
+
   const locale = 'en';// navigator.language;
   let opt: Intl.NumberFormatOptions = {
     style: undefined,

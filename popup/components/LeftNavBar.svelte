@@ -7,7 +7,8 @@
   import { linksExpand } from 'popup/mixins/link';
 	import {
     togglePopupEnabled,
-    setDowngradeNodeFlag
+    setDowngradeNodeFlag,
+    toggleFormatNumbers
   } from 'popup/backend/settings';
 	import { removeAccount } from 'popup/backend/wallet';
 
@@ -27,6 +28,9 @@
 
 	const handleOnChangePromt = async () => {
 		await togglePopupEnabled();
+	};
+  const handleOnChangeFormat = async () => {
+		await toggleFormatNumbers();
 	};
   async function toggleDowngrade() {
     await setDowngradeNodeFlag(!$settingsStore.downgradeNode);
@@ -97,7 +101,7 @@
       </b>
       <Toggle
         checked={$settingsStore.format}
-        on:toggle={() => null}
+        on:toggle={handleOnChangeFormat}
       />
     </div>
   </div>
