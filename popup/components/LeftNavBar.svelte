@@ -5,9 +5,14 @@
   import { AccountTypes } from 'config/account-type';
 
   import { linksExpand } from 'popup/mixins/link';
-
+	import {
+    togglePopupEnabled,
+    setDowngradeNodeFlag
+  } from 'popup/backend/settings';
 	import { removeAccount } from 'popup/backend/wallet';
+
 	import walletStore from 'popup/store/wallet';
+	import settingsStore from 'popup/store/settings';
 
   import Close from './icons/Close.svelte';
 	import TextElement from './TextElement.svelte';
@@ -20,6 +25,12 @@
 	$: account = $walletStore.identities[$walletStore.selectedAddress];
   $: canRemove = !(account.index === 0 && account.type === AccountTypes.Seed);
 
+	const handleOnChangePromt = async () => {
+		await togglePopupEnabled();
+	};
+  async function toggleDowngrade() {
+    await setDowngradeNodeFlag(!$settingsStore.downgradeNode);
+  }
   const onClose = () => {
     dispatch('close');
   };
@@ -67,8 +78,17 @@
         {$_('advanced.popup.title')}
       </b>
       <Toggle
-        checked={false}
-        on:toggle={() => null}
+        checked={$settingsStore.popup}
+        on:toggle={handleOnChangePromt}
+      />
+    </div>
+    <div>
+      <b>
+        {$_('netwrok.downgrade.toggle')}
+      </b>
+      <Toggle
+        checked={$settingsStore.downgradeNode}
+        on:toggle={toggleDowngrade}
       />
     </div>
   </div>
