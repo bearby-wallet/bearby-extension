@@ -276,6 +276,10 @@
     },
     "time": {
       "title": "Auto logout time (hours)"
+    },
+    "format": {
+      "title": "Number formatting",
+      "description": "Short of tokens amount, with units (K, M, B)"
     }
   },
   "connections": {

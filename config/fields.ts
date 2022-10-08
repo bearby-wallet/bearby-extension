@@ -15,6 +15,7 @@ export enum Fields {
   PERIOD_OFFSET = 'period-offset',
   PHISHING_DETECTION = 'phishing-detection-enabled',
   POPUP_ENABLED = 'enabled-popup',
+  FORMAT_ENABLED = 'enabled-format',
   CONNECTIONS_LIST = 'dapp-connections-list',
   CONNECT_DAPP = 'for-connect-app',
   CONTACTS_LIST = 'contacts-list',

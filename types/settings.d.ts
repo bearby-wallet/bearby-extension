@@ -6,4 +6,5 @@ export interface SettingsState {
   downgradeNode: boolean;
   phishing: boolean;
   popup: boolean;
+  format: boolean;
 }

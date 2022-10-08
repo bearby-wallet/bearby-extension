@@ -41,6 +41,7 @@ export const MTypePopup = {
   SET_GAS_CONFIG: `@/${app}/set-gas-config`,
   SET_LOCK_TIMER: `@/${app}/set-lock-timer`,
   TOGGLE_POPUP_ENABLED: `@/${app}/toggle-popup-emabled`,
+  TOGGLE_FORMAT_ENABLED: `@/${app}/toggle-format-emabled`,
 
   GET_CONTACTS: `@/${app}/get-contacts`,
   ADD_CONTACT: `@/${app}/add-contact`,

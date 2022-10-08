@@ -123,6 +123,9 @@ export function startBackground(core: BackgroundState) {
       case MTypePopup.TOGGLE_POPUP_ENABLED:
         settings.togglePopupEnabled(sendResponse);
         return true;
+      case MTypePopup.TOGGLE_FORMAT_ENABLED:
+        settings.toggleFormatEnabled(sendResponse);
+        return true;
 
       case MTypePopup.ADD_CONTACT:
         contacts.addContact(msg.payload.contact, sendResponse);

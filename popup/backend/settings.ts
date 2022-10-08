@@ -97,3 +97,12 @@ export async function togglePopupEnabled() {
   updateState(resolve as WalletState);
   return resolve;
 }
+
+export async function toggleFormatNumbers() {
+  const data = await Message
+    .signal(MTypePopup.TOGGLE_FORMAT_ENABLED)
+    .send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}

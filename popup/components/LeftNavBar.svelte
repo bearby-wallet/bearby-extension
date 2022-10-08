@@ -91,6 +91,15 @@
         on:toggle={toggleDowngrade}
       />
     </div>
+    <div>
+      <b>
+        {$_('advanced.format.title')}
+      </b>
+      <Toggle
+        checked={$settingsStore.format}
+        on:toggle={() => null}
+      />
+    </div>
   </div>
 </nav>
 <div

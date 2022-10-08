@@ -9,6 +9,7 @@ import { BrowserStorage, StorageKeyValue } from "lib/storage";
 import { Fields } from 'config/fields';
 import { NetworkSettings } from './network';
 import { PopupSettings } from './popup';
+import { FormatSettings } from './format';
 
 
 export class SettingsControl {
@@ -19,6 +20,7 @@ export class SettingsControl {
   readonly period = new PeriodOffset();
   readonly network = new NetworkSettings();
   readonly popup = new PopupSettings();
+  readonly format = new FormatSettings();
 
   get state(): SettingsState {
     return {
@@ -28,7 +30,8 @@ export class SettingsControl {
       downgradeNode: this.network.downgrade,
       periodOffset: this.period.periodOffset,
       phishing: this.phishing.phishingDetectionEnabled,
-      popup: this.popup.enabledPopup
+      popup: this.popup.enabledPopup,
+      format: this.format.enabled
     };
   }
 
@@ -40,7 +43,8 @@ export class SettingsControl {
       Fields.UI_THEME,
       Fields.PERIOD_OFFSET,
       Fields.NETWORK_DOWNGRADE,
-      Fields.POPUP_ENABLED
+      Fields.POPUP_ENABLED,
+      Fields.FORMAT_ENABLED
     ) as StorageKeyValue;
 
     await this.currencies.sync(data[Fields.SELECTED_CURRENCY]);
@@ -50,6 +54,7 @@ export class SettingsControl {
     await this.period.sync(data[Fields.PERIOD_OFFSET]);
     await this.network.sync(data[Fields.NETWORK_DOWNGRADE]);
     await this.popup.sync(data[Fields.POPUP_ENABLED]);
+    await this.format.sync(data[Fields.FORMAT_ENABLED]);
   }
 
   async reset() {
@@ -60,5 +65,6 @@ export class SettingsControl {
     await this.period.reset();
     await this.network.reset();
     await this.popup.reset();
+    await this.format.reset();
   }
 }

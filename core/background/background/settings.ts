@@ -76,6 +76,22 @@ export class BackgroundSettings {
     }
   }
 
+  async toggleFormatEnabled(sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+
+      await this.#core.settings.format.toggleFormatEnabled();
+
+      return sendResponse({
+        resolve: this.#core.state
+      });
+    } catch (err) {
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
   async setCurrency(currency: string, sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();

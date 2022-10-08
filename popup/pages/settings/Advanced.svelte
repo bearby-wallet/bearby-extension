@@ -2,7 +2,12 @@
 	import { onMount, tick } from 'svelte';
 	import { _ } from 'popup/i18n';
 
-	import { setGasConfig, setLockTimer, togglePopupEnabled } from 'popup/backend/settings';
+	import {
+		setGasConfig,
+		setLockTimer,
+		togglePopupEnabled,
+		toggleFormatNumbers
+	} from 'popup/backend/settings';
 
 	import gasStore from 'popup/store/gas';
 	import lockTimerStore from 'app/store/lock-timer';
@@ -21,7 +26,10 @@
 			multiplier: detail
 		});
 	};
-	const handleBlurLockTimer = async (_) => {
+	const handleOnChangeFormat = async () => {
+		await toggleFormatNumbers();
+	};
+	const handleBlurLockTimer = async () => {
 		if (time !== $lockTimerStore) {
 			const t = Math.round(time)
 			await setLockTimer(Math.abs(t));
@@ -67,6 +75,17 @@
 				<Toggle
 					checked={$settingsStore.popup}
 					on:toggle={handleOnChangePromt}
+				/>
+			</div>
+		</Jumbotron>
+		<Jumbotron
+			title={$_('advanced.format.title')}
+			description={$_('advanced.format.description')}
+		>
+			<div class="right">
+				<Toggle
+					checked={$settingsStore.format}
+					on:toggle={handleOnChangeFormat}
 				/>
 			</div>
 		</Jumbotron>

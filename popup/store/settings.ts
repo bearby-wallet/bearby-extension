@@ -13,5 +13,6 @@ export default writable<SettingsState>({
   theme: Themes.System,
   phishing: true,
   downgradeNode: true,
-  popup: true
+  popup: true,
+  format: true
 });
