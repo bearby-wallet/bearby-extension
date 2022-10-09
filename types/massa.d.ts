@@ -64,12 +64,10 @@ export interface JsonRPCResponseNodeStatus extends JsonRPCResponse {
 }
 
 export interface AddressInfo {
-  final_parallel_balance: string;
   final_roll_count: number;
-  final_sequential_balance: string;
-  candidate_parallel_balance: string;
+  final_balance: string;
+  candidate_balance: string;
   candidate_roll_count: number;
-  candidate_sequential_balance: string;
 }
 
 export interface JsonRPCResponseNodeStatusAddresses extends JsonRPCResponse {

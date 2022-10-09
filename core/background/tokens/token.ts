@@ -72,8 +72,8 @@ export class TokenControl {
 
         balances.push({
           [XMA.base58]: {
-            final: resonse.final_sequential_balance,
-            candidate: resonse.candidate_sequential_balance
+            final: resonse.final_balance,
+            candidate: resonse.candidate_balance
           },
           [ROLL.base58]: {
             final: String(resonse.final_roll_count),
