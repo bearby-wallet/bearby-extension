@@ -55,6 +55,7 @@ export class BackgroundConnection {
         type: MTypeTab.RESPONSE_CONNECT_APP,
         payload: {
           uuid: connection.uuid,
+          net: this.#core.netwrok.selected,
           base58: this.#core.account.selectedAccount?.base58,
           resolve: true
         }
@@ -154,6 +155,7 @@ export class BackgroundConnection {
           type: MTypeTab.RESPONSE_CONNECT_APP,
           payload: {
             uuid: app.uuid,
+            net: this.#core.netwrok.selected,
             base58: this.#core.account.selectedAccount?.base58,
             resolve: true
           }
