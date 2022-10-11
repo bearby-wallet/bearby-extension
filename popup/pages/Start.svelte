@@ -5,7 +5,7 @@
 
 <main>
 	<img
-		src="/imgs/logo.png"
+		src="/imgs/logo.webp"
 		alt="logo"
 	>
 	<h1>

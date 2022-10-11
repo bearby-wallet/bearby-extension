@@ -18,7 +18,7 @@
 <main>
 	<NavClose title={$_('about.title')}/>
   <img
-		src="/imgs/logo.png"
+		src="/imgs/logo.webp"
 		alt="logo"
 	>
 	<h2>

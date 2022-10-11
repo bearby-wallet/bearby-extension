@@ -67,7 +67,7 @@
 		on:refresh={() => onRefresh(true)}
 	/>
 	<img
-		src="/imgs/logo.png"
+		src="/imgs/logo.webp"
 		alt="logo"
 	>
 	<main>
