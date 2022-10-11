@@ -8,14 +8,13 @@
   import BackBar from '../components/BackBar.svelte';
   import PickButton from '../components/PickButton.svelte';
 
-  let words = [];
-  let shuffled = [];
+  let words: string[] = [];
+  let shuffled: string[] = [];
   let disabled = true;
 
   onMount(() => {
     const list = JSON.stringify($wordsStore);
     shuffled = shuffle<string>(JSON.parse(list));
-    shuffled = JSON.parse(list);
 
     if ($wordsStore.length < 12) {
       return push('/create');
