@@ -1,7 +1,7 @@
 import { createIcon } from '@download/blockies';
 
 
-export function generateBlockies(address: string, element: Document) {
+export function generateBlockies(address: string, element: HTMLElement) {
   const icon = createIcon({
     seed: address,
     color: '#ac59ff',

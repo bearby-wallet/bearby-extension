@@ -1,7 +1,8 @@
 <script lang="ts">
+	import type { Account } from 'types/account';
+
   import { createEventDispatcher } from 'svelte';
 	import { _ } from 'popup/i18n';
-  import { trim } from 'popup/filters/trim';
 
 	import AccountCard from '../components/AccountCard.svelte';
 	import SearchBox from '../components/SearchBox.svelte';
@@ -9,7 +10,7 @@
 
   const dispatch = createEventDispatcher();
 
-  export let list = [];
+  export let list: Account[] = [];
   export let index = 0;
 
 	let search = '';
@@ -19,13 +20,13 @@
 	);
 	$: selectedAccount = list[index];
 
-	const onSelectAccount = async (account) => {
+	const onSelectAccount = async (account: Account) => {
 		const index = list.findIndex(
 			(a) => a.base58 === account.base58
 		);
-		dispatch('selected', index);
+		dispatch('selected', Number(index));
 	};
-	const onInputSearch = (e) => {
+	const onInputSearch = (e: CustomEvent) => {
 		search = e.detail;
 	};
 </script>

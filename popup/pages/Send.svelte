@@ -46,31 +46,34 @@
   $: disabled = amount <= 0 || amount > balance || !recipient;
 
 
-  function hanldeOnInput({ detail }) {
-    amount = detail;
+  function hanldeOnInput(event: CustomEvent) {
+    amount = event.detail;
   }
 
-  const onSelectAccount = async ({ detail }) => {
-		accountIndex = detail;
+  const onSelectAccount = async (event: CustomEvent) => {
+		accountIndex = event.detail;
     const ctx = document.getElementById(uuid);
 
-    ctx.textContent = '';
-		generateBlockies($walletStore.identities[accountIndex].pubKey, ctx);
+    if (ctx) {
+      ctx['textContent'] = '';
+      generateBlockies($walletStore.identities[accountIndex].pubKey, ctx);
+    }
+
     accountsModal = !accountsModal;
 	};
 
-  const onSelectToken = async ({ detail }) => {
-    selectedToken = detail;
+  const onSelectToken = async (event: CustomEvent) => {
+    selectedToken = event.detail;
     tokensModal = !tokensModal;
   };
 
-  function onSelectRecipient({ detail }) {
-    recipient = detail;
+  function onSelectRecipient(event: CustomEvent) {
+    recipient = event.detail;
     contactsModal = !contactsModal;
   }
 
-  function onInputRecipient(e) {
-    recipient = e.target.value;
+  function onInputRecipient(e: Event) {
+    recipient = (e.target as HTMLInputElement).value;
   }
 
   async function onSubmin() {
@@ -91,7 +94,11 @@
 
   onMount(async() => {
     const ctxAccount = document.getElementById(uuid);
-		generateBlockies(account.pubKey, ctxAccount);
+
+    if (ctxAccount) {
+      generateBlockies(account.pubKey, ctxAccount);
+    }
+
     await getContacts();
   });
 </script>
@@ -239,7 +246,6 @@
       }
     }
   }
-  div.smart-input,
   div.input {
     max-width: 400px;
     width: calc(100vw - 20px);
