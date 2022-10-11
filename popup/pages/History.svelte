@@ -10,6 +10,8 @@
 	import BottomTabs from '../components/BottomTabs.svelte';
 	import TopBar from '../components/TopBar.svelte';
 	import Transaction from '../components/Transaction.svelte';
+  import Modal from '../components/Modal.svelte';
+  import TransactionModal from '../modals/Transaction.svelte';
 
 
   let showTx: HistoryTransaction | null = null;
@@ -35,6 +37,17 @@
 </script>
 
 
+<Modal
+  show={Boolean(showTx)}
+  title={$_('history.modals.details.title')}
+  on:close={() => showTx = null}
+>
+  <div class="m-warp">
+    {#if showTx}
+      <TransactionModal tx={showTx}/>
+    {/if}
+  </div>
+</Modal>
 <section>
 	<TopBar
     on:refresh={hanldeOnUpdate}

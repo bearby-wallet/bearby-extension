@@ -184,7 +184,19 @@
     "no_txns": "You have no transactions yet.",
     "queue": "Queue",
     "history": "History",
-    "clear": "Clear All"
+    "clear": "Clear All",
+    "modals": {
+      "details": {
+        "title": "Transactions details",
+        "from": "Sender",
+        "recipient": "Recipient",
+        "method": "Method",
+        "hash": "ID(Hash)",
+        "expiry": "Expiry period",
+        "time": "Time",
+        "error": "Error message"
+      }
+    }
   },
   "general": {
     "title": "General",
