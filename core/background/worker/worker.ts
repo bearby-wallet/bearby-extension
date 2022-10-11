@@ -7,6 +7,11 @@ import  { TransactionsController, HASH_OUT_OF_STORAGE } from "background/transac
 import { NotificationController } from "lib/runtime/notifications";
 
 
+enum Statuses {
+  Confirmed = 'Confirmed',
+  ExpirePeriod = 'Expire period'
+}
+
 export class WorkerController {
   readonly #massa: MassaControl;
   readonly #transactions: TransactionsController;
@@ -111,6 +116,21 @@ export class WorkerController {
       }
 
       const [transaction] = result;
+      const expirePeriod = transaction.operation.content.expire_period;
+
+      if (!transaction.is_final && expirePeriod < this.period) {
+        list[listIndex].confirmed = true;
+        list[listIndex].success = false;
+        list[listIndex].error = Statuses.ExpirePeriod;
+
+        this.#makeNotify(
+          String(list[listIndex].title),
+          list[listIndex].hash,
+          Statuses.ExpirePeriod
+        );
+
+        continue;
+      }
 
       list[listIndex].confirmed = transaction.is_final;
       list[listIndex].success = transaction.is_final;
@@ -119,7 +139,7 @@ export class WorkerController {
         this.#makeNotify(
           String(list[listIndex].title),
           list[listIndex].hash,
-          'Confirmed'
+          Statuses.Confirmed
         );
       }
     }
