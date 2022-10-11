@@ -171,7 +171,7 @@
     @include border-radius(8px);
 
     &.loading {
-      @include loading-gradient(var(--background-color), var(--card-color));
+      @include loading-gradient(var(--loading-color), var(--card-color));
     }
     & > li {
       padding: 5px;

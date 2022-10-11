@@ -29,6 +29,7 @@ export interface MinTransactionParams {
   type: OperationsType;
   token: TransactionToken;
   //
+  gasMultiplier? : number;
   icon?: string;
   uuid?: string;
   title?: string;

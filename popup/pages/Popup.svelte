@@ -30,7 +30,6 @@
   let txIndex = 0;
 	let index = $walletStore.selectedAddress;
   let transaction = $confirmStore[txIndex];
-  let startGasPrice = Number(transaction.gasPrice);
   let accountsModal = false;
   let editModal = false;
   let loading = false;
@@ -63,7 +62,8 @@
   async function handleOnChangeGasMultiplier(e: CustomEvent) {
     const gasMultiplier = Number(e.detail);
 
-    transaction.gasPrice = startGasPrice * gasMultiplier;
+    transaction.gasMultiplier = gasMultiplier;
+    transaction.fee = (transaction.gasPrice * transaction.gasMultiplier) * transaction.gasLimit;
 
     await updateConfirm(transaction, txIndex);
   }
@@ -164,8 +164,8 @@
         class:loading={loading}
       >
         <GasControl
-          multiplier={$gasStore.multiplier}
-          gasLimit={$gasStore.gasLimit}
+          multiplier={transaction.gasMultiplier || $gasStore.multiplier}
+          gasLimit={transaction.gasLimit}
           gasPrice={transaction.gasPrice}
           on:select={handleOnChangeGasMultiplier}
         />
