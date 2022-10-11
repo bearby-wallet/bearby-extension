@@ -180,11 +180,11 @@
           >
         </label>
       </div>
-      <div class="smart-input">
+      <div class="input">
         <SmartInput
           img={viewIcon(token.base58)}
           symbol={token.symbol}
-          max={balance}
+          max={Number(balance)}
           value={amount}
           loading={loading}
           on:select={() => tokensModal = !tokensModal}
@@ -245,8 +245,6 @@
     width: calc(100vw - 20px);
     margin-block-end: 16px;
   }
-  div.smart-input {
-  }
   div.input {
     margin-block-start: 16px;
 
@@ -256,7 +254,7 @@
       background-color: var(--card-color);
       border: solid 1px var(--card-color);
 
-      height: 66px;
+      height: 62px;
 
       @include flex-between-row;
       @include border-radius(16px);
