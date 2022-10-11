@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { Contact } from 'types/index';
+
 	import { _ } from 'popup/i18n';
 	import { push } from 'svelte-spa-router';
 	import { onMount } from 'svelte';
@@ -27,11 +29,11 @@
 		(contact) => String(contact.name).toLowerCase().includes(String(search).toLowerCase())
 	);
 
-	const onInputSearch = (e) => {
+	const onInputSearch = (e: CustomEvent) => {
 		search = e.detail;
 	};
 
-	const onDropDown = async (event, contact) => {
+	const onDropDown = async (event: CustomEvent, contact: Contact) => {
 		switch (event.detail) {
 			case 0:
 				const foundIndex = $contactsStore.findIndex((c) => contact.address === c.address);

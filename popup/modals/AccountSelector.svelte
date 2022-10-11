@@ -6,7 +6,6 @@
 	import walletStore from 'popup/store/wallet';
 	import contactsStore from 'popup/store/contacts';
 
-	import AccountCard from '../components/AccountCard.svelte';
 	import SearchBox from '../components/SearchBox.svelte';
 
 	import { generateBlockies } from 'popup/mixins/blockies';
@@ -23,10 +22,10 @@
 		(contact) => String(contact.name).toLowerCase().includes(String(search).toLowerCase())
 	);
 
-	const onSelect = async (address) => {
+	const onSelect = async (address: string) => {
 		dispatch('selected', address);
 	};
-	const onInputSearch = (e) => {
+	const onInputSearch = (e: CustomEvent) => {
 		search = e.detail;
 	};
 
@@ -35,13 +34,17 @@
 			const contact = contacts[index];
 			const ctx = document.getElementById(contact.address);
 
-			generateBlockies(contact.address, ctx);
+			if (ctx) {
+				generateBlockies(contact.address, ctx);
+			}
 		}
 		for (let index = 0; index < accounts.length; index++) {
 			const account = accounts[index];
 			const ctx = document.getElementById(account.pubKey);
 
-			generateBlockies(account.pubKey, ctx);
+			if (ctx) {
+				generateBlockies(account.pubKey, ctx);
+			}
 		}
 	});
 </script>

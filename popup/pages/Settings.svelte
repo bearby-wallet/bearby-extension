@@ -6,6 +6,7 @@
 	import TextElement from '../components/TextElement.svelte';
 	import TopBar from '../components/TopBar.svelte';
 
+
 	let items = [
 		{
 			title: $_('settings.account.title'),
@@ -51,10 +52,7 @@
 </script>
 
 <section>
-	<TopBar
-		refresh
-		lock
-	/>
+	<TopBar />
 	<main>
 		<ul>
 			{#each items as item, i}

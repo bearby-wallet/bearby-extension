@@ -2,10 +2,12 @@
 	import { push } from 'svelte-spa-router';
 	import { _ } from 'popup/i18n';
 
+
   const handleOnStart = () => {
     push('/');
   };
 </script>
+
 
 <main>
   <h1>
@@ -46,6 +48,7 @@
     {$_('wallet_created.btn')}
   </button>
 </main>
+
 
 <style lang="scss">
   @import "../styles/mixins";

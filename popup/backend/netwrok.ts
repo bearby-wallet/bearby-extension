@@ -22,10 +22,7 @@ export async function getNetworkConfig() {
   const data = await Message
     .signal(MTypePopup.GET_NETWORK_CONFIG)
     .send();
-  return warpMessage(data) as {
-    config: NetwrokConfig;
-    count: number;
-  };
+  return warpMessage(data) as NetwrokConfig;
 }
 
 export async function updateCount(count: number) {

@@ -1,6 +1,7 @@
 <script lang="ts">
+  import type { HistoryTransaction } from 'types';
+
 	import { onMount } from 'svelte';
-	import { push } from 'svelte-spa-router';
 	import { _ } from 'popup/i18n';
 
   import { getTransactionHistory, clearAllTransactions } from 'popup/backend/transactions';
@@ -11,7 +12,7 @@
 	import Transaction from '../components/Transaction.svelte';
 
 
-  let showTx = null;
+  let showTx: HistoryTransaction | null = null;
 
   $: history = $historyStore.filter((t) => t.confirmed);
   $: queue = $historyStore.filter((t) => !t.confirmed);
@@ -36,8 +37,6 @@
 
 <section>
 	<TopBar
-    refresh
-    lock
     on:refresh={hanldeOnUpdate}
   />
 	<main>
@@ -60,7 +59,7 @@
           {$_('history.queue')} ({queue.length})
         </b>
         <ul>
-          {#each queue as tx, index}
+          {#each queue as tx}
             <li on:click={() => showTx = tx}>
               <Transaction
                 tx={tx}
@@ -75,7 +74,7 @@
           {$_('history.history')} ({history.length})
         </b>
         <ul>
-          {#each history as tx, index}
+          {#each history as tx}
             <li on:click={() => showTx = tx}>
               <Transaction tx={tx} />
             </li>

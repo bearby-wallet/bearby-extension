@@ -29,7 +29,7 @@
 		try {
 			await balanceUpdate();
 		} catch (err) {
-			console.error(err.message);
+			console.error((err as Error).message);
 		}
 		loading = false;
 	};
@@ -48,7 +48,11 @@
 
 	onMount(async() => {
 		const ctx = document.getElementById(uuid);
-		generateBlockies(account.pubKey, ctx);
+
+		if (ctx) {
+			generateBlockies(account.pubKey, ctx);
+		}
+
 		await onRefresh();
 	});
 </script>
@@ -60,9 +64,6 @@
 />
 <section>
 	<TopBar
-		refresh
-		view
-		lock
 		on:refresh={() => onRefresh(true)}
 	/>
 	<img

@@ -4,7 +4,6 @@
 	import { _ } from 'popup/i18n';
   import { AccountTypes } from 'config/account-type';
 
-  import { linksExpand } from 'popup/mixins/link';
 	import {
     togglePopupEnabled,
     setDowngradeNodeFlag,

@@ -9,15 +9,16 @@
   export let title = '';
   export let show: boolean;
 
-  let node = null;
+  let node: HTMLElement | null = null;
 
   const onClose = () => dispatch('close');
-  const onToggle = (e) => {
+  const onToggle = (e: Event) => {
     if (e.target === node) {
       onClose();
     }
   };
 </script>
+
 
 {#if show}
   <aside

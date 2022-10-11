@@ -3,7 +3,6 @@
 
 	import { onMount } from 'svelte';
 
-  import { AccountTypes } from 'config/account-type';
   import { ZERO_ADDRESS } from 'config/common';
 
   import { trim } from 'popup/filters/trim';
@@ -28,7 +27,10 @@
 
   onMount(async() => {
 		const ctx = document.getElementById(uid);
-		generateBlockies(account.pubKey, ctx);
+
+    if (ctx) {
+      generateBlockies(account.pubKey, ctx);
+    }
 	});
 </script>
 

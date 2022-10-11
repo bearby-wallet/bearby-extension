@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { push } from 'svelte-spa-router';
 	import { _ } from 'popup/i18n';
 
   import { AccountTypes } from 'config/account-type';
@@ -14,6 +13,7 @@
   import Jumbotron from '../../components/Jumbotron.svelte';
   import ExportKeyModal from '../../modals/ExportKey.svelte';
 	import RevealPhraseModal from '../../modals/RevealPhrase.svelte';
+
 
 	let phraseModal = false;
 	let keyModal = false;

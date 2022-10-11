@@ -27,13 +27,15 @@
 	let base64 = '';
 	let index = $walletStore.selectedAddress;
 	let name = $walletStore.identities[index].name;
-	let loading = true;
 
 	$: account = $walletStore.identities[index];
 
 	onMount(async() => {
     const ctx = document.getElementById(uuid);
-		generateBlockies(account.pubKey, ctx);
+		
+		if (ctx) {
+			generateBlockies(account.pubKey, ctx);
+		}
 
     base64 = await qrcode.toDataURL(
       `massa://${account.base58}`,
@@ -44,13 +46,16 @@
     );
 	});
 
-	const onSelectAccount = async ({ detail }) => {
-		index = detail;
-		await selectAccount(detail);
+	const onSelectAccount = async (event: CustomEvent) => {
+		index = event.detail;
+		await selectAccount(event.detail);
 
 		const ctx = document.getElementById(uuid);
-		ctx.textContent = '';
-		generateBlockies(account.pubKey, ctx);
+		if (ctx) {
+			ctx['textContent'] = '';
+			generateBlockies(account.pubKey, ctx);
+		}
+
 		name = account.name;
     accountsModal = !accountsModal;
 	};

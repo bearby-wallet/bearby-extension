@@ -1,8 +1,6 @@
 <script lang="ts">
 	import { link } from 'svelte-spa-router';
-	import { fly } from 'svelte/transition';
 	import { _ } from 'popup/i18n';
-
 </script>
 
 <main>

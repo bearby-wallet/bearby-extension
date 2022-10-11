@@ -27,16 +27,17 @@
   let isHash = false;
 
 	$: account = $walletStore.identities[accountIndex];
-  $: message = $messageStore;
 
 
 	onMount(() => {
     const ctx = document.getElementById(uuid);
-    generateBlockies(account.pubKey, ctx);
+    if (ctx) {
+      generateBlockies(account.pubKey, ctx);
+    }
   });
 
-	const onSelectAccount = async ({ detail }) => {
-    accountIndex = detail;
+	const onSelectAccount = async (e: CustomEvent) => {
+    accountIndex = e.detail;
     accountsModal = false;
 	};
 
@@ -47,10 +48,10 @@
   const handleOnSign = async () => {
     loading = true;
     try {
-      await signMessageApprove(accountIndex);
+      await signMessageApprove();
       await closePopup();
     } catch (err) {
-      error = err.message;
+      error = (err as Error).message;
     }
     loading = false;
   };
@@ -69,58 +70,61 @@
     />
   </div>
 </Modal>
-<main in:scale>
-  <SelectCard
-    header={account.name}
-    text={trim(account.base58)}
-    on:click={() => accountsModal = !accountsModal}
-  >
-    <div id={uuid}/>
-  </SelectCard>
-  <hr/>
-  <h1>
-    {$_('sig_message.title')}
-  </h1>
-  <img
-    src={$messageStore.icon}
-    alt={$messageStore.title}
-    width="55px"
-    height="55px"
-  />
-  <h2>
-    {$messageStore.title}
-  </h2>
-  <textarea readonly>
-    {isHash ? $messageStore.hash : $messageStore.message}
-  </textarea>
-  <div class="toggle">
-    <h3>
-      {$_('sig_message.hash')}
-    </h3>
-    <Toggle
-      checked={isHash}
-      on:toggle={() => isHash = !isHash}
+{#if $messageStore}
+  <main in:scale>
+    <SelectCard
+      header={account.name}
+      text={trim(account.base58)}
+      on:click={() => accountsModal = !accountsModal}
+    >
+      <div id={uuid}/>
+    </SelectCard>
+    <hr/>
+    <h1>
+      {$_('sig_message.title')}
+    </h1>
+    <img
+      src={$messageStore.icon}
+      alt={$messageStore.title}
+      width="55px"
+      height="55px"
     />
-  </div>
-  <hr />
-  <div class="btns">
-    <button
-      class="primary"
-      class:loading={loading}
-      disabled={loading}
-      on:click={handleOnSign}
-    >
-      {$_('sig_message.btns.confirm')}
-    </button>
-    <button
-      class="outline"
-      disabled={loading}
-      on:click={handleOnReject}
-    >
-      {$_('sig_message.btns.reject')}
-    </button>
-  </div>
-</main>
+    <h2>
+      {$messageStore.title}
+    </h2>
+    <textarea readonly>
+      {isHash ? $messageStore.hash : $messageStore.message}
+    </textarea>
+    <div class="toggle">
+      <h3>
+        {$_('sig_message.hash')}
+      </h3>
+      <Toggle
+        checked={isHash}
+        on:toggle={() => isHash = !isHash}
+      />
+    </div>
+    <hr />
+    <div class="btns">
+      <button
+        class="primary"
+        class:loading={loading}
+        disabled={loading}
+        on:click={handleOnSign}
+      >
+        {$_('sig_message.btns.confirm')}
+      </button>
+      <button
+        class="outline"
+        disabled={loading}
+        on:click={handleOnReject}
+      >
+        {$_('sig_message.btns.reject')}
+      </button>
+    </div>
+  </main>
+{/if}
+
 
 <style lang="scss">
 	@import "../styles/mixins";

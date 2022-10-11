@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { scale } from 'svelte/transition';
 	import { _ } from 'popup/i18n';
-	import { push } from 'svelte-spa-router';
 	import { closePopup } from 'popup/mixins/popup';
 
 	import connectAppStore from 'popup/store/confirm-apps';

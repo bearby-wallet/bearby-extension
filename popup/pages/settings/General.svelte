@@ -16,16 +16,16 @@
 	const themesList = Object.values(Themes);
 	const locales = Object.values(Locales);
 
-	const hanldeChangeCurrency = async (e) => {
-		const currency = e.target.value;
+	const hanldeChangeCurrency = async (e: Event) => {
+		const currency = (e.target as HTMLInputElement).value;
 		await setCurrency(currency);
 	};
-	const hanldeChangeTheme = async (e) => {
-		const theme = e.target.value;
+	const hanldeChangeTheme = async (e: Event) => {
+		const theme = (e.target as HTMLInputElement).value;
 		await setTheme(theme);
 	};
-	const hanldeChangeLocale = async (e) => {
-		const locale = e.target.value;
+	const hanldeChangeLocale = async (e: Event) => {
+		const locale = (e.target as HTMLInputElement).value;
 		await setLocale(locale);
 		try {
 			if (locale === Locales.Auto) {
@@ -40,9 +40,6 @@
 				withLocale: Locales.EN
 			});
 		}
-	};
-	const hanldeOnReset = async () => {
-    console.log('hanldeOnReset');
 	};
 </script>
 

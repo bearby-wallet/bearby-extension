@@ -1,15 +1,16 @@
 <script lang="ts">
+  import type { HistoryTransaction } from 'types';
+
 	import { _ } from 'popup/i18n';
   import { formatNumber } from 'popup/filters/numbers';
 
   import settingsStore from 'popup/store/settings';
 
 
-  export let tx;
+  export let tx: HistoryTransaction;
   export let loading = false;
 
   $: amount = Number(tx.tokenAmount) / 10**tx.token.decimals;
-  $: rate = 0;
   $: converted = 0;
   $: date = new Date(tx.timestamp).toLocaleDateString();
 </script>
@@ -22,7 +23,7 @@
 >
   <div>
     <h3>
-      {tx.teg || $_(`confirm.params.types.${tx.type}`)}
+      {tx.func || $_(`confirm.params.types.${tx.type}`)}
     </h3>
     <p>
       {date}

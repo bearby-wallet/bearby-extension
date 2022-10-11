@@ -5,8 +5,9 @@
 	import { linksExpand } from 'popup/mixins/link';
 	import { unlockWallet } from 'popup/backend/wallet';
 
-	let inputEl;
-	let password: string | null;
+
+	let inputEl: HTMLInputElement | undefined;
+	let password = '';
 	let error = '';
 	let loading = false;
 
@@ -21,7 +22,7 @@
 	const handleInput = () => {
 		error = '';
 	};
-	const handleBlur = async (_) => {
+	const handleBlur = async () => {
     await tick();
 		
     if (inputEl && inputEl.focus) {
@@ -29,7 +30,7 @@
     }
   };
 
-	const handleSubmit = async (e) => {
+	const handleSubmit = async (e: Event) => {
 		e.preventDefault();
 
 		try {
@@ -41,7 +42,7 @@
 				push('/');
 			}
 		} catch (err) {
-			error = `${$_('lock.error')}-(${err.message})`;
+			error = `${$_('lock.error')}-(${(err as Error).message})`;
 		}
 		loading = false;
 	}
@@ -72,7 +73,7 @@
 		<button
 			class="outline"
 			class:loading={loading}
-			disabled={disabled || error}
+			disabled={Boolean(disabled || error)}
 		>
 			{$_('lock.btn')}
 		</button>

@@ -1,24 +1,18 @@
 <script lang="ts">
+  import type { ConfirmParams } from 'types';
+
 	import { _ } from 'popup/i18n';
 
   import { trim } from 'popup/filters/trim';
   import { viewIcon } from "app/utils/icon-view";
   import { formatNumber } from 'popup/filters/numbers';
 
-  import netStore from 'popup/store/netwrok';
 	import tokensStore from 'popup/store/tokens';
 
 
-	export let tx = {
-    amount: 0,
-    fee: 0,
-    recipient: "",
-    token: $tokensStore[0],
-    tokenAmount: "0",
-    type: 0
-  };
+	export let tx: ConfirmParams;
 
-	$: amount = tx.tokenAmount / 10**tx.token.decimals;
+	$: amount = Number(tx.tokenAmount) / 10**tx.token.decimals;
   $: img = viewIcon(tx.token.base58);
 </script>
 
@@ -44,7 +38,7 @@
       {$_('confirm.params.teg')}
     </span>
     <span>
-      {tx.teg || $_(`confirm.params.types.${tx.type}`)}
+      {tx.func || $_(`confirm.params.types.${tx.type}`)}
     </span>
   </li>
   <li>

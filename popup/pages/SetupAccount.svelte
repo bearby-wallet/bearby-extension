@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { pop, push } from 'svelte-spa-router';
+	import { push } from 'svelte-spa-router';
 	import { onMount } from 'svelte';
 	import { _ } from 'popup/i18n';
 	import { createWallet } from "popup/backend/wallet";
@@ -12,11 +12,10 @@
   } from 'popup/config/account';
 
   import BackBar from '../components/BackBar.svelte';
-  import Toggle from '../components/Toggle.svelte';
+
 
 	let loading = false;
   let name = `${DEFAULT_NAME} 0`;
-	let error = '';
   let passError = '';
   let password: string;
   let confirmPassword: string;
@@ -29,9 +28,6 @@
     }
   });
 
-	const handleInputTextarea = () => {
-		error = '';
-	};
   const handleInputPassword = () => {
     passError = '';
 	};
@@ -40,7 +36,7 @@
       passError = $_('restore.pass_len_error');
     }
 	};
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: Event) => {
 		e.preventDefault();
     loading = true;
 
@@ -50,7 +46,7 @@
       push('/created');
 			loading = false;
 		} catch (err) {
-			passError = err.message;
+			passError = (err as Error).message;
       loading = false;
 		}
 	}

@@ -1,6 +1,7 @@
 <script lang="ts">
+	import type { AppConnection } from 'types';
+
 	import { onMount } from 'svelte';
-	import { push } from 'svelte-spa-router';
 
 	import { _ } from 'popup/i18n';
 	import { getConnections, removeConnection } from 'popup/backend/connections';
@@ -12,6 +13,7 @@
 	import SearchBox from '../../components/SearchBox.svelte';
 	import CloseIcon from '../../components/icons/Close.svelte';
 
+
 	let search = '';
 
 	$: connections = $connectionsStore.filter((acc) => {
@@ -20,16 +22,16 @@
 		return s1 || s2;
 	});
 
-	const onInputSearch = (e) => {
+	const onInputSearch = (e: CustomEvent) => {
 		search = e.detail;
 	};
-	const hanldeOnRemove = async (app) => {
+	const hanldeOnRemove = async (app: AppConnection) => {
 		const index = $connectionsStore.findIndex(
 			(a) => a.domain === app.domain
 		);
 		await removeConnection(index);
 	};
-	const hanldeOnSelect = (app) => {
+	const hanldeOnSelect = (app: AppConnection) => {
 		linkToDomain(app.domain);
 	};
 
@@ -72,7 +74,7 @@
 						class="icon"
 						on:click={() => hanldeOnRemove(item)}
 					>
-						<CloseIcon className="trash-icon" />
+						<CloseIcon />
 					</div>
 				</li>
 			{/each}

@@ -1,4 +1,6 @@
 <script lang="ts">
+  import type { Account, Token } from 'types';
+
   import { createEventDispatcher } from 'svelte';
 	import { _ } from 'popup/i18n';
 
@@ -12,8 +14,8 @@
 
   const dispatch = createEventDispatcher();
 
-  export let account;
-  export let list = [];
+  export let account: Account;
+  export let list: Token[] = [];
   export let index = 0;
 
 	let search = '';
@@ -26,18 +28,18 @@
   });
 	$: selected = list[index];
 
-  const getBalance = (token) => {
+  const getBalance = (token: Token) => {
     return account.tokens && account.tokens[token.base58] ?
       account.tokens[token.base58].final : 0;
   };
 
-	const onSelectToken = async (token) => {
+	const onSelectToken = async (token: Token) => {
 		const index = list.findIndex(
 			(a) => a.base58 === token.base58
 		);
 		dispatch('selected', index);
 	};
-	const onInputSearch = (e) => {
+	const onInputSearch = (e: CustomEvent) => {
 		search = e.detail;
 	};
 </script>

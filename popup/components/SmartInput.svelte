@@ -1,8 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
 
-	import Arrow from './icons/Arrow.svelte';
-
   import settingsStore from 'popup/store/settings';
 
 	import { formatNumber } from 'popup/filters/numbers';
@@ -15,31 +13,36 @@
 	export let percents = [0, 10, 30, 50, 70, 100];
 	export let disabled = false;
   export let loading = false;
-	export let converted = null;
+	export let converted = 0;
 	export let placeholder = '';
 	export let max = 0;
-  export let img;
-  export let symbol;
-	export let value;
+  export let img: string;
+  export let symbol : string;
+	export let value: string;
 
-	let inputEl;
+	let inputEl: HTMLInputElement | undefined;
 
 	const onClick = () => {
     dispatch('select');
   };
-	const onInput = (e) => {
-		if (e.target.value.endsWith('.')) {
+	const onInput = (e: Event) => {
+		const target = e.target as HTMLInputElement;
+	
+		if (target.value.endsWith('.')) {
 			return;
 		}
 
-		const newValue = Number(e.target.value);
+		const newValue = Number(target.value);
 
 		if (isNaN(newValue)) {
 			return;
 		}
 
-		inputEl.value = newValue;
-		value = newValue;
+		if (inputEl) {
+			inputEl.value = String(newValue);
+			value = String(newValue);
+		}
+
 		dispatch('input', newValue);
   };
 	const onPercentInput = (n: number) => {

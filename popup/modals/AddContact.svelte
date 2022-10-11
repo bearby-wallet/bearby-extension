@@ -8,7 +8,7 @@
   const dispatch = createEventDispatcher();
   const uuid = uuidv4();
 
-  let nameElement = null;
+  let nameElement: HTMLInputElement | null = null;
   let loading = false;
   let address = '';
   let name = '';
@@ -22,7 +22,7 @@
     }
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: Event) => {
 		e.preventDefault();
 
 		try {
@@ -35,7 +35,7 @@
       dispatch('close');
 		} catch (err) {
       console.log(err);
-      error = err.message;
+      error = (err as Error).message;
 		}
 		loading = false;
 	}
@@ -64,7 +64,7 @@
   </label>
   <button
     class="outline"
-    disabled={buttonDisabled}
+    disabled={Boolean(buttonDisabled)}
   >
     {$_('contacts.form.add')}
   </button>

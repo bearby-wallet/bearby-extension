@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { push } from 'svelte-spa-router';
 	import { _ } from 'popup/i18n';
-  import { trim } from 'popup/filters/trim';
 
 	import walletStore from 'popup/store/wallet';
 
@@ -11,11 +10,12 @@
 	import { selectAccount } from 'popup/backend/wallet';
 
 
-	const onSelectAccount = async ({ detail }) => {
-		await selectAccount(detail);
+	const onSelectAccount = async (e: CustomEvent) => {
+		await selectAccount(e.detail);
 		push('/');
 	};
 </script>
+
 
 <main>
 	<NavClose title={$_('accounts.title')}/>
@@ -25,6 +25,7 @@
 		on:selected={onSelectAccount}
 	/>
 </main>
+
 
 <style lang="scss">
 	@import "../styles/mixins";

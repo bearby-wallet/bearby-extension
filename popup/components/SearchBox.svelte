@@ -6,7 +6,7 @@
 
   const dispatch = createEventDispatcher();
 
-	let inputEl;
+	let inputEl: HTMLInputElement;
 
   export let focus = false;
   export let placeholder = '';
@@ -17,8 +17,8 @@
     }
   });
 
-  const onInput = (e) => {
-    const { value } = e.target;
+  const onInput = (e: Event) => {
+    const { value } = e.target as HTMLInputElement;
     dispatch('input', value);
   };
 </script>

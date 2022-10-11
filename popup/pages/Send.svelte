@@ -192,7 +192,7 @@
           img={viewIcon(token.base58)}
           symbol={token.symbol}
           max={Number(balance)}
-          value={amount}
+          value={String(amount)}
           loading={loading}
           on:select={() => tokensModal = !tokensModal}
           on:input={hanldeOnInput}

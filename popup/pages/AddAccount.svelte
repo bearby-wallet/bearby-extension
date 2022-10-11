@@ -3,7 +3,6 @@
 	import { _ } from 'popup/i18n';
   import { AccountTypes } from 'config/account-type';
   import {
-    MIN_PASSWORD_LEN,
     MAX_NAME_LEN,
     MIN_NAME_LEN,
     DEFAULT_NAME
@@ -12,6 +11,7 @@
 	import { createNextSeedAccount, balanceUpdate } from 'popup/backend/wallet';
 
   import NavClose from '../components/NavClose.svelte';
+
 
   let lastIndex = $walletStore
     .identities
@@ -22,7 +22,7 @@
 
   $: disabled = loading || name.length < MIN_NAME_LEN;
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: Event) => {
     e.preventDefault();
     loading = true;
 

@@ -1,4 +1,4 @@
-export const printMnemonic = (phrase: string, t: string[]) => {
+export const printMnemonic = (phrase: string, t: string) => {
   return `<html id="print-wallet">
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700" rel="stylesheet">
   <div class="print-container" style="margin-bottom: 50px;" id="print-container" onload="myFunction()">

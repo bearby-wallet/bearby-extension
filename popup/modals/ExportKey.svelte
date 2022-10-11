@@ -6,7 +6,7 @@
   import { trim } from 'popup/filters/trim';
 
 
-  let passwordElement = null;
+  let passwordElement: HTMLInputElement | null = null;
   let loading = false;
   let password = '';
   let error = '';
@@ -21,7 +21,7 @@
     }
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: Event) => {
 		e.preventDefault();
 
 		try {
@@ -30,7 +30,7 @@
       key = keyPair.privKey;
       base58 = keyPair.base58;
 		} catch (err) {
-      error = err.message;
+      error = (err as Error).message;
 		}
 		loading = false;
 	}
@@ -66,7 +66,7 @@
     </label>
     <button
       class="outline"
-      disabled={buttonDisabled}
+      disabled={Boolean(buttonDisabled)}
     >
       {$_('security.key.btn')}
     </button>

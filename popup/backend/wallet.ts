@@ -13,7 +13,7 @@ export async function getRandomWords(n: number) {
       length: n
     }
   }).send();
-  return warpMessage(data);
+  return warpMessage(data) as string;
 }
 
 export async function createWallet(words: string, password: string, name: string) {
@@ -46,8 +46,8 @@ export async function unlockWallet(password: string) {
       password
     }
   }).send();
-  const resolve = warpMessage(data);
-  updateState(resolve as WalletState);
+  const resolve = warpMessage(data) as WalletState;
+  updateState(resolve);
   return resolve;
 }
 
@@ -135,7 +135,11 @@ export async function exportPrivateKey(password: string) {
       password
     }
   }).send();
-  return warpMessage(data);
+  return warpMessage(data) as {
+    privKey: string;
+    base58: string;
+    pubKey: string;
+  };
 }
 
 export async function exportSecrePhrase(password: string) {
@@ -145,5 +149,5 @@ export async function exportSecrePhrase(password: string) {
       password
     }
   }).send();
-  return warpMessage(data);
+  return String(warpMessage(data));
 }

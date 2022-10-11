@@ -1,4 +1,6 @@
 <script lang="ts">
+  import type { NetwrokConfig } from 'types/index';
+
 	import { _ } from 'popup/i18n';
 	import { onMount } from 'svelte';
 
@@ -22,25 +24,26 @@
   } from 'popup/backend/netwrok';
   import { setDowngradeNodeFlag } from 'popup/backend/settings';
 
-  const [mainnet, testnet, custom] = NETWORK_KEYS;
+  const [,, custom] = NETWORK_KEYS;
 
   let nodeURL = '';
-  let networkConfig;
+  let networkConfig: NetwrokConfig;
   let periodOffset = $settingsStore.periodOffset;
 
-  async function handleOnSelectNet(event) {
-    const net = String(event.target.value);
+  async function handleOnSelectNet(event: Event) {
+    const net = (event.target as HTMLInputElement).value;
 
     await selectNetwrok(net);
   }
 
-  async function handleSortNodes(event) {
-    const http = String(event.target.value);
+  async function handleSortNodes(event: Event) {
+    const http = (event.target as HTMLInputElement).value;
     await sortNodes(http);
   }
 
-  async function handleInputCount(event) {
-    const count = Number(event.target.value);
+  async function handleInputCount(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    const count = Number(value);
 
     try {
       if (count > networkConfig[$netwrokStore].PROVIDERS.length) {
@@ -57,7 +60,7 @@
     }
   }
 
-  async function handleAddNode(e) {
+  async function handleAddNode(e: Event) {
     e.preventDefault();
 
     try {

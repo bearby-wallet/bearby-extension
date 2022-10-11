@@ -38,30 +38,34 @@
 
   $: account = $walletStore.identities[index];
 
-  async function onSelectAccount({ detail }) {
+  async function onSelectAccount(e: CustomEvent) {
     loading = true;
     try {
       loading = false;
-      index = detail;
+      index = e.detail;
       accountsModal = !accountsModal;
 
       const ctx = document.getElementById(uuid);
-      ctx.textContent = '';
-      generateBlockies($walletStore.identities[index].pubKey, ctx);
+
+      if (ctx) {
+        ctx['textContent'] = '';
+        generateBlockies($walletStore.identities[index].pubKey, ctx);
+      }
 
       err = '';
 
-      await selectAccount(detail);
+      await selectAccount(e.detail);
     } catch (e) {
-      err = e.message;
+      err = (e as Error).message;
     }
 	};
 
-  async function handleOnChangeGasMultiplier({ detail }) {
-    gasMultiplier = detail;
-    tx.gasPrice = startGasPrice * gasMultiplier;
+  async function handleOnChangeGasMultiplier(e: CustomEvent) {
+    const gasMultiplier = Number(e.detail);
 
-    await updateConfirm(tx, txIndex);
+    transaction.gasPrice = startGasPrice * gasMultiplier;
+
+    await updateConfirm(transaction, txIndex);
   }
 
   async function onNextTx() {
@@ -90,7 +94,7 @@
       await onNextTx();
       transaction = $confirmStore[txIndex];
     } catch (e) {
-      err = e.message;
+      err = (e as Error).message;
     }
     loading = false;
   }
@@ -101,16 +105,16 @@
       await rejectConfirmTransaction(txIndex);
       await onNextTx();
     } catch (e) {
-      err = e.message;
+      err = (e as Error).message;
     }
     loading = false;
   }
 
 	onMount(() => {
     const ctx = document.getElementById(uuid);
-		generateBlockies(account.pubKey, ctx);
-    console.log(transaction);
-    
+    if (ctx) {
+      generateBlockies(account.pubKey, ctx);
+    }    
   });
 </script>
 

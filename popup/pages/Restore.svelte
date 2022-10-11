@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { pop, push } from 'svelte-spa-router';
+	import { push } from 'svelte-spa-router';
 	import { _ } from 'popup/i18n';
   import { createWallet } from "popup/backend/wallet";
   import {
@@ -21,7 +21,7 @@
 
 	$: disabled = loading || !password || confirmPassword !== password || name.length < MIN_NAME_LEN;
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: Event) => {
 		e.preventDefault();
     loading = true;
 
@@ -30,7 +30,7 @@
       loading = false;
       push('/created');
 		} catch (err) {
-			error = err.message;
+			error = (err as Error).message;
 		}
 		loading = false;
 	}

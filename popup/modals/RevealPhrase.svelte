@@ -4,7 +4,7 @@
 
   import { exportSecrePhrase } from 'popup/backend/wallet';
 
-  let passwordElement = null;
+  let passwordElement: HTMLInputElement | null = null;
   let loading = false;
   let password = '';
   let error = '';
@@ -18,14 +18,14 @@
     }
   });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: Event) => {
 		e.preventDefault();
 
 		try {
 			loading = true;
       words = await exportSecrePhrase(password);
 		} catch (err) {
-      error = err.message;
+      error = (err as Error).message;
 		}
 		loading = false;
 	}
@@ -58,7 +58,7 @@
     </label>
     <button
       class="outline"
-      disabled={buttonDisabled}
+      disabled={Boolean(buttonDisabled)}
     >
       {$_('send.continue')}
     </button>

@@ -8,6 +8,7 @@
   import BackBar from '../components/BackBar.svelte';
   import PickButton from '../components/PickButton.svelte';
 
+
   let words: string[] = [];
   let shuffled: string[] = [];
   let disabled = true;
@@ -32,6 +33,7 @@
     disabled = words.join(' ') !== $wordsStore.join(' ');
   };
 </script>
+
 
 <main>
   <BackBar
@@ -71,6 +73,7 @@
     {$_('verify.btn')}
   </button>
 </main>
+
 
 <style lang="scss">
 	@import "../styles/mixins";

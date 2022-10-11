@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount, tick } from 'svelte';
 	import { _ } from 'popup/i18n';
 
 	import {
@@ -20,10 +19,10 @@
 
 	let time = $lockTimerStore;
 
-	const handleOnChangeGasMultiplier = async ({ detail }) => {
+	const handleOnChangeGasMultiplier = async (event: CustomEvent) => {
 		await setGasConfig({
 			...$gasStore,
-			multiplier: detail
+			multiplier: event.detail
 		});
 	};
 	const handleOnChangeFormat = async () => {

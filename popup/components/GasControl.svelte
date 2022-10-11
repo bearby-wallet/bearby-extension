@@ -2,8 +2,6 @@
   import { GAS_LIMIT, MULTIPLIER, GAS_PRICE } from 'config/gas';
   import { createEventDispatcher } from 'svelte';
 
-  import tokensStore from 'popup/store/tokens';
-
   import Speed from './icons/Speed.svelte';
 
   const dispatch = createEventDispatcher();
@@ -12,7 +10,6 @@
   export let gasPrice = GAS_PRICE;
   export let gasLimit = GAS_LIMIT;
 
-  $: XMA = $tokensStore[0];
   $: amount = gasPrice * gasLimit;
   $: list = Array(3);
 

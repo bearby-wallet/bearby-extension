@@ -7,7 +7,7 @@
 
   let show = false;
 
-  export let list = [];
+  export let list: string[] = [];
 
   const hanldeOnSelect = (index: number) => {
     show = false;

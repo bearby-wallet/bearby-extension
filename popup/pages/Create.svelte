@@ -12,21 +12,15 @@
   import PickButton from '../components/PickButton.svelte';
   import Toggle from '../components/Toggle.svelte';
 
+
   let length = 128;
-  let words = [];
+  let words: string[] = [];
 
 	$: disabled = words.length < 12;
 
   const hanldeRandomWords = async() => {
     const mnemonic = await getRandomWords(length);
     words = mnemonic.split(' ');
-  };
-  const hanldeSelectNumber = (e) => {
-    const value = e.detail;
-
-    length = value ? 256 : 128;
-
-    hanldeRandomWords();
   };
   const hanldeOnContinue = () => {
     wordsStore.set(words);
@@ -36,11 +30,14 @@
     const phrase = words.join(' ');
     const html = printMnemonic(phrase, $_('create.print'));
     const win = window.open('', 'win');
-    win.document.write(html);
 
-    setTimeout(() => {
-      win.print();
-    }, 500);
+    if (win) {
+      win.document.write(html);
+
+      setTimeout(() => {
+        win.print();
+      }, 500);
+    }
   };
 
   const handleToggle = () => {

@@ -4,9 +4,9 @@
   import { link, location, push } from 'svelte-spa-router';
   import { createEventDispatcher } from 'svelte';
 
-  import { logout } from 'popup/backend/wallet';
+  // import { logout } from 'popup/backend/wallet';
 
-  import { linksExpand, openTab } from 'popup/mixins/link';
+  import { linksExpand } from 'popup/mixins/link';
   import netwrokStore from 'popup/store/netwrok';
 
   // import Refresh from './icons/Refresh.svelte';
@@ -30,14 +30,14 @@
   // const onRefresh = () => {
   //   dispatch('refresh');
   // };
-  const viewOnViewBlock = () => {
-    // const url = viewAddress(account.bech32, $netStore.selected);
-    // openTab(url);
-  };
-  const handleOnLock = async () => {
-    await logout();
-    push('/lock');
-  };
+  // const viewOnViewBlock = () => {
+  //   // const url = viewAddress(account.bech32, $netStore.selected);
+  //   // openTab(url);
+  // };
+  // const handleOnLock = async () => {
+  //   await logout();
+  //   push('/lock');
+  // };
 </script>
 
 <nav>

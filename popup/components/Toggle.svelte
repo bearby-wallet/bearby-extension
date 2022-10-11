@@ -7,7 +7,7 @@
   export let checked = false;
   export let disabled = false;
 
-  const handleOnChange = (e) => {
+  const handleOnChange = () => {
     if (!disabled) {
       dispatch('toggle', !checked);
     }

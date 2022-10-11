@@ -3,15 +3,15 @@
 	import { _ } from 'popup/i18n';
   import { AccountTypes } from 'config/account-type';
   import {
-    MIN_PASSWORD_LEN,
     MAX_NAME_LEN,
     MIN_NAME_LEN,
     DEFAULT_KEY_NAME
   } from 'popup/config/account';
 	import walletStore from 'popup/store/wallet';
-	import { restoreSecretKey } from 'popup/backend/wallet';
+	import { balanceUpdate, restoreSecretKey } from 'popup/backend/wallet';
 
   import NavClose from '../components/NavClose.svelte';
+
 
   let error = '';
   let key = '';
@@ -27,14 +27,14 @@
   const handleInputTextarea = () => {
 		error = '';
 	};
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: Event) => {
     e.preventDefault();
     loading = true;
 
 		try {
       await restoreSecretKey(key, name);
 		} catch (err) {
-      error = String(err.message);
+      error = (err as Error).message;
       loading = false;
       return null;
 		}

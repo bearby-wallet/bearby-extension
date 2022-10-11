@@ -46,7 +46,7 @@
     account.tokens[base58].final : 0;
   $: disabled = tokens[0].value > balance || tokens[0].value <= 0;
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: Event) {
     e.preventDefault();
     loading = true;
     try {
@@ -60,7 +60,7 @@
       push('/confirm');
     } catch (err) {
       console.error(err);
-      recipientError = err.message;
+      recipientError = (err as Error).message;
     }
     loading = false;
   }
@@ -84,18 +84,24 @@
 		tokens = tokens.reverse();
 	}
 
-  async function onSelectAccount({ detail }) {
-		accountIndex = detail;
+  async function onSelectAccount(e: CustomEvent) {
+		accountIndex = e.detail;
     const ctx = document.getElementById(uuid);
 
-    ctx.textContent = '';
-		generateBlockies($walletStore.identities[accountIndex].pubKey, ctx);
+    if (ctx) {
+      ctx['textContent'] = '';
+      generateBlockies($walletStore.identities[accountIndex].pubKey, ctx);
+    }
+
     accountsModal = !accountsModal;
 	};
 
   onMount(async() => {
     const ctxAccount = document.getElementById(uuid);
-		generateBlockies(account.pubKey, ctxAccount);
+
+    if (ctxAccount) {
+      generateBlockies(account.pubKey, ctxAccount);
+    }
   });
 </script>
 
@@ -133,8 +139,8 @@
     <SmartInput
       img={viewIcon(tokens[0].meta.base58)}
       symbol={tokens[0].meta.symbol}
-      max={balance}
-      value={tokens[0].value}
+      max={Number(balance)}
+      value={String(tokens[0].value)}
       loading={loading}
       on:input={(event) => hanldeOnInput(event.detail)}
     />
@@ -149,7 +155,7 @@
     <SmartInput
       img={viewIcon(tokens[1].meta.base58)}
       symbol={tokens[1].meta.symbol}
-      value={tokens[1].value}
+      value={String(tokens[1].value)}
       loading={loading}
       percents={[]}
       disabled={true}
