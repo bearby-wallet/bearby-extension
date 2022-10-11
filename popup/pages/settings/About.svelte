@@ -22,7 +22,7 @@
 		alt="logo"
 	>
 	<h2>
-		bearby {$_('about.version')} - {manifest.version}
+		{$_('about.version')} - {manifest.version}
 	</h2>
   <h2>
 		{$_('about.manifest_version')} - {manifest.manifest_version}
