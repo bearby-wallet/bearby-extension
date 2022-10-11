@@ -21,8 +21,7 @@
 }
 
 :global(body[theme="dark"]) {
-  --background-gradient: rgb(33, 36, 41);
-
+  --background-gradient: linear-gradient(rgb(33, 36, 41) 40.15%, rgb(59 38 38) 100%);
   --background-color: rgb(0, 0, 0);
   --text-color:  rgb(255, 255, 255);
   --text-negative: rgb(0, 0, 0);
