@@ -127,7 +127,7 @@
         title={$_('rolls.buyer')}
         header={account.name}
         text={trim(account.base58, 10)}
-        on:click={() => accountsModal = !accountsModal}
+        on:keyup={() => accountsModal = !accountsModal}
       >
         <div id={uuid}/>
       </SelectCard>
@@ -148,7 +148,7 @@
       <p>
         {$_('rolls.receive')}
       </p>
-      <span on:click={hanldeOnSwapTokens}>
+      <span on:keyup={hanldeOnSwapTokens}>
         <SwapIcon className="swap-icon"/>
       </span>
     </div>

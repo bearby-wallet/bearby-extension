@@ -77,7 +77,7 @@
 		>
 			{$_('lock.btn')}
 		</button>
-		<span on:click={() => linksExpand('/start')}>
+		<span on:keyup={() => linksExpand('/start')}>
 			{$_('lock.restore')}
 		</span>
 	</form>

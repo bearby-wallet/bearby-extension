@@ -11,7 +11,7 @@ import { terser } from 'rollup-plugin-terser';
 import { visualizer } from 'rollup-plugin-visualizer';
 import nodePolyfills from 'rollup-plugin-node-polyfills';
 
-import pkg from './package.json';
+import pkg from './package.json' assert { type: 'json' };
 
 const production = !process.env.ROLLUP_WATCH;
 

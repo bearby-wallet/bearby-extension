@@ -58,7 +58,7 @@
 	{#each identities as token, i}
 		<li
       class:selected={i === index}
-      on:click={() => onSelectToken(token)}
+      on:keyup={() => onSelectToken(token)}
     >
       <SelectCard
         header={token.symbol}

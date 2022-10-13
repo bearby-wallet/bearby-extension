@@ -60,7 +60,7 @@
 			{$_('send.recipient.contacts')}
 		</p>
 		{#each contacts as contact, i}
-			<li on:click={() => onSelect(contact.address)}>
+			<li on:keyup={() => onSelect(contact.address)}>
 				<span id={contact.address}/>
 				<div class="text">
 					<b>
@@ -78,7 +78,7 @@
 			{$_('send.recipient.accounts')}
 		</p>
 		{#each accounts as account, i}
-			<li on:click={() => onSelect(account.base58)}>
+			<li on:keyup={() => onSelect(account.base58)}>
 				<span id={account.pubKey}/>
 				<div class="text">
 					<b>

@@ -56,7 +56,7 @@
 	<main>
 		<ul>
 			{#each items as item, i}
-				<li on:click={() => push(item.link)}>
+				<li on:keyup={() => push(item.link)}>
 					<TextElement
 						title={item.title}
 						description={item.description}

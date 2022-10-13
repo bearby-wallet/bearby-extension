@@ -33,7 +33,7 @@
 <div
   class="token-card"
   class:loading={loading}
-  on:click={onClick}
+  on:keyup={onClick}
 >
   <div>
     <p class="symbol">

@@ -53,7 +53,7 @@
     {#if expand}
       <span
         class="expand"
-        on:click={() => linksExpand($location)}
+        on:keyup={() => linksExpand($location)}
       >
         <ExpandIcon className="icon" />
       </span>
@@ -61,7 +61,7 @@
     <!-- {#if refresh}
       <span
         class="refresh"
-        on:click={onRefresh}
+        on:keyup={onRefresh}
       >
         <Refresh className="icon" />
       </span>
@@ -69,7 +69,7 @@
     {#if view}
       <span
         class="view"
-        on:click={viewOnViewBlock}
+        on:keyup={viewOnViewBlock}
       >
         <ViewIcon className="icon-view" />
       </span>
@@ -77,7 +77,7 @@
     {#if lock}
       <span
         class="lock"
-        on:click={handleOnLock}
+        on:keyup={handleOnLock}
       >
         <LockIcon className="icon-lock" />
       </span>

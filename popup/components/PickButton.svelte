@@ -27,7 +27,7 @@
       height="17"
       viewBox="0 0 17 17"
       fill="none"
-      on:click={hanldeOnClose}
+      on:keyup={hanldeOnClose}
     >
       <line
         x1="4.37958"

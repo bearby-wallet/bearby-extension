@@ -60,9 +60,9 @@
 						src={item.icon}
 						alt="icon"
 						width="30"
-						on:click={() => hanldeOnSelect(item)}
+						on:keyup={() => hanldeOnSelect(item)}
 					/>
-					<div on:click={() => hanldeOnSelect(item)}>
+					<div on:keyup={() => hanldeOnSelect(item)}>
 						<b>
 							{item.domain}
 						</b>
@@ -72,7 +72,7 @@
 					</div>
 					<div
 						class="icon"
-						on:click={() => hanldeOnRemove(item)}
+						on:keyup={() => hanldeOnRemove(item)}
 					>
 						<CloseIcon />
 					</div>

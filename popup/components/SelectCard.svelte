@@ -19,7 +19,7 @@
 
 <div
   class="card"
-  on:click={onClick}
+  on:keyup={onClick}
 >
   {#if title}
     <p>

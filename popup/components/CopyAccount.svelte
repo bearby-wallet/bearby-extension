@@ -26,7 +26,7 @@
 >
   <div
     class="warp-tip"
-    on:click={handleOnCopy}
+    on:keyup={handleOnCopy}
   >
     <h1>
       {account.name}
