@@ -44,6 +44,7 @@ export class BackgroundWallet {
       this.#startWorker();
       this.#core.triggerAccount();
       this.#core.triggerLock();
+      await this.#core.transaction.sync();
 
       sendResponse({
         resolve: this.#core.state
@@ -62,6 +63,7 @@ export class BackgroundWallet {
       this.#startWorker();
       this.#core.triggerAccount();
       this.#core.triggerLock();
+      await this.#core.transaction.sync();
 
       return sendResponse({
         resolve: this.#core.state
@@ -81,6 +83,7 @@ export class BackgroundWallet {
         this.#core.account.wallet.selectedAddress
       );
       this.#core.triggerAccount();
+      await this.#core.transaction.sync();
 
       sendResponse({
         resolve: this.#core.state
@@ -114,6 +117,7 @@ export class BackgroundWallet {
 
       await this.#core.account.select(index);
       this.#core.triggerAccount();
+      await this.#core.transaction.sync();
 
       sendResponse({
         resolve: this.#core.state
@@ -134,6 +138,7 @@ export class BackgroundWallet {
         name
       );
       this.#core.triggerAccount();
+      await this.#core.transaction.sync();
 
       sendResponse({
         resolve: this.#core.state
@@ -154,6 +159,7 @@ export class BackgroundWallet {
         payload.name
       );
       this.#core.triggerAccount();
+      await this.#core.transaction.sync();
 
       sendResponse({
         resolve: this.#core.state
