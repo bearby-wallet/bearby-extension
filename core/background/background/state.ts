@@ -58,6 +58,8 @@ export class BackgroundState {
   async sync() {
     console.log('start sync');
 
+    Runtime.runtime.onInstalled.addListener(this.#onInstalled);
+
     await this.guard.sync();
     await this.netwrok.sync();
     await this.gas.sync();
@@ -73,8 +75,6 @@ export class BackgroundState {
     this.badge.setCounter(
       this.transaction.confirm.length + this.connections.confirm.length + counter
     );
-
-    Runtime.runtime.onInstalled.addListener(this.#onInstalled);
 
     console.log('end sync');
   }
