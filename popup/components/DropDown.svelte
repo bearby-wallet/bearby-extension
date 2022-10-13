@@ -18,26 +18,26 @@
 <div>
   <div
     class="arrow"
-    on:keyup={() => show = !show}
+    on:mousedown={() => show = !show}
   >
     <Arrow className="arrow-icon"/>
   </div>
   {#if show}
     <div
       class="close"
-      on:keyup={() => show = false}
+      on:mousedown={() => show = false}
     />
     <div class="menu">
       <span
         class="close-arrow-icon"
-        on:keyup={() => show = false}
+        on:mousedown={() => show = false}
       >
         <Arrow/>
       </span>
       {#each list as item, i}
         <div
           class="item"
-          on:keyup={() => hanldeOnSelect(i)}
+          on:mousedown={() => hanldeOnSelect(i)}
         >
           {item}
         </div>

@@ -22,7 +22,7 @@
   {#each list as item, index}
     <li
       class:selected={(index + 1) === multiplier}
-      on:keyup={() => handleOnSelect(index)}
+      on:mousedown={() => handleOnSelect(index)}
     >
       <Speed length={index + 1}/>
       <h3>

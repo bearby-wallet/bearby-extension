@@ -86,7 +86,7 @@
     <SelectCard
       header={account.name}
       text={trim(account.base58, 10)}
-      on:keyup={() => accountsModal = !accountsModal}
+      on:click={() => accountsModal = !accountsModal}
     >
       <div id={uuid}/>
     </SelectCard>

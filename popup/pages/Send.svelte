@@ -149,7 +149,7 @@
           title={$_('send.sender')}
           header={account.name}
           text={trim(account.base58, 10)}
-          on:keyup={() => accountsModal = !accountsModal}
+          on:click={() => accountsModal = !accountsModal}
         >
           <div id={uuid}/>
         </SelectCard>
@@ -159,7 +159,7 @@
           title={$_('send.token')}
           header={token.name}
           text={trim(token.base58, 10)}
-          on:keyup={() => tokensModal = !tokensModal}
+          on:click={() => tokensModal = !tokensModal}
         >
           <img
             src={viewIcon(token.base58)}
@@ -173,7 +173,7 @@
     <div>
       <div class="input">
         <label class:error={recipientError}>
-          <div on:keyup={() => contactsModal = !contactsModal}>
+          <div on:mousedown={() => contactsModal = !contactsModal}>
             <ContactIcon
               width="23"
               height="26"
@@ -203,7 +203,7 @@
         class="outline"
         class:loading={loading}
         disabled={disabled}
-        on:keyup={onSubmin}
+        on:mousedown={onSubmin}
       >
         {$_('send.continue')}
       </button>

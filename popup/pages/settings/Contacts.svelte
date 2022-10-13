@@ -85,7 +85,7 @@
 			<li class:border={index !== contacts.length - 1}>
 				<div
 					class="text"
-					on:keyup={() => hanldeOnSelect(contact.address)}
+					on:mousedown={() => hanldeOnSelect(contact.address)}
 				>
 					<b>
 						{contact.name}
@@ -103,7 +103,7 @@
 	</ul>
 	<button
 		class="outline"
-		on:keyup={() => addContact = !addContact}
+		on:mousedown={() => addContact = !addContact}
 	>
 		{$_('contacts.add_btn')}
 	</button>

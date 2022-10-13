@@ -57,7 +57,7 @@
       <h2>
         {$_('history.title')}
       </h2>
-      <h3 on:keyup={hanldeOnClear}>
+      <h3 on:mousedown={hanldeOnClear}>
         {$_('history.clear')}
       </h3>
     </div>
@@ -73,7 +73,7 @@
         </b>
         <ul>
           {#each queue as tx}
-            <li on:keyup={() => showTx = tx}>
+            <li on:mousedown={() => showTx = tx}>
               <Transaction
                 tx={tx}
                 loading
@@ -88,7 +88,7 @@
         </b>
         <ul>
           {#each history as tx}
-            <li on:keyup={() => showTx = tx}>
+            <li on:mousedown={() => showTx = tx}>
               <Transaction tx={tx} />
             </li>
           {/each}

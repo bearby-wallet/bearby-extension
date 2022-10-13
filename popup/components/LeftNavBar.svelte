@@ -46,7 +46,7 @@
 <nav class:show={show}>
   <h1>
     {account.name}
-    <span on:keyup={onClose}>
+    <span on:mousedown={onClose}>
       <Close />
     </span>
   </h1>
@@ -66,7 +66,7 @@
   {#if canRemove}
     <span
       class="remove"
-      on:keyup={onRemoveAccount}
+      on:mousedown={onRemoveAccount}
     >
       <TextElement
         title={$_('home.nav.options.remove.title')}
@@ -108,7 +108,7 @@
 <div
   class="close"
   class:show={show}
-  on:keyup={onClose}
+  on:mousedown={onClose}
 />
 
 <style lang="scss">

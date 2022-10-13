@@ -74,7 +74,7 @@
 		<div class="bar-wrapper">
 			<span
 				class="burger"
-				on:keyup={onToggleLeftBar}
+				on:mousedown={onToggleLeftBar}
 			>
 				<Burger />
 			</span>
@@ -90,13 +90,13 @@
 		<div class="btns">
 			<button
 				class="action primary"
-				on:keyup={() => push(`/send/0`)}
+				on:mousedown={() => push(`/send/0`)}
 			>
 				{$_('home.btns.send')}
 			</button>
 			<button
 				class="action primary"
-				on:keyup={() => push('/account')}
+				on:mousedown={() => push('/account')}
 			>
 				{$_('home.btns.receive')}
 			</button>

@@ -63,7 +63,7 @@
       >
         <span
           class="pointer"
-          on:keyup={() => hanldeOnCopy(tx.from)}
+          on:mousedown={() => hanldeOnCopy(tx.from)}
         >
           {trim(tx.from)}
         </span>
@@ -95,7 +95,7 @@
       >
         <span
           class="pointer"
-          on:keyup={() => hanldeOnCopy(hash)}
+          on:mousedown={() => hanldeOnCopy(hash)}
         >
           {trim(hash)}
         </span>

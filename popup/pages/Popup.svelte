@@ -135,7 +135,7 @@
   <SelectCard
     header={account.name}
     text={trim(account.base58, 10)}
-    on:keyup={() => accountsModal = !accountsModal}
+    on:click={() => accountsModal = !accountsModal}
   >
     <div id={uuid}/>
   </SelectCard>
@@ -169,7 +169,7 @@
           gasPrice={transaction.gasPrice}
           on:select={handleOnChangeGasMultiplier}
         />
-        <h3 on:keyup={() => editModal = !editModal}>
+        <h3 on:mousedown={() => editModal = !editModal}>
           ({$_('confirm.btns.edit')})
         </h3>
         <TransactionParams tx={transaction}/>
@@ -177,7 +177,7 @@
       <div class="btns">
         <button
           class="primary"
-          on:keyup={handleOnReject}
+          on:mousedown={handleOnReject}
         >
           {$_('confirm.btns.reject')}
         </button>
@@ -185,7 +185,7 @@
           class="outline"
           class:loading={loading}
           disabled={loading}
-          on:keyup={handleOnConfirm}
+          on:mousedown={handleOnConfirm}
         >
           {$_('confirm.btns.confirm')}
         </button>

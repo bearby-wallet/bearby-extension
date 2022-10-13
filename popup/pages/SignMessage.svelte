@@ -75,7 +75,7 @@
     <SelectCard
       header={account.name}
       text={trim(account.base58)}
-      on:keyup={() => accountsModal = !accountsModal}
+      on:click={() => accountsModal = !accountsModal}
     >
       <div id={uuid}/>
     </SelectCard>
@@ -110,14 +110,14 @@
         class="primary"
         class:loading={loading}
         disabled={loading}
-        on:keyup={handleOnSign}
+        on:mousedown={handleOnSign}
       >
         {$_('sig_message.btns.confirm')}
       </button>
       <button
         class="outline"
         disabled={loading}
-        on:keyup={handleOnReject}
+        on:mousedown={handleOnReject}
       >
         {$_('sig_message.btns.reject')}
       </button>
