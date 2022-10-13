@@ -133,7 +133,7 @@
 		@include flex-center-column;
 	}
   h1 {
-    @include fluid-font(320px, 1024px, 22px, 55px);
+    @include fluid-text(1024px, 22pt, 55pt);
   }
   img {
     margin: 16px;

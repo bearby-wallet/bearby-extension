@@ -18,7 +18,7 @@
   border: 2px solid transparent;
   color: var(--text-color);
 
-  @include fluid-font(320px, 600px, 16px, 33px);
+  @include fluid-text(600px, 16pt, 33pt);
   @include border-radius(16px);
 
   &:focus {

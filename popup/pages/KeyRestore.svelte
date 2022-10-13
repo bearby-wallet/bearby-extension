@@ -89,7 +89,6 @@
 <style lang="scss">
 	@import "../styles/mixins";
 	main {
-		background-color: var(--background-color);
 		height: 100vh;
 
 		@include flex-center-top-column;
@@ -110,7 +109,7 @@
   b {
     text-align: center;
 
-		@include fluid-font(320px, 600px, 14px, 25px);
+		@include fluid-text(600px, 12pt, 18pt);
 
     &.error {
       color: var(--danger-color);
@@ -126,6 +125,7 @@
     & > p {
       margin: 0;
       text-indent: 8px;
+      font-size: 8pt;
       margin-block-end: 11px;
     }
   }

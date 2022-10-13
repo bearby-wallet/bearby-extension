@@ -80,7 +80,7 @@
 			border-bottom: solid 1px var(--hover-color);
 			color: var(--text-color);
 
-			@include fluid-font(320px, 720px, 16px, 20px);
+			@include fluid-text(720px, 12pt, 16pt);
 			@include flex-between-row;
 
 			&:last-child {
@@ -94,6 +94,7 @@
 				font-weight: 600;
 
         & > span {
+          font-size: 8pt;
           color: var(--muted-color);
         }
         & > img {

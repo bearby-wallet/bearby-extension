@@ -27,11 +27,11 @@
 
 		& > h2 {
 			margin: 0;
-      @include fluid-font(320px, 1024px, 20px, 29px);
+      @include fluid-text(1024px, 16pt, 20pt);
 		}
     & > p {
       margin-block-start: 0;
-      @include fluid-font(320px, 1024px, 12px, 15px);
+      @include fluid-text(1024px, 10pt, 12pt);
     }
     & > :global(.right) {
       position: relative;

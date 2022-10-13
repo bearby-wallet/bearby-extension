@@ -225,7 +225,7 @@
       width: 100%;
 
       & > p {
-        @include fluid-font(320px, 1024px, 12px, 15px);
+        @include fluid-text(1024px, 8pt, 10pt);
         margin: 0;
         margin-left: 8px;
       }

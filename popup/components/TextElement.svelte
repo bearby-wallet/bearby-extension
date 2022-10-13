@@ -55,7 +55,8 @@
     width: 30vw;
     min-width: 230px;
     max-width: 390px;
+
     @include text-shorten;
-    @include fluid-font(320px, 1024px, 10px, 14px);
+    @include fluid-text(1024px, 8pt, 10pt);
   }
 </style>

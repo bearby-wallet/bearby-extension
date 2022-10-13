@@ -10,8 +10,8 @@
   height: 49px;
   font-weight: 500;
   text-indent: 5px;
+  font-size: 11pt;
 
-  @include fluid-font(320px, 1024px, 13px, 16px);
   @include border-radius(16px);
 
   width: inherit;

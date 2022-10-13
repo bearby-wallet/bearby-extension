@@ -4,6 +4,7 @@
   height: 49px;
   min-width: 270px;
   color: var(--text-color);
+  font-size: 14pt;
   border: 1px solid var(--card-color);
   padding: 0.25em 0.5em;
   cursor: pointer;
@@ -12,8 +13,7 @@
   padding-block-start: 5px;
   padding-block-end: 5px;
 
-  @include border-radius(8px);
-  @include fluid-font(320px, 720px, 15px, 20px);
+  @include border-radius(16px);
 }
 
 :global(select > option) {

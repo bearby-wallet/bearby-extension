@@ -13,40 +13,14 @@
   overflow: hidden;
 }
 
-/**
-  Fluid typography
-  We use this mixin for responsive typography because we can avoid unnecessary media queries.
-  It saves you a lot of time and minifies your CSS code.
-  You don’t have to worry about line-height because we’ve extended the mixin, and it automatically calculates your line-height.
 
-  @example:
-    @include fluid-font(320px, 1024px, 22px, 55px);
-*/
-@mixin fluid-font($min-width, $max-width, $min-font-size, $max-font-size) {
-  $unit1: unit($min-width);
-  $unit2: unit($max-width);
-  $unit3: unit($min-font-size);
-  $unit4: unit($max-font-size);
-  @if $unit1 == $unit2 and $unit1 == $unit3 and $unit1 == $unit4 {
-    & {
-      font-size: $min-font-size;
-      line-height: $min-font-size * 1.618;
-      @media screen and (min-width: $min-width) {
-        font-size: calc(
-          #{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} *
-            ((100vw - #{$min-width}) / #{strip-unit($max-width - $min-width)})
-        );
-        line-height: calc(
-          #{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} *
-            1.618 *
-            ((100vw - #{$min-width}) / #{strip-unit($max-width - $min-width)})
-        );
-      }
-      @media screen and (min-width: $max-width) {
-        font-size: $max-font-size;
-        line-height: $max-font-size * 1.618;
-      }
-    }
+@mixin fluid-text($max-width, $min-font-size, $max-font-size) {
+  font-size: $min-font-size;
+  line-height: $min-font-size * 1.418;
+
+  @media screen and (min-width: $max-width) {
+    font-size: $max-font-size;
+    line-height: $max-font-size * 1.318;
   }
 }
 

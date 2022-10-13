@@ -80,7 +80,7 @@
   h1 {
     text-align: center;
     margin-block-start: 0;
-    @include fluid-font(320px, 600px, 29px, 55px);
+		@include fluid-text(600px, 32px, 55px);
   }
   main {
     background: inherit;

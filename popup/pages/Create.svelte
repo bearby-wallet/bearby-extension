@@ -109,10 +109,10 @@
     margin-block-end: 0.2em;
   }
   h1 {
-		@include fluid-font(320px, 600px, 29px, 55px);
+		@include fluid-text(600px, 32px, 55px);
   }
   h3 {
-    @include fluid-font(320px, 600px, 16px, 29px);
+    @include fluid-text(600px, 14pt, 20pt);
   }
   main {
     background: inherit;

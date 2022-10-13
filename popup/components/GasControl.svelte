@@ -47,7 +47,7 @@
 
       margin: 5px;
       padding: 8px;
-      min-width: 90px;
+      min-width: 70px;
       min-height: 40px;
       text-align: center;
 
@@ -58,7 +58,7 @@
         background-color: var(--background-color);
       }
       & > h3 {
-        @include fluid-font(320px, 1024px, 13px, 15px);
+        @include fluid-text(1024px, 12pt, 18pt);
         margin: 0;
       }
     }

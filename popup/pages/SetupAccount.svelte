@@ -119,7 +119,7 @@
 		@include flex-center-top-column;
   }
   h1 {
-    @include fluid-font(320px, 600px, 29px, 55px);
+    @include fluid-text(600px, 25pt, 45pt);
   }
   form {
     width: 100%;

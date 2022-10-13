@@ -58,10 +58,10 @@
     text-align: center;
   }
   h1 {
-    @include fluid-font(320px, 1024px, 22px, 55px);
+    @include fluid-text(600px, 32px, 55px);
   }
   h2 {
-    @include fluid-font(320px, 1024px, 17px, 25px);
+    @include fluid-text(600px, 14pt, 20pt);
   }
   main {
     height: 100vh;

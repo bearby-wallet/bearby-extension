@@ -51,7 +51,7 @@
   <NavClose title={$_('restore.title')}/>
   <form on:submit={handleSubmit}>
     <label>
-      {error}
+      {error}dasd
       <textarea
         bind:value={words}
         class:error="{Boolean(error)}"
@@ -118,7 +118,7 @@
   }
   label {
     color: var(--danger-color);
-		@include fluid-font(320px, 600px, 13px, 20px);
+		@include fluid-text(600px, 12pt, 18pt);
     @include flex-center-column;
 
     & > input {

@@ -79,11 +79,11 @@
 		@include flex-center-column;
 	}
 	h1 {
-		@include fluid-font(320px, 720px, 20px, 30px);
+		@include fluid-text(720px, 20pt, 30pt);
 		@include text-shorten;
 	}
 	h2 {
-		@include fluid-font(320px, 720px, 15px, 20px);
+		@include fluid-text(720px, 15pt, 20pt);
 	}
 	img {
 		margin: 16px;

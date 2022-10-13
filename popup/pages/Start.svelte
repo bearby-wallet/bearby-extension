@@ -43,12 +43,12 @@
 	h1 {
 		color: var(--text-color);
 		margin-block-end: 0;
-		@include fluid-font(320px, 600px, 22px, 55px);
+		@include fluid-text(600px, 22pt, 55pt);
 	}
 
 	h3 {
 		color: var(--text-color);
-		@include fluid-font(320px, 600px, 16px, 30px);
+		@include fluid-text(600px, 16pt, 30pt);
 	}
 
 	main {

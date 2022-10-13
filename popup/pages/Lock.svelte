@@ -88,12 +88,12 @@
 
 	h1 {
 		color: var(--text-color);
-		@include fluid-font(320px, 1024px, 32px, 55px);
+		font-size: 22pt;
 	}
 	span {
 		cursor: pointer;
 		margin-block-start: 16px;
-		font-size: 12px;
+		font-size: 10pt;
 		color: var(--muted-color);
 
 		&:hover {

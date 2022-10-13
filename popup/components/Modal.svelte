@@ -72,10 +72,12 @@
         padding-block-start: 0.4em;
         padding-left: 15px;
         padding-right: 15px;
-        font-size: 26px;
 
-        @include fluid-font(320px, 720px, 16px, 22px);
         @include flex-between-row;
+
+        & > h1 {
+          @include fluid-text(720px, 20pt, 25pt);          
+        }
       }
 
       @media screen and (min-width: 899px) {
