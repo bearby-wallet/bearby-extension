@@ -113,48 +113,48 @@ export class SellRollsBuild {
 export class ExecuteSmartContractBuild {
   static operation = OperationsType.ExecuteSC;
 
-  contractByteCode: Uint8Array;
-  byteCodeLength: Uint8Array;
+  contractDataBase64: string;
   gasLimit: number;
-  amount: number;
   gasPrice: number;
   fee: number;
-  expirePeriod: number
+  expirePeriod: number;
+  coins: number;
 
   constructor(
     fee: number,
     expirePeriod: number,
     contractDataBase64: string,
     gasLimit: number,
-    amount: number,
-    gasPrice: number
+    gasPrice: number,
+    coins: number
   ) {
-    this.contractByteCode = toByteArray(contractDataBase64);
-    this.byteCodeLength = new VarintEncode().encode(this.contractByteCode.length);
-    this.gasLimit = gasLimit;
-    this.amount = amount;
-    this.gasPrice = gasPrice;
-    this.fee = fee;
-    this.expirePeriod = expirePeriod;
+    this.contractDataBase64 = contractDataBase64;
+    this.gasLimit = Number(gasLimit);
+    this.gasPrice = Number(gasPrice);
+    this.fee = Number(fee);
+    this.expirePeriod = Number(expirePeriod);
+    this.coins = Number(coins);
   }
 
-  async bytes() {
+  bytes() {
+    const decodedScBinaryCode = toByteArray(this.contractDataBase64);
+    const dataLengthEncoded = new VarintEncode().encode(decodedScBinaryCode.length);
     const fee = new VarintEncode().encode(this.fee);
 		const expirePeriod = new VarintEncode().encode(this.expirePeriod);
 		const typeIdEncoded = new VarintEncode().encode(ExecuteSmartContractBuild.operation);
-    const amount = new VarintEncode().encode(this.amount);
     const gasPrice = new VarintEncode().encode(this.gasPrice);
-    const gasLimit = new VarintEncode().encode(this.gasLimit);
+    const maxGasEncoded = new VarintEncode().encode(this.gasLimit);
+    const coinsEncoded = new VarintEncode().encode(this.coins);
 
     return Uint8Array.from([
       ...fee,
       ...expirePeriod,
       ...typeIdEncoded,
-      ...gasLimit,
-      ...amount,
+      ...maxGasEncoded,
+      ...coinsEncoded,
       ...gasPrice,
-      ...this.byteCodeLength,
-      ...this.contractByteCode
+      ...dataLengthEncoded,
+      ...decodedScBinaryCode
     ]);
   }
 }

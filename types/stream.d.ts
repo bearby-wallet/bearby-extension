@@ -12,7 +12,7 @@ export interface SendResponseParams {
   resolve?: unknown;
   reject?: {
     message: string;
-    name: string;
+    name?: string;
     code?: number;
     stack?: string;
   };

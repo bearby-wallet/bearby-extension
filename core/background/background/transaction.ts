@@ -14,7 +14,7 @@ import blake3 from 'blake3-js';
 import { assert } from "lib/assert";
 import { NOT_FOUND_CONFIRM, TransactionsError, UNKONOW_TX_TYPE } from "background/transactions/errors";
 import { OperationsType } from "background/provider/operations";
-import { BuyRollsBuild, PaymentBuild, SellRollsBuild } from "background/provider/transaction";
+import { BuyRollsBuild, ExecuteSmartContractBuild, PaymentBuild, SellRollsBuild } from "background/provider/transaction";
 import { WALLET_NOT_CONNECTED } from "content/errors";
 import { PromptService } from "lib/prompt";
 import { MTypeTab } from "config/stream-keys";
@@ -256,17 +256,11 @@ export class BackgroundTransaction {
         resolve: this.#core.state
       });
     } catch (err) {
-      if (confirmParams.uuid) {
-        new TabsMessage({
-          type: MTypeTab.TX_TO_SEND_RESULT,
-          payload: {
-            uuid: confirmParams.uuid,
-            reject: (err as BaseError).message
-          }
-        }).send();
-      }
+      const message = (err as BaseError).serialize ?
+        (err as BaseError).serialize() : (err as Error);
+
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: message
       });
     }
   }
@@ -369,6 +363,15 @@ export class BackgroundTransaction {
           confirmParams.fee,
           confirmParams.amount,
           expiryPeriod
+        ).bytes();
+      case OperationsType.ExecuteSC:
+        return new ExecuteSmartContractBuild(
+          confirmParams.fee,
+          expiryPeriod,
+          String(confirmParams.code),
+          confirmParams.gasLimit,
+          confirmParams.amount,
+          confirmParams.gasPrice
         ).bytes();
       default:
         throw new TransactionsError(UNKONOW_TX_TYPE);
