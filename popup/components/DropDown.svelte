@@ -18,26 +18,26 @@
 <div>
   <div
     class="arrow"
-    on:mousedown={() => show = !show}
+    on:mouseup={() => show = !show}
   >
     <Arrow className="arrow-icon"/>
   </div>
   {#if show}
     <div
       class="close"
-      on:mousedown={() => show = false}
+      on:mouseup={() => show = false}
     />
     <div class="menu">
       <span
         class="close-arrow-icon"
-        on:mousedown={() => show = false}
+        on:mouseup={() => show = false}
       >
         <Arrow/>
       </span>
       {#each list as item, i}
         <div
           class="item"
-          on:mousedown={() => hanldeOnSelect(i)}
+          on:mouseup={() => hanldeOnSelect(i)}
         >
           {item}
         </div>

@@ -81,20 +81,20 @@
   <div class="btns">
     <button
       class="primary"
-      on:mousedown={hanldeRandomWords}
+      on:mouseup={hanldeRandomWords}
     >
       {$_('create.btns.refresh')}
     </button>
     <button
       class="primary"
-      on:mousedown={handleOnPrint}
+      on:mouseup={handleOnPrint}
     >
       {$_('create.btns.print')}
     </button>
     <button
       class="outline"
       disabled={disabled}
-      on:mousedown={hanldeOnContinue}
+      on:mouseup={hanldeOnContinue}
     >
       {$_('create.btns.continue')}
     </button>

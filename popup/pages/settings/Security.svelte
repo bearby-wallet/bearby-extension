@@ -50,7 +50,7 @@
 		>
 			<span
 				class="warning"
-				on:mousedown={() => phraseModal = !phraseModal}
+				on:mouseup={() => phraseModal = !phraseModal}
 			>
 				{$_('security.phrase.btn')}
 			</span>
@@ -62,7 +62,7 @@
 			>
 				<span
 					class="warning"
-					on:mousedown={() => keyModal = !keyModal}
+					on:mouseup={() => keyModal = !keyModal}
 				>
 					{$_('security.key.btn')}
 				</span>

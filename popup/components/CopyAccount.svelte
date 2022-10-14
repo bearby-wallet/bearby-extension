@@ -26,7 +26,7 @@
 >
   <div
     class="warp-tip"
-    on:mousedown={handleOnCopy}
+    on:mouseup={handleOnCopy}
   >
     <h1>
       {account.name}

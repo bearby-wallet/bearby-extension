@@ -9,7 +9,7 @@
   <h1>
     {title}
   </h1>
-  <div on:mousedown={pop}>
+  <div on:mouseup={pop}>
     <CloseIcon />
   </div>
 </nav>

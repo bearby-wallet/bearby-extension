@@ -169,7 +169,7 @@
           gasPrice={transaction.gasPrice}
           on:select={handleOnChangeGasMultiplier}
         />
-        <h3 on:mousedown={() => editModal = !editModal}>
+        <h3 on:mouseup={() => editModal = !editModal}>
           ({$_('confirm.btns.edit')})
         </h3>
         <TransactionParams tx={transaction}/>
@@ -177,7 +177,7 @@
       <div class="btns">
         <button
           class="primary"
-          on:mousedown={handleOnReject}
+          on:mouseup={handleOnReject}
         >
           {$_('confirm.btns.reject')}
         </button>
@@ -185,7 +185,7 @@
           class="outline"
           class:loading={loading}
           disabled={loading}
-          on:mousedown={handleOnConfirm}
+          on:mouseup={handleOnConfirm}
         >
           {$_('confirm.btns.confirm')}
         </button>

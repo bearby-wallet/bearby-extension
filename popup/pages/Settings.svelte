@@ -56,7 +56,7 @@
 	<main>
 		<ul>
 			{#each items as item, i}
-				<li on:mousedown={() => push(item.link)}>
+				<li on:mouseup={() => push(item.link)}>
 					<TextElement
 						title={item.title}
 						description={item.description}

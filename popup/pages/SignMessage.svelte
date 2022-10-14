@@ -110,14 +110,14 @@
         class="primary"
         class:loading={loading}
         disabled={loading}
-        on:mousedown={handleOnSign}
+        on:mouseup={handleOnSign}
       >
         {$_('sig_message.btns.confirm')}
       </button>
       <button
         class="outline"
         disabled={loading}
-        on:mousedown={handleOnReject}
+        on:mouseup={handleOnReject}
       >
         {$_('sig_message.btns.reject')}
       </button>

@@ -60,9 +60,9 @@
 						src={item.icon}
 						alt="icon"
 						width="30"
-						on:mousedown={() => hanldeOnSelect(item)}
+						on:mouseup={() => hanldeOnSelect(item)}
 					/>
-					<div on:mousedown={() => hanldeOnSelect(item)}>
+					<div on:mouseup={() => hanldeOnSelect(item)}>
 						<b>
 							{item.domain}
 						</b>
@@ -72,7 +72,7 @@
 					</div>
 					<div
 						class="icon"
-						on:mousedown={() => hanldeOnRemove(item)}
+						on:mouseup={() => hanldeOnRemove(item)}
 					>
 						<CloseIcon />
 					</div>

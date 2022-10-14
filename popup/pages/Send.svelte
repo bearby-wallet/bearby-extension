@@ -173,7 +173,7 @@
     <div>
       <div class="input">
         <label class:error={recipientError}>
-          <div on:mousedown={() => contactsModal = !contactsModal}>
+          <div on:mouseup={() => contactsModal = !contactsModal}>
             <ContactIcon
               width="23"
               height="26"
@@ -203,7 +203,7 @@
         class="outline"
         class:loading={loading}
         disabled={disabled}
-        on:mousedown={onSubmin}
+        on:mouseup={onSubmin}
       >
         {$_('send.continue')}
       </button>

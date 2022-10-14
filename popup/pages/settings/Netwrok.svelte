@@ -124,7 +124,7 @@
         {#if $netwrokStore === custom && networkConfig[$netwrokStore].PROVIDERS.length > 1}
           <button
             class="outline"
-            on:mousedown={handleRemoveNode}
+            on:mouseup={handleRemoveNode}
           >
             {$_('netwrok.config.remove')}
           </button>

@@ -54,13 +54,13 @@
 		<div class="btn-wrap">
 			<button
 				class="primary"
-				on:mousedown={hanldeOnConfirm}
+				on:mouseup={hanldeOnConfirm}
 			>
 				{$_('connect.btns.conf')}
 			</button>
 			<button
         class="outline"
-        on:mousedown={hanldeOnReject}
+        on:mouseup={hanldeOnReject}
       >
 				{$_('connect.btns.reject')}
 			</button>
