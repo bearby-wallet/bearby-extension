@@ -40,7 +40,7 @@
   color: var(--secondary-color);
   border: 1px solid var(--secondary-color);
 
-  &:hover {
+  &:hover:enabled {
     background: var(--secondary-color);
     color: var(--text-negative);
   }

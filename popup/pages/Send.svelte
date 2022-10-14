@@ -198,7 +198,6 @@
           on:input={hanldeOnInput}
         />
       </div>
-      <hr />
       <button
         class="outline"
         class:loading={loading}
@@ -229,6 +228,7 @@
   button {
     width: 100%;
     max-width: 310px;
+    margin-block-start: 15px;
 
     @include border-radius(12px);
   }
@@ -260,7 +260,7 @@
       background-color: var(--card-color);
       border: solid 1px var(--card-color);
 
-      height: 62px;
+      height: 55px;
 
       @include flex-between-row;
       @include border-radius(16px);
