@@ -21,16 +21,16 @@
 }
 
 :global(body[theme="dark"]) {
-  --background-gradient: linear-gradient(rgb(33, 36, 41) 40.15%, rgb(59 38 38) 100%);
+  --background-gradient: linear-gradient(rgb(21, 25, 36) 60%, rgb(59 38 38) 100%);
   --background-color: rgb(0, 0, 0);
   --text-color:  rgb(255, 255, 255);
   --text-negative: rgb(0, 0, 0);
-  --muted-color: rgb(110, 114, 125);
-  --card-color:  rgb(25, 27, 31);
+  --muted-color: #99a1bd3d;
+  --card-color:  #0e111a;
   --hover-color: rgb(52, 52, 52);
   --modal-color:  rgb(0, 0, 0);
 
-  --secondary-color: rgb(7, 190, 248);
+  --secondary-color: rgb(76, 130, 251);
   --primary-color: rgb(232, 0, 111);
 
   --danger-color: rgb(255, 44, 46);
