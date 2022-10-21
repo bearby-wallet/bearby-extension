@@ -1,3 +1,5 @@
+import type { KeyValue } from "types/general";
+
 import { utils } from "aes-js";
 import { toByteArray } from "base64-js";
 import { base58Decode, isBase58Address } from "lib/address";
@@ -118,7 +120,7 @@ export class ExecuteSmartContractBuild {
   gasPrice: number;
   fee: number;
   expirePeriod: number;
-  coins: number;
+  datastore = new Map<Uint8Array, Uint8Array>();
 
   constructor(
     fee: number,
@@ -126,35 +128,54 @@ export class ExecuteSmartContractBuild {
     contractDataBase64: string,
     gasLimit: number,
     gasPrice: number,
-    coins: number
+    datastore?: KeyValue<string>
   ) {
     this.contractDataBase64 = contractDataBase64;
     this.gasLimit = Number(gasLimit);
     this.gasPrice = Number(gasPrice);
     this.fee = Number(fee);
     this.expirePeriod = Number(expirePeriod);
-    this.coins = Number(coins);
+
+    if (datastore) {
+      for (const key in datastore) {
+        const element = datastore[key];
+        this.datastore.set(
+          utils.utf8.toBytes(key),
+          utils.utf8.toBytes(element)
+        );
+      }
+    }
   }
 
   bytes() {
     const decodedScBinaryCode = toByteArray(this.contractDataBase64);
     const dataLengthEncoded = new VarintEncode().encode(decodedScBinaryCode.length);
-    const fee = new VarintEncode().encode(this.fee);
-		const expirePeriod = new VarintEncode().encode(this.expirePeriod);
+    const feeEncoded = new VarintEncode().encode(this.fee);
+		const expirePeriodEncoded = new VarintEncode().encode(this.expirePeriod);
 		const typeIdEncoded = new VarintEncode().encode(ExecuteSmartContractBuild.operation);
-    const gasPrice = new VarintEncode().encode(this.gasPrice);
+    const gasPriceEncoded = new VarintEncode().encode(this.gasPrice);
     const maxGasEncoded = new VarintEncode().encode(this.gasLimit);
-    const coinsEncoded = new VarintEncode().encode(this.coins);
+    const datastoreSerialized = new Uint8Array();
+
+    /// TODO: make it works, datastore is params of contract.
+    // for (let [encodedKeyBytes, encodedValueBytes] of Object.entries(this.datastore)) {
+    //   const encodedKeyLen = new VarintEncode().encode(encodedKeyBytes.length);
+    //   const encodedValueLen = new VarintEncode().encode(encodedValueBytes.length);
+    //   datastoreSerialized = Buffer.concat([encodedKeyLen, encodedKeyBytes, encodedValueLen, encodedValueBytes]);
+    // }
+
+    const datastoreSerializedLen = new VarintEncode().encode(datastoreSerialized.length);
 
     return Uint8Array.from([
-      ...fee,
-      ...expirePeriod,
+      ...feeEncoded,
+      ...expirePeriodEncoded,
       ...typeIdEncoded,
       ...maxGasEncoded,
-      ...coinsEncoded,
-      ...gasPrice,
+      ...gasPriceEncoded,
       ...dataLengthEncoded,
-      ...decodedScBinaryCode
+      ...decodedScBinaryCode,
+      ...datastoreSerializedLen,
+      ...datastoreSerialized
     ]);
   }
 }
@@ -173,7 +194,7 @@ export class CallSmartContractBuild {
   gasPrice: number;
   fee: number;
   recipientAddress: string;
-  expirePeriod: number
+  expirePeriod: number;
 
   constructor(
     functionName: string,

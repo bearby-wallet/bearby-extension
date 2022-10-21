@@ -88,7 +88,7 @@ export class MassaControl {
     const publicKey = await pubKeyFromBytes(pubKey);
     return {
       signature,
-      serialized_content: Array.prototype.slice.call(byteCode),
+      serialized_content: Array.from(byteCode),
       creator_public_key: publicKey
     };
   }

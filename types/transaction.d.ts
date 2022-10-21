@@ -1,4 +1,6 @@
 import type { OperationsType } from "background/provider/operations";
+import type { KeyValue } from "types/general";
+ 
 
 export interface TransactionToken {
   decimals: number;
@@ -37,6 +39,7 @@ export interface MinTransactionParams {
   func?: string;
   code?: string;
   params?: string;
+  datastore?: KeyValue<string>;
 }
 
 export interface ConfirmParams extends MinTransactionParams {

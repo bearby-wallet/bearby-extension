@@ -204,10 +204,10 @@ export class BackgroundTransaction {
         ...pair.pubKey,
         ...bytesCompact
       ]);
-      const sigTest1 = await this.#core.massa.sign(txBytes, pair);
+      const sig = await this.#core.massa.sign(txBytes, pair);
       const txDataObject = await this.#core.massa.getTransactionData(
         bytesCompact,
-        sigTest1,
+        sig,
         pair.pubKey
       );
       const [{ result, error }] = await this.#core.massa.sendTransaction(txDataObject);
@@ -370,8 +370,8 @@ export class BackgroundTransaction {
           expiryPeriod,
           String(confirmParams.code),
           confirmParams.gasLimit,
-          confirmParams.amount,
-          confirmParams.gasPrice
+          confirmParams.gasPrice,
+          confirmParams.datastore
         ).bytes();
       default:
         throw new TransactionsError(UNKONOW_TX_TYPE);
