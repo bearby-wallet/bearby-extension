@@ -14,7 +14,7 @@ import blake3 from 'blake3-js';
 import { assert } from "lib/assert";
 import { NOT_FOUND_CONFIRM, TransactionsError, UNKONOW_TX_TYPE } from "background/transactions/errors";
 import { OperationsType } from "background/provider/operations";
-import { BuyRollsBuild, ExecuteSmartContractBuild, PaymentBuild, SellRollsBuild } from "background/provider/transaction";
+import { BuyRollsBuild, CallSmartContractBuild, ExecuteSmartContractBuild, PaymentBuild, SellRollsBuild } from "background/provider/transaction";
 import { WALLET_NOT_CONNECTED } from "content/errors";
 import { PromptService } from "lib/prompt";
 import { MTypeTab } from "config/stream-keys";
@@ -372,6 +372,20 @@ export class BackgroundTransaction {
           confirmParams.gasLimit,
           confirmParams.gasPrice,
           confirmParams.datastore
+        ).bytes();
+      case OperationsType.CallSC:
+        assert(Boolean(confirmParams.func), 'confirmParams.func');
+        assert(Boolean(confirmParams.params), 'params');
+
+        return await new CallSmartContractBuild(
+          confirmParams.func || '',
+          confirmParams.params || '',
+          confirmParams.fee,
+          expiryPeriod,
+          confirmParams.gasLimit,
+          confirmParams.gasPrice,
+          confirmParams.coins || '0',
+          confirmParams.toAddr
         ).bytes();
       default:
         throw new TransactionsError(UNKONOW_TX_TYPE);

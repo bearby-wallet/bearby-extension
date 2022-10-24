@@ -39,6 +39,7 @@ export interface MinTransactionParams {
   func?: string;
   code?: string;
   params?: string;
+  coins?: string;
   datastore?: KeyValue<string>;
 }
 

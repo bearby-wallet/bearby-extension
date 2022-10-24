@@ -183,17 +183,13 @@ export class ExecuteSmartContractBuild {
 export class CallSmartContractBuild {
   static operation = OperationsType.CallSC;
 
-  functionByteCode: Uint8Array;
-  functionByteCodeLength: Uint8Array;
-  parametersByteCode: Uint8Array;
-  parametersByteCodeLength: Uint8Array;
-
+  functionName: string;
+  parameters: string;
   gasLimit: number;
-  parallelCoins: number;
-  sequentialCoins: number;
+  coins: number;
   gasPrice: number;
   fee: number;
-  recipientAddress: string;
+  targetAddress: string;
   expirePeriod: number;
 
   constructor(
@@ -202,51 +198,47 @@ export class CallSmartContractBuild {
     fee: number,
     expirePeriod: number,
     gasLimit: number,
-    parallelCoins: number,
-    sequentialCoins: number,
     gasPrice: number,
-    recipientAddress: string
+    coins: string,
+    targetAddress: string
   ) {
-    this.functionByteCode = utils.utf8.toBytes(functionName);
-    this.functionByteCodeLength = new VarintEncode().encode(this.functionByteCode.length);
-
-    this.parametersByteCode = utils.utf8.toBytes(parameters);
-    this.parametersByteCodeLength = new VarintEncode().encode(this.parametersByteCode.length);
-
+    this.functionName = functionName;
+    this.parameters = parameters;
     this.gasLimit = gasLimit;
-    this.parallelCoins = parallelCoins;
-    this.sequentialCoins = sequentialCoins;
+    this.coins = Number(coins);
     this.gasPrice = gasPrice;
     this.fee = fee;
     this.expirePeriod = expirePeriod;
-    this.recipientAddress = recipientAddress;
+    this.targetAddress = targetAddress;
   }
 
   async bytes() {
-    assert(await isBase58Address(this.recipientAddress), INVLID_RECIPIENT);
+    assert(await isBase58Address(this.targetAddress), INVLID_RECIPIENT);
 
     const fee = new VarintEncode().encode(this.fee);
 		const expirePeriod = new VarintEncode().encode(this.expirePeriod);
 		const typeIdEncoded = new VarintEncode().encode(CallSmartContractBuild.operation);
-    const recipient = (await base58Decode(this.recipientAddress.slice(1))).slice(1);
-    const parallelCoins = new VarintEncode().encode(this.parallelCoins);
-    const sequentialCoins = new VarintEncode().encode(this.sequentialCoins);
+    const targetAddressEncoded = (await base58Decode(this.targetAddress.slice(1))).slice(1);
+    const coinsEncoded = new VarintEncode().encode(this.coins);
     const gasPrice = new VarintEncode().encode(this.gasPrice);
     const gasLimit = new VarintEncode().encode(this.gasLimit);
+    const functionNameEncoded = utils.utf8.toBytes(this.functionName);
+    const parametersEncoded = utils.utf8.toBytes(this.parameters);
+    const functionNameLengthEncoded = new VarintEncode().encode(functionNameEncoded.length);
+    const parametersLengthEncoded = new VarintEncode().encode(parametersEncoded.length);
 
     return Uint8Array.from([
       ...fee,
       ...expirePeriod,
       ...typeIdEncoded,
       ...gasLimit,
-      ...parallelCoins,
-      ...sequentialCoins,
+      ...coinsEncoded,
       ...gasPrice,
-      ...recipient,
-      ...this.functionByteCodeLength,
-      ...this.functionByteCode,
-      ...this.parametersByteCodeLength,
-      ...this.parametersByteCode
+      ...targetAddressEncoded,
+      ...functionNameLengthEncoded,
+      ...functionNameEncoded,
+      ...parametersLengthEncoded,
+      ...parametersEncoded
     ]);
   }
 }
