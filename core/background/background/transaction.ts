@@ -91,16 +91,20 @@ export class BackgroundTransaction {
         };
       }
 
+
+      if (!params.gasPrice) {
+        params.gasPrice = this.#core.gas.state.gasPrice * this.#core.gas.state.multiplier;
+      }
+
       const prompt = new PromptService(
         this.#core.settings.popup.enabledPopup && Boolean(params.uuid)
       );
 
       const gasLimit = params.gasLimit ?? this.#core.gas.state.gasLimit;
-      const gasPrice = params.gasPrice ?? this.#core.gas.state.multiplier;
       const confirmParams: ConfirmParams = {
         ...params,
         tokenAmount: String(params.amount),
-        fee: gasLimit * gasPrice,
+        fee: Number(gasLimit) * Number(params.gasPrice),
         recipient: params.toAddr
       };
 

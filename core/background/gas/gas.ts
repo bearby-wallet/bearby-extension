@@ -2,19 +2,21 @@ import type { GasState } from 'types/gas';
 
 import { Fields } from 'config/fields';
 import { BrowserStorage, buildObject } from 'lib/storage';
-import { GAS_LIMIT, MULTIPLIER } from 'config/gas';
+import { GAS_LIMIT, GAS_PRICE, MULTIPLIER } from 'config/gas';
 import { TypeOf } from 'lib/type';
 import { GasError, INVALID_STATE, INVALID_GAS_LIMIT, INVALID_MULTIPLIER } from './errors';
 
 
 export class GasControl {
   #gasLimit = GAS_LIMIT;
+  #gasPrice = GAS_PRICE;
   #multiplier = MULTIPLIER;
 
   get state(): GasState {
     return {
       gasLimit: this.#gasLimit,
-      multiplier: this.#multiplier
+      multiplier: this.#multiplier,
+      gasPrice: this.#gasPrice
     };
   }
 
