@@ -5,6 +5,8 @@ import { BrowserStorage, buildObject } from "lib/storage";
 import { Fields } from "config/fields";
 import  { TransactionsController, HASH_OUT_OF_STORAGE } from "background/transactions";
 import { NotificationController } from "lib/runtime/notifications";
+import { MTypeTab } from "config/stream-keys";
+import { TabsMessage } from "lib/stream/tabs-message";
 
 
 enum Statuses {
@@ -34,6 +36,8 @@ export class WorkerController {
     this.#transactions = transactions;
     this.#massa = massa;
   }
+
+  // TODO: add node fetcher
 
   subscribe() {
     this.trackBlockNumber();
@@ -69,6 +73,11 @@ export class WorkerController {
 
     await this.#setPeriod(newPeriod);
     await this.#trackTransactions();
+
+    new TabsMessage({
+      type: MTypeTab.NEW_SLOT,
+      payload: newPeriod
+    }).send();
   }
 
   async #trackTransactions() {
