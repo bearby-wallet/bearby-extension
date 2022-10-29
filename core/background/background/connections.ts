@@ -140,6 +140,7 @@ export class BackgroundConnection {
       enabled,
       providers,
       net,
+      period: this.#core.worker.period,
       phishing: this.#core.settings.phishing.phishingDetectionEnabled,
       smartRequest: this.#core.settings.network.downgrade
     };

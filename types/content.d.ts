@@ -3,11 +3,12 @@ import type { Params, RPCBody } from 'types';
 
 export interface ContentWalletData {
   enabled: boolean;
-  net?: string;
   smartRequest: boolean;
+  period: number;
   connected: boolean;
   phishing: boolean;
   providers: string[];
+  net?: string;
   base58?: string;
 }
 

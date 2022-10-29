@@ -94,7 +94,8 @@ export class BackgroundState {
     new TabsMessage({
       type: MTypeTab.NETWORK_CHANGED,
       payload: {
-        net: this.netwrok.selected
+        net: this.netwrok.selected,
+        period: this.worker.period
       }
     }).send();
   }
