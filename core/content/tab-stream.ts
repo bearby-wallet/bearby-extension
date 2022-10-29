@@ -2,8 +2,7 @@ import type {
   ReqBody,
   SendResponseParams,
   ContentWalletData,
-  ProxyContentType,
-  JsonRPCResponse
+  ProxyContentType
 } from "types";
 
 import { MTypeTab, MTypeTabContent } from "config/stream-keys";
