@@ -5,15 +5,17 @@
 
   import { trim } from 'popup/filters/trim';
   import { viewIcon } from "app/utils/icon-view";
-  import { formatNumber } from 'popup/filters/numbers';
+  import { formatNumber, toKG } from 'popup/filters/numbers';
 
-	import tokensStore from 'popup/store/tokens';
+	import gasStore from 'popup/store/gas';
 
 
 	export let tx: ConfirmParams;
 
 	$: amount = Number(tx.tokenAmount) / 10**tx.token.decimals;
   $: img = viewIcon(tx.token.base58);
+  $: multiplier = tx.gasMultiplier || $gasStore.multiplier;
+  $: fee = tx.gasPrice * tx.gasLimit * multiplier;
 </script>
 
 <ul>
@@ -28,8 +30,8 @@
         height="20"
         alt="app"
       />
-      {formatNumber(amount)} {tx.token.symbol} <span>
-        +{tx.fee} {$tokensStore[0].symbol}
+      {formatNumber(amount, tx.token.symbol)} <span>
+        + {toKG(fee)}
       </span>
     </span>
   </li>
@@ -46,7 +48,7 @@
       {$_('confirm.params.fee')}
     </span>
     <span>
-      {tx.fee} {$tokensStore[0].symbol}
+      {toKG(fee)}
     </span>
   </li>
   <li>

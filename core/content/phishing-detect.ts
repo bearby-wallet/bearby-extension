@@ -15,8 +15,8 @@ export class PhishingDetect {
 
   async check(provider: ContentProvider) {
     // TODO: deploy a contract which check the domain on phishing domains
-    console.log(
-      `host: ${this.#host}, url: ${this.#url}, checked: ${this.#checked}, providers: ${provider.providers.join('.')}`
-    );
+    // console.log(
+    //   `host: ${this.#host}, url: ${this.#url}, checked: ${this.#checked}, providers: ${provider.providers.join('.')}`
+    // );
   }
 }

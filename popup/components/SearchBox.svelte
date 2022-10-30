@@ -45,6 +45,9 @@
     background: var(--card-color);
     border: solid 1px var(--card-color);
 
+    width: 100%;
+    max-width: 290px;
+
     @include border-radius(16px);
     @include flex-center-vert;
 

@@ -3,6 +3,8 @@
   import { createEventDispatcher } from 'svelte';
 
   import Speed from './icons/Speed.svelte';
+  import { toKG } from 'app/filters/numbers';
+
 
   const dispatch = createEventDispatcher();
 
@@ -19,14 +21,14 @@
 </script>
 
 <ul>
-  {#each list as item, index}
+  {#each list as _, index}
     <li
       class:selected={(index + 1) === multiplier}
       on:mouseup={() => handleOnSelect(index)}
     >
       <Speed length={index + 1}/>
       <h3>
-        {(amount * (index + 1))}
+        {toKG(amount * (index + 1))}
       </h3>
     </li>
   {/each}
@@ -58,7 +60,7 @@
         background-color: var(--background-color);
       }
       & > h3 {
-        @include fluid-text(1024px, 12pt, 18pt);
+        @include fluid-text(1024px, 10pt, 14pt);
         margin: 0;
       }
     }

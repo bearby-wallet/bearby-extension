@@ -177,6 +177,8 @@
       <div class="btns">
         <button
           class="primary"
+          class:loading={loading}
+          disabled={loading}
           on:mouseup={handleOnReject}
         >
           {$_('confirm.btns.reject')}

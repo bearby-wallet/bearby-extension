@@ -37,3 +37,7 @@ export function formatNumber(balance: number | string, currency?: string) {
     return `${currency} ${n}`;
   }
 }
+
+export function toKG(value: number) {
+  return formatNumber(value / 10e4, 'KG');
+}
