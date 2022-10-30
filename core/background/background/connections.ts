@@ -131,15 +131,15 @@ export class BackgroundConnection {
     const connected = this.#core.connections.has(domain);
     const account = this.#core.account.selectedAccount;
     const base58 = (connected && enabled && account) ? account.base58 : undefined;
-    const providers = connected ? this.#core.netwrok.providers : [];
+    const providers = connected ? this.#core.netwrok.providers.slice(0,1) : [];
     const net = connected ? this.#core.netwrok.selected : undefined;
 
     const data: ContentWalletData = {
       base58,
       connected,
       enabled,
-      providers,
       net,
+      providers,
       period: this.#core.worker.period,
       phishing: this.#core.settings.phishing.phishingDetectionEnabled,
       smartRequest: this.#core.settings.network.downgrade

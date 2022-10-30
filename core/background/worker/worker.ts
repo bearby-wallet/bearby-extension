@@ -175,11 +175,9 @@ export class WorkerController {
     const newProviders = connectedNodes.filter(
       (n) => !hosts.includes(n)
     ).map((n) => `http://${n}:33035`);
+    const newNodesSet = new Set(newProviders);
 
-    config[this.#network.selected].PROVIDERS = [
-      ...newProviders,
-      ...config[this.#network.selected].PROVIDERS
-    ];
+    config[this.#network.selected].PROVIDERS = Array.from(newNodesSet);
 
     await this.#network.setConfig(config);
   }
