@@ -12,6 +12,7 @@
 
   --secondary-color: rgb(172, 89, 255);
   --primary-color: rgb(232, 0, 111);
+  --primary-light-color: rgba(251, 17, 142, 0.24);
 
   --danger-color: rgb(255, 44, 46);
 
@@ -21,17 +22,18 @@
 }
 
 :global(body[theme="dark"]) {
-  --background-gradient: linear-gradient(rgb(21, 25, 36) 60%, rgb(59 38 38) 100%);
+  --background-gradient: linear-gradient(rgb(32, 39, 56) 0%, rgb(7, 8, 22) 100%);
   --background-color: rgb(0, 0, 0);
   --text-color:  rgb(255, 255, 255);
   --text-negative: rgb(0, 0, 0);
   --muted-color: rgba(153, 161, 189, 0.239);
   --card-color:  rgb(14, 17, 26);
   --hover-color: rgb(52, 52, 52);
-  --modal-color:  rgb(0, 0, 0);
+  --modal-color:  rgb(20, 27, 43);
 
   --secondary-color: rgb(76, 130, 251);
-  --primary-color: rgb(232, 0, 111);
+  --primary-color: rgb(76, 130, 251);
+  --primary-light-color: rgba(76, 130, 251, 0.24);
 
   --danger-color: rgb(255, 44, 46);
 

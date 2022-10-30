@@ -115,7 +115,7 @@
     },
     "downgrade": {
       "title": "Smart request",
-      "description": "The wallet automatically chose the faster node.",
+      "description": "The wallet automatically collecte node in network and chose faster option.",
       "toggle": "Enable smart request"
     },
     "period": {

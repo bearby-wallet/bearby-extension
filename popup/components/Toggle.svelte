@@ -75,11 +75,11 @@
   }
   .tgl-ios {
     + .tgl-btn {
-      background: var(--card-color);
+      // background: var(--card-color);
       border-radius: 2em;
       padding: 2pt;
       transition: all .4s ease;
-      border: 1px solid var(--card-color);
+      border: 1px solid var(--muted-color);
       &:after {
         border-radius: 2em;
         background: var(--primary-color);
@@ -88,9 +88,6 @@
             0.175, 0.885, 0.320, 1.275
           ),
           padding .3s ease, margin .3s ease;
-        box-shadow:
-          0 0 0 1px rgba(0,0,0,.1),
-          0 4px 0 rgba(0,0,0,.08);
       }
 
       &:hover:after {
@@ -105,8 +102,8 @@
     }
 
     &:checked + .tgl-btn {
-      background: var(--success-color);
-      border-color: var(--success-color);
+      background: var(--primary-light-color);
+      border-color: transparent;
       &:active {
         box-shadow: none;
         &:after {
