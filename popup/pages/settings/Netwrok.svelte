@@ -5,7 +5,6 @@
 	import { onMount } from 'svelte';
 
   import { NETWORK_KEYS } from 'config/network';
-  import { COUNT_NODES } from 'config/common';
 
 	import NavClose from '../../components/NavClose.svelte';
   import Jumbotron from '../../components/Jumbotron.svelte';
@@ -17,12 +16,11 @@
   import {
     selectNetwrok,
     getNetworkConfig,
-    updateCount,
     addNodeAPI,
     sortNodes,
     removeNode
   } from 'popup/backend/netwrok';
-  import { setDowngradeNodeFlag } from 'popup/backend/settings';
+  import { setDowngradeNodeFlag, setPeriodOffset } from 'popup/backend/settings';
 
   const [,, custom] = NETWORK_KEYS;
 
@@ -41,23 +39,10 @@
     await sortNodes(http);
   }
 
-  async function handleInputCount(event: Event) {
-    const value = (event.target as HTMLInputElement).value;
-    const count = Number(value);
+  async function handlePeriodOffset(event: Event) {
+    const period = Number((event.target as HTMLInputElement).value);
 
-    try {
-      if (count > networkConfig[$netwrokStore].PROVIDERS.length) {
-        networkConfig[$netwrokStore].LIMIT = networkConfig[$netwrokStore].PROVIDERS.length;
-      } else if (count <= 0) {
-        networkConfig[$netwrokStore].LIMIT = COUNT_NODES;
-      } else {
-        networkConfig[$netwrokStore].LIMIT = count;
-      }
-      await updateCount(networkConfig[$netwrokStore].LIMIT);
-    } catch {
-      networkConfig[$netwrokStore].LIMIT = COUNT_NODES;
-      await updateCount(COUNT_NODES);
-    }
+    await setPeriodOffset(period);
   }
 
   async function handleAddNode(e: Event) {
@@ -143,20 +128,6 @@
             </label>
           </form>
         {/if}
-        <div class="input">
-          <label>
-            <input
-              bind:value={networkConfig[$netwrokStore].LIMIT}
-              type="number"
-              max={networkConfig[$netwrokStore].PROVIDERS.length}
-              min={1}
-              on:input={handleInputCount}
-            >
-            <p>
-              {$_('netwrok.config.count_description')}
-            </p>
-          </label>
-        </div>
       </Jumbotron>
     </div>
   {/if}
@@ -187,7 +158,7 @@
             bind:value={periodOffset}
             type="number"
             min={1}
-            on:input={handleInputCount}
+            on:input={handlePeriodOffset}
           >
         </label>
       </div>
@@ -223,12 +194,6 @@
 
     & > label {
       width: 100%;
-
-      & > p {
-        @include fluid-text(1024px, 8pt, 10pt);
-        margin: 0;
-        margin-left: 8px;
-      }
     }
   }
 </style>

@@ -30,6 +30,18 @@ export async function setCurrency(currency: string) {
   return resolve;
 }
 
+export async function setPeriodOffset(period: number) {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.SET_PERIOD,
+    payload: {
+      period
+    }
+  }).send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}
+
 export async function setTheme(theme: string) {
   const data = await new Message<SendResponseParams>({
     type: MTypePopup.SET_THEME,

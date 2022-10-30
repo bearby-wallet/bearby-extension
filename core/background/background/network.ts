@@ -59,23 +59,6 @@ export class BackgroundNetwork {
     }
   }
 
-  async upadteCount(count: number, sendResponse: StreamResponse) {
-    try {
-      this.#core.guard.checkSession();
-
-      await this.#core.netwrok.setNodesCount(count);
-
-      return sendResponse({
-        resolve: this.#core.state
-      });
-    } catch (err) {
-      console.error(err);
-      return sendResponse({
-        reject: (err as BaseError).serialize()
-      });
-    }
-  }
-
   async addNode(node: string, sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();

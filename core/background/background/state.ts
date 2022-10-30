@@ -36,7 +36,8 @@ export class BackgroundState {
   );
   readonly worker = new WorkerController(
     this.massa,
-    this.transaction
+    this.transaction,
+    this.netwrok
   );
 
 

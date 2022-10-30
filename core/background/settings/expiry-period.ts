@@ -1,7 +1,8 @@
 import { PERIOD_OFFSET } from 'config/common';
 import { Fields } from 'config/fields';
-import { Locales } from 'config/locale';
+import { assert } from 'lib/assert';
 import { BrowserStorage, buildObject } from 'lib/storage';
+import { INVALID_PERIOD, SettingsError } from './errors';
 
 
 export class PeriodOffset {
@@ -12,6 +13,8 @@ export class PeriodOffset {
   }
 
   async setPeriodOffset(newPeriodOffset: number) {
+    assert(newPeriodOffset > 0, INVALID_PERIOD, SettingsError);
+
     this.#periodOffset = newPeriodOffset;
 
     await BrowserStorage.set(

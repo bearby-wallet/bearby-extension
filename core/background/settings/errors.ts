@@ -6,3 +6,4 @@ export class SettingsError extends BaseError {
 
 export const INVALID_THEME = 'Invalid theme';
 export const INVALID_CURREENCY = 'Invalid currency';
+export const INVALID_PERIOD = 'Invalid period format';

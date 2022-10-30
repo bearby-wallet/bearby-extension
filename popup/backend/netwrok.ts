@@ -25,18 +25,6 @@ export async function getNetworkConfig() {
   return warpMessage(data) as NetwrokConfig;
 }
 
-export async function updateCount(count: number) {
-  const data = await new Message<SendResponseParams>({
-    type: MTypePopup.SET_COUNT,
-    payload: {
-      count
-    }
-  }).send();
-  const resolve = warpMessage(data);
-  updateState(resolve as WalletState);
-  return resolve;
-}
-
 export async function addNodeAPI(node: string) {
   const data = await new Message<SendResponseParams>({
     type: MTypePopup.ADD_NODE,

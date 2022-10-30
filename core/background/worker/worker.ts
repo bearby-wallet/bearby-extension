@@ -7,6 +7,7 @@ import  { TransactionsController, HASH_OUT_OF_STORAGE } from "background/transac
 import { NotificationController } from "lib/runtime/notifications";
 import { MTypeTab } from "config/stream-keys";
 import { TabsMessage } from "lib/stream/tabs-message";
+import type { NetworkControl } from "background/network";
 
 
 enum Statuses {
@@ -17,7 +18,8 @@ enum Statuses {
 export class WorkerController {
   readonly #massa: MassaControl;
   readonly #transactions: TransactionsController;
-
+  readonly #network: NetworkControl;
+    
   #delay = WORKER_POOLING;
   #period = 0;
 
@@ -31,13 +33,13 @@ export class WorkerController {
 
   constructor(
     massa: MassaControl,
-    transactions: TransactionsController
+    transactions: TransactionsController,
+    network: NetworkControl
   ) {
     this.#transactions = transactions;
     this.#massa = massa;
+    this.#network = network;
   }
-
-  // TODO: add node fetcher
 
   subscribe() {
     this.trackBlockNumber();
@@ -78,6 +80,13 @@ export class WorkerController {
       type: MTypeTab.NEW_SLOT,
       payload: newPeriod
     }).send();
+
+    if (result.connected_nodes) {
+      const nodes = Object.values(result.connected_nodes).map(
+        ([url]) => String(url)
+      );
+      await this.#updateProviders(nodes);
+    }
   }
 
   async #trackTransactions() {
@@ -154,6 +163,21 @@ export class WorkerController {
     }
 
     await this.#transactions.updateHistory(list);
+  }
+
+  async #updateProviders(connectedNodes: string[]) {
+    const config = this.#network.config;
+    const hosts = config[this.#network.selected].PROVIDERS.map((url) => new URL(url).host);
+    const newProviders = connectedNodes.filter(
+      (n) => !hosts.includes(n)
+    ).map((n) => `http://${n}:33035`);
+
+    config[this.#network.selected].PROVIDERS = [
+      ...newProviders,
+      ...config[this.#network.selected].PROVIDERS
+    ];
+
+    await this.#network.setConfig(config);
   }
 
   async sync() {

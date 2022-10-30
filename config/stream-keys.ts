@@ -28,7 +28,6 @@ export const MTypePopup = {
 
   SELECT_NETWORK: `@/${app}/select-network`,
   GET_NETWORK_CONFIG: `@/${app}/get-network-config`,
-  SET_COUNT: `@/${app}/set-network-count`,
   ADD_NODE: `@/${app}/add-network-node`,
   SORT_NODES: `@/${app}/sort-nodes-apis`,
   REMOVE_NODES: `@/${app}/remove-nodes-api`,
@@ -40,6 +39,7 @@ export const MTypePopup = {
   SET_PHISHING: `@/${app}/set-phishing-flag`,
   SET_GAS_CONFIG: `@/${app}/set-gas-config`,
   SET_LOCK_TIMER: `@/${app}/set-lock-timer`,
+  SET_PERIOD: `@/${app}/set-priod-offset`,
   TOGGLE_POPUP_ENABLED: `@/${app}/toggle-popup-emabled`,
   TOGGLE_FORMAT_ENABLED: `@/${app}/toggle-format-emabled`,
 

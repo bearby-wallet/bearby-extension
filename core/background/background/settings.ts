@@ -12,6 +12,22 @@ export class BackgroundSettings {
     this.#core = state;
   }
 
+  async setPeriodOffest(value: number, sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+
+      await this.#core.settings.period.setPeriodOffset(value);
+
+      return sendResponse({
+        resolve: this.#core.state
+      });
+    } catch (err) {
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
   async setNodeDowngrade(flag: boolean, sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();

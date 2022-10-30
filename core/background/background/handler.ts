@@ -92,15 +92,15 @@ export function startBackground(core: BackgroundState) {
       case MTypePopup.GET_NETWORK_CONFIG:
         network.getNetwrokConfig(sendResponse);
         return true;
-      case MTypePopup.SET_COUNT:
-        network.upadteCount(msg.payload.count, sendResponse);
-        return true;
       case MTypePopup.ADD_NODE:
         network.addNode(msg.payload.node, sendResponse);
         return true;
 
       case MTypePopup.SET_DOWNGRADE_NODE:
         settings.setNodeDowngrade(msg.payload.flag, sendResponse);
+        return true;
+      case MTypePopup.SET_PERIOD:
+        settings.setPeriodOffest(msg.payload.period, sendResponse);
         return true;
       case MTypePopup.SET_CURRENCY:
         settings.setCurrency(msg.payload.currency, sendResponse);

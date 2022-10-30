@@ -59,7 +59,7 @@
 		<p>
 			{$_('send.recipient.contacts')}
 		</p>
-		{#each contacts as contact, i}
+		{#each contacts as contact}
 			<li on:mouseup={() => onSelect(contact.address)}>
 				<span id={contact.address}/>
 				<div class="text">
