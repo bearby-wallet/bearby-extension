@@ -16,6 +16,11 @@
 
   width: inherit;
 
+  &::placeholder {
+    color: var(--muted-color);
+    opacity: 1;
+  }
+
   &:focus {
     border: solid 1px var(--muted-color);
   }

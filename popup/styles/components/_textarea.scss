@@ -21,8 +21,13 @@
   @include fluid-text(600px, 16pt, 33pt);
   @include border-radius(16px);
 
+  &::placeholder {
+    color: var(--muted-color);
+    opacity: 1;
+  }
+
   &:focus {
-    border-color: var(--text-color);
+    border-color: var(--muted-color);
   }
 }
 

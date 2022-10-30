@@ -4,7 +4,7 @@
 	import { _ } from 'popup/i18n';
 
   import { trim } from 'popup/filters/trim';
-  import { formatNumber } from 'popup/filters/numbers';
+  import { formatNumber, toKG } from 'popup/filters/numbers';
   import { clipboardCopy } from 'popup/mixins/clipboard';
 
   import settingsStore from 'popup/store/settings';
@@ -41,7 +41,7 @@
   {/if}
   <h1>
     {operate} {formatNumber(amount, tx.token.symbol)} <span>
-      + {$tokensStore[0].symbol} {tx.fee}
+      + {toKG(tx.fee)}
     </span>
   </h1>
   <p>
