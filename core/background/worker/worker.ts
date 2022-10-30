@@ -8,6 +8,7 @@ import { NotificationController } from "lib/runtime/notifications";
 import { MTypeTab } from "config/stream-keys";
 import { TabsMessage } from "lib/stream/tabs-message";
 import type { NetworkControl } from "background/network";
+import type { SettingsControl } from "background/settings";
 
 
 enum Statuses {
@@ -19,6 +20,7 @@ export class WorkerController {
   readonly #massa: MassaControl;
   readonly #transactions: TransactionsController;
   readonly #network: NetworkControl;
+  readonly #settings: SettingsControl;
     
   #delay = WORKER_POOLING;
   #period = 0;
@@ -34,11 +36,13 @@ export class WorkerController {
   constructor(
     massa: MassaControl,
     transactions: TransactionsController,
-    network: NetworkControl
+    network: NetworkControl,
+    settings: SettingsControl
   ) {
     this.#transactions = transactions;
     this.#massa = massa;
     this.#network = network;
+    this.#settings = settings;
   }
 
   subscribe() {
@@ -81,7 +85,7 @@ export class WorkerController {
       payload: newPeriod
     }).send();
 
-    if (result.connected_nodes) {
+    if (result.connected_nodes && this.#settings.network.downgrade) {
       const nodes = Object.values(result.connected_nodes).map(
         ([url]) => String(url)
       );
