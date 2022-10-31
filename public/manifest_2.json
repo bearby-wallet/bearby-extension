@@ -1,6 +1,7 @@
 {
   "name": "BearBy",
   "author": "Rinat",
+  "description": "A Massa Wallet in your Browser",
   "manifest_version": 2,
   "icons": {
     "16": "icons/16.png",
@@ -11,20 +12,9 @@
     "96": "icons/96.png",
     "128": "icons/128.png"
   },
-  "commands": {
-    "_execute_browser_action": {
-      "suggested_key": {
-        "chromeos": "Alt+Shift+M",
-        "linux": "Alt+Shift+M",
-        "mac": "Alt+Shift+M",
-        "windows": "Alt+Shift+M"
-      }
-    }
-  },
   "permissions": [
     "storage",
     "notifications",
-    "alarms",
     "activeTab"
   ],
   "content_scripts": [

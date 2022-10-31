@@ -1,5 +1,6 @@
 {
   "name": "BearBy",
+  "description": "A Massa Wallet in your Browser",
   "manifest_version": 3,
   "permissions": [
     "storage",
