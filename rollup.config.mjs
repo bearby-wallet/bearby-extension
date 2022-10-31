@@ -14,7 +14,7 @@ import nodePolyfills from 'rollup-plugin-node-polyfills';
 import pkg from './package.json' assert { type: 'json' };
 
 const production = !process.env.ROLLUP_WATCH;
-
+const manifest = process.env.MANIFEST || 2;
 
 const popup = {
 	input: 'popup/main.ts',
@@ -117,8 +117,9 @@ const background = {
 					dest: 'dist/'
 				},
 				{
-					src: 'public/manifest.json',
+					src: `public/manifest_${manifest}.json`,
 					dest: 'dist/',
+					rename: 'manifest.json',
 					transform: (contents) => {
 						const jsonContent = JSON.parse(contents)
 

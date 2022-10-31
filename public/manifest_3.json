@@ -1,0 +1,38 @@
+{
+  "name": "BearBy",
+  "manifest_version": 3,
+  "permissions": [
+    "storage",
+    "notifications",
+    "activeTab"
+  ],
+  "icons": {
+    "16": "icons/16.png",
+    "19": "icons/19.png",
+    "38": "icons/38.png",
+    "39": "icons/39.png",
+    "48": "icons/48.png",
+    "96": "icons/96.png",
+    "128": "icons/128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_title": "ZilPay",
+    "default_popup": "index.html"
+  }
+}

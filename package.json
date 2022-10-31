@@ -5,6 +5,7 @@
   "author": "Rinat <hicc0rus@gmail.com>",
   "scripts": {
     "build": "rollup -c",
+    "build:v3": "export MANIFEST=3 && rollup -c",
     "dev": "rollup -c -w",
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },

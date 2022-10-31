@@ -51,7 +51,7 @@
   <NavClose title={$_('restore.title')}/>
   <form on:submit={handleSubmit}>
     <label>
-      {error}dasd
+      {error}
       <textarea
         bind:value={words}
         class:error="{Boolean(error)}"
