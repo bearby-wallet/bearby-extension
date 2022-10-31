@@ -170,11 +170,14 @@ export class WorkerController {
   }
 
   async #updateProviders(connectedNodes: string[]) {
+    if (connectedNodes.length === 0) return;
+
+    const { URL } = globalThis;
     const config = this.#network.config;
     const hosts = config[this.#network.selected].PROVIDERS.map((url) => new URL(url).host);
-    const newProviders = connectedNodes.filter(
-      (n) => !hosts.includes(n)
-    ).map((n) => `http://${n}:33035`).concat(hosts);
+    const newProviders = connectedNodes
+      .filter((n) => !hosts.includes(n))
+      .map((n) => `http://${n}:33035`).concat(config[this.#network.selected].PROVIDERS);
     const newNodesSet = new Set(newProviders);
 
     config[this.#network.selected].PROVIDERS = Array.from(newNodesSet);

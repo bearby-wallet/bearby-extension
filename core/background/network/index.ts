@@ -101,6 +101,7 @@ export class NetworkControl {
   }
 
   async addProvider(node: string) {
+    node = new URL(node).origin;
     const providers = this.config[this.selected].PROVIDERS;
     const unique = providers.some(
       (n) => n.toLowerCase() === node.toLowerCase()
