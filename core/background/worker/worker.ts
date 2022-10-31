@@ -174,7 +174,7 @@ export class WorkerController {
     const hosts = config[this.#network.selected].PROVIDERS.map((url) => new URL(url).host);
     const newProviders = connectedNodes.filter(
       (n) => !hosts.includes(n)
-    ).map((n) => `http://${n}:33035`);
+    ).map((n) => `http://${n}:33035`).concat(hosts);
     const newNodesSet = new Set(newProviders);
 
     config[this.#network.selected].PROVIDERS = Array.from(newNodesSet);
