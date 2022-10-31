@@ -1,10 +1,11 @@
-import { Runtime } from 'lib/runtime';
 import type { ContentProvider } from './http-provider';
+
+import { getExtensionURL } from 'lib/runtime/get-url';
 
 
 export class PhishingDetect {
   #host = String(globalThis.location.host).replace('www.', '');
-  #url = Runtime.extension.getURL('phishing.html');
+  #url = getExtensionURL('phishing.html');
   #checked = false;
 
   get checked() {

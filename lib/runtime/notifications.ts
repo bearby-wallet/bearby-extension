@@ -1,4 +1,5 @@
 import { Runtime } from 'lib/runtime';
+import { getExtensionURL } from 'lib/runtime/get-url';
 
 
 export class NotificationController {
@@ -17,7 +18,7 @@ export class NotificationController {
       const data: chrome.notifications.NotificationOptions<true> = {
         type: 'basic',
         title: this.#title,
-        iconUrl: Runtime.extension.getURL('/icons/128.png'),
+        iconUrl: getExtensionURL('/icons/128.png'),
         message: this.#message
       };
       Runtime.notifications.create(this.#url, data);
