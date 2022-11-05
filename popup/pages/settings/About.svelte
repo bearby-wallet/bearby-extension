@@ -11,6 +11,10 @@
 		{
 			name: $_('about.issues'),
 			url: 'https://github.com/bearby-wallet/bearby-extension/issues'
+		},
+		{
+			name: $_('about.tg'),
+			url: 'https://t.me/bearbychat'
 		}
 	];
 </script>

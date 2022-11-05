@@ -249,6 +249,7 @@
   "about": {
     "title": "About",
     "issues": "Issues",
+    "tg": "Telegram",
     "manifest_version": "Manifest version",
     "version": "bearby version"
   },
