@@ -8,12 +8,7 @@
 Massa's plugin of Chrome and FireFox.
 
 <p align="center">
-  <a href="https://beabry.io"><img src="https://github.com/bearby-wallet/bearby-extension/blob/master/preview.png"></a>
-  <style>
-   img {
-      border-radius: 16px;
-   }
-  </style>
+  <a href="https://beabry.io"><img style="border-radius: 16px;" src="https://github.com/bearby-wallet/bearby-extension/blob/master/preview.png"></a>
 </p>
 
 ## Installation:
