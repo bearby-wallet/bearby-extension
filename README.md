@@ -3,7 +3,6 @@
 [![Chrome](https://img.shields.io/chrome-web-store/v/papngmkmknnmfhabbckobgfpihpdgplk)](https://chrome.google.com/webstore/detail/bearby/papngmkmknnmfhabbckobgfpihpdgplk?utm_source=chrome-ntp-icon)
 [![FireFox](https://img.shields.io/amo/v/bearby)](https://addons.mozilla.org/en-GB/firefox/addon/bearby/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/Zilliqa/scilla/blob/master/LICENSE)
-[![LoC](https://tokei.rs/b1/github/bearby-wallet/bearby-extension?category=lines)](https://github.com/bearby-wallet/bearby-extension)
 
 Massa's plugin of Chrome and FireFox.
 
