@@ -8,7 +8,12 @@
 Massa's plugin of Chrome and FireFox.
 
 <p align="center">
-  <a href="https://zilpay.io"><img src="https://github.com/bearby-wallet/bearby-extension/blob/master/preview.png"></a>
+  <a href="https://beabry.io"><img src="https://github.com/bearby-wallet/bearby-extension/blob/master/preview.png"></a>
+  <style>
+   img {
+      border-radius: 16px;
+   }
+  </style>
 </p>
 
 ## Installation:
