@@ -3,6 +3,7 @@ import { Themes } from "config/theme";
 
 export function themeDetect() {
   const darkThemeMq = window.matchMedia("(prefers-color-scheme: dark)");
+  const isDark = Boolean(darkThemeMq.matches);
 
-  return darkThemeMq.matches ? Themes.Dark : Themes.Light;
+  return isDark ? Themes.Dark : Themes.Light;
 }

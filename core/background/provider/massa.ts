@@ -100,10 +100,17 @@ export class MassaControl {
 
   async sendJson(...body: RPCBody[]) {
     const request = this.provider.json(...body);
+    const timeout = 5000;
+    const abortController = new AbortController();
+    const id = setTimeout(() => abortController.abort(), timeout);
 
     for (const provider of this.#network.providers) {
       try {
-        const responce = await fetch(provider, request);
+        const responce = await fetch(provider, {
+          ...request,
+          signal: abortController.signal  
+        });
+        clearTimeout(id);
         if (!responce.ok) {
           continue;
         }
@@ -112,6 +119,8 @@ export class MassaControl {
       } catch(err) {
         if (this.#settings.network.downgrade) {
           await this.#network.downgradeNodeStatus(provider);
+        } else {
+          break;
         }
         continue;
       }

@@ -9,13 +9,15 @@ export class HttpProvider {
 
   json(...rpcBody: RPCBody[]) {
     const body = JSON.stringify(rpcBody);
+    const headers = new Headers();
+
+    headers.append("Content-Type", "application/json");
+    headers.append("Access-Control-Allow-Origin", "*");
 
     return {
       body,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      }
+      headers,
+      method: 'POST'
     };
   }
 
