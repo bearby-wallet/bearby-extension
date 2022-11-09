@@ -1,6 +1,6 @@
 <script lang="ts">
-  export let width = '30';
-  export let height = '30';
+  export let width = '25';
+  export let height = '25';
   export let selected = false;
 </script>
 
