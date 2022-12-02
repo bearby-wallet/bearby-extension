@@ -9,7 +9,8 @@ import  { TransactionsController, HASH_OUT_OF_STORAGE } from "background/transac
 import { NotificationController } from "lib/runtime/notifications";
 import { MTypeTab } from "config/stream-keys";
 import { TabsMessage } from "lib/stream/tabs-message";
-import { NODES_SLICE } from "config/network";
+import { NODES_SLICE, NODE_PORT } from "config/network";
+import { isIPV6 } from "lib/validator/ip";
 
 
 enum Statuses {
@@ -174,11 +175,19 @@ export class WorkerController {
     if (connectedNodes.length === 0) return;
 
     const { URL } = globalThis;
-    const config = this.#network.config; // TODO: doesn't work ipv6
-    const hosts = config[this.#network.selected].PROVIDERS.map((url) => new URL(url).host);
+    const config = this.#network.config;
+    const hosts = config[this.#network.selected].PROVIDERS
+      .filter((url) => {
+        try {
+          return Boolean(new URL(url));
+        } catch {
+          return false;
+        }
+      });
     const newProviders = connectedNodes
       .filter((n) => !hosts.includes(n))
-      .map((n) => `http://${n}:33035`).concat(config[this.#network.selected].PROVIDERS);
+      .map((n) => isIPV6(n) ? `http://[${n}]:${NODE_PORT}` : `http://${n}:${NODE_PORT}`)
+      .concat(config[this.#network.selected].PROVIDERS);
     const newNodesSet = new Set(newProviders);
     const nodes = Array.from(newNodesSet);
 
