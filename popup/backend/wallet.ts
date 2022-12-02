@@ -1,5 +1,5 @@
 import type { ShaAlgorithms } from "config/sha-algorithms";
-import type { SendResponseParams, WalletState } from "types";
+import type { SendResponseParams, SetPasswordPayload, WalletState } from "types";
 
 import { MTypePopup } from "config/stream-keys";
 import { Message } from "lib/stream/message";
@@ -33,14 +33,10 @@ export async function createWallet(words: string, password: string, name: string
   return resolve;
 }
 
-export async function changePassword(password: string, algorithm: ShaAlgorithms, iteractions: number) {
+export async function changePassword(payload: SetPasswordPayload) {
   const data = await new Message<SendResponseParams>({
     type: MTypePopup.WALET_PASSWORD_CHANGE,
-    payload: {
-      password,
-      algorithm,
-      iteractions
-    }
+    payload
   }).send();
   const resolve = warpMessage(data);
   updateState(resolve as WalletState);

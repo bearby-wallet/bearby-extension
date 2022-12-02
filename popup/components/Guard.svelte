@@ -2,7 +2,7 @@
 	import { _ } from 'popup/i18n';
   import { createEventDispatcher } from 'svelte';
   import { ShaAlgorithms } from "config/sha-algorithms";
-  import { ITERACTIONS, STEPS } from 'config/guard';
+  import { MAX_ITERACTIONS, ITERACTIONS, STEPS } from 'config/guard';
 
 
   const dispatch = createEventDispatcher();
@@ -56,6 +56,7 @@
       value={iteractions}
       type="number"
       step={STEPS}
+      max={MAX_ITERACTIONS}
       min="0"
       required
       on:input={handleInputIteractions}

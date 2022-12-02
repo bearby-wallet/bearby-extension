@@ -43,6 +43,13 @@ export interface WordsPayloadToEncrypt {
   iteractions: number;
 }
 
+export interface SetPasswordPayload {
+  password: string;
+  current: string;
+  algorithm: string;
+  iteractions: number;
+}
+
 export interface KeyAccountPayload {
   name: string;
   key: string;

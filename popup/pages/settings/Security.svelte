@@ -18,12 +18,14 @@
   import Guard from '../../components/Guard.svelte';
 
 	import { MIN_PASSWORD_LEN } from 'popup/config/account';
+    import { push } from 'svelte-spa-router';
 
 
 	let phraseModal = false;
 	let keyModal = false;
 	let loading = false;
   let passError = '';
+	let currentPassword = '';
 	let password = '';
 	let confirmPassword = '';
 	// guard
@@ -31,7 +33,7 @@
 	let iteractions = $guardStore.iteractions;
 	// guard
 
-	$: disabled = loading || !password || confirmPassword !== password;
+	$: disabled = loading || !password || confirmPassword !== password || Boolean(passError);
 	$: account = $walletStore.identities[$walletStore.selectedAddress];
 	$: keybtndisbaled = account.type !== AccountTypes.PrivateKey
 		&& account.type !== AccountTypes.Seed
@@ -49,9 +51,16 @@
     loading = true;
 
 		try {
-      await changePassword(password, algorithm, iteractions);
+      await changePassword({
+				password,
+				current: currentPassword,
+				algorithm,
+				iteractions
+			});
+			push('/lock');
       loading = false;
 		} catch (err) {
+			console.log(err);
 			passError = (err as Error).message;
 		}
 		loading = false;
@@ -115,6 +124,22 @@
 			description={$_('security.password.description')}
 		>
 			<form on:submit={handleSubmit}>
+				<b>
+					{passError}
+				</b>
+				<label class="current-pass">
+					<input
+						bind:value={currentPassword}
+						class:error="{Boolean(passError)}"
+						type="password"
+						class:loading={loading}
+						autocomplete="off"
+						disabled={loading}
+						placeholder={$_('security.password.current')}
+						required
+						on:input={() => passError = ''}
+					>
+				</label>
 				<label>
 					<input
 						bind:value={password}
@@ -123,16 +148,15 @@
 						class:loading={loading}
 						autocomplete="off"
 						disabled={loading}
-						placeholder={$_('restore.pass_placeholder')}
+						placeholder={$_('security.password.new')}
 						minlength={MIN_PASSWORD_LEN}
 						required
+						on:input={() => passError = ''}
 					>
-					<b>
-						{passError}
-					</b>
 				</label>
 				<input
 					bind:value={confirmPassword}
+					class:error="{Boolean(passError)}"
 					type="password"
 					class:loading={loading}
 					autocomplete="off"
@@ -140,6 +164,7 @@
 					placeholder={$_('restore.conf_placeholder')}
 					minlength={MIN_PASSWORD_LEN}
 					required
+					on:input={() => passError = ''}
 				>
 				<Guard
 					algorithm={algorithm}
@@ -184,8 +209,11 @@
 		& > input {
 			margin: 5px;
 		}
-		& > label > b {
+		& > b {
 			color: var(--danger-color);
+		}
+		& > label.current-pass {
+			margin: 16px;
 		}
 	}
 	span {

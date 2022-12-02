@@ -1,9 +1,14 @@
-import { pubKeyFromBytes } from "lib/address";
-import type { BaseError } from "lib/error";
-import { privateKeyBytesToBase58 } from "lib/validator";
-import type { KeyAccountPayload, WordsPayloadToEncrypt } from "types/account";
+import type {
+  KeyAccountPayload,
+  SetPasswordPayload,
+  WordsPayloadToEncrypt
+} from "types/account";
 import type { StreamResponse } from "types/stream";
 import type { BackgroundState } from "./state";
+import type { BaseError } from "lib/error";
+
+import { pubKeyFromBytes } from "lib/address";
+import { privateKeyBytesToBase58 } from "lib/validator";
 
 
 export class BackgroundWallet {
@@ -58,6 +63,33 @@ export class BackgroundWallet {
         reject: {
           message: String(message)
         }
+      });
+    }
+  }
+
+  async changePassword(payload: SetPasswordPayload, sendResponse: StreamResponse) {
+    try {
+      await this.#core.guard.unlock(payload.current);
+      this.#core.guard.checkSession();
+
+      const words = await this.#core.guard.exportMnemonic(payload.current);
+
+      await this.#core.guard.setGuardConfig(payload.algorithm, payload.iteractions);
+      await this.#core.guard.setupVault(words, payload.password);
+
+      // TODO: add method for decrypt after encrypt with new password for privateKeys.!
+
+      this.#core.triggerAccount();
+      this.#core.triggerLock();
+      await this.#core.transaction.sync();
+      await this.#core.guard.logout();
+
+      sendResponse({
+        resolve: this.#core.state
+      });
+    } catch (err) {
+      return sendResponse({
+        reject: (err as BaseError).serialize()
       });
     }
   }

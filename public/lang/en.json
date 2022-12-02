@@ -275,7 +275,9 @@
     },
     "password": {
       "title": "Change Password",
-      "description": "Change password and Algorithms for encryption!"
+      "description": "Change password and Algorithms for encryption!",
+      "new": "New Password",
+      "current": "Current Password"
     },
     "phrase": {
       "title": "Reveal Secret Recovery Phrase",
