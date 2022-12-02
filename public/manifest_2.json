@@ -16,7 +16,9 @@
     "storage",
     "notifications",
     "activeTab",
-    "https://test.massa.net/api/v2"
+    "https://test.massa.net/api/v2",
+    "http://*",
+    "https://*"
   ],
   "content_scripts": [
     {
