@@ -73,12 +73,11 @@ export class BackgroundWallet {
       this.#core.guard.checkSession();
 
       const words = await this.#core.guard.exportMnemonic(payload.current);
+      const keys = this.#core.account.getImportedAccountKeys();
 
       await this.#core.guard.setGuardConfig(payload.algorithm, payload.iteractions);
       await this.#core.guard.setupVault(words, payload.password);
-
-      // TODO: add method for decrypt after encrypt with new password for privateKeys.!
-
+      await this.#core.account.updateImportedKeys(keys);
       this.#core.triggerAccount();
       this.#core.triggerLock();
       await this.#core.transaction.sync();

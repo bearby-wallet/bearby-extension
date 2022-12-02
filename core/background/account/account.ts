@@ -229,6 +229,33 @@ export class AccountController {
     return this.wallet.identities[index];
   }
 
+  getImportedAccountKeys(): KeyPair[] {
+    const imported = this.wallet.identities.filter(
+      (acc) => acc.type === AccountTypes.PrivateKey
+    );
+    return imported.map((acc) => ({
+      pubKey: Uint8Array.from([]),
+      privKey: this.#guard.decryptPrivateKey(String(acc.privKey)),
+      base58: acc.base58
+    }));
+  }
+
+  async updateImportedKeys(keys: KeyPair[]) {
+    this.#wallet.identities = this.#wallet.identities.map((acc) => {
+      if (acc.type === AccountTypes.PrivateKey) {
+        const found = keys.find((key) => key.base58 === acc.base58);
+        if (found) {
+          acc.privKey = this.#guard.encryptPrivateKey(found.privKey);
+        }
+      }
+      return acc;
+    });
+
+    await BrowserStorage.set(
+      buildObject(Fields.WALLET, this.#wallet)
+    );
+  }
+
   async getKeyPair(index = this.wallet.selectedAddress): Promise<KeyPair> {
     const account = this.wallet.identities[index];
     switch (account.type) {
