@@ -38,6 +38,7 @@ export class BackgroundWallet {
   async initSeedWallet(payload: WordsPayloadToEncrypt, sendResponse: StreamResponse) {
     try {
       await this.#core.account.reset();
+      await this.#core.guard.setGuardConfig(payload.algorithm, payload.iteractions);
       await this.#core.guard.setupVault(payload.words, payload.password);
       await this.#core.account.addAccountFromSeed(this.#core.guard.seed, payload.name);
 
@@ -50,8 +51,13 @@ export class BackgroundWallet {
         resolve: this.#core.state
       });
     } catch (err) {
-      sendResponse({
-        reject: (err as BaseError).serialize()
+      const message = (err as BaseError).serialize ?
+        (err as BaseError).serialize().message : (err as Error).message;
+
+      return sendResponse({
+        reject: {
+          message: String(message)
+        }
       });
     }
   }

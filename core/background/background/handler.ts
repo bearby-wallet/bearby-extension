@@ -117,9 +117,6 @@ export function startBackground(core: BackgroundState) {
       case MTypePopup.SET_PHISHING:
         settings.setPthishing(sendResponse);
         return true;
-      case MTypePopup.SET_GUARD_CONFIG:
-        settings.setGuardConfig(msg.payload.algorithm, msg.payload.iteractions, sendResponse);
-        return true;
       case MTypePopup.SET_GAS_CONFIG:
         settings.setGasConfig(msg.payload.config, sendResponse);
         return true;

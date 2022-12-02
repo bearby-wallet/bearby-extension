@@ -129,8 +129,6 @@ export class Guard {
     this.#algorithm = algorithm as ShaAlgorithms;
     this.#iteractions = iteractions;
 
-    this.#updateSession();
-
     const newConfig = `${algorithm}:${iteractions}`;
 
     await BrowserStorage.set(
@@ -260,6 +258,8 @@ export class Guard {
       return await sha256(passwordBytes);
     }
 
-    return await pbkdf2(passwordBytes, salt, this.#iteractions);
+    const key = await pbkdf2(passwordBytes, salt, this.#iteractions);
+
+    return await sha256(key);
   }
 }

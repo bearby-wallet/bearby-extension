@@ -43,10 +43,15 @@
   "restore": {
     "title": "Restore.",
     "btn": "Continue",
+    "advanced": "Advanced",
     "placeholder": "Input secret words, with a space between words.",
     "pass_placeholder": "Password",
     "conf_placeholder": "Confirm Password",
-    "pass_len_error": "Password error, max length is 6"
+    "pass_len_error": "Password error, max length is 6",
+    "guard": {
+      "iteractions": "PBKDF2 iterations",
+      "algorithms": "PBKDF2 ShaAlgorithms"
+    }
   },
   "wallet_created": {
     "title": "Wallet is generated!",

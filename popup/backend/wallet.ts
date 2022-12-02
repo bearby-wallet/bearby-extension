@@ -1,3 +1,4 @@
+import type { ShaAlgorithms } from "config/sha-algorithms";
 import type { SendResponseParams, WalletState } from "types";
 
 import { MTypePopup } from "config/stream-keys";
@@ -16,13 +17,15 @@ export async function getRandomWords(n: number) {
   return warpMessage(data) as string;
 }
 
-export async function createWallet(words: string, password: string, name: string) {
+export async function createWallet(words: string, password: string, name: string, algorithm: ShaAlgorithms, iteractions: number) {
   const data = await new Message<SendResponseParams>({
     type: MTypePopup.CREATE_WALLET,
     payload: {
       words,
       name,
-      password
+      password,
+      algorithm,
+      iteractions
     }
   }).send();
   const resolve = warpMessage(data);

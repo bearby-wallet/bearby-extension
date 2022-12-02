@@ -8,8 +8,12 @@
     MIN_NAME_LEN,
     DEFAULT_NAME
   } from 'popup/config/account';
+  import { ShaAlgorithms } from "config/sha-algorithms";
+  import { ITERACTIONS } from 'config/guard';
 
 	import NavClose from '../components/NavClose.svelte';
+  import Guard from '../components/Guard.svelte';
+
 
   let error = '';
   let passError = '';
@@ -18,6 +22,10 @@
   let password: string;
   let confirmPassword: string;
 	let loading = false;
+  // guard
+  let algorithm = ShaAlgorithms.Sha512;
+  let iteractions = ITERACTIONS;
+  // guard
 
 	$: disabled = loading || !password || confirmPassword !== password || name.length < MIN_NAME_LEN;
 
@@ -26,7 +34,7 @@
     loading = true;
 
 		try {
-      await createWallet(words, password, name);
+      await createWallet(words, password, name, algorithm, iteractions);
       loading = false;
       push('/created');
 		} catch (err) {
@@ -45,6 +53,10 @@
       passError = $_('restore.pass_len_error');
     }
 	};
+  const hanldeChangeGuard = (e: CustomEvent) => {
+    algorithm = e.detail.algorithm;
+    iteractions = e.detail.iteractions;
+  };
 </script>
 
 <main>
@@ -89,6 +101,11 @@
       minlength={MIN_PASSWORD_LEN}
       required
     >
+    <Guard
+      algorithm={algorithm}
+      iteractions={iteractions}
+      on:input={hanldeChangeGuard}
+    />
     <button
 			class="outline"
       class:loading={loading}

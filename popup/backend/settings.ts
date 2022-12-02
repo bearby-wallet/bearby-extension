@@ -43,19 +43,6 @@ export async function setPeriodOffset(period: number) {
   return resolve;
 }
 
-export async function setGuardConfig(algorithm: ShaAlgorithms, iteractions: number) {
-  const data = await new Message<SendResponseParams>({
-    type: MTypePopup.SET_GUARD_CONFIG,
-    payload: {
-      algorithm,
-      iteractions
-    }
-  }).send();
-  const resolve = warpMessage(data);
-  updateState(resolve as WalletState);
-  return resolve;
-}
-
 export async function setTheme(theme: string) {
   const data = await new Message<SendResponseParams>({
     type: MTypePopup.SET_THEME,

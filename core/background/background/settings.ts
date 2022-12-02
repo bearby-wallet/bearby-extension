@@ -28,25 +28,6 @@ export class BackgroundSettings {
     }
   }
 
-  async setGuardConfig(algorithm: string, iteractions: number, sendResponse: StreamResponse) {
-    try {
-      this.#core.guard.checkSession();
-
-      await this.#core.guard.setGuardConfig(
-        algorithm,
-        iteractions
-      );
-
-      return sendResponse({
-        resolve: this.#core.state
-      });
-    } catch (err) {
-      return sendResponse({
-        reject: (err as BaseError).serialize()
-      });
-    }
-  }
-
   async setNodeDowngrade(flag: boolean, sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();

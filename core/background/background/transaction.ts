@@ -261,10 +261,12 @@ export class BackgroundTransaction {
       });
     } catch (err) {
       const message = (err as BaseError).serialize ?
-        (err as BaseError).serialize() : (err as Error);
+        (err as BaseError).serialize().message : (err as Error).message;
 
       return sendResponse({
-        reject: message
+        reject: {
+          message: String(message)
+        }
       });
     }
   }
