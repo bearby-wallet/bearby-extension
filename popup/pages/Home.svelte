@@ -16,6 +16,7 @@
 
 	import walletStore from 'popup/store/wallet';
 	import tokensStore from 'popup/store/tokens';
+    import { AccountTypes } from 'config/account-type';
 
 
 	let uuid = uuidv4();
@@ -90,6 +91,7 @@
 		<div class="btns">
 			<button
 				class="action primary"
+				disabled={account.type === AccountTypes.Track}
 				on:mouseup={() => push(`/send/0`)}
 			>
 				{$_('home.btns.send')}
@@ -105,6 +107,7 @@
 			{#each $tokensStore as token, index}
         <TokenCard
 					token={token}
+					disabled={account.type === AccountTypes.Track}
 					loading={loading}
 					on:select={() => onToken(index)}
 				/>

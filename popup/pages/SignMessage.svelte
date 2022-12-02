@@ -16,6 +16,7 @@
   import Modal from '../components/Modal.svelte';
 	import AccountsModal from '../modals/Accounts.svelte';
 	import Toggle from '../components/Toggle.svelte';
+  import { AccountTypes } from 'config/account-type';
 
 
   const uuid = uuidv4();
@@ -107,19 +108,19 @@
     <hr />
     <div class="btns">
       <button
-        class="primary"
-        class:loading={loading}
-        disabled={loading}
-        on:mouseup={handleOnSign}
-      >
-        {$_('sig_message.btns.confirm')}
-      </button>
-      <button
         class="outline"
         disabled={loading}
         on:mouseup={handleOnReject}
       >
         {$_('sig_message.btns.reject')}
+      </button>
+      <button
+        class="primary"
+        class:loading={loading}
+        disabled={loading || account.type === AccountTypes.Track}
+        on:mouseup={handleOnSign}
+      >
+        {$_('sig_message.btns.confirm')}
       </button>
     </div>
   </main>

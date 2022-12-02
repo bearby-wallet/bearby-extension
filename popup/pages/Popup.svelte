@@ -24,6 +24,8 @@
   import TransactionParams from '../components/TransactionParams.svelte';
 	import GasControl from '../components/GasControl.svelte';
 
+  import { AccountTypes } from 'config/account-type';
+
 
   const url = new URL(window.location.href);
   let uuid = uuidv4();
@@ -185,7 +187,7 @@
         <button
           class="outline"
           class:loading={loading}
-          disabled={loading}
+          disabled={loading || account.type === AccountTypes.Track}
           on:mouseup={handleOnConfirm}
         >
           {$_('confirm.btns.confirm')}

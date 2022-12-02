@@ -34,6 +34,7 @@
   }
 
   .tooltip {
+    z-index: 99;
     position: absolute;
     display: inline-block;
     white-space: nowrap;

@@ -18,6 +18,7 @@
     base58: ''
   };
   export let loading = false;
+  export let disabled = false;
 
   $: account = $walletStore.identities[$walletStore.selectedAddress];
   $: img = viewIcon(token.base58);
@@ -26,13 +27,16 @@
   $: converted = 0;
 
   const onClick = () => {
-    dispatch('select');
+    if (!disabled) {
+      dispatch('select');
+    }
   };
 </script>
 
 <div
   class="token-card"
   class:loading={loading}
+  class:disabled={disabled}
   on:mouseup={onClick}
 >
   <div>
@@ -84,6 +88,13 @@
 			border-color: transparent;
 
       @include loading-gradient(var(--loading-color), var(--card-color));
+    }
+    &.disabled {
+      cursor: unset;
+      opacity: 0.7;
+    }
+    &.disabled:hover {
+      border-color: var(--card-color);
     }
     &:hover {
       border-color: var(--primary-color);
