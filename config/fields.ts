@@ -1,5 +1,6 @@
 export enum Fields {
   VAULT = 'mnemonic-vault',
+  GUARD_CONFIG = 'guard-configuration',
   LOCK_TIME = 'time_before_lock',
   WALLET = 'wallet-identities',
   NETWROK_CONFIG = 'network-config',

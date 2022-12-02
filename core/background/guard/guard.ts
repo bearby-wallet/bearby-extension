@@ -18,11 +18,16 @@ import { Fields } from 'config/fields';
 import { TIME_BEFORE_LOCK } from 'config/common';
 import { isPrivateKey } from 'lib/validator';
 import { TypeOf } from 'lib/type';
+import { ShaAlgorithms } from 'config/sha-algorithms';
+import { pbkdf2 } from 'lib/crypto/pbkdf2';
+import { EXTENSION_ID } from 'lib/runtime/id';
 
 
 export class Guard {
   // hash of the password.
   #hash = new WeakMap<Guard, Uint8Array>();
+  #algorithm = ShaAlgorithms.sha256;
+  #iteractions = 0;
 
   // this property is responsible for control session.
   #isEnable = false;
@@ -79,12 +84,25 @@ export class Guard {
   async sync() {
     const data = await BrowserStorage.get(
       Fields.VAULT,
-      Fields.LOCK_TIME
+      Fields.LOCK_TIME,
+      Fields.GUARD_CONFIG
     ) as StorageKeyValue;
 
     if (data && data[Fields.VAULT]) {
       this.#encryptMnemonic = toByteArray(data[Fields.VAULT]);
       this.#isReady = Boolean(this.#encryptMnemonic);
+    }
+
+    if (data && data[Fields.GUARD_CONFIG]) {
+      const [algorithm, iteractions] = String(data[Fields.GUARD_CONFIG]).split(':');
+
+      if (algorithm === ShaAlgorithms.sha256 || algorithm === ShaAlgorithms.Sha512) {
+        this.#algorithm = algorithm;
+      }
+
+      if (!isNaN(Number(iteractions))) {
+        this.#iteractions = Number(iteractions);
+      }
     }
 
     if (data[Fields.LOCK_TIME]) {
@@ -113,8 +131,7 @@ export class Guard {
     try {
       assert(Boolean(this.#encryptMnemonic), WALLET_NOT_SYNC, GuardError);
 
-      const passwordBytes = utils.utf8.toBytes(password);
-      const hash = await sha256(passwordBytes);
+      const hash = await this.#getKeyring(password);
       const mnemonicBytes = Cipher.decrypt(this.#encryptMnemonic as Uint8Array, hash);
       
       return utils.utf8.fromBytes(mnemonicBytes);
@@ -131,8 +148,7 @@ export class Guard {
       assert(Boolean(this.#encryptMnemonic), WALLET_NOT_SYNC, GuardError);
 
       const mnemonicController = new MnemonicController();
-      const passwordBytes = utils.utf8.toBytes(password);
-      const hash = await sha256(passwordBytes);
+      const hash = await this.#getKeyring(password);
       const mnemonicBytes = Cipher.decrypt(this.#encryptMnemonic as Uint8Array, hash);
       const mnemonic = utils.utf8.fromBytes(mnemonicBytes);
 
@@ -153,8 +169,7 @@ export class Guard {
 
   async setupVault(mnemonic: string, password: string, usePassword = false) {
     const mnemonicBuf = utils.utf8.toBytes(mnemonic);
-    const passwordBytes = utils.utf8.toBytes(password);
-    const hash = await sha256(passwordBytes);
+    const hash = await this.#getKeyring(password);
     const seed = await new MnemonicController().mnemonicToSeed(
       mnemonic,
       usePassword ? password : undefined
@@ -211,5 +226,16 @@ export class Guard {
     newSession.setTime(now + (h * 60 * 60 * 1000));
 
     this.#endSession = newSession;
+  }
+
+  async #getKeyring(password: string) {
+    const salt = utils.utf8.toBytes(EXTENSION_ID);
+    const passwordBytes = utils.utf8.toBytes(password);
+
+    if (this.#algorithm === ShaAlgorithms.sha256 && this.#iteractions === 0) {
+      return await sha256(passwordBytes);
+    }
+
+    return await pbkdf2(passwordBytes, salt, this.#iteractions);
   }
 }

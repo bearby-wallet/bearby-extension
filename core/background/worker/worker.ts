@@ -174,7 +174,7 @@ export class WorkerController {
     if (connectedNodes.length === 0) return;
 
     const { URL } = globalThis;
-    const config = this.#network.config;
+    const config = this.#network.config; // TODO: doesn't work ipv6
     const hosts = config[this.#network.selected].PROVIDERS.map((url) => new URL(url).host);
     const newProviders = connectedNodes
       .filter((n) => !hosts.includes(n))
