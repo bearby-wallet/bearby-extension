@@ -1,3 +1,4 @@
+import type { ShaAlgorithms } from "config/sha-algorithms";
 import type { GasState, SendResponseParams, WalletState } from "types";
 
 import { MTypePopup } from "config/stream-keys";
@@ -35,6 +36,19 @@ export async function setPeriodOffset(period: number) {
     type: MTypePopup.SET_PERIOD,
     payload: {
       period
+    }
+  }).send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}
+
+export async function setGuardConfig(algorithm: ShaAlgorithms, iteractions: number) {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.SET_GUARD_CONFIG,
+    payload: {
+      algorithm,
+      iteractions
     }
   }).send();
   const resolve = warpMessage(data);

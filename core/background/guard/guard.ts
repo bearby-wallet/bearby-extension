@@ -123,7 +123,7 @@ export class Guard {
       INCORRECT_CONFIG_PARAMS,
       GuardError
     );
-    assert(iteractions > 0, INCORRECT_CONFIG_PARAMS, GuardError);
+    assert(iteractions >= 0, INCORRECT_CONFIG_PARAMS, GuardError);
     assert(iteractions % 2 === 0, INCORRECT_CONFIG_PARAMS, GuardError);
 
     this.#algorithm = algorithm as ShaAlgorithms;
