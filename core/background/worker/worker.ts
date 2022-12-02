@@ -1,3 +1,5 @@
+import type { NetworkControl } from "background/network";
+import type { SettingsControl } from "background/settings";
 import type { MassaControl } from "background/provider";
 
 import { WORKER_POOLING } from "config/common";
@@ -7,8 +9,7 @@ import  { TransactionsController, HASH_OUT_OF_STORAGE } from "background/transac
 import { NotificationController } from "lib/runtime/notifications";
 import { MTypeTab } from "config/stream-keys";
 import { TabsMessage } from "lib/stream/tabs-message";
-import type { NetworkControl } from "background/network";
-import type { SettingsControl } from "background/settings";
+import { NODES_SLICE } from "config/network";
 
 
 enum Statuses {
@@ -179,8 +180,9 @@ export class WorkerController {
       .filter((n) => !hosts.includes(n))
       .map((n) => `http://${n}:33035`).concat(config[this.#network.selected].PROVIDERS);
     const newNodesSet = new Set(newProviders);
+    const nodes = Array.from(newNodesSet);
 
-    config[this.#network.selected].PROVIDERS = Array.from(newNodesSet);
+    config[this.#network.selected].PROVIDERS = nodes.slice(0, NODES_SLICE);
 
     await this.#network.setConfig(config);
   }

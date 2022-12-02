@@ -59,6 +59,7 @@
       <a
         href={tx.recipient}
         target="_blank"
+        rel="noreferrer"
       >
         {trim(tx.recipient)}
       </a>

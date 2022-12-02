@@ -37,6 +37,7 @@
 				<a
 					href={link.url}
 					target="_blank"
+					rel="noreferrer"
 				>
 					{link.name}
 				</a>

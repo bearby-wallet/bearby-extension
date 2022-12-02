@@ -16,3 +16,4 @@ export const NETWORK: NetwrokConfig = {
   }
 }
 export const NETWORK_KEYS = Object.keys(NETWORK);
+export const NODES_SLICE = 100;
