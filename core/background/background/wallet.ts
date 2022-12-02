@@ -75,6 +75,22 @@ export class BackgroundWallet {
     }
   }
 
+  async importTrackAccount(base58: string, name: string, sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+      await this.#core.account.addAccountForTrack(base58, name);
+      await this.#core.transaction.sync();
+
+      sendResponse({
+        resolve: this.#core.state
+      });
+    } catch (err) {
+      sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
   async removeAccount(sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();

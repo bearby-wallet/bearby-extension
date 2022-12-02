@@ -70,6 +70,9 @@ export function startBackground(core: BackgroundState) {
       case MTypePopup.SET_ACCOUNT_NAME:
         wallet.updateAccountName(msg.payload.name, msg.payload.index, sendResponse);
         return true;
+      case MTypePopup.IMPORT_TRACK_ACCOUNT:
+        wallet.importTrackAccount(msg.payload.base58, msg.payload.name, sendResponse);
+        return true;
       case MTypePopup.RESTORE_KEY:
         wallet.restoreKey(msg.payload, sendResponse);
         return true;

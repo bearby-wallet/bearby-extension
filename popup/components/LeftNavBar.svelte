@@ -63,6 +63,12 @@
       description={$_('home.nav.options.import.description')}
     />
   </a>
+  <a href="/add-track" use:link>
+    <TextElement
+      title={$_('home.nav.options.track.title')}
+      description={$_('home.nav.options.track.description')}
+    />
+  </a>
   {#if canRemove}
     <span
       class="remove"

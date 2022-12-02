@@ -23,6 +23,7 @@ export const MTypePopup = {
   SET_ACCOUNT_NAME: `@/${app}/set-account-name`,
   EXPORT_SECRET_WORDS: `@/${app}/export-secret-words`,
   EXPORT_KEY: `@/${app}/export-privatekey`,
+  IMPORT_TRACK_ACCOUNT: `@/${app}/popup-import-track-account`,
 
   BALANCE_UPDATE: `@/${app}/balance-update`,
 

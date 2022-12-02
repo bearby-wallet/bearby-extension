@@ -11,6 +11,7 @@ import HistoryPage from '../pages/History.svelte';
 import PopupPage from '../pages/Popup.svelte';
 import RollsPage from '../pages/Rolls.svelte';
 import ConnectPage from '../pages/Connect.svelte';
+import AddTrackAccountPage from '../pages/AddTrack.svelte';
 import SignMessagePage from '../pages/SignMessage.svelte';
 
 import NetwrokPage from '../pages/settings/Netwrok.svelte';
@@ -34,6 +35,12 @@ import RestorePage from '../pages/Restore.svelte';
 export default {
   '/': wrap({
     component: Home,
+    conditions: [
+      routerGuard
+    ]
+  }),
+  '/add-track': wrap({
+    component: AddTrackAccountPage,
     conditions: [
       routerGuard
     ]

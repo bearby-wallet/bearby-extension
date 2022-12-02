@@ -128,6 +128,19 @@ export async function changeAccountName(name: string, index: number) {
   return resolve;
 }
 
+export async function importAccountTracker(base58: string, name: string) {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.IMPORT_TRACK_ACCOUNT,
+    payload: {
+      name,
+      base58
+    }
+  }).send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}
+
 export async function exportPrivateKey(password: string) {
   const data = await new Message<SendResponseParams>({
     type: MTypePopup.EXPORT_KEY,

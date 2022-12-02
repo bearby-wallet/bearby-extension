@@ -1,4 +1,9 @@
 {
+  "account_track": {
+    "title": "Track Account",
+    "placeholder": "Account Name",
+    "description": "This Address view only!"
+  },
   "start": {
     "title": "Bearby Wallet",
     "subt_title": "Let's get started.",
@@ -78,15 +83,19 @@
     "nav": {
       "options": {
         "add": {
-          "title": "Add account",
+          "title": "Add Account",
           "description": "Generate next account from secret phrase."
         },
         "import": {
-          "title": "Import account",
+          "title": "Import Account",
           "description": "Restore your account from PrivateKey."
         },
+        "track": {
+          "title": "Track Account",
+          "description": "Import Account for view only."
+        },
         "remove": {
-          "title": "Remove account.",
+          "title": "Remove Account.",
           "description": "Remove/Hide your selected account."
         }
       }
