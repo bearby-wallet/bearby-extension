@@ -8,7 +8,8 @@ import {
   WALLET_NOT_SYNC,
   INCORRECT_PASSWORD,
   WALLET_NOT_ENABLED,
-  TIMER_MUST_BE_INT
+  TIMER_MUST_BE_INT,
+  INCORRECT_CONFIG_PARAMS
 } from './error';
 import { Cipher } from 'lib/crypto/aes';
 import { MnemonicController } from 'lib/bip39';
@@ -73,7 +74,9 @@ export class Guard {
   get state() {
     return {
       isEnable: this.isEnable,
-      isReady: this.isReady
+      isReady: this.isReady,
+      iteractions: this.#iteractions,
+      algorithm: this.#algorithm
     };
   }
 
@@ -112,6 +115,27 @@ export class Guard {
         buildObject(Fields.LOCK_TIME, String(TIME_BEFORE_LOCK))
       );
     }
+  }
+
+  async setGuardConfig(algorithm: string, iteractions: number) {
+    assert(
+      algorithm === ShaAlgorithms.sha256 || algorithm === ShaAlgorithms.Sha512,
+      INCORRECT_CONFIG_PARAMS,
+      GuardError
+    );
+    assert(iteractions > 0, INCORRECT_CONFIG_PARAMS, GuardError);
+    assert(iteractions % 2 === 0, INCORRECT_CONFIG_PARAMS, GuardError);
+
+    this.#algorithm = algorithm as ShaAlgorithms;
+    this.#iteractions = iteractions;
+
+    this.#updateSession();
+
+    const newConfig = `${algorithm}:${iteractions}`;
+
+    await BrowserStorage.set(
+      buildObject(Fields.GUARD_CONFIG, newConfig)
+    );
   }
 
   async setLogOutTimer(timer: number) {

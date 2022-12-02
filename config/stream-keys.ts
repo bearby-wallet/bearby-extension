@@ -41,6 +41,8 @@ export const MTypePopup = {
   SET_GAS_CONFIG: `@/${app}/set-gas-config`,
   SET_LOCK_TIMER: `@/${app}/set-lock-timer`,
   SET_PERIOD: `@/${app}/set-priod-offset`,
+  SET_GUARD_CONFIG: `@/${app}/set-guard-config`,
+
   TOGGLE_POPUP_ENABLED: `@/${app}/toggle-popup-emabled`,
   TOGGLE_FORMAT_ENABLED: `@/${app}/toggle-format-emabled`,
 
