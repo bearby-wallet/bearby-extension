@@ -1,5 +1,6 @@
 import type { AccountTypes } from 'config/account-type';
 import type { Balance } from './token';
+import type { ShaAlgorithms } from "config/sha-algorithms";
 
 
 export interface Account {
@@ -30,6 +31,8 @@ export interface KeyPair {
 export interface GuardType {
   isEnable: boolean;
   isReady: boolean;
+  algorithm: ShaAlgorithms;
+  iteractions: number;
 };
 
 export interface WordsPayloadToEncrypt {

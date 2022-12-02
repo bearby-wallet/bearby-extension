@@ -33,6 +33,20 @@ export async function createWallet(words: string, password: string, name: string
   return resolve;
 }
 
+export async function changePassword(password: string, algorithm: ShaAlgorithms, iteractions: number) {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.WALET_PASSWORD_CHANGE,
+    payload: {
+      password,
+      algorithm,
+      iteractions
+    }
+  }).send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}
+
 export async function getWalletState() {
   const data = await Message
     .signal(MTypePopup.GET_WALLET_STATE)

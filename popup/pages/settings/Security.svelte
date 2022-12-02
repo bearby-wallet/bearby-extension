@@ -3,9 +3,11 @@
 
   import { AccountTypes } from 'config/account-type';
 	import { setPhishingDetection } from 'popup/backend/settings';
+	import { changePassword } from 'app/backend/wallet';
 
 	import walletStore from 'popup/store/wallet';
 	import settingsStore from 'popup/store/settings';
+	import guardStore from 'app/store/guard';
 
 	import NavClose from '../../components/NavClose.svelte';
 	import Toggle from '../../components/Toggle.svelte';
@@ -13,17 +15,47 @@
   import Jumbotron from '../../components/Jumbotron.svelte';
   import ExportKeyModal from '../../modals/ExportKey.svelte';
 	import RevealPhraseModal from '../../modals/RevealPhrase.svelte';
+  import Guard from '../../components/Guard.svelte';
+
+	import { MIN_PASSWORD_LEN } from 'popup/config/account';
 
 
 	let phraseModal = false;
 	let keyModal = false;
+	let loading = false;
+  let passError = '';
+	let password = '';
+	let confirmPassword = '';
+	// guard
+	let algorithm = $guardStore.algorithm;
+	let iteractions = $guardStore.iteractions;
+	// guard
 
+	$: disabled = loading || !password || confirmPassword !== password;
 	$: account = $walletStore.identities[$walletStore.selectedAddress];
-	$: keybtndisbaled = account.type !== AccountTypes.PrivateKey && account.type !== AccountTypes.Seed;
+	$: keybtndisbaled = account.type !== AccountTypes.PrivateKey
+		&& account.type !== AccountTypes.Seed
+		&& account.type !== AccountTypes.Track;
 
 	const hanldeOnTogglePhishingDetection = async () => {
 		await setPhishingDetection();
 	};
+	const hanldeChangeGuard = (e: CustomEvent) => {
+    algorithm = e.detail.algorithm;
+    iteractions = e.detail.iteractions;
+  };
+	const handleSubmit = async (e: Event) => {
+		e.preventDefault();
+    loading = true;
+
+		try {
+      await changePassword(password, algorithm, iteractions);
+      loading = false;
+		} catch (err) {
+			passError = (err as Error).message;
+		}
+		loading = false;
+	}
 </script>
 
 <Modal
@@ -43,7 +75,6 @@
 <main>
 	<NavClose title={$_('security.title')}/>
 	<div>
-
 		<Jumbotron
 			title={$_('security.phrase.title')}
 			description={$_('security.phrase.description')}
@@ -79,6 +110,51 @@
 				/>
 			</div>
 		</Jumbotron>
+		<Jumbotron
+			title={$_('security.password.title')}
+			description={$_('security.password.description')}
+		>
+			<form on:submit={handleSubmit}>
+				<label>
+					<input
+						bind:value={password}
+						class:error="{Boolean(passError)}"
+						type="password"
+						class:loading={loading}
+						autocomplete="off"
+						disabled={loading}
+						placeholder={$_('restore.pass_placeholder')}
+						minlength={MIN_PASSWORD_LEN}
+						required
+					>
+					<b>
+						{passError}
+					</b>
+				</label>
+				<input
+					bind:value={confirmPassword}
+					type="password"
+					class:loading={loading}
+					autocomplete="off"
+					disabled={loading}
+					placeholder={$_('restore.conf_placeholder')}
+					minlength={MIN_PASSWORD_LEN}
+					required
+				>
+				<Guard
+					algorithm={algorithm}
+					iteractions={iteractions}
+					on:input={hanldeChangeGuard}
+				/>
+				<button
+					class="outline"
+					class:loading={loading}
+					disabled={disabled}
+				>
+					{$_('restore.btn')}
+				</button>
+			</form>
+		</Jumbotron>
 	</div>
 </main>
 
@@ -87,9 +163,30 @@
 
 	main {
 		height: 100vh;
-    overflow-y: scroll;
+		padding-block-end: 16px;
 
 		@include flex-center-top-column;
+
+		& > div {
+			overflow-y: scroll;
+		}
+	}
+	form {
+		@include flex-center-top-column;
+
+		& > label, input, button {
+			width: 100%;
+			max-width: 290px;
+		}
+		& > button {
+			margin-block-end: 16px;
+		}
+		& > input {
+			margin: 5px;
+		}
+		& > label > b {
+			color: var(--danger-color);
+		}
 	}
 	span {
 		&.warning {

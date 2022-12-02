@@ -1,7 +1,7 @@
 import { ShaAlgorithms } from 'config/sha-algorithms';
 
 
-export async function pbkdf2(password: Uint8Array, salt: Uint8Array, iterations: number) {
+export async function pbkdf2(password: Uint8Array, salt: Uint8Array, iterations: number, algorithms = ShaAlgorithms.Sha512) {
   const passphraseKey = await globalThis.crypto.subtle.importKey(
     'raw', 
     password, 
@@ -14,12 +14,12 @@ export async function pbkdf2(password: Uint8Array, salt: Uint8Array, iterations:
       salt,
       iterations,
       name: 'PBKDF2',
-      hash: ShaAlgorithms.Sha512
+      hash: algorithms
     },
     passphraseKey,
     {
       name: "HMAC",
-      hash: ShaAlgorithms.Sha512,
+      hash: algorithms,
       length: 512
     },
     true,

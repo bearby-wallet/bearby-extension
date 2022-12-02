@@ -87,6 +87,7 @@
 
   div.adv-wapr {
     display: none;
+    margin-block-end: 5px;
 
     &.show {
       @include flex-center-column;
@@ -99,6 +100,7 @@
   }
   p.advanced {
     cursor: pointer;
+    color: var(--secondary-color);
 
     &:hover {
       color: var(--primary-color);

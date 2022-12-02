@@ -258,7 +258,7 @@ export class Guard {
       return await sha256(passwordBytes);
     }
 
-    const key = await pbkdf2(passwordBytes, salt, this.#iteractions);
+    const key = await pbkdf2(passwordBytes, salt, this.#iteractions, this.#algorithm);
 
     return await sha256(key);
   }

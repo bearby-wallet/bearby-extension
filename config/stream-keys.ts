@@ -15,6 +15,7 @@ export const MTypePopup = {
   CREATE_WALLET: `@/${app}/create-wallet`,
   UNLOCK_WALLET: `@/${app}/unlock-wallet`,
   WALET_LOGOUT: `@/${app}/wallet-logout`,
+  WALET_PASSWORD_CHANGE: `@/${app}/change-password`,
 
   REMOVE_ACCOUNT: `@/${app}/remove-account`,
   SELECT_ACCOUNT: `@/${app}/select-account`,

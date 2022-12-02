@@ -273,6 +273,10 @@
       "title": "Secret Recovery Phrase",
       "warn": "DO NOT share this phrase with anyone! These words can be used to steal all your accounts."
     },
+    "password": {
+      "title": "Change Password",
+      "description": "Change password and Algorithms for encryption!"
+    },
     "phrase": {
       "title": "Reveal Secret Recovery Phrase",
       "description": "If you ever change browsers or move computers, you will need this Secret Recovery Phrase to access your accounts. Save them somewhere safe and secret.",
