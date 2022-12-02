@@ -15,7 +15,8 @@
   "permissions": [
     "storage",
     "notifications",
-    "activeTab"
+    "activeTab",
+    "https://test.massa.net/api/v2"
   ],
   "content_scripts": [
     {
