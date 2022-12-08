@@ -22,9 +22,9 @@
     }
   });
 
-  const hanldeOnAdd = (w: string) => {
+  const hanldeOnAdd = (w: string, index: number) => {
     words = [...words, w];
-    shuffled = shuffled.filter((el) => el !== w);
+    shuffled = shuffled.filter((_, i) => i !== index);
     disabled = words.join(' ') !== $wordsStore.join(' ');
   };
   const hanldeOnRemove = (word: string) => {
@@ -59,8 +59,8 @@
     {/each}
   </div>
   <div class="wrapper">
-    {#each shuffled as word}
-      <div on:mouseup={() => hanldeOnAdd(word)}>
+    {#each shuffled as word, index}
+      <div on:mouseup={() => hanldeOnAdd(word, index)}>
         <PickButton text={word} />
       </div>
     {/each}

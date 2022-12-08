@@ -33,7 +33,7 @@
     "service_worker": "background.js"
   },
   "action": {
-    "default_title": "ZilPay",
+    "default_title": "bearby",
     "default_popup": "index.html"
   }
 }
