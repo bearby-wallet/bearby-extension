@@ -18,7 +18,8 @@
     getNetworkConfig,
     addNodeAPI,
     sortNodes,
-    removeNode
+    removeNode,
+    resetNetworkConfig
   } from 'popup/backend/netwrok';
   import { setDowngradeNodeFlag, setPeriodOffset } from 'popup/backend/settings';
 
@@ -69,6 +70,10 @@
     await setDowngradeNodeFlag(!$settingsStore.downgradeNode);
   }
 
+  async function resetConfigNodes() {
+    networkConfig = await resetNetworkConfig();
+  }
+
   onMount(async() => {
     networkConfig = await getNetworkConfig();
   });
@@ -99,6 +104,12 @@
         title={$_('netwrok.config.title')}
         description={$_('netwrok.config.description')}
       >
+        <p
+          class="reset"
+          on:mouseup={resetConfigNodes}
+        >
+          {$_('netwrok.config.reset')}
+        </p>
         <select on:input={handleSortNodes}>
           {#each networkConfig[$netwrokStore].PROVIDERS as http}
             <option value={http}>
@@ -178,6 +189,14 @@
   button {
     margin-block-start: 5px;
     width: 100%;
+  }
+  p.reset {
+    cursor: pointer;
+    margin: 5px;
+
+    &:hover {
+      color: var(--primary-color);
+    }
   }
   div.toggle {
     display: flex;

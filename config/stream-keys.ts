@@ -30,6 +30,7 @@ export const MTypePopup = {
 
   SELECT_NETWORK: `@/${app}/select-network`,
   GET_NETWORK_CONFIG: `@/${app}/get-network-config`,
+  RESET_NETWORK_CONFIG: `@/${app}/reset-network-config`,
   ADD_NODE: `@/${app}/add-network-node`,
   SORT_NODES: `@/${app}/sort-nodes-apis`,
   REMOVE_NODES: `@/${app}/remove-nodes-api`,

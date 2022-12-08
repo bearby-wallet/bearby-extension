@@ -76,6 +76,23 @@ export class BackgroundNetwork {
     }
   }
 
+  async resetConfig(sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+
+      await this.#core.netwrok.reset();
+
+      return sendResponse({
+        resolve: this.#core.netwrok.config
+      });
+    } catch (err) {
+      console.error(err);
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
   async getNetwrokConfig(sendResponse: StreamResponse) {
     return sendResponse({
       resolve: this.#core.netwrok.config

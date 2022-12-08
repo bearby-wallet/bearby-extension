@@ -125,7 +125,8 @@
       "title": "Node settings",
       "description": "All nodes are automatically updated and a few of the fastest ones are selected",
       "add_placeholder": "Add a new Node (public-API)",
-      "remove": "Remove current public-API"
+      "remove": "Remove current public-API",
+      "reset": "Reset"
     },
     "downgrade": {
       "title": "Smart request",

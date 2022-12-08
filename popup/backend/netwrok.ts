@@ -25,6 +25,13 @@ export async function getNetworkConfig() {
   return warpMessage(data) as NetwrokConfig;
 }
 
+export async function resetNetworkConfig() {
+  const data = await Message
+    .signal(MTypePopup.RESET_NETWORK_CONFIG)
+    .send();
+  return warpMessage(data) as NetwrokConfig;
+}
+
 export async function addNodeAPI(node: string) {
   const data = await new Message<SendResponseParams>({
     type: MTypePopup.ADD_NODE,
