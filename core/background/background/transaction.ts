@@ -104,7 +104,8 @@ export class BackgroundTransaction {
       const confirmParams: ConfirmParams = {
         ...params,
         tokenAmount: String(params.amount),
-        fee: Number(gasLimit) * Number(params.gasPrice),
+        fee: isNaN(Number(params.fee))
+          ? Number(gasLimit) * Number(params.gasPrice) : Number(params.fee),
         recipient: params.toAddr
       };
 
@@ -376,7 +377,6 @@ export class BackgroundTransaction {
           expiryPeriod,
           String(confirmParams.code),
           confirmParams.gasLimit,
-          confirmParams.gasPrice,
           confirmParams.datastore
         ).bytes();
       case OperationsType.CallSC:

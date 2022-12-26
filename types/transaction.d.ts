@@ -33,6 +33,7 @@ export interface MinTransactionParams {
   //
   gasMultiplier? : number;
   icon?: string;
+  fee?: string;
   uuid?: string;
   title?: string;
   domain?: string;

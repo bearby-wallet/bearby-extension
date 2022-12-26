@@ -117,7 +117,6 @@ export class ExecuteSmartContractBuild {
 
   contractDataBase64: string;
   gasLimit: number;
-  gasPrice: number;
   fee: number;
   expirePeriod: number;
   datastore = new Map<Uint8Array, Uint8Array>();
@@ -127,12 +126,10 @@ export class ExecuteSmartContractBuild {
     expirePeriod: number,
     contractDataBase64: string,
     gasLimit: number,
-    gasPrice: number,
     datastore?: KeyValue<string>
   ) {
     this.contractDataBase64 = contractDataBase64;
     this.gasLimit = Number(gasLimit);
-    this.gasPrice = Number(gasPrice);
     this.fee = Number(fee);
     this.expirePeriod = Number(expirePeriod);
 
@@ -153,25 +150,29 @@ export class ExecuteSmartContractBuild {
     const feeEncoded = new VarintEncode().encode(this.fee);
 		const expirePeriodEncoded = new VarintEncode().encode(this.expirePeriod);
 		const typeIdEncoded = new VarintEncode().encode(ExecuteSmartContractBuild.operation);
-    const gasPriceEncoded = new VarintEncode().encode(this.gasPrice);
     const maxGasEncoded = new VarintEncode().encode(this.gasLimit);
-    const datastoreSerialized = new Uint8Array();
+    let datastoreSerialized = new Uint8Array();
 
-    /// TODO: make it works, datastore is params of contract.
-    // for (let [encodedKeyBytes, encodedValueBytes] of Object.entries(this.datastore)) {
-    //   const encodedKeyLen = new VarintEncode().encode(encodedKeyBytes.length);
-    //   const encodedValueLen = new VarintEncode().encode(encodedValueBytes.length);
-    //   datastoreSerialized = Buffer.concat([encodedKeyLen, encodedKeyBytes, encodedValueLen, encodedValueBytes]);
-    // }
+    for (let [encodedKeyBytes, encodedValueBytes] of this.datastore) {
+      const encodedKeyLen = new VarintEncode().encode(encodedKeyBytes.length);
+      const encodedValueLen = new VarintEncode().encode(encodedValueBytes.length);
 
-    const datastoreSerializedLen = new VarintEncode().encode(datastoreSerialized.length);
+      datastoreSerialized = Uint8Array.from([
+        ...datastoreSerialized,
+        ...encodedKeyLen,
+        ...encodedKeyBytes,
+        ...encodedValueLen,
+        ...encodedValueBytes
+      ]);
+    }
+
+    const datastoreSerializedLen = new VarintEncode().encode(this.datastore.size);
 
     return Uint8Array.from([
       ...feeEncoded,
       ...expirePeriodEncoded,
       ...typeIdEncoded,
       ...maxGasEncoded,
-      ...gasPriceEncoded,
       ...dataLengthEncoded,
       ...decodedScBinaryCode,
       ...datastoreSerializedLen,
