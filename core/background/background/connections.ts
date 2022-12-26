@@ -1,4 +1,4 @@
-import type { AppConnection, ContentWalletData, StreamResponse } from "types";
+import type { AppConnection, ContentWalletData, RPCBody, StreamResponse } from "types";
 import type { BackgroundState } from "./state";
 import type { BaseError } from "lib/error";
 
@@ -131,7 +131,6 @@ export class BackgroundConnection {
     const connected = this.#core.connections.has(domain);
     const account = this.#core.account.selectedAccount;
     const base58 = (connected && enabled && account) ? account.base58 : undefined;
-    const providers = connected ? this.#core.netwrok.providers.slice(0,1) : [];
     const net = connected ? this.#core.netwrok.selected : undefined;
 
     const data: ContentWalletData = {
@@ -139,14 +138,30 @@ export class BackgroundConnection {
       connected,
       enabled,
       net,
-      providers,
       period: this.#core.worker.period,
-      phishing: this.#core.settings.phishing.phishingDetectionEnabled,
-      smartRequest: this.#core.settings.network.downgrade
+      phishing: this.#core.settings.phishing.phishingDetectionEnabled
     };
     return sendResponse({
       resolve: data
     });
+  }
+
+  async makeProxyRequest(bodies: RPCBody[], sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+      const rpcBodies = bodies.map(
+        ({ method, params }) => this.#core.massa.provider.buildBody(method, params)
+      );
+      const respone = await this.#core.massa.sendJson(...rpcBodies);
+
+      return sendResponse({
+        resolve: respone
+      });
+    } catch (err) {
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
   }
 
   async addConnectAppConfirm(app: AppConnection, sendResponse: StreamResponse) {

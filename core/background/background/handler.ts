@@ -28,6 +28,9 @@ export function startBackground(core: BackgroundState) {
       case MTypeTab.GET_DATA:
         connections.resolveContentData(msg.payload.domain, sendResponse);
         return true;
+      case MTypeTab.REQUEST_RPC_PROXY:
+        connections.makeProxyRequest(msg.payload.bodies, sendResponse);
+        return true;
       case MTypeTab.CONNECT_APP:
         connections.addConnectAppConfirm(msg.payload, sendResponse);
         return true;

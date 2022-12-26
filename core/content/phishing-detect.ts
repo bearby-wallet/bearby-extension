@@ -1,5 +1,3 @@
-import type { ContentProvider } from './http-provider';
-
 import { getExtensionURL } from 'lib/runtime/get-url';
 
 
@@ -14,7 +12,7 @@ export class PhishingDetect {
 
   phishing = false;
 
-  async check(provider: ContentProvider) {
+  async check() {
     // TODO: deploy a contract which check the domain on phishing domains
     // console.log(
     //   `host: ${this.#host}, url: ${this.#url}, checked: ${this.#checked}, providers: ${provider.providers.join('.')}`

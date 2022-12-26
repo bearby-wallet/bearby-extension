@@ -10,7 +10,6 @@ import { TabStream } from "lib/stream/tab-stream";
 import { Message } from "lib/stream/message";
 import { warpMessage } from "lib/stream/warp-message";
 import { ContentMessage } from "lib/stream/secure-message";
-import { ContentProvider } from "./http-provider";
 import { assert } from "lib/assert";
 import { WALLET_NOT_CONNECTED, WALLET_NOT_ENABLED } from "./errors";
 import { PhishingDetect } from "./phishing-detect";
@@ -20,7 +19,6 @@ export class ContentTabStream {
   readonly #stream: TabStream;
   readonly #domain = globalThis.document.domain;
 
-  #provider: ContentProvider;
   #phishing = new PhishingDetect();
   #connected = false;
 
@@ -37,7 +35,6 @@ export class ContentTabStream {
   }
 
   constructor() {
-    this.#provider = new ContentProvider(true, []);
     this.#stream = new TabStream(MTypeTabContent.CONTENT);
     this.#stream.listen((msg) => this.#fromInpage(msg));
     this.#updateState();
@@ -72,33 +69,20 @@ export class ContentTabStream {
   async #proxy(payload: ProxyContentType) {
     const { body, uuid } = payload;
     const recipient = MTypeTabContent.INJECTED;
-    const data = await new Message<SendResponseParams>({
-      type: MTypeTab.GET_DATA,
-      payload: {
-        domain: this.domain
-      }
-    }).send();
-    const bodies = body.map(
-      ({ method, params }) => this.#provider.buildBody(method, params)
-    );
 
     try {
-      const resolve = warpMessage(data) as ContentWalletData;
-
-      this.#provider = new ContentProvider(
-        resolve.smartRequest,
-        resolve.providers
-      );
-
-      assert(resolve.connected, WALLET_NOT_CONNECTED);
-      assert(resolve.enabled, WALLET_NOT_ENABLED);
-
-      const responses = await this.#provider.sendJson(...bodies);
+      const responses = await new Message<SendResponseParams>({
+        type: MTypeTab.REQUEST_RPC_PROXY,
+        payload: {
+          bodies: body
+        }
+      }).send();
+      const resolve = warpMessage(responses) as ContentWalletData;
 
       return new ContentMessage({
         type: MTypeTab.CONTENT_PROXY_RESULT,
         payload: {
-          resolve: responses,
+          resolve,
           uuid
         }
       }).send(this.#stream, recipient);
@@ -125,18 +109,13 @@ export class ContentTabStream {
     this.#phishing.phishing = resolve.phishing;
     this.#connected = resolve.connected;
 
-    this.#provider = new ContentProvider(
-      resolve.smartRequest,
-      resolve.providers
-    );
-
     new ContentMessage({
       type: MTypeTab.GET_DATA,
       payload: resolve,
     }).send(this.#stream, MTypeTabContent.INJECTED);
 
     if (!this.#phishing.checked) {
-      await this.#phishing.check(this.#provider);
+      // TODO: make SC for pthishing detect.
     }
   }
 }
