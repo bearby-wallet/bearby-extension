@@ -34,7 +34,7 @@ export class TabsMessage {
   public async send() {
     // Get all active tabs.
     const tabs = (await TabsMessage.tabs())
-      .filter((tab) => !tab.url?.includes('chrome://'));
+      .filter((tab) => tab.url && !tab.url.includes('chrome://'));
 
     try {
       for (let index = 0; index < tabs.length; index++) {

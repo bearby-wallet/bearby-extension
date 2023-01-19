@@ -54,12 +54,20 @@ export class NetworkSettings {
   }
 
   async sync(content?: string | null) {
-    console.log(content);
     if (!content) {
       return this.reset();
     }
 
-    // TODO: make sync.
+    try {
+      const parsed = JSON.parse(content);
+
+      this.#downgrade = parsed.downgrade;
+      this.#https = parsed.https;
+      this.#abortTimeout = parsed.abortTimeout;
+      this.#numberOfNodes = parsed.numberOfNodes;
+    } catch {
+      await this.reset();
+    }
   }
 
   async reset() {

@@ -26,6 +26,7 @@ export class WorkerController {
     
   #delay = WORKER_POOLING;
   #period = 0;
+  #cycle = 0;
 
   get period() {
     return this.#period;
@@ -74,6 +75,7 @@ export class WorkerController {
     }
 
     const newPeriod = Number(result.last_slot.period);
+    const newCycle = Number(result.current_cycle);
 
     if (newPeriod <= lastPeriod) {
       return;
@@ -87,11 +89,15 @@ export class WorkerController {
       payload: newPeriod
     }).send();
 
-    if (result.connected_nodes && this.#settings.network.state.downgrade) {
-      const nodes = Object.values(result.connected_nodes).map(
-        ([url]) => String(url)
-      );
-      await this.#updateProviders(nodes);
+    if (newCycle > this.#cycle) {
+      await this.#setCycle(newCycle);
+
+      if (result.connected_nodes && this.#settings.network.state.downgrade) {
+        const nodes = Object.values(result.connected_nodes).map(
+          ([url]) => String(url)
+        );
+        await this.#updateProviders(nodes);
+      }
     }
   }
 
@@ -174,13 +180,21 @@ export class WorkerController {
   async #updateProviders(connectedNodes: string[]) {
     if (connectedNodes.length === 0) return;
 
-    const { URL } = globalThis;
     const config = this.#network.config;
     const hosts = config[this.#network.selected].PROVIDERS;
+    const newNodes = connectedNodes
+      .map((ip) => {
+        const { https } = this.#settings.network.state;
+        let url = isIPV6(ip) ? `[${ip}]` : `${ip}`;
 
-    // console.log(hosts, connectedNodes);
+        return https ? `https://${url}` : `http://${url}:${NODE_PORT}`;
+      });
+    const newHosts = [...hosts, ...newNodes].slice(0, this.#settings.network.state.numberOfNodes);
+    const uniqueHosts = new Set(newHosts);
 
-    // await this.#network.setConfig(config);
+    config[this.#network.selected].PROVIDERS = Array.from(uniqueHosts);
+
+    await this.#network.setConfig(config);
   }
 
   async sync() {
@@ -204,6 +218,14 @@ export class WorkerController {
 
     await BrowserStorage.set(
       buildObject(Fields.PERIOD, String(this.#period))
+    );
+  }
+
+  async #setCycle(cycle: number) {
+    this.#cycle = cycle;
+
+    await BrowserStorage.set(
+      buildObject(Fields.CYCLE, String(this.#cycle))
     );
   }
 

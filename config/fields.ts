@@ -22,5 +22,6 @@ export enum Fields {
   CONTACTS_LIST = 'contacts-list',
   TOKENS = 'tokens-list',
   PERIOD = 'current-period',
+  CYCLE = 'chain-cycle',
   GAS = 'gas-config'
 }
