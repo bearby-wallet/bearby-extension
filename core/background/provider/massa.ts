@@ -100,7 +100,7 @@ export class MassaControl {
 
   async sendJson(...body: RPCBody[]) {
     const request = this.provider.json(...body);
-    const timeout = 15000;
+    const timeout = this.#settings.network.state.abortTimeout;
     const abortController = new AbortController();
     const id = setTimeout(() => abortController.abort(), timeout);
 
