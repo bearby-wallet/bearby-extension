@@ -20,7 +20,8 @@ import { PromptService } from "lib/prompt";
 import { MTypeTab } from "config/stream-keys";
 import { TabsMessage } from "lib/stream/tabs-message";
 import { INCORRECT_PARAM, REJECTED } from "background/connections/errors";
-import { base58Encode, pubKeyFromBytes } from "lib/address";
+import { base58Encode, isBase58Address, pubKeyFromBytes } from "lib/address";
+import { INVALID_BASE58_ADDRESS } from "lib/address/errors";
 
 
 export class BackgroundTransaction {
@@ -74,6 +75,8 @@ export class BackgroundTransaction {
   async addToConfirm(params: MinTransactionParams, sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();
+
+      assert(await isBase58Address(params.toAddr), INVALID_BASE58_ADDRESS);
 
       if (params.domain) {
         const has = this.#core.connections.has(params.domain);

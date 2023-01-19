@@ -16,7 +16,7 @@
 
 	import walletStore from 'popup/store/wallet';
 	import tokensStore from 'popup/store/tokens';
-    import { AccountTypes } from 'config/account-type';
+	import { AccountTypes } from 'config/account-type';
 
 
 	let uuid = uuidv4();

@@ -29,6 +29,7 @@
   };
 
 	let uuid = uuidv4();
+  let error = '';
   let loading = false;
   let amount = 0;
   let recipient = params.recipient;
@@ -47,10 +48,12 @@
 
 
   function hanldeOnInput(event: CustomEvent) {
+    error = '';
     amount = event.detail;
   }
 
   const onSelectAccount = async (event: CustomEvent) => {
+    error = '';
 		accountIndex = event.detail;
     const ctx = document.getElementById(uuid);
 
@@ -63,16 +66,19 @@
 	};
 
   const onSelectToken = async (event: CustomEvent) => {
+    error = '';
     selectedToken = event.detail;
     tokensModal = !tokensModal;
   };
 
   function onSelectRecipient(event: CustomEvent) {
+    error = '';
     recipient = event.detail;
     contactsModal = !contactsModal;
   }
 
   function onInputRecipient(e: Event) {
+    error = '';
     recipient = (e.target as HTMLInputElement).value;
   }
 
@@ -86,6 +92,7 @@
       );
       push('/confirm');
     } catch (err) {
+      error = (err as Error).message;
       console.error(err);
     }
     loading = false;
@@ -198,6 +205,13 @@
           on:input={hanldeOnInput}
         />
       </div>
+      {#if error}
+        <div class="error-warp">
+          <b class="error">
+            {error}
+          </b>
+        </div>
+      {/if}
       <button
         class="outline"
         class:loading={loading}
@@ -225,6 +239,15 @@
       padding-right: 5px;
     }
 	}
+  div.error-warp {
+    width: 290px;
+    text-align: center;
+
+    & > .error {
+      word-wrap: break-word;
+      color: var(--danger-color);
+    }
+  }
   button {
     width: 100%;
     max-width: 310px;
