@@ -3,6 +3,7 @@ import type { Themes } from "config/theme";
 import type { BaseError } from "lib/error";
 import type { GasState, StreamResponse } from "types";
 import type { BackgroundState } from "./state";
+import { NETWORK, NODE_PORT } from "config/network";
 
 
 export class BackgroundSettings {
@@ -81,6 +82,23 @@ export class BackgroundSettings {
       this.#core.guard.checkSession();
 
       await this.#core.settings.network.setHttps(flag);
+
+      const { URL } = globalThis;
+      const [defaultHost] = NETWORK[this.#core.netwrok.selected].PROVIDERS;
+      const config = this.#core.netwrok.config;
+      const newProviders = config[this.#core.netwrok.selected]
+        .PROVIDERS
+        .map((node, index) => {
+          if (node === defaultHost) {
+            return defaultHost;
+          }
+
+          const host = new URL(node).host.replace(`:${NODE_PORT}`, '');
+
+          return flag ? `https://${host}` : `http://${host}:${NODE_PORT}`;
+        });
+      
+      config[this.#core.netwrok.selected].PROVIDERS = newProviders;
 
       return sendResponse({
         resolve: this.#core.state

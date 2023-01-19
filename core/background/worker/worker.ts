@@ -5,11 +5,11 @@ import type { MassaControl } from "background/provider";
 import { WORKER_POOLING } from "config/common";
 import { BrowserStorage, buildObject } from "lib/storage";
 import { Fields } from "config/fields";
-import  { TransactionsController, HASH_OUT_OF_STORAGE } from "background/transactions";
+import { TransactionsController, HASH_OUT_OF_STORAGE } from "background/transactions";
 import { NotificationController } from "lib/runtime/notifications";
 import { MTypeTab } from "config/stream-keys";
 import { TabsMessage } from "lib/stream/tabs-message";
-import { NODE_PORT } from "config/network";
+import { NETWORK, NODE_PORT } from "config/network";
 import { isIPV6 } from "lib/validator/ip";
 
 
@@ -189,7 +189,8 @@ export class WorkerController {
 
         return https ? `https://${url}` : `http://${url}:${NODE_PORT}`;
       });
-    const newHosts = [...hosts, ...newNodes].slice(0, this.#settings.network.state.numberOfNodes);
+    const [defaultHost] = NETWORK[this.#network.selected].PROVIDERS;
+    const newHosts = [defaultHost, ...hosts, ...newNodes].slice(0, this.#settings.network.state.numberOfNodes);
     const uniqueHosts = new Set(newHosts);
 
     config[this.#network.selected].PROVIDERS = Array.from(uniqueHosts);

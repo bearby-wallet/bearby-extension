@@ -80,6 +80,7 @@
 
   async function toggleHttps() {
     await setHttpsOnly(!$settingsStore.network.https);
+    networkConfig = await getNetworkConfig();
   }
 
   async function handleAbortTimeout(event: Event) {
