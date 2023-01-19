@@ -12,7 +12,7 @@ export enum Fields {
   UI_THEME = 'ui-theme',
   SELECTED_CURRENCY = 'selected-currency',
   LOCALE = 'locale',
-  NETWORK_DOWNGRADE = 'network-downgrade-flag',
+  NETWORK_SETTINGS = 'network-settings',
   PERIOD_OFFSET = 'period-offset',
   PHISHING_DETECTION = 'phishing-detection-enabled',
   POPUP_ENABLED = 'enabled-popup',

@@ -21,13 +21,21 @@
     removeNode,
     resetNetworkConfig
   } from 'popup/backend/netwrok';
-  import { setDowngradeNodeFlag, setPeriodOffset } from 'popup/backend/settings';
+  import { setAbortTimeout, setDowngradeNodeFlag, setHttpsOnly, setNumberNodes, setPeriodOffset } from 'popup/backend/settings';
+  import { PERIOD_OFFSET } from 'config/common';
+  import { NETWORK_INIT_STATE } from 'config/network';
+
 
   const [,, custom] = NETWORK_KEYS;
+  const SECONDS_DEMON = 1000;
 
   let nodeURL = '';
   let networkConfig: NetwrokConfig;
   let periodOffset = $settingsStore.periodOffset;
+
+  
+  $: abortTimeout = $settingsStore.network.abortTimeout / SECONDS_DEMON;
+
 
   async function handleOnSelectNet(event: Event) {
     const net = (event.target as HTMLInputElement).value;
@@ -67,7 +75,21 @@
   }
 
   async function toggleDowngrade() {
-    await setDowngradeNodeFlag(!$settingsStore.downgradeNode);
+    await setDowngradeNodeFlag(!$settingsStore.network.downgrade);
+  }
+
+  async function toggleHttps() {
+    await setHttpsOnly(!$settingsStore.network.https);
+  }
+
+  async function handleAbortTimeout(event: Event) {
+    const abortTimeout = Number((event.target as HTMLInputElement).value);
+    await setAbortTimeout(Number(abortTimeout) * SECONDS_DEMON);
+  }
+
+  async function handleNodes(event: Event) {
+    const nodes = Number((event.target as HTMLInputElement).value);
+    await setNumberNodes(Number(nodes));
   }
 
   async function resetConfigNodes() {
@@ -152,7 +174,7 @@
           {$_('netwrok.downgrade.toggle')}
         </b>
         <Toggle
-          checked={$settingsStore.downgradeNode}
+          checked={$settingsStore.network.downgrade}
           on:toggle={toggleDowngrade}
         />
       </div>
@@ -160,9 +182,79 @@
   </div>
   <div>
     <Jumbotron
+      title={$_('netwrok.https.title')}
+      description={$_('netwrok.https.description')}
+    >
+      <div class="toggle">
+        <b>
+          {$_('netwrok.https.toggle')}
+        </b>
+        <Toggle
+          checked={$settingsStore.network.https}
+          on:toggle={toggleHttps}
+        />
+      </div>
+    </Jumbotron>
+  </div>
+  <div>
+    <Jumbotron
+			title={$_('netwrok.timeout.title')}
+			description={$_('netwrok.timeout.description')}
+		>
+      <p
+        class="reset"
+        on:mouseup={() => setAbortTimeout(NETWORK_INIT_STATE.abortTimeout)}
+      >
+        {$_('netwrok.config.reset')}
+      </p>
+      <div class="input">
+        <label>
+          <input
+            value={abortTimeout}
+            type="number"
+            min={1}
+            max={15}
+            on:input={handleAbortTimeout}
+          >
+        </label>
+      </div>
+		</Jumbotron>
+  </div>
+  <div>
+    <Jumbotron
+			title={$_('netwrok.nodes.title')}
+			description={$_('netwrok.nodes.description')}
+		>
+    <p
+      class="reset"
+      on:mouseup={() => setNumberNodes(NETWORK_INIT_STATE.numberOfNodes)}
+    >
+      {$_('netwrok.config.reset')}
+    </p>
+      <div class="input">
+        <label>
+          <input
+            bind:value={$settingsStore.network.numberOfNodes}
+            type="number"
+            min={1}
+            max={200}
+            on:input={handleNodes}
+          >
+        </label>
+      </div>
+		</Jumbotron>
+  </div>
+  <div>
+    <Jumbotron
 			title={$_('netwrok.period.title')}
 			description={$_('netwrok.period.description')}
 		>
+    <p
+      class="reset"
+      on:mouseup={() => setPeriodOffset(PERIOD_OFFSET)}
+    >
+      {$_('netwrok.config.reset')}
+    </p>
       <div class="input">
         <label>
           <input
@@ -193,6 +285,7 @@
   p.reset {
     cursor: pointer;
     margin: 5px;
+    color: var(--warning-color);
 
     &:hover {
       color: var(--primary-color);

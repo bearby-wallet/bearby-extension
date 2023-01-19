@@ -133,25 +133,15 @@ export class NetworkControl {
   }
 
   async removeProvider(node: string) {
+    if (node === NETWORK[this.selected].PROVIDERS[0]) {
+      return;
+    }
+
     const providers = this.config[this.selected].PROVIDERS;
 
     this.#config[this.selected].PROVIDERS = providers.filter(
       (n) => node !== n
     );
-
-    await BrowserStorage.set(
-      buildObject(Fields.NETWROK_CONFIG, this.config)
-    );
-  }
-
-  async downgradeNodeStatus(node: string) {
-    const chunk = this.providers.sort((a, b) => {
-      if (a === node) return 1;
-      if (b === node) return -1;
-      return 0;
-    });
- 
-    this.#config[this.selected].PROVIDERS = chunk;
 
     await BrowserStorage.set(
       buildObject(Fields.NETWROK_CONFIG, this.config)

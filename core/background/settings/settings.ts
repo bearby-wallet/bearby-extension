@@ -27,7 +27,7 @@ export class SettingsControl {
       currency: this.currencies.selected,
       locale: this.locale.selected,
       theme: this.theme.selected,
-      downgradeNode: this.network.downgrade,
+      network: this.network.state,
       periodOffset: this.period.periodOffset,
       phishing: this.phishing.phishingDetectionEnabled,
       popup: this.popup.enabledPopup,
@@ -42,7 +42,7 @@ export class SettingsControl {
       Fields.PHISHING_DETECTION,
       Fields.UI_THEME,
       Fields.PERIOD_OFFSET,
-      Fields.NETWORK_DOWNGRADE,
+      Fields.NETWORK_SETTINGS,
       Fields.POPUP_ENABLED,
       Fields.FORMAT_ENABLED
     ) as StorageKeyValue;
@@ -52,7 +52,7 @@ export class SettingsControl {
     await this.phishing.sync(data[Fields.PHISHING_DETECTION]);
     await this.theme.sync(data[Fields.UI_THEME]);
     await this.period.sync(data[Fields.PERIOD_OFFSET]);
-    await this.network.sync(data[Fields.NETWORK_DOWNGRADE]);
+    await this.network.sync(data[Fields.NETWORK_SETTINGS]);
     await this.popup.sync(data[Fields.POPUP_ENABLED]);
     await this.format.sync(data[Fields.FORMAT_ENABLED]);
   }

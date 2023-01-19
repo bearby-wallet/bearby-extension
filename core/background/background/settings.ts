@@ -44,6 +44,54 @@ export class BackgroundSettings {
     }
   }
 
+  async setNumberOfNodes(nodes: number, sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+
+      await this.#core.settings.network.setNumberOfNodes(nodes);
+
+      return sendResponse({
+        resolve: this.#core.state
+      });
+    } catch (err) {
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
+  async setAbortTimeout(seconds: number, sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+
+      await this.#core.settings.network.setAbortTimeout(seconds);
+
+      return sendResponse({
+        resolve: this.#core.state
+      });
+    } catch (err) {
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
+  async setHttpsOnly(flag: boolean, sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+
+      await this.#core.settings.network.setHttps(flag);
+
+      return sendResponse({
+        resolve: this.#core.state
+      });
+    } catch (err) {
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
   async setGasConfig(config: GasState, sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();

@@ -9,7 +9,7 @@ import  { TransactionsController, HASH_OUT_OF_STORAGE } from "background/transac
 import { NotificationController } from "lib/runtime/notifications";
 import { MTypeTab } from "config/stream-keys";
 import { TabsMessage } from "lib/stream/tabs-message";
-import { NODES_SLICE, NODE_PORT } from "config/network";
+import { NODE_PORT } from "config/network";
 import { isIPV6 } from "lib/validator/ip";
 
 
@@ -87,7 +87,7 @@ export class WorkerController {
       payload: newPeriod
     }).send();
 
-    if (result.connected_nodes && this.#settings.network.downgrade) {
+    if (result.connected_nodes && this.#settings.network.state.downgrade) {
       const nodes = Object.values(result.connected_nodes).map(
         ([url]) => String(url)
       );
@@ -176,24 +176,11 @@ export class WorkerController {
 
     const { URL } = globalThis;
     const config = this.#network.config;
-    const hosts = config[this.#network.selected].PROVIDERS
-      .filter((url) => {
-        try {
-          return Boolean(new URL(url));
-        } catch {
-          return false;
-        }
-      });
-    const newProviders = connectedNodes
-      .filter((n) => !hosts.includes(n))
-      .map((n) => isIPV6(n) ? `http://[${n}]:${NODE_PORT}` : `http://${n}:${NODE_PORT}`)
-      .concat(config[this.#network.selected].PROVIDERS);
-    const newNodesSet = new Set(newProviders);
-    const nodes = Array.from(newNodesSet);
+    const hosts = config[this.#network.selected].PROVIDERS;
 
-    config[this.#network.selected].PROVIDERS = nodes.slice(0, NODES_SLICE);
+    // console.log(hosts, connectedNodes);
 
-    await this.#network.setConfig(config);
+    // await this.#network.setConfig(config);
   }
 
   async sync() {

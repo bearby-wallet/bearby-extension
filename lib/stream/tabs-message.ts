@@ -33,7 +33,8 @@ export class TabsMessage {
    */
   public async send() {
     // Get all active tabs.
-    const tabs = await TabsMessage.tabs();
+    const tabs = (await TabsMessage.tabs())
+      .filter((tab) => !tab.url?.includes('chrome://'));
 
     try {
       for (let index = 0; index < tabs.length; index++) {
@@ -45,6 +46,7 @@ export class TabsMessage {
         Runtime.tabs.sendMessage(Number(tab.id), deserialized);
       }
     } catch (err) {
+      console.error('TabsMessage', err);
       // If not tabs with injected script.
     }
   }

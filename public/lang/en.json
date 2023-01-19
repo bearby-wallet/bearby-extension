@@ -129,9 +129,22 @@
       "reset": "Reset"
     },
     "downgrade": {
-      "title": "Smart request",
+      "title": "Smart Request",
       "description": "The wallet automatically collecte node in network and chose faster option.",
       "toggle": "Enable smart request"
+    },
+    "timeout": {
+      "title": "Abort Timeout",
+      "description": "The time in seconds for the request to be executed."
+    },
+    "nodes": {
+      "title": "Number of nodes",
+      "description": "maximum number of nodes to use."
+    },
+    "https": {
+      "title": "Https only",
+      "description": "Protects your requests by the protocol Https/TLS (not all nodes support)",
+      "toggle": "Enable Https Request"
     },
     "period": {
       "title": "Period offset",

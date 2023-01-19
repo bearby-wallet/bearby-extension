@@ -1,4 +1,4 @@
-import type { NetwrokConfig } from 'types';
+import type { NetworkSettingsState, NetwrokConfig } from 'types';
 
 
 export const NETWORK: NetwrokConfig = {
@@ -15,6 +15,11 @@ export const NETWORK: NetwrokConfig = {
     VERSION: 0
   }
 }
+export const NETWORK_INIT_STATE: NetworkSettingsState = {
+  downgrade: true,
+  https: false,
+  abortTimeout: 8000,
+  numberOfNodes: 100
+};
 export const NETWORK_KEYS = Object.keys(NETWORK);
-export const NODES_SLICE = 100;
 export const NODE_PORT = 33035;

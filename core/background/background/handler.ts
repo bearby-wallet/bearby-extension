@@ -111,6 +111,15 @@ export function startBackground(core: BackgroundState) {
       case MTypePopup.SET_DOWNGRADE_NODE:
         settings.setNodeDowngrade(msg.payload.flag, sendResponse);
         return true;
+      case MTypePopup.SET_NUMBER_OF_NODES:
+        settings.setNumberOfNodes(msg.payload.nodes, sendResponse);
+        return true;
+      case MTypePopup.SET_ABORT_TIMEOUT:
+        settings.setAbortTimeout(msg.payload.seconds, sendResponse);
+        return true;
+      case MTypePopup.SET_HTTPS_ONLY:
+        settings.setHttpsOnly(msg.payload.flag, sendResponse);
+        return true;
       case MTypePopup.SET_PERIOD:
         settings.setPeriodOffest(msg.payload.period, sendResponse);
         return true;

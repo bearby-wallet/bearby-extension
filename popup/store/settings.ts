@@ -12,7 +12,12 @@ export default writable<SettingsState>({
   periodOffset: PERIOD_OFFSET,
   theme: Themes.System,
   phishing: true,
-  downgradeNode: true,
+  network: {
+    downgrade: false,
+    https: false,
+    abortTimeout: 0,
+    numberOfNodes: 0
+  },
   popup: true,
   format: true
 });

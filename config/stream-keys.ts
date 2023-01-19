@@ -36,6 +36,9 @@ export const MTypePopup = {
   REMOVE_NODES: `@/${app}/remove-nodes-api`,
 
   SET_DOWNGRADE_NODE: `@/${app}/set-downgrade-node-flag`,
+  SET_ABORT_TIMEOUT: `@/${app}/set-abort-timeout`,
+  SET_NUMBER_OF_NODES: `@/${app}/set-number-of-nodes`,
+  SET_HTTPS_ONLY: `@/${app}/set-https-only-flag`,
   SET_CURRENCY: `@/${app}/set-currency`,
   SET_THEME: `@/${app}/set-theme`,
   SET_LOCALE: `@/${app}/set-locale`,

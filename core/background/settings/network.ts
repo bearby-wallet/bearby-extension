@@ -1,35 +1,75 @@
+import type { NetworkSettingsState } from 'types/network';
+
 import { Fields } from 'config/fields';
 import { BrowserStorage, buildObject } from 'lib/storage';
+import { NETWORK_INIT_STATE } from 'config/network';
 
 
 export class NetworkSettings {
-  #downgrade = false;
+  #downgrade = NETWORK_INIT_STATE.downgrade;
+  #https = NETWORK_INIT_STATE.https;
+  #abortTimeout = NETWORK_INIT_STATE.abortTimeout;
+  #numberOfNodes = NETWORK_INIT_STATE.numberOfNodes;
 
-  get downgrade() {
-    return this.#downgrade;
+
+  get state(): NetworkSettingsState {
+    return {
+      downgrade: this.#downgrade,
+      https: this.#https,
+      abortTimeout: this.#abortTimeout,
+      numberOfNodes: this.#numberOfNodes
+    };
   }
 
   async setDowngrade(downgrade: boolean) {
     this.#downgrade = downgrade;
 
     await BrowserStorage.set(
-      buildObject(Fields.NETWORK_DOWNGRADE, String(this.downgrade))
+      buildObject(Fields.NETWORK_SETTINGS, this.state)
+    );
+  }
+
+  async setHttps(https: boolean) {
+    this.#https = https;
+
+    await BrowserStorage.set(
+      buildObject(Fields.NETWORK_SETTINGS, this.state)
+    );
+  }
+
+  async setAbortTimeout(abortTimeout: number) {
+    this.#abortTimeout = abortTimeout;
+
+    await BrowserStorage.set(
+      buildObject(Fields.NETWORK_SETTINGS, this.state)
+    );
+  }
+
+  async setNumberOfNodes(numberOfNodes: number) {
+    this.#numberOfNodes = numberOfNodes;
+
+    await BrowserStorage.set(
+      buildObject(Fields.NETWORK_SETTINGS, this.state)
     );
   }
 
   async sync(content?: string | null) {
+    console.log(content);
     if (!content) {
       return this.reset();
     }
 
-    this.#downgrade = content === 'true';
+    // TODO: make sync.
   }
 
   async reset() {
-    this.#downgrade = true;
+    this.#downgrade = NETWORK_INIT_STATE.downgrade;
+    this.#https = NETWORK_INIT_STATE.https;
+    this.#abortTimeout = NETWORK_INIT_STATE.abortTimeout;
+    this.#numberOfNodes = NETWORK_INIT_STATE.numberOfNodes;
 
     await BrowserStorage.set(
-      buildObject(Fields.NETWORK_DOWNGRADE, String(this.downgrade))
+      buildObject(Fields.NETWORK_SETTINGS, this.state)
     );
   }
 }

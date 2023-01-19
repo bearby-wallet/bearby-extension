@@ -1,4 +1,3 @@
-import type { ShaAlgorithms } from "config/sha-algorithms";
 import type { GasState, SendResponseParams, WalletState } from "types";
 
 import { MTypePopup } from "config/stream-keys";
@@ -19,11 +18,47 @@ export async function setDowngradeNodeFlag(flag: boolean) {
   return resolve;
 }
 
+export async function setAbortTimeout(seconds: number) {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.SET_ABORT_TIMEOUT,
+    payload: {
+      seconds
+    }
+  }).send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}
+
+export async function setNumberNodes(nodes: number) {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.SET_NUMBER_OF_NODES,
+    payload: {
+      nodes
+    }
+  }).send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}
+
 export async function setCurrency(currency: string) {
   const data = await new Message<SendResponseParams>({
     type: MTypePopup.SET_CURRENCY,
     payload: {
       currency
+    }
+  }).send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}
+
+export async function setHttpsOnly(flag: boolean) {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.SET_HTTPS_ONLY,
+    payload: {
+      flag
     }
   }).send();
   const resolve = warpMessage(data);
