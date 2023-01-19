@@ -14,7 +14,7 @@ import nodePolyfills from 'rollup-plugin-node-polyfills';
 import pkg from './package.json' assert { type: 'json' };
 
 const production = !process.env.ROLLUP_WATCH;
-const manifest = process.env.MANIFEST || 2;
+const manifest = process.env.MANIFEST || 3;
 
 const popup = {
 	input: 'popup/main.ts',

@@ -44,12 +44,20 @@ export async function changePassword(payload: SetPasswordPayload) {
 }
 
 export async function getWalletState() {
-  const data = await Message
-    .signal(MTypePopup.GET_WALLET_STATE)
-    .send();
-  const resolve = warpMessage(data);
-  updateState(resolve as WalletState);
-  return resolve;
+  let k = 0;
+  while (true) {
+    try {
+      const data = await Message
+      .signal(MTypePopup.GET_WALLET_STATE)
+        .send();
+      const resolve = warpMessage(data);
+      updateState(resolve as WalletState);
+      return resolve;
+    } catch {
+      if (k > 10) break;
+    }
+    k++;
+  }
 }
 
 export async function unlockWallet(password: string) {
