@@ -8,7 +8,6 @@ import { NETWORK_KEYS } from 'config/network';
 import { Fields } from 'config/fields';
 import { BrowserStorage, buildObject } from 'lib/storage';
 import { TypeOf } from 'lib/type';
-import { assert } from 'lib/assert';
 import { TokenError } from './errors';
 
 
