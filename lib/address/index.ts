@@ -65,11 +65,12 @@ export async function addressFromPublicKey(publicKey: Uint8Array) {
 
 export async function isBase58Address(address: string) {
   try {
-    if (address[0] !== ADDRESS_PREFIX) {
+    console.log(address.slice(0, 2), ADDRESS_PREFIX);
+    if (address.slice(0, 2) !== ADDRESS_PREFIX) {
       return false;
     }
 
-    const bytes = await base58Decode(address.slice(1));
+    const bytes = await base58Decode(address.slice(2));
 
     if (bytes.length !== 33) {
       return false;
