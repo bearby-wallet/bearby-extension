@@ -11,7 +11,8 @@ import type { Contact } from 'types';
 import { BrowserStorage, buildObject } from 'lib/storage';
 import { Fields } from 'config/fields';
 import { assert } from 'lib/assert';
-import { UINIQE_NAME, ContactsError, UINIQE_ADDRESS, INVALID_BASE58 } from './errors';
+import { UINIQE_NAME, ContactsError, UINIQE_ADDRESS } from './errors';
+import { INVALID_BASE58_ADDRESS } from 'lib/address/errors';
 import { isBase58Address } from 'lib/address';
 
 
@@ -42,7 +43,7 @@ export class ContactController {
 
     assert(
       await isBase58Address(connect.address),
-      INVALID_BASE58,
+      INVALID_BASE58_ADDRESS,
       ContactsError
     );
 

@@ -76,7 +76,9 @@ export class BackgroundTransaction {
     try {
       this.#core.guard.checkSession();
 
-      assert(await isBase58Address(params.toAddr), INVALID_BASE58_ADDRESS);
+      if (!params.code) {
+        assert(await isBase58Address(params.toAddr), INVALID_BASE58_ADDRESS);
+      }
 
       if (params.domain) {
         const has = this.#core.connections.has(params.domain);

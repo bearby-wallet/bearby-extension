@@ -19,7 +19,7 @@ import {
   ACCOUNT_NAME_MUST_UNIQUE,
   ACCOUNT_PRODUCT_ID_MUST_UNIQUE
 } from './errors';
-import { INVALID_BASE58 } from 'background/contacts/errors';
+import { INVALID_BASE58_ADDRESS } from 'lib/address/errors';
 import { addressFromPublicKey, isBase58Address, publicKeyBytesFromPrivateKey } from 'lib/address';
 import { base58PrivateKeyToBytes, isPrivateKey } from 'lib/validator';
 import { TypeOf } from 'lib/type';
@@ -196,7 +196,7 @@ export class AccountController {
   }
 
   async addAccountForTrack(base58: string, name: string) {
-    assert(await isBase58Address(base58), INVALID_BASE58, AccountError);
+    assert(await isBase58Address(base58), INVALID_BASE58_ADDRESS, AccountError);
 
     const index = this.lastIndexTracker;
     const type = AccountTypes.Track;
