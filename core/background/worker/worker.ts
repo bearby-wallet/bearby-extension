@@ -148,7 +148,7 @@ export class WorkerController {
       const [transaction] = result;
       const expirePeriod = transaction.operation.content.expire_period;
 
-      if (!transaction.is_final && expirePeriod < this.period) {
+      if (!transaction.is_operation_final && expirePeriod < this.period) {
         list[listIndex].confirmed = true;
         list[listIndex].success = false;
         list[listIndex].error = Statuses.ExpirePeriod;
@@ -162,8 +162,8 @@ export class WorkerController {
         continue;
       }
 
-      list[listIndex].confirmed = transaction.is_final;
-      list[listIndex].success = transaction.is_final;
+      list[listIndex].confirmed = transaction.is_operation_final;
+      list[listIndex].success = transaction.is_operation_final;
 
       if (list[listIndex].confirmed) {
         this.#makeNotify(

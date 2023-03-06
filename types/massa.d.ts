@@ -83,7 +83,8 @@ export interface OperationTransaction extends JsonRPCResponse {
     id: string; // Operation id
     in_blocks: string[]; // Block ids
     in_pool: boolean;
-    is_final: boolean;
+    is_operation_final: boolean;
+    op_exec_status: boolean;
     operation: {
       content: {
         expire_period: number;// after that period, the operation become invalid forever
