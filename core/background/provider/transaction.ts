@@ -7,6 +7,7 @@ import { assert } from "lib/assert";
 import { VarintEncode } from 'lib/varint';
 import { INVLID_RECIPIENT } from "./errors";
 import { OperationsType } from "./operations";
+import { ADDRESS_PREFIX } from "config/common";
 
 
 export class PaymentBuild {
@@ -35,7 +36,7 @@ export class PaymentBuild {
 		const fee = new VarintEncode().encode(this.fee);
 		const expirePeriod = new VarintEncode().encode(this.expirePeriod);
 		const typeIdEncoded = new VarintEncode().encode(PaymentBuild.operation);
-    const recipient = (await base58Decode(this.recipientAddress.slice(1))).slice(1);
+    const recipient = (await base58Decode(this.recipientAddress.slice(ADDRESS_PREFIX.length)));
     const amount = new VarintEncode().encode(this.amount);
 
     return Uint8Array.from([
@@ -219,7 +220,7 @@ export class CallSmartContractBuild {
     const fee = new VarintEncode().encode(this.fee);
 		const expirePeriod = new VarintEncode().encode(this.expirePeriod);
 		const typeIdEncoded = new VarintEncode().encode(CallSmartContractBuild.operation);
-    const targetAddressEncoded = (await base58Decode(this.targetAddress.slice(1))).slice(1);
+    const targetAddressEncoded = (await base58Decode(this.targetAddress.slice(ADDRESS_PREFIX.length)));
     const coinsEncoded = new VarintEncode().encode(this.coins);
     const gasPrice = new VarintEncode().encode(this.gasPrice);
     const gasLimit = new VarintEncode().encode(this.gasLimit);

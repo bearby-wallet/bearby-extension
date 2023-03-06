@@ -24,8 +24,8 @@ async function encode(data: Uint8Array, prefix = '00') {
 async function decode(content: string) {
   const bytes = base58ToBinary(content);
 
-  const prefix = bytes.slice(0, 1);
-  const data = bytes.slice(1, -4);
+  const prefix = bytes.slice(0, ADDRESS_PREFIX.length);
+  const data = bytes.slice(ADDRESS_PREFIX.length, -4);
   let hash = new Uint8Array([...prefix, ...data]);
 
   hash = await sha256(hash);
@@ -65,12 +65,11 @@ export async function addressFromPublicKey(publicKey: Uint8Array) {
 
 export async function isBase58Address(address: string) {
   try {
-    console.log(address.slice(0, 2), ADDRESS_PREFIX);
-    if (address.slice(0, 2) !== ADDRESS_PREFIX) {
+    if (address.slice(0, ADDRESS_PREFIX.length) !== ADDRESS_PREFIX) {
       return false;
     }
 
-    const bytes = await base58Decode(address.slice(2));
+    const bytes = await base58Decode(address.slice(ADDRESS_PREFIX.length));
 
     if (bytes.length !== 33) {
       return false;
