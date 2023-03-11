@@ -38,6 +38,12 @@
 
     openTab(url);
   }
+
+  function hanldeOnRecipient() {
+    const url = massaExplorer.address(tx.recipient);
+
+    openTab(url);
+  }
 </script>
 
 <div class="tx">
@@ -84,7 +90,13 @@
           {$_('history.modals.details.recipient')}
         </span>
         <span>
-          {trim(tx.recipient)}
+          <a
+            href={massaExplorer.address(tx.recipient)}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {trim(tx.recipient)}
+          </a>
         </span>
       </li>
     {/if}
@@ -213,7 +225,17 @@
 				border-bottom: solid 1px transparent;
 			}
       & > span {
+        color: var(--text-color);
+
         @include text-shorten;
+
+        & > a {
+          color: var(--text-color);
+
+          &:hover {
+            color: var(--secondary-color);
+          }
+        }
       }
     }
   }
