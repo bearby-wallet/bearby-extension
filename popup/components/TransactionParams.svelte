@@ -4,11 +4,14 @@
 	import { _ } from 'popup/i18n';
 
   import { trim } from 'popup/filters/trim';
+  import { Massa } from 'lib/explorer';
   import { viewIcon } from "app/utils/icon-view";
   import { formatNumber, toKG } from 'popup/filters/numbers';
 
 	import gasStore from 'popup/store/gas';
 
+
+  const massaExplorer = new Massa();
 
 	export let tx: ConfirmParams;
 
@@ -57,7 +60,7 @@
     </span>
     <span>
       <a
-        href={tx.recipient}
+        href={massaExplorer.address(tx.recipient)}
         target="_blank"
         rel="noreferrer"
       >
@@ -105,6 +108,10 @@
         }
         & > a {
           color: inherit;
+
+          &:hover {
+            color: var(--secondary-color);
+          }
         }
 			}
 		}
