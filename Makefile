@@ -3,7 +3,7 @@ YARN=yarn
 MV2_FILE_NAME=mv2.zip
 MV2_HASHSUM_FILE_NAME=mv2_checksums.sha
 MV3_HASHSUM_FILE_NAME=mv3_checksums.sha
-MV3_FILE_NAME=mv2.zip
+MV3_FILE_NAME=mv3.zip
 
 all: build
 
