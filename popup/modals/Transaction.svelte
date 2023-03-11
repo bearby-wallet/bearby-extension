@@ -4,16 +4,19 @@
 	import { _ } from 'popup/i18n';
 
   import { trim } from 'popup/filters/trim';
+  import { Massa } from 'lib/explorer';
+  import { openTab } from 'popup/mixins/link';
   import { formatNumber, toKG } from 'popup/filters/numbers';
   import { clipboardCopy } from 'popup/mixins/clipboard';
 
   import settingsStore from 'popup/store/settings';
-  import tokensStore from 'popup/store/tokens';
 
   import Tooltip from '../components/Tooltip.svelte';
 
 
   export let tx: HistoryTransaction;
+
+  const massaExplorer = new Massa();
 
   let tip = $_('home.clipboard.copy');
 
@@ -28,6 +31,12 @@
     setTimeout(() => {
       tip = $_('home.clipboard.copy');
     }, 500);
+  }
+
+  function hanldeOnExplorer() {
+    const url = massaExplorer.transaction(hash);
+
+    openTab(url);
   }
 </script>
 
@@ -69,14 +78,16 @@
         </span>
       </Tooltip>
     </li>
-    <li>
-      <span>
-        {$_('history.modals.details.recipient')}
-      </span>
-      <span>
-        {trim(tx.recipient)}
-      </span>
-    </li>
+    {#if tx.recipient}
+      <li>
+        <span>
+          {$_('history.modals.details.recipient')}
+        </span>
+        <span>
+          {trim(tx.recipient)}
+        </span>
+      </li>
+    {/if}
     <li>
       <span>
         {$_('history.modals.details.method')}
@@ -128,10 +139,13 @@
       </li>
     {/if}
   </ul>
-  <div>
-    {#if tx.confirmed}
-      <!-- TODO: here wil be buttons -->
-    {/if}
+  <div class="buttons">
+    <img
+      src="/icons/massexplo.webp"
+      alt="massexplo"
+      height="40"
+      on:mouseup={hanldeOnExplorer}
+    >
   </div>
 </div>
 
@@ -201,6 +215,13 @@
       & > span {
         @include text-shorten;
       }
+    }
+  }
+  div.buttons {
+    & > img {
+      cursor: pointer;
+      box-shadow: rgb(0 0 0 / 1%) 0px 0px 1px, rgb(0 0 0 / 4%) 0px 4px 8px, rgb(0 0 0 / 4%) 0px 16px 24px, rgb(0 0 0 / 1%) 0px 24px 32px;
+      @include border-radius(16px);
     }
   }
 </style>
