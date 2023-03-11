@@ -11,6 +11,7 @@ import { MTypeTab } from "config/stream-keys";
 import { TabsMessage } from "lib/stream/tabs-message";
 import { NETWORK, NODE_PORT } from "config/network";
 import { isIPV6 } from "lib/validator/ip";
+import { Massa } from 'lib/explorer';
 
 
 enum Statuses {
@@ -231,7 +232,7 @@ export class WorkerController {
   }
 
   #makeNotify(title: string, hash: string, message: string) {
-    const url = hash;
+    const url = new Massa().transaction(hash);
     new NotificationController(
       url,
       title,
