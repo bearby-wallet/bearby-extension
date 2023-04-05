@@ -35,7 +35,7 @@ export function startBackground(core: BackgroundState) {
         connections.addConnectAppConfirm(msg.payload, sendResponse);
         return true;
       case MTypeTab.DISCONNECT_APP:
-        // connections.addConnectAppConfirm(msg.payload, sendResponse);
+        connections.disconnect(msg.payload.domain, sendResponse);
         return true;
       case MTypeTab.TX_TO_SEND:
         transaction.addToConfirm(msg.payload, sendResponse);
