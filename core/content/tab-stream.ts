@@ -52,6 +52,9 @@ export class ContentTabStream {
       case MTypeTab.CONTENT_PROXY_MEHTOD:
         this.#proxy(msg.payload);
         break;
+      case MTypeTab.DISCONNECT_APP:
+        new Message(msg).send();
+        break;
       case MTypeTab.CONNECT_APP:
         new Message(msg).send();
         break;

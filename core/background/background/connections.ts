@@ -15,6 +15,28 @@ export class BackgroundConnection {
     this.#core = state;
   }
 
+  async disconnect(domain: string, sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+
+      let foundIndex = this
+        .#core
+        .connections
+        .identities
+        .findIndex((el) => el.domain === domain);
+
+      await this.#core.connections.rm(foundIndex);
+
+      return sendResponse({
+        resolve: true
+      });
+    } catch (err) {
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
   async getConnections(sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();
@@ -82,8 +104,8 @@ export class BackgroundConnection {
     }
   }
 
-  async rejectConnections(index: number, sendResponse: StreamResponse) {
-    const app = this.#core.connections.confirm[index];
+    async rejectConnections(index: number, sendResponse: StreamResponse) {
+      const app = this.#core.connections.confirm[index];
 
     try {
       this.#core.guard.checkSession();
