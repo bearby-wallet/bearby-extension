@@ -15,7 +15,7 @@ export class BackgroundConnection {
     this.#core = state;
   }
 
-  async disconnect(domain: string, sendResponse: StreamResponse) {
+  async disconnect(domain: string, uuid: string, sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();
 
@@ -26,6 +26,16 @@ export class BackgroundConnection {
         .findIndex((el) => el.domain === domain);
 
       await this.#core.connections.rm(foundIndex);
+
+      new TabsMessage({
+        type: MTypeTab.DISCONNECT_APP_RESULT,
+        payload: {
+          uuid,
+          net: this.#core.netwrok.selected,
+          base58: null,
+          resolve: true
+        }
+      }).send();
 
       return sendResponse({
         resolve: true
