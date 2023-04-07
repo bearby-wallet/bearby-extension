@@ -104,8 +104,8 @@ export class BackgroundConnection {
     }
   }
 
-    async rejectConnections(index: number, sendResponse: StreamResponse) {
-      const app = this.#core.connections.confirm[index];
+  async rejectConnections(index: number, sendResponse: StreamResponse) {
+    const app = this.#core.connections.confirm[index];
 
     try {
       this.#core.guard.checkSession();

@@ -112,7 +112,7 @@ export class BackgroundState {
   }
 
   #onInstalled(event: chrome.runtime.InstalledDetails) {
-    if(event.reason === Runtime.runtime.OnInstalledReason.INSTALL) {
+    if (event.reason === Runtime.runtime.OnInstalledReason.INSTALL) {
       const url = Runtime.runtime.getURL(PROMT_PAGE);
       Runtime.tabs.create({ url });
       Runtime.runtime.onInstalled.removeListener(this.#onInstalled);
