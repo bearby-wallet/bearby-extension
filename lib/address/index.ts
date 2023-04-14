@@ -5,7 +5,7 @@ import { sha256 } from 'lib/crypto/sha256';
 import { base58ToBinary, binaryToBase58 } from 'lib/crypto/base58';
 import { assert } from 'lib/assert';
 import { INVALID_CHECKSUM } from './errors';
-import { ADDRESS_PREFIX, PUBLIC_KEY_PREFIX, VERSION_NUMBER } from 'config/common';
+import { ADDRESS_PREFIX, CONTRACT_ADDRESS_PREFIX, PUBLIC_KEY_PREFIX, VERSION_NUMBER } from 'config/common';
 import { VarintEncode } from 'lib/varint';
 import { utils } from 'aes-js';
 
@@ -16,7 +16,7 @@ async function encode(data: Uint8Array, prefix = '00') {
 
   hash = await sha256(hash);
   hash = await sha256(hash)
-  hash = new Uint8Array([...bufPrefix, ...data,  ...hash.slice(0, 4)]);
+  hash = new Uint8Array([...bufPrefix, ...data, ...hash.slice(0, 4)]);
 
   return binaryToBase58(hash);
 }
@@ -64,8 +64,11 @@ export async function addressFromPublicKey(publicKey: Uint8Array) {
 }
 
 export async function isBase58Address(address: string) {
+  const addressPrefix = address.slice(0, ADDRESS_PREFIX.length);
+  const contractPrefix = address.slice(0, CONTRACT_ADDRESS_PREFIX.length);
+
   try {
-    if (address.slice(0, ADDRESS_PREFIX.length) !== ADDRESS_PREFIX) {
+    if (addressPrefix !== ADDRESS_PREFIX && contractPrefix !== CONTRACT_ADDRESS_PREFIX) {
       return false;
     }
 
