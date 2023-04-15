@@ -33,9 +33,9 @@ export class PaymentBuild {
   async bytes() {
     assert(await isBase58Address(this.recipientAddress), INVLID_RECIPIENT);
 
-		const fee = new VarintEncode().encode(this.fee);
-		const expirePeriod = new VarintEncode().encode(this.expirePeriod);
-		const typeIdEncoded = new VarintEncode().encode(PaymentBuild.operation);
+    const fee = new VarintEncode().encode(this.fee);
+    const expirePeriod = new VarintEncode().encode(this.expirePeriod);
+    const typeIdEncoded = new VarintEncode().encode(PaymentBuild.operation);
     const recipient = (await base58Decode(this.recipientAddress.slice(ADDRESS_PREFIX.length)));
     const amount = new VarintEncode().encode(this.amount);
 
@@ -67,9 +67,9 @@ export class BuyRollsBuild {
   }
 
   async bytes() {
-		const fee = new VarintEncode().encode(this.fee);
-		const expirePeriod = new VarintEncode().encode(this.expirePeriod);
-		const typeIdEncoded = new VarintEncode().encode(BuyRollsBuild.operation);
+    const fee = new VarintEncode().encode(this.fee);
+    const expirePeriod = new VarintEncode().encode(this.expirePeriod);
+    const typeIdEncoded = new VarintEncode().encode(BuyRollsBuild.operation);
     const amount = new VarintEncode().encode(this.amount);
 
     return Uint8Array.from([
@@ -99,9 +99,9 @@ export class SellRollsBuild {
   }
 
   async bytes() {
-		const fee = new VarintEncode().encode(this.fee);
-		const expirePeriod = new VarintEncode().encode(this.expirePeriod);
-		const typeIdEncoded = new VarintEncode().encode(SellRollsBuild.operation);
+    const fee = new VarintEncode().encode(this.fee);
+    const expirePeriod = new VarintEncode().encode(this.expirePeriod);
+    const typeIdEncoded = new VarintEncode().encode(SellRollsBuild.operation);
     const amount = new VarintEncode().encode(this.amount);
 
     return Uint8Array.from([
@@ -149,8 +149,8 @@ export class ExecuteSmartContractBuild {
     const decodedScBinaryCode = toByteArray(this.contractDataBase64);
     const dataLengthEncoded = new VarintEncode().encode(decodedScBinaryCode.length);
     const feeEncoded = new VarintEncode().encode(this.fee);
-		const expirePeriodEncoded = new VarintEncode().encode(this.expirePeriod);
-		const typeIdEncoded = new VarintEncode().encode(ExecuteSmartContractBuild.operation);
+    const expirePeriodEncoded = new VarintEncode().encode(this.expirePeriod);
+    const typeIdEncoded = new VarintEncode().encode(ExecuteSmartContractBuild.operation);
     const maxGasEncoded = new VarintEncode().encode(this.gasLimit);
     let datastoreSerialized = new Uint8Array();
 
@@ -218,11 +218,10 @@ export class CallSmartContractBuild {
     assert(await isBase58Address(this.targetAddress), INVLID_RECIPIENT);
 
     const fee = new VarintEncode().encode(this.fee);
-		const expirePeriod = new VarintEncode().encode(this.expirePeriod);
-		const typeIdEncoded = new VarintEncode().encode(CallSmartContractBuild.operation);
+    const expirePeriod = new VarintEncode().encode(this.expirePeriod);
+    const typeIdEncoded = new VarintEncode().encode(CallSmartContractBuild.operation);
     const targetAddressEncoded = (await base58Decode(this.targetAddress.slice(ADDRESS_PREFIX.length)));
     const coinsEncoded = new VarintEncode().encode(this.coins);
-    const gasPrice = new VarintEncode().encode(this.gasPrice);
     const gasLimit = new VarintEncode().encode(this.gasLimit);
     const functionNameEncoded = utils.utf8.toBytes(this.functionName);
     const parametersEncoded = utils.utf8.toBytes(this.parameters);
@@ -235,7 +234,6 @@ export class CallSmartContractBuild {
       ...typeIdEncoded,
       ...gasLimit,
       ...coinsEncoded,
-      ...gasPrice,
       ...targetAddressEncoded,
       ...functionNameLengthEncoded,
       ...functionNameEncoded,
