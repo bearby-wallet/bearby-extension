@@ -49,6 +49,9 @@ export class ContentTabStream {
       case MTypeTab.GET_DATA:
         this.#updateState();
         break;
+      case MTypeTab.CHECK_MASSA_ADDRESS:
+        new Message(msg).send();
+        break;
       case MTypeTab.CONTENT_PROXY_MEHTOD:
         this.#proxy(msg.payload);
         break;
