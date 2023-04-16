@@ -7,8 +7,10 @@ import type { StreamResponse } from "types/stream";
 import type { BackgroundState } from "./state";
 import type { BaseError } from "lib/error";
 
-import { pubKeyFromBytes } from "lib/address";
+import { isBase58Address, pubKeyFromBytes } from "lib/address";
 import { privateKeyBytesToBase58 } from "lib/validator";
+import { MTypeTab } from "config/stream-keys";
+import { TabsMessage } from "lib/stream/tabs-message";
 
 
 export class BackgroundWallet {
@@ -247,7 +249,7 @@ export class BackgroundWallet {
       this.#core.guard.unlock(password);
       this.#core.guard.checkSession();
 
-      const pair =  await this.#core.account.getKeyPair();
+      const pair = await this.#core.account.getKeyPair();
 
       return sendResponse({
         resolve: {
@@ -289,6 +291,28 @@ export class BackgroundWallet {
     sendResponse({
       resolve: this.#core.state
     });
+  }
+
+  async isBase58Massa(addr: string, uuid: string, sendResponse: StreamResponse) {
+    try {
+      const isMassaAddreess = await isBase58Address(addr);
+
+      new TabsMessage({
+        type: MTypeTab.CHECK_MASSA_ADDRESS_RES,
+        payload: {
+          uuid,
+          resolve: isMassaAddreess
+        }
+      }).send();
+
+      sendResponse({
+        resolve: isMassaAddreess
+      });
+    } catch (err) {
+      sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
   }
 
   getState(sendResponse: StreamResponse) {

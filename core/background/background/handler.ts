@@ -37,6 +37,9 @@ export function startBackground(core: BackgroundState) {
       case MTypeTab.DISCONNECT_APP:
         connections.disconnect(msg.payload.domain, msg.payload.uuid, sendResponse);
         return true;
+      case MTypeTab.CHECK_MASSA_ADDRESS:
+        wallet.isBase58Massa(msg.payload.addr, msg.payload.uuid, sendResponse);
+        return true;
       case MTypeTab.TX_TO_SEND:
         transaction.addToConfirm(msg.payload, sendResponse);
         return true;
