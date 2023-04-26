@@ -7,7 +7,7 @@ import { assert } from "lib/assert";
 import { VarintEncode } from 'lib/varint';
 import { INVLID_RECIPIENT } from "./errors";
 import { OperationsType } from "./operations";
-import { ADDRESS_PREFIX } from "config/common";
+import { ADDRESS_PREFIX, CONTRACT_ADDRESS_PREFIX } from "config/common";
 
 
 export class PaymentBuild {
@@ -186,7 +186,7 @@ export class CallSmartContractBuild {
   static operation = OperationsType.CallSC;
 
   functionName: string;
-  parameters: string;
+  parameters: number[];
   gasLimit: number;
   coins: number;
   gasPrice: number;
@@ -196,7 +196,7 @@ export class CallSmartContractBuild {
 
   constructor(
     functionName: string,
-    parameters: string,
+    parameters: number[],
     fee: number,
     expirePeriod: number,
     gasLimit: number,
@@ -220,14 +220,46 @@ export class CallSmartContractBuild {
     const fee = new VarintEncode().encode(this.fee);
     const expirePeriod = new VarintEncode().encode(this.expirePeriod);
     const typeIdEncoded = new VarintEncode().encode(CallSmartContractBuild.operation);
-    const targetAddressEncoded = (await base58Decode(this.targetAddress.slice(ADDRESS_PREFIX.length)));
+    const targetAddressEncoded = Uint8Array.from([1, ...(await base58Decode(this.targetAddress.slice(CONTRACT_ADDRESS_PREFIX.length))).slice(1)]);
     const coinsEncoded = new VarintEncode().encode(this.coins);
     const gasLimit = new VarintEncode().encode(this.gasLimit);
     const functionNameEncoded = utils.utf8.toBytes(this.functionName);
-    const parametersEncoded = utils.utf8.toBytes(this.parameters);
+    const parametersEncoded = new Uint8Array(this.parameters);
     const functionNameLengthEncoded = new VarintEncode().encode(functionNameEncoded.length);
     const parametersLengthEncoded = new VarintEncode().encode(parametersEncoded.length);
 
+    console.log("fee");
+    console.log(this.fee);
+    console.log(fee);
+    console.log("expirePeriod");
+    console.log(this.expirePeriod);
+    console.log(expirePeriod);
+    console.log("typeIdEncoded");
+    console.log(CallSmartContractBuild.operation);
+    console.log(typeIdEncoded);
+    console.log("targetAddressEncoded");
+    console.log(this.targetAddress);
+    console.log(targetAddressEncoded);
+    console.log("coinsEncoded");
+    console.log(this.coins);
+    console.log(coinsEncoded);
+    console.log("gasLimit");
+    console.log(this.gasLimit);
+    console.log(gasLimit);
+    console.log("functionNameEncoded");
+    console.log(this.functionName);
+    console.log(functionNameEncoded);
+    console.log("parametersEncoded");
+    console.log(this.parameters);
+    console.log(parametersEncoded);
+    console.log("functionNameLengthEncoded");
+    console.log(utils.utf8.toBytes(this.functionName).length);
+    console.log(functionNameLengthEncoded);
+    console.log("parametersLengthEncoded");
+    console.log((new Uint8Array(this.parameters)).length);
+    console.log(parametersLengthEncoded);
+    console.log("end");
+    
     return Uint8Array.from([
       ...fee,
       ...expirePeriod,
