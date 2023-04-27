@@ -227,38 +227,6 @@ export class CallSmartContractBuild {
     const parametersEncoded = new Uint8Array(this.parameters);
     const functionNameLengthEncoded = new VarintEncode().encode(functionNameEncoded.length);
     const parametersLengthEncoded = new VarintEncode().encode(parametersEncoded.length);
-
-    console.log("fee");
-    console.log(this.fee);
-    console.log(fee);
-    console.log("expirePeriod");
-    console.log(this.expirePeriod);
-    console.log(expirePeriod);
-    console.log("typeIdEncoded");
-    console.log(CallSmartContractBuild.operation);
-    console.log(typeIdEncoded);
-    console.log("targetAddressEncoded");
-    console.log(this.targetAddress);
-    console.log(targetAddressEncoded);
-    console.log("coinsEncoded");
-    console.log(this.coins);
-    console.log(coinsEncoded);
-    console.log("gasLimit");
-    console.log(this.gasLimit);
-    console.log(gasLimit);
-    console.log("functionNameEncoded");
-    console.log(this.functionName);
-    console.log(functionNameEncoded);
-    console.log("parametersEncoded");
-    console.log(this.parameters);
-    console.log(parametersEncoded);
-    console.log("functionNameLengthEncoded");
-    console.log(utils.utf8.toBytes(this.functionName).length);
-    console.log(functionNameLengthEncoded);
-    console.log("parametersLengthEncoded");
-    console.log((new Uint8Array(this.parameters)).length);
-    console.log(parametersLengthEncoded);
-    console.log("end");
     
     return Uint8Array.from([
       ...fee,
