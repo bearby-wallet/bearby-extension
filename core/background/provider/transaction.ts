@@ -186,7 +186,7 @@ export class CallSmartContractBuild {
   static operation = OperationsType.CallSC;
 
   functionName: string;
-  parameters: number[];
+  parameters: Uint8Array;
   gasLimit: number;
   coins: number;
   gasPrice: number;
@@ -196,7 +196,7 @@ export class CallSmartContractBuild {
 
   constructor(
     functionName: string,
-    parameters: number[],
+    parameters: Uint8Array,
     fee: number,
     expirePeriod: number,
     gasLimit: number,
@@ -227,7 +227,7 @@ export class CallSmartContractBuild {
     const parametersEncoded = new Uint8Array(this.parameters);
     const functionNameLengthEncoded = new VarintEncode().encode(functionNameEncoded.length);
     const parametersLengthEncoded = new VarintEncode().encode(parametersEncoded.length);
-    
+
     return Uint8Array.from([
       ...fee,
       ...expirePeriod,

@@ -1,6 +1,6 @@
 import type { OperationsType } from "background/provider/operations";
 import type { KeyValue } from "types/general";
- 
+
 
 export interface TransactionToken {
   decimals: number;
@@ -31,7 +31,7 @@ export interface MinTransactionParams {
   type: OperationsType;
   token: TransactionToken;
   //
-  gasMultiplier? : number;
+  gasMultiplier?: number;
   icon?: string;
   fee?: string;
   uuid?: string;
@@ -39,7 +39,7 @@ export interface MinTransactionParams {
   domain?: string;
   func?: string;
   code?: string;
-  params?: string;
+  params?: Uint8Array;
   coins?: string;
   datastore?: KeyValue<string>;
 }
