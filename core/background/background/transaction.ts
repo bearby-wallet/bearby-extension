@@ -390,7 +390,7 @@ export class BackgroundTransaction {
 
         return await new CallSmartContractBuild(
           confirmParams.func || '',
-          confirmParams.params || '',
+          confirmParams.params || Uint8Array.from([0]),
           confirmParams.fee,
           expiryPeriod,
           confirmParams.gasLimit,
