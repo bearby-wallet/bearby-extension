@@ -200,6 +200,8 @@ export class BackgroundTransaction {
     try {
       this.#core.guard.checkSession();
 
+      console.log(confirmParams);
+
       assert(Boolean(confirmParams), NOT_FOUND_CONFIRM, TransactionsError);
 
       const [slotResponse] = await this.#core.massa.getNodesStatus();
