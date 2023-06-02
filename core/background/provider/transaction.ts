@@ -1,4 +1,5 @@
 import type { KeyValue } from "types/general";
+import type { CallParam } from "types/contacts";
 
 import { utils } from "aes-js";
 import { toByteArray } from "base64-js";
@@ -8,6 +9,7 @@ import { VarintEncode } from 'lib/varint';
 import { INVLID_RECIPIENT } from "./errors";
 import { OperationsType } from "./operations";
 import { ADDRESS_PREFIX, CONTRACT_ADDRESS_PREFIX } from "config/common";
+import { Args, parseParams } from "lib/args";
 
 
 export class PaymentBuild {
@@ -186,7 +188,6 @@ export class CallSmartContractBuild {
   static operation = OperationsType.CallSC;
 
   functionName: string;
-  parameters: Uint8Array;
   gasLimit: number;
   coins: number;
   gasPrice: number;
@@ -194,9 +195,11 @@ export class CallSmartContractBuild {
   targetAddress: string;
   expirePeriod: number;
 
+  args: Args;
+
   constructor(
     functionName: string,
-    parameters: Uint8Array,
+    parameters: CallParam[],
     fee: number,
     expirePeriod: number,
     gasLimit: number,
@@ -205,13 +208,13 @@ export class CallSmartContractBuild {
     targetAddress: string
   ) {
     this.functionName = functionName;
-    this.parameters = parameters;
     this.gasLimit = gasLimit;
     this.coins = Number(coins);
     this.gasPrice = gasPrice;
     this.fee = fee;
     this.expirePeriod = expirePeriod;
     this.targetAddress = targetAddress;
+    this.args = parseParams(parameters);
   }
 
   async bytes() {
@@ -224,7 +227,7 @@ export class CallSmartContractBuild {
     const coinsEncoded = new VarintEncode().encode(this.coins);
     const gasLimit = new VarintEncode().encode(this.gasLimit);
     const functionNameEncoded = utils.utf8.toBytes(this.functionName);
-    const parametersEncoded = new Uint8Array(this.parameters);
+    const parametersEncoded = this.args.serialize();
     const functionNameLengthEncoded = new VarintEncode().encode(functionNameEncoded.length);
     const parametersLengthEncoded = new VarintEncode().encode(parametersEncoded.length);
 

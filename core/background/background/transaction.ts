@@ -200,8 +200,6 @@ export class BackgroundTransaction {
     try {
       this.#core.guard.checkSession();
 
-      console.log(confirmParams);
-
       assert(Boolean(confirmParams), NOT_FOUND_CONFIRM, TransactionsError);
 
       const [slotResponse] = await this.#core.massa.getNodesStatus();
@@ -392,7 +390,7 @@ export class BackgroundTransaction {
 
         return await new CallSmartContractBuild(
           confirmParams.func || '',
-          confirmParams.params || new Uint8Array(),
+          confirmParams.params,
           confirmParams.fee,
           expiryPeriod,
           confirmParams.gasLimit,

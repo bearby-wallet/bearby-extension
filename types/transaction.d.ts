@@ -1,5 +1,6 @@
 import type { OperationsType } from "background/provider/operations";
 import type { KeyValue } from "types/general";
+import type { CallParam } from "./contacts";
 
 
 export interface TransactionToken {
@@ -39,7 +40,7 @@ export interface MinTransactionParams {
   domain?: string;
   func?: string;
   code?: string;
-  params?: Uint8Array;
+  params?: CallParam[];
   coins?: string;
   datastore?: KeyValue<string>;
 }
