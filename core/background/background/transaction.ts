@@ -253,7 +253,7 @@ export class BackgroundTransaction {
         recipient: confirmParams.recipient,
         amount: confirmParams.amount,
         code: confirmParams.code,
-        params: await base58Encode(confirmParams.params || new Uint8Array()),
+        params: confirmParams.params,
         period: this.#core.settings.period.periodOffset,
         confirmed: false,
         success: false
@@ -390,7 +390,7 @@ export class BackgroundTransaction {
 
         return await new CallSmartContractBuild(
           confirmParams.func || '',
-          confirmParams.params,
+          confirmParams.params || [],
           confirmParams.fee,
           expiryPeriod,
           confirmParams.gasLimit,

@@ -70,7 +70,7 @@ export interface HistoryTransaction {
   confirmed: boolean;
   success: boolean;
   code?: string;
-  params?: string;
+  params?: CallParam[];
   func?: string;
   icon?: string;
   title?: string;
