@@ -1,5 +1,5 @@
 import blake3 from 'blake3-js';
-import * as nacl from 'tweetnacl/nacl-fast.js';
+import { getPublicKey } from "@noble/ed25519";
 import { sha256 } from 'lib/crypto/sha256';
 
 import { base58ToBinary, binaryToBase58 } from 'lib/crypto/base58';
@@ -55,7 +55,7 @@ export async function base58Decode(data: string): Promise<Uint8Array> {
 export async function addressFromPublicKey(publicKey: Uint8Array) {
   const version = new VarintEncode().encode(VERSION_NUMBER);
   const pubKeyHash = utils.hex.toBytes(
-    blake3.newRegular().update(publicKey).finalize()
+    blake3.newRegular().update([...version, ...publicKey]).finalize()
   );
 
   return ADDRESS_PREFIX + await base58Encode(Uint8Array.from(
@@ -84,10 +84,8 @@ export async function isBase58Address(address: string) {
   }
 }
 
-export function publicKeyBytesFromPrivateKey(privateKey: Uint8Array): Uint8Array {
-  const keyPair = nacl.sign.keyPair.fromSeed(privateKey);
-
-  return keyPair.secretKey.subarray(32);
+export async function publicKeyBytesFromPrivateKey(privateKey: Uint8Array): Promise<Uint8Array> {
+  return await getPublicKey(privateKey);
 };
 
 export async function pubKeyFromBytes(pubKey: Uint8Array) {

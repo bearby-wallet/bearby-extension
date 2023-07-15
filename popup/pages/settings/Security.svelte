@@ -18,7 +18,7 @@
   import Guard from '../../components/Guard.svelte';
 
 	import { MIN_PASSWORD_LEN } from 'popup/config/account';
-    import { push } from 'svelte-spa-router';
+  import { push } from 'svelte-spa-router';
 
 
 	let phraseModal = false;

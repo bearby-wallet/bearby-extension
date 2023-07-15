@@ -8,6 +8,7 @@ export interface Account {
   index: number;
   type: AccountTypes;
   base58: string;
+  version: number;
   privKey?: string;
   pubKey: string;
   productId?: number;
@@ -26,6 +27,12 @@ export interface KeyPair {
   pubKey: Uint8Array;
   privKey: Uint8Array;
   base58: string;
+  version: number;
+}
+
+export interface PrivateKey {
+  privKey: Uint8Array;
+  version: number;
 }
 
 export interface GuardType {

@@ -23,6 +23,7 @@ import { INVALID_BASE58_ADDRESS } from 'lib/address/errors';
 import { addressFromPublicKey, isBase58Address, publicKeyBytesFromPrivateKey } from 'lib/address';
 import { base58PrivateKeyToBytes, isPrivateKey } from 'lib/validator';
 import { TypeOf } from 'lib/type';
+import { VERSION_NUMBER } from 'config/common';
 
 
 export class AccountController {
@@ -138,6 +139,7 @@ export class AccountController {
   async fromSeed(seed: Uint8Array, index = 0) {
     const hdKey = new HDKey();
     const path = this.bip39.getPath(index);
+
     await hdKey.derivePath(path, seed);
 
     return await hdKey.keyPair();
@@ -145,7 +147,7 @@ export class AccountController {
 
   async addAccountFromSeed(seed: Uint8Array, name: string) {
     const index = this.lastIndexSeed;
-    const { pubKey } = await this.fromSeed(seed, index);
+    const { pubKey, version } = await this.fromSeed(seed, index);
     const base58 = await addressFromPublicKey(pubKey);
     const type = AccountTypes.Seed;
     const account: Account = {
@@ -153,6 +155,7 @@ export class AccountController {
       base58,
       index,
       type,
+      version,
       pubKey: utils.hex.fromBytes(pubKey),
       nft: {},
       tokens: {}
@@ -163,7 +166,7 @@ export class AccountController {
 
   async addAccountFromPrivateKey(privateKey: string, name: string) {
     const index = this.lastIndexPrivKey;
-    const { pubKey, base58, privKey } = await this.fromPrivateKey(privateKey);
+    const { pubKey, base58, privKey, version } = await this.fromPrivateKey(privateKey);
     const type = AccountTypes.PrivateKey;
     const encryptedPrivateKey = this.#guard.encryptPrivateKey(privKey);
     const account: Account = {
@@ -171,6 +174,7 @@ export class AccountController {
       index,
       base58,
       type,
+      version,
       pubKey: utils.hex.fromBytes(pubKey),
       privKey: encryptedPrivateKey,
       nft: {},
@@ -181,17 +185,18 @@ export class AccountController {
   }
 
   async fromPrivateKey(privateKey: string): Promise<KeyPair> {
-    const bufPrivateKey = await base58PrivateKeyToBytes(privateKey);
+    const { version, privKey } = await base58PrivateKeyToBytes(privateKey);
 
-    isPrivateKey(bufPrivateKey);
+    isPrivateKey(privKey);
 
-    const pubKey = publicKeyBytesFromPrivateKey(bufPrivateKey);
+    const pubKey = await publicKeyBytesFromPrivateKey(privKey);
     const base58 = await addressFromPublicKey(pubKey);
 
     return {
       pubKey,
+      version,
       base58,
-      privKey: bufPrivateKey
+      privKey
     };
   }
 
@@ -205,6 +210,7 @@ export class AccountController {
       index,
       base58,
       type,
+      version: VERSION_NUMBER,
       pubKey: '',
       nft: {},
       tokens: {}
@@ -236,7 +242,8 @@ export class AccountController {
     return imported.map((acc) => ({
       pubKey: Uint8Array.from([]),
       privKey: this.#guard.decryptPrivateKey(String(acc.privKey)),
-      base58: acc.base58
+      base58: acc.base58,
+      version: 0 // TODO: change to automaticly
     }));
   }
 
@@ -268,6 +275,7 @@ export class AccountController {
         assert(Boolean(encryptedPriveLey), ACCOUNT_NOT_FOUND, AccountError);
         const privateKey = this.#guard.decryptPrivateKey(String(encryptedPriveLey));
         return {
+          version: 0, // TODO: change.
           pubKey: utils.hex.toBytes(String(this.selectedAccount?.pubKey)),
           privKey: privateKey,
           base58: String(this.selectedAccount?.base58)

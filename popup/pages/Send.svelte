@@ -44,7 +44,7 @@
 	$: account = $walletStore.identities[accountIndex];
   $: balance = account.tokens && account.tokens[token.base58] ?
     account.tokens[token.base58].final : 0;
-  $: disabled = amount <= 0 || amount > balance || !recipient;
+  $: disabled = amount <= 0 || Number(amount) > Number(balance) || !recipient;
 
 
   function hanldeOnInput(event: CustomEvent) {

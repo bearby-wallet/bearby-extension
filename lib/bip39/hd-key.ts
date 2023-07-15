@@ -1,13 +1,12 @@
 import type { KeyPair } from 'types/account';
 
-import * as nacl from 'tweetnacl/nacl-fast.js';
-
 import { hmac } from 'lib/crypto/hmac';
 import { utils } from 'aes-js';
 import { assert } from 'lib/assert';
-import { addressFromPublicKey } from 'lib/address';
+import { addressFromPublicKey, publicKeyBytesFromPrivateKey } from 'lib/address';
 import { CHAIN_CODE_EMPTY, INVALID_PATH, INVALID_PATH_INDEX } from './errors';
 import { writeUint32BE } from 'lib/crypto/bytes';
+import { VERSION_NUMBER } from 'config/common';
 
 
 const ED25519_CURVE = utils.utf8.toBytes('ed25519 seed');
@@ -33,16 +32,6 @@ export class HDKey {
   #key = new Uint8Array(32);
   #chainCode = new Uint8Array(32);
 
-  get publicKey() {
-    assert(Boolean(this.#chainCode && this.#chainCode.length > 0), CHAIN_CODE_EMPTY);
-
-    const privateKey = Uint8Array.from(this.#key || []);
-    const keyPair = nacl.sign.keyPair.fromSeed(privateKey);
-    const signPk = keyPair.secretKey.subarray(32);
-
-    return Uint8Array.from(signPk);
-  }
-
   get privateKey() {
     return this.#key;
   }
@@ -52,12 +41,22 @@ export class HDKey {
   }
 
   async keyPair(): Promise<KeyPair> {
-    const pubKey = this.publicKey;
+    const pubKey = await this.getPublicKey();
+
     return {
       pubKey,
+      version: VERSION_NUMBER,
       privKey: this.privateKey,
       base58: await addressFromPublicKey(pubKey)
     };
+  }
+
+  async getPublicKey() {
+    assert(Boolean(this.#chainCode && this.#chainCode.length > 0), CHAIN_CODE_EMPTY);
+
+    const privateKey = Uint8Array.from(this.#key);
+
+    return publicKeyBytesFromPrivateKey(privateKey);
   }
 
   async #fromMasterSeed(seed: Uint8Array) {

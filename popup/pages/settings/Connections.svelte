@@ -64,7 +64,7 @@
 					/>
 					<div on:mouseup={() => hanldeOnSelect(item)}>
 						<div class="domain">
-							{item.domain}dasddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+							{item.domain}
 						</div>
 						<p>
 							{item.title}
