@@ -41,7 +41,10 @@ export class HDKey {
   }
 
   async keyPair(): Promise<KeyPair> {
-    const pubKey = await this.getPublicKey();
+    const pubKey = Uint8Array.from([
+      VERSION_NUMBER,
+      ...await this.getPublicKey()
+    ]);
 
     return {
       pubKey,

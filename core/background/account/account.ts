@@ -20,7 +20,7 @@ import {
   ACCOUNT_PRODUCT_ID_MUST_UNIQUE
 } from './errors';
 import { INVALID_BASE58_ADDRESS } from 'lib/address/errors';
-import { addressFromPublicKey, isBase58Address, publicKeyBytesFromPrivateKey } from 'lib/address';
+import { addressFromPublicKey, base58PubKeyToBytes, isBase58Address, publicKeyBytesFromPrivateKey } from 'lib/address';
 import { base58PrivateKeyToBytes, isPrivateKey } from 'lib/validator';
 import { TypeOf } from 'lib/type';
 import { VERSION_NUMBER } from 'config/common';
@@ -273,11 +273,16 @@ export class AccountController {
       case AccountTypes.PrivateKey:
         const encryptedPriveLey = this.selectedAccount?.privKey;
         assert(Boolean(encryptedPriveLey), ACCOUNT_NOT_FOUND, AccountError);
-        const privateKey = this.#guard.decryptPrivateKey(String(encryptedPriveLey));
+        const privKey = this.#guard.decryptPrivateKey(String(encryptedPriveLey));
+        const version = Number(this.selectedAccount?.version);
+        const pubKey = Uint8Array.from([
+          version,
+          ...utils.hex.toBytes(String(this.selectedAccount?.pubKey))
+        ]);
         return {
-          version: 0, // TODO: change.
-          pubKey: utils.hex.toBytes(String(this.selectedAccount?.pubKey)),
-          privKey: privateKey,
+          privKey,
+          pubKey,
+          version,
           base58: String(this.selectedAccount?.base58)
         };
     }

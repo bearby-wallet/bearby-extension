@@ -23,6 +23,7 @@ import { REQUEST_FALLED, MassaHttpError, EMPTY_ACCOUNT, INCORRECT_PUB_KEY } from
 import { JsonRPCRequestMethods } from './methods';
 import { assert } from 'lib/assert';
 import { base58Encode, pubKeyFromBytes } from 'lib/address';
+import { PUBLIC_KEY_PREFIX } from 'config/common';
 
 
 export class MassaControl {
@@ -76,11 +77,11 @@ export class MassaControl {
       blake3.newRegular().update(data).finalize()
     ));
     const sig = await sign(messageHashDigest, pair.privKey);
-    const isVerified = await verify(sig, messageHashDigest, Uint8Array.from(pair.pubKey));
+    const isVerified = await verify(sig, messageHashDigest, pair.pubKey.slice(1));
 
     assert(isVerified, INCORRECT_PUB_KEY, MassaHttpError);
 
-    return sig;
+    return Uint8Array.from([pair.version, ...sig]);
   }
 
   async getTransactionData(byteCode: Uint8Array, sig: Uint8Array, pubKey: Uint8Array): Promise<TransactionData> {
