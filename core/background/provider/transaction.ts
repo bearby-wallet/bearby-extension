@@ -8,7 +8,7 @@ import { assert } from "lib/assert";
 import { VarintEncode } from 'lib/varint';
 import { INVLID_RECIPIENT } from "./errors";
 import { OperationsType } from "./operations";
-import { ADDRESS_PREFIX, CONTRACT_ADDRESS_PREFIX, VERSION_NUMBER } from "config/common";
+import { ADDRESS_PREFIX, CONTRACT_VERSION_NUMBER, VERSION_NUMBER } from "config/common";
 import { Args, parseParams } from "lib/args";
 
 
@@ -225,13 +225,18 @@ export class CallSmartContractBuild {
     const fee = new VarintEncode().encode(this.fee);
     const expirePeriod = new VarintEncode().encode(this.expirePeriod);
     const typeIdEncoded = new VarintEncode().encode(CallSmartContractBuild.operation);
-    const targetAddressEncoded = Uint8Array.from([1, ...(await base58Decode(this.targetAddress.slice(CONTRACT_ADDRESS_PREFIX.length))).slice(1)]);
     const coinsEncoded = new VarintEncode().encode(this.coins);
     const gasLimit = new VarintEncode().encode(this.gasLimit);
     const functionNameEncoded = utils.utf8.toBytes(this.functionName);
     const parametersEncoded = this.args.serialize();
     const functionNameLengthEncoded = new VarintEncode().encode(functionNameEncoded.length);
     const parametersLengthEncoded = new VarintEncode().encode(parametersEncoded.length);
+    let targetAddressEncoded = (await base58Decode(this.targetAddress.slice(ADDRESS_PREFIX.length)));
+
+    targetAddressEncoded = Uint8Array.from([
+      CONTRACT_VERSION_NUMBER,
+      ...targetAddressEncoded
+    ]);
 
     return Uint8Array.from([
       ...fee,

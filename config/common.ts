@@ -2,6 +2,7 @@ export const TIME_BEFORE_LOCK = 3; // in hours.
 
 export const SECRET_KEY_PREFIX = "S";
 export const VERSION_NUMBER = 0;
+export const CONTRACT_VERSION_NUMBER = 1;
 export const ADDRESS_PREFIX = "AU";
 export const CONTRACT_ADDRESS_PREFIX = "AS";
 export const PUBLIC_KEY_PREFIX = "P";
