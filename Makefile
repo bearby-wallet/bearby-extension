@@ -8,7 +8,7 @@ MV3_FILE_NAME=mv3.zip
 all: build
 
 clean:
-	rm -fr $(BUILD_DIR) *.zip *.crx
+	rm -fr $(BUILD_DIR) *.zip *.crx *.sha
 	$(YARN) cache clean
 
 build:
