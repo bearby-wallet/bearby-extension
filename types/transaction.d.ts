@@ -41,8 +41,9 @@ export interface MinTransactionParams {
   func?: string;
   code?: string;
   params?: CallParam[];
+  maxCoins?: string;
   coins?: string;
-  datastore?: KeyValue<string>;
+  datastore?: Map<Uint8Array, Uint8Array>;
 }
 
 export interface ConfirmParams extends MinTransactionParams {

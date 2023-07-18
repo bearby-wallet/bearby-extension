@@ -378,10 +378,11 @@ export class BackgroundTransaction {
         ).bytes();
       case OperationsType.ExecuteSC:
         return new ExecuteSmartContractBuild(
-          confirmParams.fee,
+          BigInt(confirmParams.fee),
+          BigInt(confirmParams.gasLimit),
+          BigInt(confirmParams.maxCoins || 0),
           expiryPeriod,
-          String(confirmParams.code),
-          confirmParams.gasLimit,
+          confirmParams.code || '',
           confirmParams.datastore
         ).bytes();
       case OperationsType.CallSC:

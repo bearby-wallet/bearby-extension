@@ -1,4 +1,3 @@
-import type { KeyValue } from "types/general";
 import type { CallParam } from "types/contacts";
 
 import { utils } from "aes-js";
@@ -120,68 +119,68 @@ export class SellRollsBuild {
 export class ExecuteSmartContractBuild {
   static operation = OperationsType.ExecuteSC;
 
-  contractDataBase64: string;
-  gasLimit: number;
-  fee: number;
+  code: Uint8Array;
+  maxGas: bigint;
+  fee: bigint;
+  maxCoins: bigint;
   expirePeriod: number;
   datastore = new Map<Uint8Array, Uint8Array>();
 
   constructor(
-    fee: number,
+    fee: bigint,
+    maxGas: bigint,
+    maxCoins: bigint,
     expirePeriod: number,
-    contractDataBase64: string,
-    gasLimit: number,
-    datastore?: KeyValue<string>
+    code: string, // as Base58
+    datastore?: Map<Uint8Array, Uint8Array>
   ) {
-    this.contractDataBase64 = contractDataBase64;
-    this.gasLimit = Number(gasLimit);
-    this.fee = Number(fee);
-    this.expirePeriod = Number(expirePeriod);
+    this.fee = fee;
+    this.maxGas = maxGas;
+    this.maxCoins = maxCoins;
+    this.expirePeriod = expirePeriod;
+    this.code = toByteArray(code);
 
     if (datastore) {
-      for (const key in datastore) {
-        const element = datastore[key];
-        this.datastore.set(
-          utils.utf8.toBytes(key),
-          utils.utf8.toBytes(element)
-        );
-      }
+      this.datastore = datastore;
     }
   }
 
   bytes() {
-    const decodedScBinaryCode = toByteArray(this.contractDataBase64);
-    const dataLengthEncoded = new VarintEncode().encode(decodedScBinaryCode.length);
-    const feeEncoded = new VarintEncode().encode(this.fee);
+    const feeEncoded = new VarintEncode().encode(Number(this.fee)); // TODO: Replace encode to bigint.
+    const maxGasEncoded = new VarintEncode().encode(Number(this.maxGas)); // TODO: Replace encode to bigint.
+    const maxCoinEncoded = new VarintEncode().encode(Number(this.maxCoins)); // TODO: Replace encode to bigint.
     const expirePeriodEncoded = new VarintEncode().encode(this.expirePeriod);
     const typeIdEncoded = new VarintEncode().encode(ExecuteSmartContractBuild.operation);
-    const maxGasEncoded = new VarintEncode().encode(this.gasLimit);
-    let datastoreSerialized = new Uint8Array();
+    const dataLengthEncoded = new VarintEncode().encode(this.code.length);
 
-    for (let [encodedKeyBytes, encodedValueBytes] of this.datastore) {
-      const encodedKeyLen = new VarintEncode().encode(encodedKeyBytes.length);
-      const encodedValueLen = new VarintEncode().encode(encodedValueBytes.length);
+    // smart contract operation datastore
+    const datastoreKeyMap = this.datastore;
+    let datastoreSerializedBuffer =new Uint8Array();
 
-      datastoreSerialized = Uint8Array.from([
-        ...datastoreSerialized,
+    for (const [key, value] of datastoreKeyMap) {
+      const encodedKeyLen = new VarintEncode().encode(key.length);
+      const encodedValueLen = new VarintEncode().encode(value.length);
+
+      datastoreSerializedBuffer = Uint8Array.from([
+        ...datastoreSerializedBuffer,
         ...encodedKeyLen,
-        ...encodedKeyBytes,
+        ...key,
         ...encodedValueLen,
-        ...encodedValueBytes
+        ...value
       ]);
     }
 
-    const datastoreSerializedLen = new VarintEncode().encode(this.datastore.size);
+    const datastoreSerializedBufferLen = new VarintEncode().encode(this.datastore.size);
 
     return Uint8Array.from([
       ...feeEncoded,
       ...expirePeriodEncoded,
       ...typeIdEncoded,
       ...maxGasEncoded,
+      ...maxCoinEncoded,
       ...dataLengthEncoded,
-      ...decodedScBinaryCode,
-      ...datastoreSerializedLen,
-      ...datastoreSerialized
+      ...this.code,
+      ...datastoreSerializedBufferLen,
     ]);
   }
 }

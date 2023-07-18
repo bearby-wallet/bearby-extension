@@ -7,6 +7,6 @@ export interface Contact {
 
 export interface CallParam {
   type: ArgTypes;
+  vname?: string;
   value: string | bigint | number | boolean;
 }
-
