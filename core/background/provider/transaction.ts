@@ -10,11 +10,7 @@ import { INVLID_RECIPIENT } from "./errors";
 import { OperationsType } from "./operations";
 import { ADDRESS_PREFIX, CONTRACT_VERSION_NUMBER, VERSION_NUMBER } from "config/common";
 import { Args, parseParams } from "lib/args";
-import { ArgTypes } from "config/arg-types";
 
-// console.log(new Args().addString('Hello, World!').serialize());
-// console.log(new Args().addF32(3213).serialize());
-console.log(new Args().addArray([255, 255, 255], ArgTypes.I32).serialize());
 
 export class PaymentBuild {
   static operation = OperationsType.Payment;

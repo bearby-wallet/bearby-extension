@@ -29,6 +29,12 @@ export function parseParams(params: CallParam[]): Args {
       case ArgTypes.U64:
         args.addU64(BigInt(element.value));
         continue;
+      case ArgTypes.U128:
+        args.addU128(BigInt(element.value));
+        continue;
+      case ArgTypes.U256:
+        args.addU256(BigInt(element.value));
+        continue;
       case ArgTypes.BOOL:
         args.addBool(Boolean(element.value));
         continue;
