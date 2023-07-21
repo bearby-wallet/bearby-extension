@@ -9,6 +9,7 @@ import { INVLID_RECIPIENT } from "./errors";
 import { OperationsType } from "./operations";
 import { ADDRESS_PREFIX, CONTRACT_VERSION_NUMBER, VERSION_NUMBER } from "config/common";
 import { Args, parseParams } from "lib/args";
+import { u64ToBytes, u8toByte } from "lib/args/numbers";
 
 
 export class PaymentBuild {
@@ -120,9 +121,11 @@ export class ExecuteSmartContractBuild {
   static operation = OperationsType.ExecuteSC;
 
   code: Uint8Array;
+  deployer: Uint8Array;
   maxGas: bigint;
   fee: bigint;
   maxCoins: bigint;
+  coins: bigint;
   expirePeriod: number;
   datastore = new Map<Uint8Array, Uint8Array>();
 
@@ -130,19 +133,56 @@ export class ExecuteSmartContractBuild {
     fee: bigint,
     maxGas: bigint,
     maxCoins: bigint,
+    coins: bigint,
     expirePeriod: number,
     code: string, // as Base58
-    datastore?: Map<Uint8Array, Uint8Array>
+    deployer: string, // deployer contract as base58.
+    parameters?: CallParam[]
   ) {
     this.fee = fee;
     this.maxGas = maxGas;
+    this.coins = coins;
     this.maxCoins = maxCoins;
     this.expirePeriod = expirePeriod;
     this.code = toByteArray(code);
+    this.deployer = toByteArray(deployer);
 
-    if (datastore) {
-      this.datastore = datastore;
+    const datastore = new Map<Uint8Array, Uint8Array>();
+
+    datastore.set(
+      new Uint8Array([0x00]),
+      u64ToBytes(1n),
+    );
+
+    datastore.set(u64ToBytes(1n), this.code);
+
+    if (parameters && parameters.length > 0) {
+      const args = parseParams(parameters);
+
+      datastore.set(
+        Uint8Array.from(
+          new Args()
+            .addU64(1n)
+            .addUint8Array(u8toByte(0))
+            .serialize(),
+        ),
+        Uint8Array.from(args.serialize())
+      );
     }
+
+    if (coins > 0n) {
+      datastore.set(
+        new Uint8Array(
+          new Args()
+            .addU64(BigInt(1))
+            .addUint8Array(u8toByte(1))
+            .serialize()
+        ),
+        u64ToBytes(coins)
+      );
+    }
+
+    this.datastore = datastore;
   }
 
   bytes() {
@@ -151,11 +191,11 @@ export class ExecuteSmartContractBuild {
     const maxCoinEncoded = new VarintEncode().encode(Number(this.maxCoins)); // TODO: Replace encode to bigint.
     const expirePeriodEncoded = new VarintEncode().encode(this.expirePeriod);
     const typeIdEncoded = new VarintEncode().encode(ExecuteSmartContractBuild.operation);
-    const dataLengthEncoded = new VarintEncode().encode(this.code.length);
+    const dataLengthEncoded = new VarintEncode().encode(this.deployer.length);
 
     // smart contract operation datastore
     const datastoreKeyMap = this.datastore;
-    let datastoreSerializedBuffer =new Uint8Array();
+    let datastoreSerializedBuffer = new Uint8Array();
 
     for (const [key, value] of datastoreKeyMap) {
       const encodedKeyLen = new VarintEncode().encode(key.length);
@@ -179,8 +219,9 @@ export class ExecuteSmartContractBuild {
       ...maxGasEncoded,
       ...maxCoinEncoded,
       ...dataLengthEncoded,
-      ...this.code,
+      ...this.deployer,
       ...datastoreSerializedBufferLen,
+      ...datastoreSerializedBuffer
     ]);
   }
 }

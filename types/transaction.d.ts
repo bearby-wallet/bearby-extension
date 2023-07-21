@@ -40,10 +40,10 @@ export interface MinTransactionParams {
   domain?: string;
   func?: string;
   code?: string;
+  deployer?: string;
   params?: CallParam[];
   maxCoins?: string;
   coins?: string;
-  datastore?: Map<Uint8Array, Uint8Array>;
 }
 
 export interface ConfirmParams extends MinTransactionParams {

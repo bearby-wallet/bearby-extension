@@ -1,5 +1,7 @@
-import { type ISerializable, type IDeserializedResult, Args } from './args';
+import type { ISerializable, IDeserializedResult } from './args';
+
 import { NativeType, ArgTypes } from 'config/arg-types';
+import { Args } from './args';
 import { bytesToStr } from './strings';
 import { byteToBool } from './bool';
 import {

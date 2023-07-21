@@ -377,17 +377,21 @@ export class BackgroundTransaction {
           expiryPeriod
         ).bytes();
       case OperationsType.ExecuteSC:
+        assert(Boolean(confirmParams.code), INCORRECT_PARAM);
+        assert(Boolean(confirmParams.deployer), INCORRECT_PARAM);
+
         return new ExecuteSmartContractBuild(
           BigInt(confirmParams.fee),
           BigInt(confirmParams.gasLimit),
           BigInt(confirmParams.maxCoins || 0),
+          BigInt(confirmParams.coins || 0),
           expiryPeriod,
           confirmParams.code || '',
-          confirmParams.datastore
+          confirmParams.deployer || '',
+          confirmParams.params
         ).bytes();
       case OperationsType.CallSC:
-        assert(Boolean(confirmParams.func), 'confirmParams.func');
-        assert(Boolean(confirmParams.params), 'params');
+        assert(Boolean(confirmParams.func), INCORRECT_PARAM);
 
         return await new CallSmartContractBuild(
           confirmParams.func || '',

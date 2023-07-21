@@ -6,7 +6,7 @@ import {
   deserializeObj,
   arrayToBytes,
   bytesToArray
-} from './arrays';
+} from 'lib/args/arrays';
 import {
   bytesToF32,
   bytesToF64,
@@ -26,8 +26,8 @@ import {
   u32ToBytes,
   u64ToBytes,
   u8toByte,
-} from './numbers';
-import { bytesToStr, strToBytes } from './strings';
+} from 'lib/args/numbers';
+import { bytesToStr, strToBytes } from 'lib/args/strings';
 
 
 export interface ISerializable<T> {
