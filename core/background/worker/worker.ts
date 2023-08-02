@@ -186,7 +186,7 @@ export class WorkerController {
     const newNodes = connectedNodes
       .map((ip) => {
         const { https } = this.#settings.network.state;
-        let url = isIPV6(ip) ? `[${ip}]` : `${ip}`;
+        let url = isIPV6(ip) ? `[${ip}]` : `${ip.replace('::ffff:', '')}`;
 
         return https ? `https://${url}` : `http://${url}:${NODE_PORT}`;
       });

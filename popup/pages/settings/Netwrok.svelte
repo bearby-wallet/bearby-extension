@@ -26,7 +26,7 @@
   import { NETWORK_INIT_STATE } from 'config/network';
 
 
-  const [,, custom] = NETWORK_KEYS;
+  const [,,, custom] = NETWORK_KEYS;
   const SECONDS_DEMON = 1000;
 
   let nodeURL = '';
