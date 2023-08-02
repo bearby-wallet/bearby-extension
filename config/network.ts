@@ -1,9 +1,13 @@
 import type { NetworkSettingsState, NetwrokConfig } from 'types';
 
 
-export const NETWORK: NetwrokConfig = {
+export const NETWORK: NetwrokConfig = Object.freeze({
   mainnet: {
     PROVIDERS: ['https://massa.net/api/v2'],
+    VERSION: 0
+  },
+  buildnet: {
+    PROVIDERS: ['https://buildnet.massa.net/api/v2'],
     VERSION: 0
   },
   testnet: {
@@ -14,7 +18,7 @@ export const NETWORK: NetwrokConfig = {
     PROVIDERS: ['http://127.0.0.1:33035'],
     VERSION: 0
   }
-}
+});
 export const NETWORK_INIT_STATE: NetworkSettingsState = {
   downgrade: true,
   https: false,

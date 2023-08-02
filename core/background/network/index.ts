@@ -7,11 +7,11 @@ import { assert } from 'lib/assert';
 import { FAIL_SYNC, INVALID_CONFIG, INVALID_SELECTED, NetworkError, UNIQUE_PROVIDER } from './errors';
 
 
-const [, testnet] = NETWORK_KEYS;
+const [, buildnet] = NETWORK_KEYS;
 
 export class NetworkControl {
   #config = NETWORK;
-  #selected = testnet;
+  #selected = buildnet;
 
   get config() {
     return this.#config;
@@ -48,7 +48,13 @@ export class NetworkControl {
       }
 
       if (data[Fields.NETWROK_CONFIG]) {
-        this.#config = JSON.parse(data[Fields.NETWROK_CONFIG]);
+        const config = JSON.parse(data[Fields.NETWROK_CONFIG]);
+
+        if (Object.keys(config).length < NETWORK_KEYS.length) {
+          this.#config = NETWORK;
+        } else {
+          this.#config = config;
+        }
       }
 
       assert(Boolean(this.providers && this.providers.length > 0), FAIL_SYNC, NetworkError);
@@ -58,7 +64,7 @@ export class NetworkControl {
   }
 
   async reset() {
-    this.#selected = testnet;
+    this.#selected = buildnet;
     this.#config = NETWORK;
 
     await BrowserStorage.set(
