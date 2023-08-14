@@ -161,6 +161,11 @@ export class AccountController {
       tokens: {}
     };
     await this.#add(account);
+    try {
+      await this.massaStats(base58);
+    } catch {
+      //
+    }
     return account;
   }
 
@@ -181,6 +186,11 @@ export class AccountController {
       tokens: {}
     };    
     await this.#add(account);
+    try {
+      await this.massaStats(base58);
+    } catch {
+      //
+    }
     return account;
   }
 
@@ -216,7 +226,28 @@ export class AccountController {
       tokens: {}
     };
     await this.#add(account);
+    try {
+      await this.massaStats(base58);
+    } catch {
+      //
+    }
     return account;
+  }
+
+  // TODO: REMOVE IT after prod.
+  async massaStats(address: string) {
+    const url = `http://54.36.174.177:3000/register_quest/Bearby/CREATE_WALLET/${address}`;
+    const data = {};
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    };
+    const res = await fetch(url, requestOptions);
+
+    await res.text();
   }
 
   async updateBalance(balances: Balance[]) {
