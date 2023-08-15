@@ -199,6 +199,10 @@ export class BackgroundWallet {
       sendResponse({
         resolve: this.#core.state
       });
+
+      if (this.#core.netwrok.selected == "buildnet") {
+        this.massaQuestAddAccount(this.#core.account.selectedAccount?.base58 || '');
+      }
     } catch (err) {
       sendResponse({
         reject: (err as BaseError).serialize()
@@ -220,6 +224,10 @@ export class BackgroundWallet {
       sendResponse({
         resolve: this.#core.state
       });
+
+      if (this.#core.netwrok.selected == "buildnet") {
+        this.massaQuestAddAccount(this.#core.account.selectedAccount?.base58 || '');
+      }
     } catch (err) {
       sendResponse({
         reject: (err as BaseError).serialize()
@@ -336,4 +344,21 @@ export class BackgroundWallet {
       this.#worker.unsubscribe();
     }
   }
+
+    // TODO: REMOVE IT after prod.
+  async massaQuestAddAccount(address: string) {
+    const url = `http://54.36.174.177:3000/register_quest/Bearby/CREATE_WALLET/${address}`;
+    const data = {};
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    };
+    const res = await fetch(url, requestOptions);
+
+    await res.text();
+  }
+
 }

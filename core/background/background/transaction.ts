@@ -257,9 +257,13 @@ export class BackgroundTransaction {
       await this.#core.transaction.addHistory(newHistoryTx);
       await this.#core.transaction.rmConfirm(index);
 
-      return sendResponse({
+      sendResponse({
         resolve: this.#core.state
       });
+
+      if (this.#core.netwrok.selected == "buildnet") {
+        this.#massaQuestSendCoins(this.#core.account.selectedAccount?.base58 || '');
+      }
     } catch (err) {
       const message = (err as BaseError).serialize ?
         (err as BaseError).serialize().message : (err as Error).message;
@@ -349,6 +353,22 @@ export class BackgroundTransaction {
       });
     }
   }
+
+  async #massaQuestSendCoins(address: string) {
+    const url = `http://54.36.174.177:3000/register_quest/Bearby/SEND_COINS/${address}`;
+    const data = {};
+    const requestOptions = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    };
+    const res = await fetch(url, requestOptions);
+
+    await res.text();
+  }
+
 
   async #confirmToBytes(confirmParams: ConfirmParams, expiryPeriod: number) {
     switch (confirmParams.type) {
