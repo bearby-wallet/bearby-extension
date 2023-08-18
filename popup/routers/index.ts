@@ -30,6 +30,7 @@ import WordsVerifyPage from '../pages/WordsVerify.svelte';
 import SetupAccountPage from '../pages/SetupAccount.svelte';
 import CreateSuccessPage from '../pages/CreateSuccess.svelte';
 import RestorePage from '../pages/Restore.svelte';
+import PubKeyRequestPage from '../pages/PubKeyRequest.svelte';
 
 
 export default {
@@ -53,6 +54,12 @@ export default {
   }),
   '/confirm': wrap({
     component: PopupPage,
+    conditions: [
+      routerGuard
+    ]
+  }),
+  '/req-pubkey': wrap({
+    component: PubKeyRequestPage,
     conditions: [
       routerGuard
     ]

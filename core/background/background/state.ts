@@ -26,7 +26,7 @@ export class BackgroundState {
   readonly settings = new SettingsControl();
   readonly contacts = new ContactController();
   readonly connections = new AppConnectController(this.badge);
-  readonly account = new AccountController(this.guard);
+  readonly account = new AccountController(this.guard, this.badge);
   readonly massa = new MassaControl(this.netwrok, this.account, this.settings);
   readonly tokens = new TokenControl(this.netwrok, this.massa, this.account);
   readonly transaction = new TransactionsController(
@@ -41,7 +41,6 @@ export class BackgroundState {
     this.settings
   );
 
-
   get state(): WalletState {
     return {
       guard: this.guard.state,
@@ -51,6 +50,7 @@ export class BackgroundState {
       tokens: this.tokens.identities,
       confirm: this.transaction.confirm,
       gas: this.gas.state,
+      reqPubKey: this.account.requestPubKey,
       lockTime: this.guard.lockTime,
       confirmApps: this.connections.confirm,
       signMessage: this.transaction.message

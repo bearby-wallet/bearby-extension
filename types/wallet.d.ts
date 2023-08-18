@@ -17,6 +17,7 @@ export interface WalletState {
   tokens: Token[];
   confirm: ConfirmParams[];
   gas: GasState;
+  reqPubKey?: AppConnection;
   lockTime: number;
   confirmApps: AppConnection[];
   signMessage: SignMessageParams;

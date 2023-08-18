@@ -67,7 +67,9 @@ export const MTypePopup = {
   REJECT_CONNECTION: `@/${app}/reject-connection`,
 
   REJECT_MESSAGE: `@/${app}/reject-message`,
-  APPROVE_MESSAGE: `@/${app}/approve-message`
+  APPROVE_MESSAGE: `@/${app}/approve-message`,
+
+  APPROVE_PUB_KEY_REQ: `@/${app}/apprvoe-pub-key-request`
 };
 
 export const MTypeTab = {
@@ -80,6 +82,7 @@ export const MTypeTab = {
   DISCONNECT_APP: `@/${app}/disconnect_app`,
   DISCONNECT_APP_RESULT: `@/${app}/disconnect_app_result`,
   CONNECT_APP: `@/${app}/connect-app`,
+  REQUEST_PUB_KEY: `@/${app}/request-pub-key`,
   RESPONSE_CONNECT_APP: `@/${app}/respoonse-connect-app`,
   NETWORK_CHANGED: `@/${app}/network-just-changed`,
   LOCKED: `@/${app}/guard-just-lock`,
@@ -87,6 +90,7 @@ export const MTypeTab = {
   TX_TO_SEND_RESULT: `@/${app}/response-tx-result`,
   SIGN_MESSAGE: `@/${app}/sign-message-call`,
   SING_MESSAGE_RESULT: `@/${app}/sign-message-response`,
+  RESPONSE_PUB_KEY: `@/${app}/response-pub-key`,
   CHECK_MASSA_ADDRESS: `@/${app}/check-massa-address`,
   CHECK_MASSA_ADDRESS_RES: `@/${app}/check-massa-address-response`
 };

@@ -34,6 +34,9 @@ export function startBackground(core: BackgroundState) {
       case MTypeTab.CONNECT_APP:
         connections.addConnectAppConfirm(msg.payload, sendResponse);
         return true;
+      case MTypeTab.REQUEST_PUB_KEY:
+        connections.requestPubKey(msg.payload, sendResponse);
+        return true;
       case MTypeTab.DISCONNECT_APP:
         connections.disconnect(msg.payload.domain, msg.payload.uuid, sendResponse);
         return true;
@@ -175,6 +178,10 @@ export function startBackground(core: BackgroundState) {
         return true;
       case MTypePopup.REJECT_CONNECTION:
         connections.rejectConnections(msg.payload.index, sendResponse);
+        return true;
+
+      case MTypePopup.APPROVE_PUB_KEY_REQ:
+        connections.requestPubKeyApproveReject(msg.payload.approved, sendResponse);
         return true;
 
       case MTypePopup.GET_TX_HISTORY:

@@ -1,5 +1,6 @@
 import type { Guard } from 'core/background/guard';
-import type { Wallet, Account, KeyPair, Balance } from 'types';
+import type { Wallet, Account, KeyPair, Balance, AppConnection } from 'types';
+import type { BadgeControl } from 'background/notifications';
 
 import { utils } from 'aes-js';
 
@@ -32,7 +33,9 @@ export class AccountController {
 
   readonly bip39 = new MnemonicController();
   readonly #guard: Guard;
+  readonly #badge: BadgeControl;
 
+  #requestPubKey?: AppConnection;
   #wallet: Wallet = {
     [AccountController.field1]: 0,
     [AccountController.field0]: []
@@ -40,6 +43,10 @@ export class AccountController {
 
   get wallet() {
     return this.#wallet;
+  }
+
+  get requestPubKey() {
+    return this.#requestPubKey;
   }
 
   get selectedAccount(): undefined | Account {
@@ -87,8 +94,21 @@ export class AccountController {
       .length;
   }
 
-  constructor(guard: Guard) {
+  constructor(guard: Guard, badge: BadgeControl) {
     this.#guard = guard;
+    this.#badge = badge;
+  }
+
+  async setPubKeyRequest(req?: AppConnection) {
+    this.#requestPubKey = req;
+
+    if (req) {
+      await this.#badge.decrease();
+      await this.#badge.increase();
+    } else {
+      await this.#badge.decrease();
+
+    }
   }
 
   async remove(index: number) {
@@ -294,8 +314,6 @@ export class AccountController {
     assert(index < this.wallet.identities.length, ACCOUNT_OUT_INDEX, AccountError);
 
     this.#wallet.selectedAddress = index;
-
-    console.log(this.#wallet);
 
     await BrowserStorage.set(
       buildObject(Fields.WALLET, this.#wallet)

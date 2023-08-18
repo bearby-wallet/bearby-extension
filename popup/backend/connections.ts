@@ -40,6 +40,18 @@ export async function approveConnection(index: number) {
   return resolve;
 }
 
+export async function approvePubKeyReq(approved: boolean) {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.APPROVE_PUB_KEY_REQ,
+    payload: {
+      approved
+    }
+  }).send();
+  const resolve = warpMessage(data) as WalletState;
+  updateState(resolve);
+  return resolve;
+}
+
 export async function rejectConnection(index: number) {
   const data = await new Message<SendResponseParams>({
     type: MTypePopup.REJECT_CONNECTION,

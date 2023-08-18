@@ -286,9 +286,7 @@ export class BackgroundTransaction {
       }
 
       const pair = await this.#core.account.getKeyPair();
-      const messageBytes = utils.hex.toBytes(
-        blake3.newRegular().update(message.message).finalize()
-      );
+      const messageBytes = utils.hex.toBytes(String(message.hash));
       const signatureBytes = await this.#core.massa.sign(messageBytes, pair);
       const signature = await base58Encode(signatureBytes);
       const payload: SignedMessage = {

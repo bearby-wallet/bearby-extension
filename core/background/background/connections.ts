@@ -196,6 +196,64 @@ export class BackgroundConnection {
     }
   }
 
+  async requestPubKey(payload: AppConnection, sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+
+      const prompt = new PromptService(this.#core.settings.popup.enabledPopup);
+
+      await this.#core.account.setPubKeyRequest(payload);
+      await prompt.open();
+
+      return sendResponse({});
+    } catch (err) {
+      new TabsMessage({
+        type: MTypeTab.RESPONSE_PUB_KEY,
+        payload: {
+          uuid: payload.uuid,
+          reject: (err as BaseError).message
+        }
+      }).send();
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
+  async requestPubKeyApproveReject(approved: boolean, sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+
+      if (approved) {
+        new TabsMessage({
+          type: MTypeTab.RESPONSE_PUB_KEY,
+          payload: {
+            uuid: this.#core.account.requestPubKey?.uuid,
+            resolve: this.#core.account.selectedAccount?.pubKey
+          }
+        }).send();
+      } else {
+        new TabsMessage({
+          type: MTypeTab.RESPONSE_PUB_KEY,
+          payload: {
+            uuid: this.#core.account.requestPubKey?.uuid,
+            reject: REJECTED
+          }
+        }).send();
+      }
+
+      this.#core.account.setPubKeyRequest();
+
+      return sendResponse({
+        resolve: this.#core.state
+      });
+    } catch (err) {
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
   async addConnectAppConfirm(app: AppConnection, sendResponse: StreamResponse) {
     try {
       if (this.#core.guard.isEnable && this.#core.connections.has(app.domain)) {

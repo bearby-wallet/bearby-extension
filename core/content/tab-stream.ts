@@ -61,6 +61,9 @@ export class ContentTabStream {
       case MTypeTab.CONNECT_APP:
         new Message(msg).send();
         break;
+      case MTypeTab.REQUEST_PUB_KEY:
+        new Message(msg).send();
+        break;
       case MTypeTab.TX_TO_SEND:
         new Message(msg).send();
         break;

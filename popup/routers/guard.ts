@@ -5,12 +5,14 @@ import guardStore from 'popup/store/guard';
 import confirmStore from 'app/store/confirm';
 import connectAppStore from 'popup/store/confirm-apps';
 import messageStore from 'popup/store/message';
+import reqPubKey from 'app/store/req-pub-key';
 
 
 export const routerGuard = () => {
   const guard = get(guardStore);
   const confirm = get(confirmStore);
   const appsConnect = get(connectAppStore);
+  const reqPubKeyState = get(reqPubKey);
   const message = get(messageStore);
 
   if (!guard.isReady) {
@@ -39,6 +41,12 @@ export const routerGuard = () => {
 
   if (message) {
     push('/sign-message');
+
+    return guard.isEnable && guard.isReady;
+  }
+
+  if (reqPubKeyState) {
+    push('/req-pubkey');
 
     return guard.isEnable && guard.isReady;
   }

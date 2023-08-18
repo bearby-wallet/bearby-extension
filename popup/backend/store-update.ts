@@ -16,6 +16,7 @@ import gasStore from 'popup/store/gas';
 import lockTimerStore from 'popup/store/lock-timer';
 import confirmApps from 'popup/store/confirm-apps';
 import messageStore from 'popup/store/message';
+import reqPubKey from 'app/store/req-pub-key';
 
 
 export function updateState(state: WalletState) {
@@ -30,6 +31,7 @@ export function updateState(state: WalletState) {
   console.log(state);
   guardStore.set(state.guard);
   settingsStore.set(state.settings);
+  reqPubKey.set(state.reqPubKey);
   lockTimerStore.set(state.lockTime);
   gasStore.set(state.gas);
   netwrokStore.set(state.netwrok);

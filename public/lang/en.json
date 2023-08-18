@@ -358,5 +358,13 @@
       "confirm": "Sign",
       "reject": "Reject"
     }
+  },
+  "pub_key_req": {
+    "title": "Request encryption public key",
+    "description": "Would like your public encryption key. By consenting, this site will be able to compose encrypted messages to you.",
+    "btns": {
+      "confirm": "Provide",
+      "reject": "Cancel"
+    }
   }
 }
