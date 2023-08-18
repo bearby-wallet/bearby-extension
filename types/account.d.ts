@@ -35,6 +35,11 @@ export interface PrivateKey {
   version: number;
 }
 
+export interface PublicKey {
+  pubKey: Uint8Array;
+  version: number;
+}
+
 export interface GuardType {
   isEnable: boolean;
   isReady: boolean;

@@ -1,3 +1,5 @@
+import type { PrivateKey, PublicKey } from 'types/account';
+
 import blake3 from 'blake3-js';
 import { getPublicKey } from "@noble/ed25519";
 import { sha256 } from 'lib/crypto/sha256';
@@ -8,8 +10,7 @@ import { INVALID_CHECKSUM, INVALID_PUB_KEY_PREFIX } from './errors';
 import {
   ADDRESS_PREFIX,
   CONTRACT_ADDRESS_PREFIX,
-  PUBLIC_KEY_PREFIX,
-  VERSION_NUMBER
+  PUBLIC_KEY_PREFIX
 } from 'config/common';
 import { VarintEncode } from 'lib/varint';
 import { utils } from 'aes-js';
@@ -57,10 +58,10 @@ export async function base58Decode(data: string): Promise<Uint8Array> {
   return new Uint8Array([...decoded.prefix, ...decoded.data]);
 }
 
-export async function addressFromPublicKey(publicKey: Uint8Array) {
-  const version = new VarintEncode().encode(VERSION_NUMBER);
+export async function addressFromPublicKey(publicKey: PublicKey) {
+  const version = new VarintEncode().encode(publicKey.version);
   const pubKeyHash = utils.hex.toBytes(
-    blake3.newRegular().update(publicKey).finalize()
+    blake3.newRegular().update(publicKey.pubKey).finalize()
   );
 
   return ADDRESS_PREFIX + await base58Encode(Uint8Array.from(
@@ -89,8 +90,15 @@ export async function isBase58Address(address: string) {
   }
 }
 
-export async function publicKeyBytesFromPrivateKey(privateKey: Uint8Array): Promise<Uint8Array> {
-  return await getPublicKey(privateKey);
+export async function publicKeyBytesFromPrivateKey({ privKey, version }: PrivateKey): Promise<PublicKey> {
+  let pubKey = await getPublicKey(privKey);
+
+  pubKey = Uint8Array.from([version, ...pubKey]);
+
+  return {
+    pubKey,
+    version
+  };
 };
 
 export async function pubKeyFromBytes(pubKey: Uint8Array) {
@@ -100,8 +108,8 @@ export async function pubKeyFromBytes(pubKey: Uint8Array) {
 }
 
 export async function base58PubKeyToBytes(pubKey: String) {
-  console.log(pubKey);
   assert(pubKey[0] === PUBLIC_KEY_PREFIX, INVALID_PUB_KEY_PREFIX);
 
   return await base58Decode(pubKey.slice(PUBLIC_KEY_PREFIX.length));
 }
+

@@ -41,14 +41,10 @@ export class HDKey {
   }
 
   async keyPair(): Promise<KeyPair> {
-    const pubKey = Uint8Array.from([
-      VERSION_NUMBER,
-      ...await this.getPublicKey()
-    ]);
+    const pubKey = await this.getPublicKey();
 
     return {
-      pubKey,
-      version: VERSION_NUMBER,
+      ...pubKey,
       privKey: this.privateKey,
       base58: await addressFromPublicKey(pubKey)
     };
@@ -57,9 +53,12 @@ export class HDKey {
   async getPublicKey() {
     assert(Boolean(this.#chainCode && this.#chainCode.length > 0), CHAIN_CODE_EMPTY);
 
-    const privateKey = Uint8Array.from(this.#key);
+    const privKey = Uint8Array.from(this.#key);
 
-    return publicKeyBytesFromPrivateKey(privateKey);
+    return publicKeyBytesFromPrivateKey({
+      privKey,
+      version: VERSION_NUMBER
+    });
   }
 
   async #fromMasterSeed(seed: Uint8Array) {

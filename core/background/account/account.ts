@@ -20,7 +20,7 @@ import {
   ACCOUNT_PRODUCT_ID_MUST_UNIQUE
 } from './errors';
 import { INVALID_BASE58_ADDRESS } from 'lib/address/errors';
-import { addressFromPublicKey, base58PubKeyToBytes, isBase58Address, publicKeyBytesFromPrivateKey } from 'lib/address';
+import { addressFromPublicKey, isBase58Address, publicKeyBytesFromPrivateKey, pubKeyFromBytes } from 'lib/address';
 import { base58PrivateKeyToBytes, isPrivateKey } from 'lib/validator';
 import { TypeOf } from 'lib/type';
 import { VERSION_NUMBER } from 'config/common';
@@ -31,7 +31,6 @@ export class AccountController {
   static readonly field1 = 'selectedAddress';
 
   readonly bip39 = new MnemonicController();
-
   readonly #guard: Guard;
 
   #wallet: Wallet = {
@@ -147,16 +146,17 @@ export class AccountController {
 
   async addAccountFromSeed(seed: Uint8Array, name: string) {
     const index = this.lastIndexSeed;
-    const { pubKey, version } = await this.fromSeed(seed, index);
+    const pubKey = await this.fromSeed(seed, index);
     const base58 = await addressFromPublicKey(pubKey);
+    const base58PubKey = await pubKeyFromBytes(pubKey.pubKey);
     const type = AccountTypes.Seed;
     const account: Account = {
       name,
       base58,
       index,
       type,
-      version,
-      pubKey: utils.hex.fromBytes(pubKey),
+      version: pubKey.version,
+      pubKey: base58PubKey,
       nft: {},
       tokens: {}
     };
@@ -169,34 +169,34 @@ export class AccountController {
     const { pubKey, base58, privKey, version } = await this.fromPrivateKey(privateKey);
     const type = AccountTypes.PrivateKey;
     const encryptedPrivateKey = this.#guard.encryptPrivateKey(privKey);
+    const base58PubKey = await pubKeyFromBytes(pubKey);
     const account: Account = {
       name,
       index,
       base58,
       type,
       version,
-      pubKey: utils.hex.fromBytes(pubKey),
+      pubKey: base58PubKey,
       privKey: encryptedPrivateKey,
       nft: {},
       tokens: {}
-    };    
+    };
     await this.#add(account);
     return account;
   }
 
   async fromPrivateKey(privateKey: string): Promise<KeyPair> {
-    const { version, privKey } = await base58PrivateKeyToBytes(privateKey);
+    const pk = await base58PrivateKeyToBytes(privateKey);
 
-    isPrivateKey(privKey);
+    isPrivateKey(pk.privKey);
 
-    const pubKey = await publicKeyBytesFromPrivateKey(privKey);
+    const pubKey = await publicKeyBytesFromPrivateKey(pk);
     const base58 = await addressFromPublicKey(pubKey);
 
     return {
-      pubKey,
-      version,
+      ...pk,
+      ...pubKey,
       base58,
-      privKey
     };
   }
 
@@ -295,6 +295,8 @@ export class AccountController {
 
     this.#wallet.selectedAddress = index;
 
+    console.log(this.#wallet);
+
     await BrowserStorage.set(
       buildObject(Fields.WALLET, this.#wallet)
     );
@@ -338,7 +340,7 @@ export class AccountController {
     const isUniqueProductId = this.wallet.identities.some(
       (acc) => (!TypeOf.isUndefined(acc.productId) &&
         !TypeOf.isUndefined(account.productId) &&
-          acc.productId === account.productId)
+        acc.productId === account.productId)
     );
 
     assert(!isUniqueAddress, ACCOUNT_MUST_UNIQUE, AccountError);
