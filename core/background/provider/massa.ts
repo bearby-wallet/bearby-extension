@@ -109,7 +109,7 @@ export class MassaControl {
       try {
         const responce = await fetch(provider, {
           ...request,
-          signal: abortController.signal  
+          signal: abortController.signal
         });
         clearTimeout(id);
         if (!responce.ok) {
@@ -117,7 +117,7 @@ export class MassaControl {
         }
         const data = await responce.json();
         return data;
-      } catch(err) {
+      } catch (err) {
         if (this.#settings.network.state.downgrade) {
           console.info(provider, err);
           await this.#network.removeProvider(provider);

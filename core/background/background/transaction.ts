@@ -265,6 +265,7 @@ export class BackgroundTransaction {
         this.#massaQuestSendCoins(this.#core.account.selectedAccount?.base58 || '');
       }
     } catch (err) {
+      console.log(err);
       const message = (err as BaseError).serialize ?
         (err as BaseError).serialize().message : (err as Error).message;
 

@@ -2,8 +2,6 @@ import type { Guard } from 'core/background/guard';
 import type { Wallet, Account, KeyPair, Balance, AppConnection } from 'types';
 import type { BadgeControl } from 'background/notifications';
 
-import { utils } from 'aes-js';
-
 import { MnemonicController, HDKey } from 'lib/bip39';
 import { AccountTypes } from 'config/account-type';
 import { BrowserStorage, buildObject } from 'lib/storage';
@@ -21,7 +19,7 @@ import {
   ACCOUNT_PRODUCT_ID_MUST_UNIQUE
 } from './errors';
 import { INVALID_BASE58_ADDRESS } from 'lib/address/errors';
-import { addressFromPublicKey, isBase58Address, publicKeyBytesFromPrivateKey, pubKeyFromBytes } from 'lib/address';
+import { addressFromPublicKey, isBase58Address, publicKeyBytesFromPrivateKey, pubKeyFromBytes, base58PubKeyToBytes } from 'lib/address';
 import { base58PrivateKeyToBytes, isPrivateKey } from 'lib/validator';
 import { TypeOf } from 'lib/type';
 import { VERSION_NUMBER } from 'config/common';
@@ -295,10 +293,7 @@ export class AccountController {
         assert(Boolean(encryptedPriveLey), ACCOUNT_NOT_FOUND, AccountError);
         const privKey = this.#guard.decryptPrivateKey(String(encryptedPriveLey));
         const version = Number(this.selectedAccount?.version);
-        const pubKey = Uint8Array.from([
-          version,
-          ...utils.hex.toBytes(String(this.selectedAccount?.pubKey))
-        ]);
+        const pubKey = await base58PubKeyToBytes(String(this.selectedAccount?.pubKey));
         return {
           privKey,
           pubKey,
