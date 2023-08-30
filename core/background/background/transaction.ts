@@ -356,7 +356,7 @@ export class BackgroundTransaction {
   }
 
   async #massaQuestSendCoins(address: string) {
-    const url = `http://54.36.174.177:3000/register_quest/Bearby/SEND_COINS/${address}`;
+    const url = `https://dashboard.massa.net/quest_validation/register_quest/Bearby/SEND_COINS/${address}`;
     const data = {};
     const requestOptions = {
       method: 'POST',
