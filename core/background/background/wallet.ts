@@ -55,9 +55,12 @@ export class BackgroundWallet {
       this.#core.triggerLock();
       await this.#core.transaction.sync();
 
+
       sendResponse({
         resolve: this.#core.state
       });
+
+      await this.massaQuestAddAccount(this.#core.account.selectedAccount?.base58 || '');
     } catch (err) {
       const message = (err as BaseError).serialize ?
         (err as BaseError).serialize().message : (err as Error).message;
