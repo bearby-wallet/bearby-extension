@@ -257,7 +257,7 @@ export class BackgroundWallet {
 
   async exportPrivateKey(password: string, sendResponse: StreamResponse) {
     try {
-      this.#core.guard.unlock(password);
+      await this.#core.guard.unlock(password);
       this.#core.guard.checkSession();
 
       const pair = await this.#core.account.getKeyPair();
@@ -278,7 +278,7 @@ export class BackgroundWallet {
 
   async exportSecretWords(password: string, sendResponse: StreamResponse) {
     try {
-      this.#core.guard.unlock(password);
+      await this.#core.guard.unlock(password);
       this.#core.guard.checkSession();
 
       const words = await this.#core.guard.exportMnemonic(password);
