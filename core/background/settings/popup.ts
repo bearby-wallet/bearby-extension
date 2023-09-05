@@ -1,9 +1,11 @@
 import { Fields } from "config/fields";
+import { ManifestVersions } from "config/manifest-versions";
+import { getManifestVersion } from "lib/runtime/manifest";
 import { BrowserStorage, buildObject } from "lib/storage";
 
 
 export class PopupSettings {
-  #enabledPopup = true;
+  #enabledPopup = false;
 
   get enabledPopup() {
     return this.#enabledPopup;
