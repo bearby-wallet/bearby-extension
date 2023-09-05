@@ -18,19 +18,29 @@ export async function getRandomWords(n: number) {
 }
 
 export async function createWallet(words: string, password: string, name: string, algorithm: ShaAlgorithms, iteractions: number) {
-  const data = await new Message<SendResponseParams>({
-    type: MTypePopup.CREATE_WALLET,
-    payload: {
-      words,
-      name,
-      password,
-      algorithm,
-      iteractions
+  let k = 0;
+  // TODO: dump manifest v3
+  while (k < 100000) {
+    try {
+      const data = await new Message<SendResponseParams>({
+        type: MTypePopup.CREATE_WALLET,
+        payload: {
+          words,
+          name,
+          password,
+          algorithm,
+          iteractions
+        }
+      }).send();
+      const resolve = warpMessage(data);
+      updateState(resolve as WalletState);
+      return resolve;
+    } catch {
+      k++;
     }
-  }).send();
-  const resolve = warpMessage(data);
-  updateState(resolve as WalletState);
-  return resolve;
+  }
+
+  throw new Error("Try again");
 }
 
 export async function changePassword(payload: SetPasswordPayload) {
@@ -45,16 +55,17 @@ export async function changePassword(payload: SetPasswordPayload) {
 
 export async function getWalletState() {
   let k = 0;
+  // TODO: DUMP HACK FOR DUMP manifest v3.
   while (true) {
     try {
       const data = await Message
-      .signal(MTypePopup.GET_WALLET_STATE)
+        .signal(MTypePopup.GET_WALLET_STATE)
         .send();
-      const resolve = warpMessage(data);
-      updateState(resolve as WalletState);
+      const resolve = warpMessage(data) as WalletState;
+      updateState(resolve);
       return resolve;
     } catch {
-      if (k > 10) break;
+      if (k > 1000) break;
     }
     k++;
   }
