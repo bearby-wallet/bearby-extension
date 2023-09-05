@@ -51,6 +51,7 @@ export class WorkerController {
 
   subscribe() {
     this.trackBlockNumber();
+    // TODO: Replace with manifest-v3 Alarm.
     const intervalId = globalThis.setInterval(() => {
       this.trackBlockNumber();
     }, this.delay);
