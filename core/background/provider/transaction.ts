@@ -241,7 +241,7 @@ export class CallSmartContractBuild {
 
   constructor(
     functionName: string,
-    parameters: CallParam[],
+    parameters: CallParam[] | Uint8Array,
     fee: number,
     expirePeriod: number,
     gasLimit: number,
@@ -256,7 +256,12 @@ export class CallSmartContractBuild {
     this.fee = fee;
     this.expirePeriod = expirePeriod;
     this.targetAddress = targetAddress;
-    this.args = parseParams(parameters);
+
+    if (isArrayOfNumbers(parameters)) {
+      this.args = new Args(parameters);
+    } else if (isArrayOfCallParam(parameters)) {
+      this.args = parseParams(parameters);
+    }
   }
 
   async bytes() {
@@ -291,4 +296,20 @@ export class CallSmartContractBuild {
       ...parametersEncoded
     ]);
   }
+}
+
+// TODO: move to utils
+function isArrayOfNumbers(input: any): input is number[] {
+  return (
+    Array.isArray(input) && input.every((item) => typeof item === "number")
+  );
+}
+
+function isArrayOfCallParam(input: any): input is CallParam[] {
+  return (
+    Array.isArray(input) &&
+    input.every(
+      (item) => typeof item === "object" && "type" in item && "value" in item
+    )
+  );
 }
