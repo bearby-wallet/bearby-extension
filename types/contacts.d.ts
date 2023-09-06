@@ -1,4 +1,4 @@
-import { ArgTypes } from 'config/arg-types';
+import { ArgTypes, NativeType } from 'config/arg-types';
 
 export interface Contact {
   name: string;
@@ -8,5 +8,5 @@ export interface Contact {
 export interface CallParam {
   type: ArgTypes;
   vname?: string;
-  value: string | bigint | number | boolean;
+  value: NativeType | NativeType[] | Uint8Array;
 }

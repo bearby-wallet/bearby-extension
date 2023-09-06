@@ -30,10 +30,6 @@ import {
 import { bytesToStr, strToBytes } from 'lib/args/strings';
 
 
-export interface ISerializable<T> {
-  serialize(): Uint8Array;
-  deserialize(data: Uint8Array, offset: number): IDeserializedResult<T>;
-}
 
 export interface IDeserializedResult<T> {
   instance: T;
@@ -523,48 +519,6 @@ export class Args {
 
     this.#serialized = Args.concatArrays(this.#serialized, strToBytes(arg));
 
-    return this;
-  }
-
-  /**
-   * Adds a serializable object to the serialized arguments.
-   *
-   * @remarks
-   * The object must implement the {@link ISerializable} interface
-   *
-   * @see {@link ISerializable}
-   *
-   * @param value - the object to add
-   *
-   * @returns the serialized arguments to be able to chain `add` method calls.
-   */
-  addSerializable<T>(value: ISerializable<T>): this {
-    const serializedValue = value.serialize();
-    this.#serialized = Args.concatArrays(this.#serialized, serializedValue);
-    this.#offset += serializedValue.length;
-    return this;
-  }
-
-  /**
-   * Adds an array of serializable objects to the serialized arguments.
-   *
-   * @remarks
-   * Each object must implement the {@link ISerializable} interface.
-   * This will perform a deep copy of your objects thanks to the {@link ISerializable.serialize}
-   * method you define in your class.
-   *
-   * @see {@link ISerializable}
-   *
-   * @param arg - the argument to add
-   *
-   * @returns the serialized arguments to be able to chain `add` method calls.
-   */
-  addSerializableObjectArray<T extends ISerializable<T>>(
-    arg: T[],
-  ): this {
-    const content: Uint8Array = serializableObjectsArrayToBytes(arg);
-    this.addU32(content.length);
-    this.#serialized = Args.concatArrays(this.#serialized, content);
     return this;
   }
 

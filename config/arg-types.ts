@@ -11,6 +11,10 @@ export enum ArgTypes {
   I64,
   F32,
   F64,
+  ARRAY,
+  UINT8ARRAY,
+  SERIALIZABLE,
+  SERIALIZABLE_OBJECT_ARRAY,
 }
 
-export type NativeType = string | boolean | number | bigint;
+export type NativeType = string | boolean | number | bigint; 
