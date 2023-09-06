@@ -1,3 +1,4 @@
+import type { BaseError } from "lib/error";
 import type {
   StreamResponse,
   MinTransactionParams,
