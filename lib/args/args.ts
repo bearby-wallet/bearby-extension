@@ -28,8 +28,13 @@ import {
   u8toByte,
 } from 'lib/args/numbers';
 import { bytesToStr, strToBytes } from 'lib/args/strings';
+import { BaseError } from 'lib/error';
 
 
+export interface ISerializable<T> {
+  serialize(): Uint8Array;
+  deserialize(data: Uint8Array, offset: number): IDeserializedResult<T>;
+}
 
 export interface IDeserializedResult<T> {
   instance: T;
@@ -291,7 +296,7 @@ export class Args {
     }
 
     if (this.#offset + length > this.#serialized.length) {
-      throw new Error("can't deserialize length of array from given argument");
+      throw new BaseError("can't deserialize length of array from given argument");
     }
 
     const buffer = this.#getNextData(length);
@@ -319,7 +324,7 @@ export class Args {
     }
 
     if (this.#offset + length > this.#serialized.length) {
-      throw new Error("can't deserialize length of array from given argument");
+      throw new BaseError("can't deserialize length of array from given argument");
     }
 
     const buffer = this.#getNextData(length);

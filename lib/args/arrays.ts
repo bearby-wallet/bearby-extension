@@ -49,6 +49,30 @@ export const getDatatypeSize = (type: ArgTypes): number => {
 };
 
 /**
+ * Converts a Uint8Array into an array of deserialized type parameters.
+ *
+ * @param source - The Uint8Array to convert.
+ * @param Clazz - The class constructor for deserialization.
+ *
+ * @returns An array of deserialized objects.
+ */
+export function bytesToSerializableObjectArray<T extends ISerializable<T>>(
+  source: Uint8Array,
+  Clazz: new () => T,
+): T[] {
+  const array: T[] = [];
+  let offset = 0;
+
+  while (offset < source.length) {
+    let deserializationResult = deserializeObj(source, offset, Clazz);
+    offset = deserializationResult.offset;
+    array.push(deserializationResult.instance);
+  }
+
+  return array;
+}
+
+/**
  * Serializes an array of serializable objects to bytes.
  *
  * @param source - The array of serializable objects to serialize.
@@ -97,30 +121,6 @@ export function deserializeObj<T extends ISerializable<T>>(
 ): IDeserializedResult<T> {
   const deserialized = new Clazz().deserialize(data, offset);
   return deserialized;
-}
-
-/**
- * Converts a Uint8Array into an array of deserialized type parameters.
- *
- * @param source - The Uint8Array to convert.
- * @param Clazz - The class constructor for deserialization.
- *
- * @returns An array of deserialized objects.
- */
-export function bytesToSerializableObjectArray<T extends ISerializable<T>>(
-  source: Uint8Array,
-  Clazz: new () => T,
-): T[] {
-  const array: T[] = [];
-  let offset = 0;
-
-  while (offset < source.length) {
-    let deserializationResult = deserializeObj(source, offset, Clazz);
-    offset = deserializationResult.offset;
-    array.push(deserializationResult.instance);
-  }
-
-  return array;
 }
 
 /**
@@ -176,7 +176,7 @@ export function arrayToBytes(
         args.addU256(value as bigint);
         break;
       default:
-        throw new Error(`Unsupported type: ${type}`);
+        throw new BaseError(`Unsupported type: ${type}`);
     }
   });
   return new Uint8Array(args.serialize());

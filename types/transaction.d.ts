@@ -72,6 +72,7 @@ export interface HistoryTransaction {
   success: boolean;
   code?: string;
   params?: CallParam[];
+  unsafe_params?: Uint8Array;
   func?: string;
   icon?: string;
   title?: string;

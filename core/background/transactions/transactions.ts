@@ -6,7 +6,8 @@ import { AccountController, NIL_ACCOUNT } from 'core/background/account';
 import { Fields } from 'config/fields';
 import { TransactionsError } from './errors';
 import { MAX_TX_QUEUE } from 'config/common';
-import { BrowserStorage, buildObject } from 'lib/storage';
+import { BrowserStorage, buildObject, StorageKeyValue } from 'lib/storage';
+import { base58Decode } from 'lib/address';
 
 
 export class TransactionsController {
@@ -16,6 +17,7 @@ export class TransactionsController {
 
   #history: HistoryTransaction[] = [];
   #confirm: ConfirmParams[] = [];
+  #unsafeConfirm: Uint8Array = new Uint8Array();
   #message?: SignMessageParams;
 
   get history() {
@@ -24,6 +26,10 @@ export class TransactionsController {
 
   get confirm() {
     return this.#confirm;
+  }
+
+  get unsafeConfirm() {
+    return this.#unsafeConfirm;
   }
 
   get message() {
@@ -36,6 +42,10 @@ export class TransactionsController {
     }
 
     throw new TransactionsError(NIL_ACCOUNT);
+  }
+
+  get #unsafeConfirmField() {
+    return `${Fields.UNSAFE_CONFIRM_TRANSACTIONS}/${this.#network.selected}`;
   }
 
   get #confirmField() {
@@ -83,6 +93,14 @@ export class TransactionsController {
     this.#badge.decrease(this.confirm.length);
     this.#confirm = [];
 
+    await BrowserStorage.set(
+      buildObject(this.#confirmField, this.confirm)
+    );
+  }
+
+  async addUnsafeConfirm(params: Uint8Array) {
+    this.#unsafeConfirm = params;
+    this.#badge.increase();
     await BrowserStorage.set(
       buildObject(this.#confirmField, this.confirm)
     );
@@ -141,21 +159,33 @@ export class TransactionsController {
   }
 
   async sync() {
+    const data = await BrowserStorage.get(
+      this.#confirmField,
+      this.#unsafeConfirmField,
+      this.#historyField
+    ) as StorageKeyValue;
+
     try {
-      const confirmJson = await BrowserStorage.get(this.#confirmField);
-      if (confirmJson) {
-        this.#confirm = JSON.parse(String(confirmJson));
+      if (data[this.#unsafeConfirmField]) {
+        this.#unsafeConfirm = await base58Decode(data[this.#unsafeConfirmField]);
+      }
+    } catch (err) {
+      this.#unsafeConfirm = new Uint8Array();
+    }
+
+    try {
+      if (data[this.#confirmField]) {
+        this.#confirm = JSON.parse(String(data[this.#confirmField]));
       }
     } catch (err) {
       this.#confirm = [];
     }
 
     try {
-      const txnsJson = await BrowserStorage.get(this.#historyField);
-      if (!txnsJson) {
+      if (!data[this.#historyField]) {
         throw new Error();
       }
-      this.#history = JSON.parse(String(txnsJson));
+      this.#history = JSON.parse(String(data[this.#historyField]));
     } catch (err) {
       this.#history = [];
     }
