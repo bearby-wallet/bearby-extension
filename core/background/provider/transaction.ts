@@ -261,7 +261,7 @@ export class CallSmartContractBuild {
     gasPrice: number,
     coins: string,
     targetAddress: string,
-    unsaveParameters?: Uint8Array,
+    unsafeParameters?: Uint8Array,
   ) {
     this.functionName = functionName;
     this.gasLimit = gasLimit;
@@ -273,8 +273,8 @@ export class CallSmartContractBuild {
 
     if (parameters && parameters.length > 0) {
       this.args = parseParams(parameters);
-    } else if (unsaveParameters) {
-      this.args = new Args(unsaveParameters);
+    } else if (unsafeParameters) {
+      this.args = new Args(unsafeParameters);
     } else {
       this.args = new Args();
     }

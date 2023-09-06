@@ -42,7 +42,7 @@ export interface MinTransactionParams {
   code?: string;
   deployer?: string;
   params?: CallParam[];
-  unsaveParams?: Uint8Array;
+  unsafeParams?: Uint8Array;
   maxCoins?: string;
   coins?: string;
 }

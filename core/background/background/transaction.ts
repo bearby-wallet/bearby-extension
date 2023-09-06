@@ -1,4 +1,4 @@
-import type { BaseError } from "lib/error";
+import { BaseError } from "lib/error";
 import type {
   StreamResponse,
   MinTransactionParams,
@@ -370,7 +370,6 @@ export class BackgroundTransaction {
     await res.text();
   }
 
-
   async #confirmToBytes(confirmParams: ConfirmParams, expiryPeriod: number) {
     switch (confirmParams.type) {
       case OperationsType.Payment:
@@ -405,7 +404,7 @@ export class BackgroundTransaction {
           confirmParams.code || '',
           confirmParams.deployer || '',
           confirmParams.params,
-          confirmParams.unsaveParams
+          confirmParams.unsafeParams
         ).bytes();
       case OperationsType.CallSC:
         assert(Boolean(confirmParams.func), INCORRECT_PARAM);
@@ -418,7 +417,8 @@ export class BackgroundTransaction {
           confirmParams.gasLimit,
           confirmParams.gasPrice,
           confirmParams.coins || '0',
-          confirmParams.toAddr
+          confirmParams.toAddr,
+          confirmParams.unsafeParams
         ).bytes();
       default:
         throw new TransactionsError(UNKONOW_TX_TYPE);
