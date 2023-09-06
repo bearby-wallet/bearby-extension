@@ -141,24 +141,21 @@ export class TransactionsController {
   }
 
   async sync() {
-    const data = await BrowserStorage.get(
-      this.#confirmField,
-      this.#historyField
-    ) as StorageKeyValue;
-
     try {
-      if (data[this.#confirmField]) {
-        this.#confirm = JSON.parse(String(data[this.#confirmField]));
+      const confirmJson = await BrowserStorage.get(this.#confirmField);
+      if (confirmJson) {
+        this.#confirm = JSON.parse(String(confirmJson));
       }
     } catch (err) {
       this.#confirm = [];
     }
 
     try {
-      if (!data[this.#historyField]) {
+      const txnsJson = await BrowserStorage.get(this.#historyField);
+      if (!txnsJson) {
         throw new Error();
       }
-      this.#history = JSON.parse(String(data[this.#historyField]));
+      this.#history = JSON.parse(String(txnsJson));
     } catch (err) {
       this.#history = [];
     }
