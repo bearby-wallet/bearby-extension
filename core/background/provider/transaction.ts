@@ -137,7 +137,8 @@ export class ExecuteSmartContractBuild {
     expirePeriod: number,
     code: string, // as Base58
     deployer: string, // deployer contract as base58.
-    parameters?: CallParam[]
+    parameters?: CallParam[],
+    unsaveParameters?: Uint8Array,
   ) {
     this.fee = fee;
     this.maxGas = maxGas;
@@ -167,6 +168,18 @@ export class ExecuteSmartContractBuild {
             .serialize(),
         ),
         Uint8Array.from(args.serialize())
+      );
+    }
+
+    if (unsaveParameters) {
+      datastore.set(
+        Uint8Array.from(
+          new Args()
+            .addU64(1n)
+            .addUint8Array(u8toByte(0))
+            .serialize(),
+        ),
+        Uint8Array.from(unsaveParameters)
       );
     }
 
@@ -247,7 +260,8 @@ export class CallSmartContractBuild {
     gasLimit: number,
     gasPrice: number,
     coins: string,
-    targetAddress: string
+    targetAddress: string,
+    unsaveParameters?: Uint8Array,
   ) {
     this.functionName = functionName;
     this.gasLimit = gasLimit;
@@ -256,7 +270,14 @@ export class CallSmartContractBuild {
     this.fee = fee;
     this.expirePeriod = expirePeriod;
     this.targetAddress = targetAddress;
-    this.args = parseParams(parameters);
+
+    if (parameters && parameters.length > 0) {
+      this.args = parseParams(parameters);
+    } else if (unsaveParameters) {
+      this.args = new Args(unsaveParameters);
+    } else {
+      this.args = new Args();
+    }
   }
 
   async bytes() {

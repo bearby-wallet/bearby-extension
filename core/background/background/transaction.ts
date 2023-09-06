@@ -404,7 +404,8 @@ export class BackgroundTransaction {
           expiryPeriod,
           confirmParams.code || '',
           confirmParams.deployer || '',
-          confirmParams.params
+          confirmParams.params,
+          confirmParams.unsaveParams
         ).bytes();
       case OperationsType.CallSC:
         assert(Boolean(confirmParams.func), INCORRECT_PARAM);

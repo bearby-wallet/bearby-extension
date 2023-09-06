@@ -7,7 +7,6 @@ export enum Fields {
   NETWROK_SELECTED = 'network-selected',
   TRANSACTIONS = 'transactions',
   CONFIRM_TRANSACTIONS = 'confirm-transactions',
-  UNSAFE_CONFIRM_TRANSACTIONS = 'unsafe-confirm-transactions',
   CONFIRM_SIGN_MESSAGE = 'confirm-sign-message',
   BADGE_COUNTER = 'badge-control',
   UI_THEME = 'ui-theme',
