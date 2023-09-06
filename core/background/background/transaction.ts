@@ -152,10 +152,21 @@ export class BackgroundTransaction {
   }
 
   async removeConfirmTx(index: number, sendResponse: StreamResponse) {
+    const confirmParams = this.#core.transaction.confirm[index];
     try {
       this.#core.guard.checkSession();
 
       await this.#core.transaction.rmConfirm(index);
+
+      if (confirmParams.uuid) {
+        new TabsMessage({
+          type: MTypeTab.TX_TO_SEND_RESULT,
+          payload: {
+            uuid: confirmParams.uuid,
+            reject: "Transaction was rejected"
+          }
+        }).send();
+      }
 
       return sendResponse({
         resolve: this.#core.state
