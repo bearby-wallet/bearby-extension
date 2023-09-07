@@ -13,11 +13,11 @@ import { TokenError } from './errors';
 
 const [mainnet, testnet, custom] = NETWORK_KEYS;
 
-export const XMA = {
+export const MAS = {
   decimals: 9,
   rate: 1,
   name: 'Massa',
-  symbol: 'XMA',
+  symbol: 'MAS',
   base58: ZERO_ADDRESS
 };
 export const ROLL = {
@@ -29,9 +29,9 @@ export const ROLL = {
 };
 
 const INIT = {
-  [mainnet]: [XMA, ROLL],
-  [testnet]: [XMA, ROLL],
-  [custom]: [XMA, ROLL]
+  [mainnet]: [MAS, ROLL],
+  [testnet]: [MAS, ROLL],
+  [custom]: [MAS, ROLL]
 };
 
 export class TokenControl {
@@ -70,7 +70,7 @@ export class TokenControl {
         const resonse = resonses.result[index];
 
         balances.push({
-          [XMA.base58]: {
+          [MAS.base58]: {
             final: resonse.final_balance,
             candidate: resonse.candidate_balance
           },
