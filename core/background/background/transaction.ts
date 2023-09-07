@@ -155,6 +155,18 @@ export class BackgroundTransaction {
     try {
       this.#core.guard.checkSession();
 
+      const confirmTxns = this.#core.transaction.confirm;
+
+      if (confirmTxns[index].uuid) {
+        new TabsMessage({
+          type: MTypeTab.TX_TO_SEND_RESULT,
+          payload: {
+            uuid: confirmTxns[index].uuid,
+            reject: REJECTED
+          }
+        }).send();
+      }
+
       await this.#core.transaction.rmConfirm(index);
 
       return sendResponse({
