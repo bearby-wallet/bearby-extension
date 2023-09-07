@@ -44,5 +44,6 @@ yarn check # check types
 
 ## building
 ```bash
-yarn build
+make clean
+make
 ```
