@@ -20,7 +20,7 @@ export async function getRandomWords(n: number) {
 export async function createWallet(words: string, password: string, name: string, algorithm: ShaAlgorithms, iteractions: number) {
   let k = 0;
   // TODO: dump manifest v3
-  while (k < 100000) {
+  while (k < 10) {
     try {
       const data = await new Message<SendResponseParams>({
         type: MTypePopup.CREATE_WALLET,

@@ -1,10 +1,9 @@
 import type { ConfirmParams, HistoryTransaction, SignMessageParams } from 'types/transaction';
 import type { BadgeControl } from 'background/notifications';
 import type { NetworkControl } from 'core/background/network';
+import type { AccountController } from 'core/background/account';
 
-import { AccountController, NIL_ACCOUNT } from 'core/background/account';
 import { Fields } from 'config/fields';
-import { TransactionsError } from './errors';
 import { MAX_TX_QUEUE } from 'config/common';
 import { BrowserStorage, buildObject, StorageKeyValue } from 'lib/storage';
 
@@ -31,11 +30,11 @@ export class TransactionsController {
   }
 
   get #historyField() {
-    if (this.#account.selectedAccount) {
+    if (this.#account.selectedAccount && this.#account.selectedAccount.base58) {
       return `${Fields.TRANSACTIONS}/${this.#network.selected}/${this.#account.selectedAccount.base58}`;
     }
 
-    throw new TransactionsError(NIL_ACCOUNT);
+    return '';
   }
 
   get #confirmField() {

@@ -14,7 +14,7 @@ import nodePolyfills from 'rollup-plugin-node-polyfills';
 import pkg from './package.json' assert { type: 'json' };
 
 const production = !process.env.ROLLUP_WATCH;
-const manifest = process.env.MANIFEST || 2;
+const manifest = process.env.MANIFEST || 3;
 
 const popup = {
 	input: 'popup/main.ts',
@@ -76,7 +76,7 @@ const background = {
 	plugins: [
 		commonjs(),
 		resolve({
-			jsnext: true,   
+			jsnext: true,
 			main: true,
 			brower: true,
 			preferBuiltins: false
@@ -152,7 +152,7 @@ const content = {
 	plugins: [
 		commonjs(),
 		resolve({
-			jsnext: true,   
+			jsnext: true,
 			main: true,
 			brower: true,
 			preferBuiltins: false
