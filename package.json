@@ -1,6 +1,6 @@
 {
   "name": "bearby-extension",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "repository": "git@github.com:bearby-wallet/bearby-extension.git",
   "author": "Rinat <hicc0rus@gmail.com>",
   "scripts": {
