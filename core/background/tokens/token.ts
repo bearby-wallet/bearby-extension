@@ -7,11 +7,10 @@ import { ROLL_ADDRESS, ZERO_ADDRESS } from 'config/common';
 import { NETWORK_KEYS } from 'config/network';
 import { Fields } from 'config/fields';
 import { BrowserStorage, buildObject } from 'lib/storage';
-import { TypeOf } from 'lib/type';
 import { TokenError } from './errors';
 
 
-const [mainnet, testnet, custom] = NETWORK_KEYS;
+const [mainnet, buildnet, testnet, custom] = NETWORK_KEYS;
 
 export const MAS = {
   decimals: 9,
@@ -30,6 +29,7 @@ export const ROLL = {
 
 const INIT = {
   [mainnet]: [MAS, ROLL],
+  [buildnet]: [MAS, ROLL],
   [testnet]: [MAS, ROLL],
   [custom]: [MAS, ROLL]
 };
@@ -70,7 +70,7 @@ export class TokenControl {
         const resonse = resonses.result[index];
 
         balances.push({
-          [XMA.base58]: {
+          [MAS.base58]: {
             final: resonse.final_balance,
             candidate: resonse.candidate_balance
           },
@@ -91,28 +91,31 @@ export class TokenControl {
     return balances;
   }
 
+  // TODO: enable when add TOKENS.
   async sync() {
-    const jsonList = await BrowserStorage.get(this.field);
-
-    try {
-      const list = JSON.parse(String(jsonList));
-
-      if (!list || !TypeOf.isArray(list)) {
-        return this.reset();
-      }
-
-      if (list.length < this.#identities.length) {
-        return this.reset();
-      }
-
-      this.#identities = list;
-    } catch {
-      await this.reset();
-    }
+    // const jsonList = await BrowserStorage.get(this.field);
+    //
+    // try {
+    //   const list = JSON.parse(String(jsonList));
+    //
+    //   if (!list || !TypeOf.isArray(list)) {
+    //     return this.reset();
+    //   }
+    //
+    //   if (list.length < this.#identities.length) {
+    //     return this.reset();
+    //   }
+    //
+    //   this.#identities = list;
+    // } catch {
+    //   await this.reset();
+    // }
+    await this.reset();
   }
 
   async reset() {
     const mainnetField = `${Fields.TOKENS}/${mainnet}`;
+    const buildnetField = `${Fields.TOKENS}/${buildnet}`;
     const testnetField = `${Fields.TOKENS}/${testnet}`;
     const customField = `${Fields.TOKENS}/${custom}`;
     const init = INIT[this.#netwrok.selected];
@@ -122,6 +125,7 @@ export class TokenControl {
     await BrowserStorage.set(
       buildObject(mainnetField, INIT[mainnet]),
       buildObject(testnetField, INIT[testnet]),
+      buildObject(buildnetField, INIT[buildnet]),
       buildObject(customField, INIT[custom])
     );
   }
