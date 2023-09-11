@@ -1,13 +1,10 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-
 	import { scale } from 'svelte/transition';
 	import { _ } from 'popup/i18n';
 	import { closePopup } from 'popup/mixins/popup';
 
 	import connectAppStore from 'popup/store/confirm-apps';
 	import { approveConnection, rejectConnection } from 'popup/backend/connections';
-	import { getWalletState } from 'popup/backend/wallet';
 
 
 	let index = 0;
@@ -31,17 +28,6 @@
 			await closePopup();
 		}
 	};
-
-  onMount(() => {
-		let inter = setInterval(async() => {
-			const state = await getWalletState();
-
-			if (!state || state.confirmApps) {
-				await closePopup();
-				clearTimeout(inter);
-			}
-		}, 40000);
-  });
 </script>
 
 {#if Boolean(app)}
