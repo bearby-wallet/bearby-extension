@@ -5,7 +5,10 @@
   "permissions": [
     "storage",
     "notifications",
-    "activeTab"
+    "activeTab",
+    "alarms",
+    "http://*/",
+    "https://*/"
   ],
   "icons": {
     "16": "icons/16.png",

@@ -12,6 +12,7 @@ import { TabsMessage } from "lib/stream/tabs-message";
 import { NETWORK, NODE_PORT } from "config/network";
 import { isIPV6 } from "lib/validator/ip";
 import { Massa } from 'lib/explorer';
+import { Runtime } from "lib/runtime";
 
 
 enum Statuses {
@@ -24,6 +25,8 @@ export class WorkerController {
   readonly #transactions: TransactionsController;
   readonly #network: NetworkControl;
   readonly #settings: SettingsControl;
+
+  readonly #fieldAlarm = "massa-block-tracker";
     
   #delay = WORKER_POOLING;
   #period = 0;
@@ -50,15 +53,22 @@ export class WorkerController {
   }
 
   subscribe() {
+    const alarmName = this.#fieldAlarm;
     this.trackBlockNumber();
-    // TODO: Replace with manifest-v3 Alarm.
-    const intervalId = globalThis.setInterval(() => {
-      this.trackBlockNumber();
-    }, this.delay);
+
+    Runtime.alarms.create(alarmName, {
+      delayInMinutes: 0.16667,
+      periodInMinutes: 0.16667
+    });
+    Runtime.alarms.onAlarm.addListener((alarm) => {
+      if (alarm.name === alarmName) {
+        this.trackBlockNumber();
+      }
+    });
 
     return {
       unsubscribe() {
-        globalThis.clearInterval(intervalId);
+        Runtime.alarms.clear(alarmName);
       }
     }
   }
