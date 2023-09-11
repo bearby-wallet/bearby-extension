@@ -10,8 +10,6 @@ import { TabStream } from "lib/stream/tab-stream";
 import { Message } from "lib/stream/message";
 import { warpMessage } from "lib/stream/warp-message";
 import { ContentMessage } from "lib/stream/secure-message";
-import { assert } from "lib/assert";
-import { WALLET_NOT_CONNECTED, WALLET_NOT_ENABLED } from "./errors";
 import { PhishingDetect } from "./phishing-detect";
 
 

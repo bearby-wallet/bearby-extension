@@ -13,6 +13,8 @@ import { NETWORK, NODE_PORT } from "config/network";
 import { isIPV6 } from "lib/validator/ip";
 import { Massa } from 'lib/explorer';
 import { Runtime } from "lib/runtime";
+import { getManifestVersion } from "lib/runtime/manifest";
+import { ManifestVersions } from "config/manifest-versions";
 
 
 enum Statuses {
@@ -54,21 +56,32 @@ export class WorkerController {
 
   subscribe() {
     const alarmName = this.#fieldAlarm;
+    let intervalId: NodeJS.Timer;
     this.trackBlockNumber();
 
-    Runtime.alarms.create(alarmName, {
-      delayInMinutes: 0.16667,
-      periodInMinutes: 0.16667
-    });
-    Runtime.alarms.onAlarm.addListener((alarm) => {
-      if (alarm.name === alarmName) {
+    if (getManifestVersion() === ManifestVersions.V2) {
+      intervalId = globalThis.setInterval(() => {
         this.trackBlockNumber();
-      }
-    });
+      }, this.delay);
+    } else {
+      Runtime.alarms.create(alarmName, {
+        delayInMinutes: 0.16667,
+        periodInMinutes: 0.16667
+      });
+      Runtime.alarms.onAlarm.addListener((alarm) => {
+        if (alarm.name === alarmName) {
+          this.trackBlockNumber();
+        }
+      });
+    }
 
     return {
       unsubscribe() {
-        Runtime.alarms.clear(alarmName);
+        if (intervalId !== undefined) {
+          globalThis.clearInterval(intervalId);
+        } else {
+          Runtime.alarms.clear(alarmName);
+        }
       }
     }
   }
