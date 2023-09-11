@@ -22,7 +22,15 @@ import { TypeOf } from 'lib/type';
 import { ShaAlgorithms } from 'config/sha-algorithms';
 import { pbkdf2 } from 'lib/crypto/pbkdf2';
 import { EXTENSION_ID } from 'lib/runtime/id';
+import { ManifestVersions } from 'config/manifest-versions';
+import { getManifestVersion } from 'lib/runtime/manifest';
+import { Runtime } from 'lib/runtime';
 
+export enum SessionKeys {
+  EndSession = "BEARBY_END_SESSION",
+  Hash = "BEABRY_HASH",
+  PrivateExtendedKey = "EXTENDED_KEY"
+}
 
 export class Guard {
   // hash of the password.
@@ -115,6 +123,30 @@ export class Guard {
         buildObject(Fields.LOCK_TIME, String(TIME_BEFORE_LOCK))
       );
     }
+
+    if (ManifestVersions.V3 === getManifestVersion()) {
+      const data = await Runtime.storage.session.get([
+        SessionKeys.EndSession,
+        SessionKeys.Hash,
+        SessionKeys.PrivateExtendedKey
+      ]);
+
+      try {
+        if (data[SessionKeys.EndSession]) {
+          this.#endSession = new Date(data[SessionKeys.EndSession]);
+        }
+        if (data[SessionKeys.Hash]) {
+          const hash = utils.hex.toBytes(data[SessionKeys.Hash]);
+          this.#hash.set(this, hash);
+          this.#isEnable = true;
+        }
+        if (data[SessionKeys.PrivateExtendedKey]) {
+          this.#privateExtendedKey = utils.hex.toBytes(data[SessionKeys.PrivateExtendedKey]);
+        }
+      } catch {
+        //
+      }
+    }
   }
 
   async setGuardConfig(algorithm: string, iteractions: number) {
@@ -155,7 +187,7 @@ export class Guard {
 
       const hash = await this.#getKeyring(password);
       const mnemonicBytes = Cipher.decrypt(this.#encryptMnemonic as Uint8Array, hash);
-      
+
       return utils.utf8.fromBytes(mnemonicBytes);
     } catch (err) {
       this.logout();
@@ -183,6 +215,14 @@ export class Guard {
       this.#isEnable = true;
       this.#updateSession();
       this.#hash.set(this, hash);
+
+      if (ManifestVersions.V3 === getManifestVersion()) {
+        Runtime.storage.session.set({
+          [SessionKeys.EndSession]: Number(this.#endSession),
+          [SessionKeys.Hash]: utils.hex.fromBytes(hash),
+          [SessionKeys.PrivateExtendedKey]: utils.hex.fromBytes(this.#privateExtendedKey),
+        });
+      }
     } catch (err) {
       this.logout();
       throw new GuardError(INCORRECT_PASSWORD);
@@ -238,6 +278,10 @@ export class Guard {
     this.#endSession = new Date(-1);
 
     this.#hash.delete(this);
+
+    if (ManifestVersions.V3 === getManifestVersion()) {
+      Runtime.storage.session.clear();
+    }
   }
 
   async #updateSession() {
