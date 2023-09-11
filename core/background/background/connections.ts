@@ -145,13 +145,15 @@ export class BackgroundConnection {
         resolve: this.#core.state
       });
     } catch (err) {
-      new TabsMessage({
-        type: MTypeTab.RESPONSE_CONNECT_APP,
-        payload: {
-          uuid: app.uuid,
-          reject: REJECTED
-        }
-      }).send();
+      if (app.uuid) {
+        new TabsMessage({
+          type: MTypeTab.RESPONSE_CONNECT_APP,
+          payload: {
+            uuid: app.uuid,
+            reject: REJECTED
+          }
+        }).send();
+      }
       return sendResponse({
         reject: (err as BaseError).serialize()
       });
@@ -281,13 +283,15 @@ export class BackgroundConnection {
         resolve: true
       });
     } catch (err) {
-      new TabsMessage({
-        type: MTypeTab.RESPONSE_CONNECT_APP,
-        payload: {
-          uuid: app.uuid,
-          reject: (err as BaseError).message
-        }
-      }).send();
+      if (app.uuid) {
+        new TabsMessage({
+          type: MTypeTab.RESPONSE_CONNECT_APP,
+          payload: {
+            uuid: app.uuid,
+            reject: (err as BaseError).message
+          }
+        }).send();
+      }
       return sendResponse({
         reject: (err as BaseError).serialize()
       });

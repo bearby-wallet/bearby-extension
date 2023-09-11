@@ -40,7 +40,7 @@
 				await closePopup();
 				clearTimeout(inter);
 			}
-		}, 5000);
+		}, 40000);
   });
 </script>
 

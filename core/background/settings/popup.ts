@@ -1,6 +1,4 @@
 import { Fields } from "config/fields";
-import { ManifestVersions } from "config/manifest-versions";
-import { getManifestVersion } from "lib/runtime/manifest";
 import { BrowserStorage, buildObject } from "lib/storage";
 
 
@@ -28,7 +26,7 @@ export class PopupSettings {
   }
 
   async reset() {
-    this.#enabledPopup = true;
+    this.#enabledPopup = false;
 
     await BrowserStorage.set(
       buildObject(Fields.POPUP_ENABLED, String(this.enabledPopup))
