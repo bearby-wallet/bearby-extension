@@ -13,7 +13,7 @@ import { Runtime } from 'lib/runtime';
  * or
  * Message.signal('@example/type').send().then(() => / Do something... /)
  */
- export class Message<T> {
+export class Message<T> {
   /**
    * Make just signal message.
    */

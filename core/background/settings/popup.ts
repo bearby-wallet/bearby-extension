@@ -3,7 +3,7 @@ import { BrowserStorage, buildObject } from "lib/storage";
 
 
 export class PopupSettings {
-  #enabledPopup = false;
+  #enabledPopup = true;
 
   get enabledPopup() {
     return this.#enabledPopup;
@@ -26,7 +26,7 @@ export class PopupSettings {
   }
 
   async reset() {
-    this.#enabledPopup = false;
+    this.#enabledPopup = true;
 
     await BrowserStorage.set(
       buildObject(Fields.POPUP_ENABLED, String(this.enabledPopup))
