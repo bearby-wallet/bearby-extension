@@ -116,9 +116,9 @@
     "placeholder": "Enter Secret key"
   },
   "netwrok": {
-    "title": "Netwrok",
+    "title": "Network",
     "selected": {
-      "title": "Selected Netwrok",
+      "title": "Selected Network",
       "description": "Change netwrok for testing!"
     },
     "config": {
