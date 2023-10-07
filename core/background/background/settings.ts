@@ -84,9 +84,9 @@ export class BackgroundSettings {
       await this.#core.settings.network.setHttps(flag);
 
       const { URL } = globalThis;
-      const [defaultHost] = NETWORK[this.#core.netwrok.selected].PROVIDERS;
-      const config = this.#core.netwrok.config;
-      const newProviders = config[this.#core.netwrok.selected]
+      const [defaultHost] = NETWORK[this.#core.network.selected].PROVIDERS;
+      const config = this.#core.network.config;
+      const newProviders = config[this.#core.network.selected]
         .PROVIDERS
         .map((node, index) => {
           if (node === defaultHost) {
@@ -98,7 +98,7 @@ export class BackgroundSettings {
           return flag ? `https://${host}` : `http://${host}:${NODE_PORT}`;
         });
       
-      config[this.#core.netwrok.selected].PROVIDERS = newProviders;
+      config[this.#core.network.selected].PROVIDERS = newProviders;
 
       return sendResponse({
         resolve: this.#core.state

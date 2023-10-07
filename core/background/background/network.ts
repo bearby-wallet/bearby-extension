@@ -14,7 +14,7 @@ export class BackgroundNetwork {
     try {
       this.#core.guard.checkSession();
 
-      await this.#core.netwrok.setNetwork(net);
+      await this.#core.network.setNetwork(net);
       this.#core.triggerNetwork();
 
       return sendResponse({
@@ -31,7 +31,7 @@ export class BackgroundNetwork {
     try {
       this.#core.guard.checkSession();
 
-      await this.#core.netwrok.sortProvider(node);
+      await this.#core.network.sortProvider(node);
 
       return sendResponse({
         resolve: this.#core.state
@@ -47,7 +47,7 @@ export class BackgroundNetwork {
     try {
       this.#core.guard.checkSession();
 
-      await this.#core.netwrok.removeProvider(node);
+      await this.#core.network.removeProvider(node);
 
       return sendResponse({
         resolve: this.#core.state
@@ -63,7 +63,7 @@ export class BackgroundNetwork {
     try {
       this.#core.guard.checkSession();
 
-      await this.#core.netwrok.addProvider(node);
+      await this.#core.network.addProvider(node);
 
       return sendResponse({
         resolve: this.#core.state
@@ -80,10 +80,10 @@ export class BackgroundNetwork {
     try {
       this.#core.guard.checkSession();
 
-      await this.#core.netwrok.reset();
+      await this.#core.network.reset();
 
       return sendResponse({
-        resolve: this.#core.netwrok.config
+        resolve: this.#core.network.config
       });
     } catch (err) {
       console.error(err);
@@ -93,9 +93,9 @@ export class BackgroundNetwork {
     }
   }
 
-  async getNetwrokConfig(sendResponse: StreamResponse) {
+  async getNetworkConfig(sendResponse: StreamResponse) {
     return sendResponse({
-      resolve: this.#core.netwrok.config
+      resolve: this.#core.network.config
     });
   }
 }

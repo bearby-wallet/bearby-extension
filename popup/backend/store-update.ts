@@ -9,7 +9,7 @@ import guardStore from 'popup/store/guard';
 import settingsStore from 'popup/store/settings';
 import walletStore from 'popup/store/wallet';
 import tokensStore from 'popup/store/tokens';
-import netwrokStore from 'popup/store/netwrok';
+import networkStore from 'popup/store/network';
 import { Themes } from 'config/theme';
 import confirmStore from 'popup/store/confirm';
 import gasStore from 'popup/store/gas';
@@ -34,7 +34,7 @@ export function updateState(state: WalletState) {
   reqPubKey.set(state.reqPubKey);
   lockTimerStore.set(state.lockTime);
   gasStore.set(state.gas);
-  netwrokStore.set(state.netwrok);
+  networkStore.set(state.network);
   walletStore.set(state.wallet);
   tokensStore.set(state.tokens);
   confirmStore.set(state.confirm);

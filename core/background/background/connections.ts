@@ -31,7 +31,7 @@ export class BackgroundConnection {
         type: MTypeTab.DISCONNECT_APP_RESULT,
         payload: {
           uuid,
-          net: this.#core.netwrok.selected,
+          net: this.#core.network.selected,
           base58: null,
           resolve: true
         }
@@ -87,7 +87,7 @@ export class BackgroundConnection {
         type: MTypeTab.RESPONSE_CONNECT_APP,
         payload: {
           uuid: connection.uuid,
-          net: this.#core.netwrok.selected,
+          net: this.#core.network.selected,
           base58: this.#core.account.selectedAccount?.base58,
           resolve: true
         }
@@ -165,7 +165,7 @@ export class BackgroundConnection {
     const connected = this.#core.connections.has(domain);
     const account = this.#core.account.selectedAccount;
     const base58 = (connected && enabled && account) ? account.base58 : undefined;
-    const net = connected ? this.#core.netwrok.selected : undefined;
+    const net = connected ? this.#core.network.selected : undefined;
 
     const data: ContentWalletData = {
       base58,
@@ -263,7 +263,7 @@ export class BackgroundConnection {
           type: MTypeTab.RESPONSE_CONNECT_APP,
           payload: {
             uuid: app.uuid,
-            net: this.#core.netwrok.selected,
+            net: this.#core.network.selected,
             base58: this.#core.account.selectedAccount?.base58,
             resolve: true
           }

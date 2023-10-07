@@ -273,7 +273,7 @@ export class BackgroundTransaction {
         resolve: this.#core.state
       });
 
-      if (this.#core.netwrok.selected == "buildnet") {
+      if (this.#core.network.selected == "buildnet") {
         this.#massaQuestSendCoins(this.#core.account.selectedAccount?.base58 || '');
       }
     } catch (err) {

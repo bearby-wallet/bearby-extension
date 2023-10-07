@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { NetwrokConfig } from 'types/index';
+  import type { NetworkConfig } from 'types/index';
 
 	import { _ } from 'popup/i18n';
 	import { onMount } from 'svelte';
@@ -10,17 +10,17 @@
   import Jumbotron from '../../components/Jumbotron.svelte';
   import Toggle from '../../components/Toggle.svelte';
 
-  import netwrokStore from 'popup/store/netwrok';
+  import networkStore from 'popup/store/network';
   import settingsStore from 'popup/store/settings';
 
   import {
-    selectNetwrok,
+    selectNetwork,
     getNetworkConfig,
     addNodeAPI,
     sortNodes,
     removeNode,
     resetNetworkConfig
-  } from 'popup/backend/netwrok';
+  } from 'popup/backend/network';
   import { setAbortTimeout, setDowngradeNodeFlag, setHttpsOnly, setNumberNodes, setPeriodOffset } from 'popup/backend/settings';
   import { PERIOD_OFFSET } from 'config/common';
   import { NETWORK_INIT_STATE } from 'config/network';
@@ -30,7 +30,7 @@
   const SECONDS_DEMON = 1000;
 
   let nodeURL = '';
-  let networkConfig: NetwrokConfig;
+  let networkConfig: NetworkConfig;
   let periodOffset = $settingsStore.periodOffset;
 
   
@@ -40,7 +40,7 @@
   async function handleOnSelectNet(event: Event) {
     const net = (event.target as HTMLInputElement).value;
 
-    await selectNetwrok(net);
+    await selectNetwork(net);
   }
 
   async function handleSortNodes(event: Event) {
@@ -67,7 +67,7 @@
   }
 
   async function handleRemoveNode() {
-    const [node] = networkConfig[$netwrokStore].PROVIDERS;
+    const [node] = networkConfig[$networkStore].PROVIDERS;
     
     await removeNode(node);
 
@@ -103,18 +103,18 @@
 </script>
 
 <main>
-  <NavClose title={$_('netwrok.title')} />
+  <NavClose title={$_('network.title')} />
   <div>
     <Jumbotron
-			title={$_('netwrok.selected.title')}
-			description={$_('netwrok.selected.description')}
+			title={$_('network.selected.title')}
+			description={$_('network.selected.description')}
 		>
 			<select on:input={handleOnSelectNet}>
 				{#each NETWORK_KEYS as net}
 					<option
             disabled={net === 'mainnet'}
 						value={net}
-						selected={net === $netwrokStore}
+						selected={net === $networkStore}
 					>
 						{net}
 					</option>
@@ -125,31 +125,31 @@
   {#if networkConfig}
     <div>
       <Jumbotron
-        title={$_('netwrok.config.title')}
-        description={$_('netwrok.config.description')}
+        title={$_('network.config.title')}
+        description={$_('network.config.description')}
       >
         <p
           class="reset"
           on:mouseup={resetConfigNodes}
         >
-          {$_('netwrok.config.reset')}
+          {$_('network.config.reset')}
         </p>
         <select on:input={handleSortNodes}>
-          {#each networkConfig[$netwrokStore].PROVIDERS as http}
+          {#each networkConfig[$networkStore].PROVIDERS as http}
             <option value={http}>
               {http}
             </option>
           {/each}
         </select>
-        {#if $netwrokStore === custom && networkConfig[$netwrokStore].PROVIDERS.length > 1}
+        {#if $networkStore === custom && networkConfig[$networkStore].PROVIDERS.length > 1}
           <button
             class="outline"
             on:mouseup={handleRemoveNode}
           >
-            {$_('netwrok.config.remove')}
+            {$_('network.config.remove')}
           </button>
         {/if}
-        {#if $netwrokStore === custom}
+        {#if $networkStore === custom}
           <form
             class="input"
             on:submit={handleAddNode}
@@ -158,7 +158,7 @@
               <input
                 bind:value={nodeURL}
                 type="url"
-                placeholder={$_('netwrok.config.add_placeholder')}
+                placeholder={$_('network.config.add_placeholder')}
               >
             </label>
           </form>
@@ -168,12 +168,12 @@
   {/if}
   <div>
     <Jumbotron
-      title={$_('netwrok.downgrade.title')}
-      description={$_('netwrok.downgrade.description')}
+      title={$_('network.downgrade.title')}
+      description={$_('network.downgrade.description')}
     >
       <div class="toggle">
         <b>
-          {$_('netwrok.downgrade.toggle')}
+          {$_('network.downgrade.toggle')}
         </b>
         <Toggle
           checked={$settingsStore.network.downgrade}
@@ -184,12 +184,12 @@
   </div>
   <div>
     <Jumbotron
-      title={$_('netwrok.https.title')}
-      description={$_('netwrok.https.description')}
+      title={$_('network.https.title')}
+      description={$_('network.https.description')}
     >
       <div class="toggle">
         <b>
-          {$_('netwrok.https.toggle')}
+          {$_('network.https.toggle')}
         </b>
         <Toggle
           checked={$settingsStore.network.https}
@@ -200,14 +200,14 @@
   </div>
   <div>
     <Jumbotron
-			title={$_('netwrok.timeout.title')}
-			description={$_('netwrok.timeout.description')}
+			title={$_('network.timeout.title')}
+			description={$_('network.timeout.description')}
 		>
       <p
         class="reset"
         on:mouseup={() => setAbortTimeout(NETWORK_INIT_STATE.abortTimeout)}
       >
-        {$_('netwrok.config.reset')}
+        {$_('network.config.reset')}
       </p>
       <div class="input">
         <label>
@@ -224,14 +224,14 @@
   </div>
   <div>
     <Jumbotron
-			title={$_('netwrok.nodes.title')}
-			description={$_('netwrok.nodes.description')}
+			title={$_('network.nodes.title')}
+			description={$_('network.nodes.description')}
 		>
     <p
       class="reset"
       on:mouseup={() => setNumberNodes(NETWORK_INIT_STATE.numberOfNodes)}
     >
-      {$_('netwrok.config.reset')}
+      {$_('network.config.reset')}
     </p>
       <div class="input">
         <label>
@@ -248,14 +248,14 @@
   </div>
   <div>
     <Jumbotron
-			title={$_('netwrok.period.title')}
-			description={$_('netwrok.period.description')}
+			title={$_('network.period.title')}
+			description={$_('network.period.description')}
 		>
     <p
       class="reset"
       on:mouseup={() => setPeriodOffset(PERIOD_OFFSET)}
     >
-      {$_('netwrok.config.reset')}
+      {$_('network.config.reset')}
     </p>
       <div class="input">
         <label>

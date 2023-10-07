@@ -12,7 +12,7 @@ export interface WalletState {
     algorithm: ShaAlgorithms;
   };
   settings: SettingsState;
-  netwrok: string;
+  network: string;
   wallet: Wallet;
   tokens: Token[];
   confirm: ConfirmParams[];

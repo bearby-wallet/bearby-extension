@@ -115,11 +115,11 @@
     "title": "Secret Key",
     "placeholder": "Enter Secret key"
   },
-  "netwrok": {
+  "network": {
     "title": "Network",
     "selected": {
       "title": "Selected Network",
-      "description": "Change netwrok for testing!"
+      "description": "Change network for testing!"
     },
     "config": {
       "title": "Node settings",

@@ -1,4 +1,4 @@
-import type { NetwrokConfig } from 'types';
+import type { NetworkConfig } from 'types';
 
 import { NETWORK, NETWORK_KEYS } from 'config/network';
 import { Fields } from 'config/fields';
@@ -38,17 +38,17 @@ export class NetworkControl {
 
   async sync() {
     const data = await BrowserStorage.get(
-      Fields.NETWROK_CONFIG,
-      Fields.NETWROK_SELECTED
+      Fields.NETWORK_CONFIG,
+      Fields.NETWORK_SELECTED
     ) as StorageKeyValue;
 
     try {
-      if (data[Fields.NETWROK_SELECTED]) {
-        this.#selected = data[Fields.NETWROK_SELECTED];
+      if (data[Fields.NETWORK_SELECTED]) {
+        this.#selected = data[Fields.NETWORK_SELECTED];
       }
 
-      if (data[Fields.NETWROK_CONFIG]) {
-        const config = JSON.parse(data[Fields.NETWROK_CONFIG]);
+      if (data[Fields.NETWORK_CONFIG]) {
+        const config = JSON.parse(data[Fields.NETWORK_CONFIG]);
 
         if (Object.keys(config).length < NETWORK_KEYS.length) {
           this.#config = NETWORK;
@@ -68,8 +68,8 @@ export class NetworkControl {
     this.#config = NETWORK;
 
     await BrowserStorage.set(
-      buildObject(Fields.NETWROK_CONFIG, this.config),
-      buildObject(Fields.NETWROK_SELECTED, this.selected)
+      buildObject(Fields.NETWORK_CONFIG, this.config),
+      buildObject(Fields.NETWORK_SELECTED, this.selected)
     );
   }
 
@@ -87,13 +87,13 @@ export class NetworkControl {
     }
 
     await BrowserStorage.set(
-      buildObject(Fields.NETWROK_SELECTED, selected)
+      buildObject(Fields.NETWORK_SELECTED, selected)
     );
 
     this.#selected = selected;
   }
 
-  async setConfig(newConfig: NetwrokConfig) {
+  async setConfig(newConfig: NetworkConfig) {
     for (const key in newConfig) {
       assert(Boolean(newConfig[key].PROVIDERS), INVALID_CONFIG, NetworkError);
       assert(!isNaN(Number(newConfig[key].VERSION)), INVALID_CONFIG, NetworkError);
@@ -102,7 +102,7 @@ export class NetworkControl {
     this.#config = newConfig;
 
     await BrowserStorage.set(
-      buildObject(Fields.NETWROK_CONFIG, this.config)
+      buildObject(Fields.NETWORK_CONFIG, this.config)
     );
   }
 
@@ -117,7 +117,7 @@ export class NetworkControl {
     this.#config[this.selected].PROVIDERS.push(node);
 
     await BrowserStorage.set(
-      buildObject(Fields.NETWROK_CONFIG, this.config)
+      buildObject(Fields.NETWORK_CONFIG, this.config)
     );
   }
 
@@ -133,7 +133,7 @@ export class NetworkControl {
     });
 
     await BrowserStorage.set(
-      buildObject(Fields.NETWROK_CONFIG, this.config)
+      buildObject(Fields.NETWORK_CONFIG, this.config)
     );
   }
 
@@ -149,7 +149,7 @@ export class NetworkControl {
     );
 
     await BrowserStorage.set(
-      buildObject(Fields.NETWROK_CONFIG, this.config)
+      buildObject(Fields.NETWORK_CONFIG, this.config)
     );
   }
 

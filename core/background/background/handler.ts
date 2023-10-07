@@ -108,7 +108,7 @@ export function startBackground(core: BackgroundState) {
         network.removeNode(msg.payload.node, sendResponse);
         return true;
       case MTypePopup.GET_NETWORK_CONFIG:
-        network.getNetwrokConfig(sendResponse);
+        network.getNetworkConfig(sendResponse);
         return true;
       case MTypePopup.RESET_NETWORK_CONFIG:
         network.resetConfig(sendResponse);
