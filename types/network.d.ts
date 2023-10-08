@@ -1,4 +1,4 @@
-export interface NetwrokConfig {
+export interface NetworkConfig {
   [key: string]: {
     PROVIDERS: string[];
     VERSION: number;

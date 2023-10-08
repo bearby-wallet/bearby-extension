@@ -203,7 +203,7 @@ export class BackgroundWallet {
         resolve: this.#core.state
       });
 
-      if (this.#core.netwrok.selected == "buildnet") {
+      if (this.#core.network.selected == "buildnet") {
         this.massaQuestAddAccount(this.#core.account.selectedAccount?.base58 || '');
       }
     } catch (err) {
@@ -228,7 +228,7 @@ export class BackgroundWallet {
         resolve: this.#core.state
       });
 
-      if (this.#core.netwrok.selected == "buildnet") {
+      if (this.#core.network.selected == "buildnet") {
         this.massaQuestAddAccount(this.#core.account.selectedAccount?.base58 || '');
       }
     } catch (err) {

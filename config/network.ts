@@ -1,7 +1,7 @@
-import type { NetworkSettingsState, NetwrokConfig } from 'types';
+import type { NetworkSettingsState, NetworkConfig } from 'types';
 
 
-export const NETWORK: NetwrokConfig = Object.freeze({
+export const NETWORK: NetworkConfig = Object.freeze({
   mainnet: {
     PROVIDERS: ['https://massa.net/api/v2'],
     VERSION: 0

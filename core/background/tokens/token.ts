@@ -35,7 +35,7 @@ const INIT = {
 };
 
 export class TokenControl {
-  readonly #netwrok: NetworkControl;
+  readonly #network: NetworkControl;
   readonly #massa: MassaControl;
   readonly #account: AccountController;
 
@@ -46,16 +46,16 @@ export class TokenControl {
   }
 
   get field() {
-    return `${Fields.TOKENS}/${this.#netwrok.selected}`;
+    return `${Fields.TOKENS}/${this.#network.selected}`;
   }
 
   constructor(
-    netwrok: NetworkControl,
+    network: NetworkControl,
     massa: MassaControl,
     account: AccountController
   ) {
     this.#account = account;
-    this.#netwrok = netwrok;
+    this.#network = network;
     this.#massa = massa;
   }
 
@@ -118,7 +118,7 @@ export class TokenControl {
     const buildnetField = `${Fields.TOKENS}/${buildnet}`;
     const testnetField = `${Fields.TOKENS}/${testnet}`;
     const customField = `${Fields.TOKENS}/${custom}`;
-    const init = INIT[this.#netwrok.selected];
+    const init = INIT[this.#network.selected];
 
     this.#identities = init;
 

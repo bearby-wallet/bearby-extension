@@ -7,7 +7,7 @@
   // import { logout } from 'popup/backend/wallet';
 
   import { linksExpand } from 'popup/mixins/link';
-  import netwrokStore from 'popup/store/netwrok';
+  import networkStore from 'popup/store/network';
 
   // import Refresh from './icons/Refresh.svelte';
   import ExpandIcon from './icons/Expand.svelte';
@@ -15,7 +15,7 @@
   // import LockIcon from './icons/Lock.svelte';
 
 	// import walletStore from 'popup/store/wallet';
-  // import netStore from 'popup/store/netwrok';
+  // import netStore from 'popup/store/network';
 
   const dispatch = createEventDispatcher();
 
@@ -25,7 +25,7 @@
   // export let lock = false;
 
   // $: account = $walletStore.identities[$walletStore.selectedAddress];
-  $: isMainnet = $netwrokStore === NETWORK_KEYS[0];
+  $: isMainnet = $networkStore === NETWORK_KEYS[0];
 
   // const onRefresh = () => {
   //   dispatch('refresh');

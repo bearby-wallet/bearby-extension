@@ -19,7 +19,7 @@ import { TabsMessage } from "lib/stream/tabs-message";
 
 
 export class BackgroundState {
-  readonly netwrok = new NetworkControl();
+  readonly network = new NetworkControl();
   readonly gas = new GasControl();
   readonly guard = new Guard();
   readonly badge = new BadgeControl();
@@ -27,17 +27,17 @@ export class BackgroundState {
   readonly contacts = new ContactController();
   readonly connections = new AppConnectController(this.badge);
   readonly account = new AccountController(this.guard, this.badge);
-  readonly massa = new MassaControl(this.netwrok, this.account, this.settings);
-  readonly tokens = new TokenControl(this.netwrok, this.massa, this.account);
+  readonly massa = new MassaControl(this.network, this.account, this.settings);
+  readonly tokens = new TokenControl(this.network, this.massa, this.account);
   readonly transaction = new TransactionsController(
-    this.netwrok,
+    this.network,
     this.account,
     this.badge
   );
   readonly worker = new WorkerController(
     this.massa,
     this.transaction,
-    this.netwrok,
+    this.network,
     this.settings
   );
 
@@ -45,7 +45,7 @@ export class BackgroundState {
     return {
       guard: this.guard.state,
       settings: this.settings.state,
-      netwrok: this.netwrok.selected,
+      network: this.network.selected,
       wallet: this.account.wallet,
       tokens: this.tokens.identities,
       confirm: this.transaction.confirm,
@@ -63,7 +63,7 @@ export class BackgroundState {
     Runtime.runtime.onInstalled.addListener(this.#onInstalled);
 
     await this.guard.sync();
-    await this.netwrok.sync();
+    await this.network.sync();
     await this.gas.sync();
     await this.account.sync();
     await this.tokens.sync();
@@ -96,7 +96,7 @@ export class BackgroundState {
     new TabsMessage({
       type: MTypeTab.NETWORK_CHANGED,
       payload: {
-        net: this.netwrok.selected,
+        net: this.network.selected,
         period: this.worker.period
       }
     }).send();

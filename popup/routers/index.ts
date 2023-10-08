@@ -14,7 +14,7 @@ import ConnectPage from '../pages/Connect.svelte';
 import AddTrackAccountPage from '../pages/AddTrack.svelte';
 import SignMessagePage from '../pages/SignMessage.svelte';
 
-import NetwrokPage from '../pages/settings/Netwrok.svelte';
+import NetworkPage from '../pages/settings/Network.svelte';
 import AccountPage from '../pages/settings/Account.svelte';
 import GeneralPage from '../pages/settings/General.svelte';
 import AdvancedPage from '../pages/settings/Advanced.svelte';
@@ -155,7 +155,7 @@ export default {
     ]
   }),
   '/network': wrap({
-    component: NetwrokPage,
+    component: NetworkPage,
     conditions: [
       routerGuard
     ]

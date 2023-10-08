@@ -93,7 +93,7 @@
     </div>
     <div>
       <b>
-        {$_('netwrok.downgrade.toggle')}
+        {$_('network.downgrade.toggle')}
       </b>
       <Toggle
         checked={$settingsStore.downgradeNode}
