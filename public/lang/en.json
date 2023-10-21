@@ -2,7 +2,7 @@
   "account_track": {
     "title": "Track Account",
     "placeholder": "Account Name",
-    "description": "This Address view only!"
+    "description": "This address is view-only!"
   },
   "start": {
     "title": "Bearby Wallet",
@@ -29,8 +29,8 @@
     ]
   },
   "verify": {
-    "title": "Mnemonic words verify",
-    "placeholder": "Pick words here in order and recreate your secret phrase.",
+    "title": "Verify Mnemonic Words",
+    "placeholder": "Pick words in the correct order to recreate your secret phrase.",
     "btn": "Continue"
   },
   "setup_acc": {
@@ -38,7 +38,7 @@
     "name_placeholder": "Name of account (3-25 characters)",
     "name_description": "A first account name.",
     "name": "An account name.",
-    "pass_description": "A password required for encrypt your wallet."
+    "pass_description": "A password is required to encrypt your wallet."
   },
   "restore": {
     "title": "Restore.",
@@ -55,7 +55,7 @@
   },
   "wallet_created": {
     "title": "Wallet is generated!",
-    "subt_title": "Your account has been created - Keep your secret phase safe, it’s your responsibility!",
+    "subt_title": "Your account has been created - Keep your secret phase safe, It’s your responsibility!",
     "btn": "Start using!",
     "tips": {
       "title": "Tips on storing it safely",
@@ -130,7 +130,7 @@
     },
     "downgrade": {
       "title": "Smart Request",
-      "description": "The wallet automatically collecte node in network and chose faster option.",
+      "description": "The wallet automatically collects nodes in the network and chooses the faster option.",
       "toggle": "Enable smart request"
     },
     "timeout": {
@@ -160,7 +160,7 @@
       "title": "Recipient",
       "accounts": "Accounts",
       "contacts": "Contacts",
-      "placeholder": "Input base58 address"
+      "placeholder": "Input Base58 address"
     },
     "modal": {
       "tokens": "Tokens"
@@ -237,7 +237,7 @@
     },
     "lang": {
       "title": "Interface language.",
-      "description": "Use your prefer language."
+      "description": "Use your preferred language."
     }
   },
   "contacts": {
@@ -289,7 +289,7 @@
     },
     "password": {
       "title": "Change Password",
-      "description": "Change password and Algorithms for encryption!",
+      "description": "Change password and algorithms for encryption!",
       "new": "New Password",
       "current": "Current Password"
     },
@@ -325,7 +325,7 @@
     },
     "format": {
       "title": "Number formatting",
-      "description": "Short of tokens amount, with units (K, M, B)"
+      "description": "Shorten the token amount with units (K, M, B)"
     }
   },
   "connections": {
