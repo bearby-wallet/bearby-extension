@@ -1,0 +1,370 @@
+{
+  "account_track": {
+    "title": "Konto verfolgen",
+    "placeholder": "Kontoname",
+    "description": "Diese Adresse ist nur zur Ansicht!"
+  },
+  "start": {
+    "title": "Bearby Wallet",
+    "subt_title": "Lass uns anfangen.",
+    "btn_restore": "Wiederherstellen",
+    "btn_create": "Erstellen"
+  },
+  "create": {
+    "title": "Geheime Phrase generieren",
+    "sub_title": "Merke dir deine Wörter in der richtigen Reihenfolge!!!",
+    "btns": {
+      "refresh": "Zufällig generieren",
+      "continue": "Fortfahren",
+      "print": "Drucken"
+    },
+    "print": [
+      "Bitte",
+      "<strong>VERGESSE</strong> nicht, deine geheime Mnemonische Phrase zu speichern. Du wirst deine",
+      "<strong>Mnemonische Phrase</strong> benötigen, um dein Wallet wiederherzustellen.",
+      "Deine mnemonischen Wörter",
+      "<b>Verliere sie nicht!</b> Sie können nicht wiederhergestellt werden, wenn du sie verlierst.",
+      "<b>Teile sie nicht!</b> Deine Gelder werden gestohlen, wenn du diese Datei auf einer Phishing-Seite verwendest.",
+      "<b>Mache eine Sicherungskopie!</b> Schütze sie wie Millionen von Dollar, die sie eines Tages wert sein könnte."
+    ]
+  },
+  "verify": {
+    "title": "Mnemonische Wörter überprüfen",
+    "placeholder": "Wähle die Wörter in der richtigen Reihenfolge aus, um deine geheime Phrase wiederherzustellen.",
+    "btn": "Fortfahren"
+  },
+  "setup_acc": {
+    "title": "Kontoeinrichtung",
+    "name_placeholder": "Kontoname (3-25 Zeichen)",
+    "name_description": "Ein erster Kontoname.",
+    "name": "Ein Kontoname.",
+    "pass_description": "Ein Passwort ist erforderlich, um dein Wallet zu verschlüsseln."
+  },
+  "restore": {
+    "title": "Wiederherstellen.",
+    "btn": "Fortfahren",
+    "advanced": "Erweitert",
+    "placeholder": "Gib geheime Wörter ein, mit einem Leerzeichen zwischen den Wörtern.",
+    "pass_placeholder": "Passwort",
+    "conf_placeholder": "Bestätigen Sie das Passwort",
+    "pass_len_error": "Passwortfehler, maximale Länge beträgt 6",
+    "guard": {
+      "iteractions": "PBKDF2-Iterationen",
+      "algorithms": "PBKDF2 ShaAlgorithmen"
+    }
+  },
+  "wallet_created": {
+    "title": "Wallet wurde erstellt!",
+    "subt_title": "Ihr Konto wurde erstellt - Bewahren Sie Ihren geheimen Satz sicher auf. Es liegt in Ihrer Verantwortung!",
+    "btn": "Jetzt verwenden!",
+    "tips": {
+      "title": "Tipps zur sicheren Aufbewahrung",
+      "list": {
+        "0": "Speichern Sie eine Sicherung an mehreren Orten",
+        "1": "Teilen Sie die Wörter niemals mit anderen Personen",
+        "2": "Seien Sie vorsichtig vor Phishing! Bearby wird niemals unaufgefordert nach Ihrem geheimen Satz fragen",
+        "3": "Wenn Sie Ihren geheimen Satz erneut sichern müssen, finden Sie ihn unter Sicherheit",
+        "4": "Wenn Sie jemals eine Frage haben oder etwas Verdächtiges bemerken, kontaktieren Sie uns."
+      },
+      "warn": "Das Bearby-Team kann Ihre geheimen Wörter nicht wiederherstellen!"
+    }
+  },
+  "lock": {
+    "title": "Willkommen zurück!",
+    "placeholder": "Passwort",
+    "btn": "Entsperren",
+    "error": "Falsches Passwort!",
+    "restore": "Wiederherstellen"
+  },
+  "home": {
+    "btns": {
+      "send": "Senden",
+      "receive": "Empfangen"
+    },
+    "clipboard": {
+      "copy": "Kopieren",
+      "copied": "Kopiert"
+    },
+    "nav": {
+      "options": {
+        "add": {
+          "title": "Konto hinzufügen",
+          "description": "Generieren Sie das nächste Konto aus dem geheimen Satz."
+        },
+        "import": {
+          "title": "Konto importieren",
+          "description": "Stellen Sie Ihr Konto aus dem privaten Schlüssel wieder her."
+        },
+        "track": {
+          "title": "Konto verfolgen",
+          "description": "Importieren Sie ein Konto nur zum Anzeigen."
+        },
+        "remove": {
+          "title": "Konto entfernen.",
+          "description": "Entfernen/Verstecken Sie Ihr ausgewähltes Konto."
+        }
+      }
+    }
+  },
+  "accounts": {
+    "title": "Konten",
+    "no_accounts": "Keine Konten mit Namen:",
+    "placeholder": "Suche"
+  },
+  "restore_secret": {
+    "title": "Geheimer Schlüssel",
+    "placeholder": "Gebe den geheimen Schlüssel ein"
+  },
+  "network": {
+    "title": "Netzwerk",
+    "selected": {
+      "title": "Ausgewähltes Netzwerk",
+      "description": "Netzwerk zum Testen ändern!"
+    },
+    "config": {
+      "title": "Knoteneinstellungen",
+      "description": "Alle Knoten werden automatisch aktualisiert und einige der schnellsten ausgewählt",
+      "add_placeholder": "Füge einen neuen Knoten hinzu (öffentliche API)",
+      "remove": "Aktuelle öffentliche API entfernen",
+      "reset": "Zurücksetzen"
+    },
+    "downgrade": {
+      "title": "Intelligente Anfrage",
+      "description": "Die Brieftasche sammelt automatisch Knoten im Netzwerk und wählt die schnellere Option aus.",
+      "toggle": "Intelligente Anfrage aktivieren"
+    },
+    "timeout": {
+      "title": "Abbruchzeitlimit",
+      "description": "Die Zeit in Sekunden, die für die Ausführung der Anfrage benötigt wird."
+    },
+    "nodes": {
+      "title": "Anzahl der Knoten",
+      "description": "Maximale Anzahl der zu verwendenden Knoten."
+    },
+    "https": {
+      "title": "Nur Https",
+      "description": "Schützt Ihre Anfragen mit dem Https/TLS-Protokoll (nicht alle Knoten unterstützen dies)",
+      "toggle": "Https-Anfragen aktivieren"
+    },
+    "period": {
+      "title": "Periodenversatz",
+      "description": "Die Anzahl der Blöcke, für die eine Transaktion bestätigt werden soll."
+    }
+  },
+  "send": {
+    "title": "Senden",
+    "sender": "Absender",
+    "token": "Token-Übertragung",
+    "continue": "Fortsetzen",
+    "recipient": {
+      "title": "Empfänger",
+      "accounts": "Konten",
+      "contacts": "Kontakte",
+      "placeholder": "Base58-Adresse eingeben"
+    },
+    "modal": {
+      "tokens": "Token"
+    }
+  },
+  "account": {
+    "title": "Konto",
+    "modal": {
+      "title": "Konten"
+    }
+  },
+  "settings": {
+    "account": {
+      "title": "Konto",
+      "description": "Kontoinformationen, QR-Code."
+    },
+    "general": {
+      "title": "Allgemein",
+      "description": "Währungsumrechnung, Sprache, Thema."
+    },
+    "contacts": {
+      "title": "Kontakte",
+      "description": "Kontakte hinzufügen, bearbeiten, entfernen und verwalten."
+    },
+    "advanced": {
+      "title": "Erweitert",
+      "description": "Gas-Controller, Popup-Einstellungen."
+    },
+    "networks": {
+      "title": "Netzwerke",
+      "description": "Benutzerdefinierte Node-API-Netzwerke hinzufügen und bearbeiten."
+    },
+    "connections": {
+      "title": "Verbindungen",
+      "description": "DApps-Liste, Verbindungen verwalten, hinzufügen, entfernen."
+    },
+    "security": {
+      "title": "Sicherheit & Datenschutz",
+      "description": "Datenschutzeinstellungen und Wallet-Wiederherstellungsphrase."
+    },
+    "about": {
+      "title": "Über",
+      "description": "Version, Support-Center und Kontaktinformationen."
+    }
+  },
+  "history": {
+    "title": "Transaktionen",
+    "no_txns": "Sie haben noch keine Transaktionen.",
+    "queue": "Warteschlange",
+    "history": "Verlauf",
+    "clear": "Alles löschen",
+    "modals": {
+      "details": {
+        "title": "Transaktionsdetails",
+        "from": "Absender",
+        "recipient": "Empfänger",
+        "method": "Methode",
+        "hash": "ID (Hash)",
+        "expiry": "Ablaufzeitraum",
+        "time": "Zeit",
+        "error": "Fehlermeldung"
+      }
+    }
+  },
+  "general": {
+    "title": "Allgemein",
+    "currency": {
+      "title": "Währungsumrechnung",
+      "description": "Sie können zu einer anderen Währung wechseln, um Ihr Guthaben zu verfolgen."
+    },
+    "theme": {
+      "title": "Oberflächenthema",
+      "description": "Sie können das Farbthema ändern; standardmäßig erkennt es automatisch das Systemthema."
+    },
+    "lang": {
+      "title": "Benutzersprache",
+      "description": "Verwenden Sie Ihre bevorzugte Sprache."
+    }
+  },
+  "contacts": {
+    "title": "Kontakte",
+    "add_btn": "Neuen hinzufügen",
+    "new_contact": "Ein neuer Kontakt",
+    "items": {
+      "rm": "Entfernen",
+      "copy": "Kopieren"
+    },
+    "no_content": "Noch keine Kontakte!",
+    "form": {
+      "add": "Zu Kontakten hinzufügen",
+      "name_placeholder": "Kontaktnamen eingeben"
+    }
+  },
+  "confirm": {
+    "btns": {
+      "reject": "Ablehnen",
+      "confirm": "Bestätigen",
+      "edit": "Bearbeiten"
+    },
+    "params": {
+      "amount": "Betrag",
+      "teg": "Tag",
+      "fee": "Gebühr",
+      "to": "Empfänger",
+      "types": {
+        "0": "Zahlung",
+        "1": "Rolls kaufen",
+        "2": "Rolls verkaufen",
+        "3": "Vertrag bereitstellen",
+        "4": "Vertrag aufrufen"
+      }
+    }
+  },
+  "about": {
+    "title": "Über",
+    "issues": "Probleme",
+    "tg": "Telegramm",
+    "manifest_version": "Manifestversion",
+    "version": "Bearby Version"
+  },
+  "security": {
+    "title": "Sicherheit",
+    "p_modal": {
+      "title": "Geheimer Wiederherstellungsphrase",
+      "warn": "GEBEN SIE diese Phrase mit niemandem! Diese Wörter können verwendet werden, um alle Ihre Konten zu stehlen."
+    },
+    "password": {
+      "title": "Passwort ändern",
+      "description": "Ändern Sie Ihr Passwort und Verschlüsselungsalgorithmen!",
+      "new": "Neues Passwort",
+      "current": "Aktuelles Passwort"
+    },
+    "phrase": {
+      "title": "Geheime Wiederherstellungsphrase anzeigen",
+      "description": "Wenn Sie jemals den Browser wechseln oder den Computer wechseln, benötigen Sie diese geheime Wiederherstellungsphrase, um auf Ihre Konten zugreifen zu können. Speichern Sie sie an einem sicheren und geheimen Ort.",
+      "label": "Geben Sie das Passwort ein, um fortzufahren",
+      "btn": "Anzeigen"
+    },
+    "key": {
+      "title": "Private Keys anzeigen",
+      "warn": "Warnung: Geben Sie diesen Schlüssel niemals preis. Jeder mit Ihren privaten Schlüsseln kann alle in Ihrem Konto gehaltenen Vermögenswerte stehlen.",
+      "btn": "Exportieren",
+      "for": "Privater Schlüssel für"
+    },
+    "phishing": {
+      "title": "Phishing-Erkennung verwenden",
+      "warn": "Eine Warnung für Phishing-Domains anzeigen, die Massa-Benutzer ins Visier nehmen."
+    }
+  },
+  "advanced": {
+    "title": "Fortgeschritten",
+    "gas": {
+      "title": "Gaspreis",
+      "description": "Wählen Sie Ihren Standard-Gaspreis aus. Alle Ihre Transaktionen werden diese Gasparameter verwenden."
+    },
+    "popup": {
+      "title": "Popup",
+      "description": "Sie können das Erscheinen des Bestätigungsfensters für Transaktionen deaktivieren."
+    },
+    "time": {
+      "title": "Automatische Abmeldezeit (Stunden)"
+    },
+    "format": {
+      "title": "Zahlenformatierung",
+      "description": "Verkürzen Sie den Token-Betrag mit Einheiten (K, M, B)"
+    }
+  },
+  "connections": {
+    "title": "Verbindungen",
+    "no_apps": "Sie haben noch keine Verbindungen!"
+  },
+  "rolls": {
+    "title": "Rolls",
+    "buyer": "Käufer",
+    "pay": "Sie zahlen",
+    "receive": "Sie erhalten",
+    "button": "Weiter"
+  },
+  "connect": {
+    "question": {
+      "0": "Möchten Sie eine Verbindung herstellen",
+      "1": "zur Anwendung?"
+    },
+    "btns": {
+      "conf": "Genehmigen",
+      "reject": "Ablehnen"
+    },
+    "warn": "Nach der Bestätigung kann diese Anwendung Daten von der Blockchain anfordern und Ihre Konten einsehen."
+  },
+  "sig_message": {
+    "title": "Signaturanfrage",
+    "hash": "SHA256 anzeigen",
+    "signer": "Unterzeichner",
+    "btns": {
+      "confirm": "Unterzeichnen",
+      "reject": "Ablehnen"
+    }
+  },
+  "pub_key_req": {
+    "title": "Anforderung des öffentlichen Verschlüsselungsschlüssels",
+    "description": "Möchten Sie Ihren öffentlichen Verschlüsselungsschlüssel bereitstellen? Durch die Zustimmung kann diese Website verschlüsselte Nachrichten an Sie senden.",
+    "btns": {
+      "confirm": "Bereitstellen",
+      "reject": "Abbrechen"
+    }
+  }
+}
