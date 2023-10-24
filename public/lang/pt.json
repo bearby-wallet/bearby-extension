@@ -1,0 +1,370 @@
+{
+  "account_track": {
+    "title": "Rastrear Conta",
+    "placeholder": "Nome da Conta",
+    "description": "Este endereço é somente de visualização!"
+  },
+  "start": {
+    "title": "Bearby Wallet",
+    "subt_title": "Vamos começar.",
+    "btn_restore": "Restaurar",
+    "btn_create": "Criar"
+  },
+  "create": {
+    "title": "Gerar Frase Secreta",
+    "sub_title": "Lembre-se das suas palavras em ordem!!!",
+    "btns": {
+      "refresh": "Aleatório",
+      "continue": "Continuar",
+      "print": "Imprimir"
+    },
+    "print": [
+      "Por favor",
+      "<strong>NÃO SE ESQUEÇA</strong> de salvar sua Frase Secreta Mnemônica. Você precisará dela para restaurar sua carteira.",
+      "<strong>Frase Secreta Mnemônica</strong> suas palavras mnemônicas",
+      "Suas palavras mnemônicas",
+      "<b>Não perca!</b> Não pode ser recuperada se você a perder.",
+      "<b>Não compartilhe!</b> Seus fundos serão roubados se você usar este arquivo em um site de phishing.",
+      "<b>Faça um backup!</b> Proteja-o como se fosse valer milhões de dólares um dia."
+    ]
+  },
+  "verify": {
+    "title": "Verificar Palavras Mnemônicas",
+    "placeholder": "Escolha as palavras na ordem correta para recriar sua frase secreta.",
+    "btn": "Continuar"
+  },
+  "setup_acc": {
+    "title": "Configuração da Conta",
+    "name_placeholder": "Nome da conta (3-25 caracteres)",
+    "name_description": "Um primeiro nome de conta.",
+    "name": "Um nome de conta.",
+    "pass_description": "É necessário uma senha para criptografar sua carteira."
+  },
+  "restore": {
+    "title": "Restaurar.",
+    "btn": "Continuar",
+    "advanced": "Avançado",
+    "placeholder": "Digite as palavras secretas, separadas por um espaço.",
+    "pass_placeholder": "Senha",
+    "conf_placeholder": "Confirmar Senha",
+    "pass_len_error": "Erro na senha, comprimento máximo é 6",
+    "guard": {
+      "iteractions": "Iterações PBKDF2",
+      "algorithms": "Algoritmos ShaAlgorithms PBKDF2"
+    }
+  },
+  "wallet_created": {
+    "title": "Carteira foi gerada!",
+    "subt_title": "Sua conta foi criada - Mantenha sua frase secreta em segurança. É sua responsabilidade!",
+    "btn": "Começar a usar!",
+    "tips": {
+      "title": "Dicas para armazenar com segurança",
+      "list": {
+        "0": "Salve uma cópia de backup em vários lugares",
+        "1": "Nunca compartilhe as palavras com ninguém",
+        "2": "Tenha cuidado com phishing! A Bearby nunca pedirá espontaneamente sua frase secreta",
+        "3": "Se você precisar fazer backup da sua frase secreta novamente, você pode encontrá-la em Segurança",
+        "4": "Se você tiver alguma dúvida ou notar algo suspeito, entre em contato conosco."
+      },
+      "warn": "A equipe da Bearby não pode recuperar suas palavras secretas!"
+    }
+  },
+  "lock": {
+    "title": "Bem-vindo de volta!",
+    "placeholder": "Senha",
+    "btn": "Desbloquear",
+    "error": "Senha incorreta!",
+    "restore": "Restaurar"
+  },
+  "home": {
+    "btns": {
+      "send": "Enviar",
+      "receive": "Receber"
+    },
+    "clipboard": {
+      "copy": "Copiar",
+      "copied": "Copiado"
+    },
+    "nav": {
+      "options": {
+        "add": {
+          "title": "Adicionar Conta",
+          "description": "Gerar a próxima conta a partir da frase secreta."
+        },
+        "import": {
+          "title": "Importar Conta",
+          "description": "Restaurar sua conta a partir da Chave Privada."
+        },
+        "track": {
+          "title": "Acompanhar Conta",
+          "description": "Importar Conta somente para visualização."
+        },
+        "remove": {
+          "title": "Remover Conta.",
+          "description": "Remover/Ocultar sua conta selecionada."
+        }
+      }
+    }
+  },
+  "accounts": {
+    "title": "Contas",
+    "no_accounts": "Nenhuma conta com o nome:",
+    "placeholder": "Pesquisar"
+  },
+  "restore_secret": {
+    "title": "Chave Secreta",
+    "placeholder": "Digite a chave secreta"
+  },
+  "network": {
+    "title": "Rede",
+    "selected": {
+      "title": "Rede Selecionada",
+      "description": "Alterar a rede para testes!"
+    },
+    "config": {
+      "title": "Configurações do nó",
+      "description": "Todos os nós são atualizados automaticamente e alguns dos mais rápidos são selecionados",
+      "add_placeholder": "Adicionar um novo nó (API pública)",
+      "remove": "Remover API pública atual",
+      "reset": "Redefinir"
+    },
+    "downgrade": {
+      "title": "Solicitação Inteligente",
+      "description": "A carteira coleta automaticamente nós na rede e escolhe a opção mais rápida.",
+      "toggle": "Ativar solicitação inteligente"
+    },
+    "timeout": {
+      "title": "Tempo Limite de Abortar",
+      "description": "O tempo em segundos para a solicitação ser executada."
+    },
+    "nodes": {
+      "title": "Número de nós",
+      "description": "Número máximo de nós a serem usados."
+    },
+    "https": {
+      "title": "Apenas Https",
+      "description": "Protege suas solicitações com o protocolo Https/TLS (nem todos os nós suportam)",
+      "toggle": "Ativar solicitação Https"
+    },
+    "period": {
+      "title": "Deslocamento de período",
+      "description": "O número de blocos para os quais uma transação deve ser confirmada."
+    }
+  },
+  "send": {
+    "title": "Enviar",
+    "sender": "Remetente",
+    "token": "Transferência de Token",
+    "continue": "Continuar",
+    "recipient": {
+      "title": "Destinatário",
+      "accounts": "Contas",
+      "contacts": "Contatos",
+      "placeholder": "Digite o endereço Base58"
+    },
+    "modal": {
+      "tokens": "Tokens"
+    }
+  },
+  "account": {
+    "title": "Conta",
+    "modal": {
+      "title": "Contas"
+    }
+  },
+  "settings": {
+    "account": {
+      "title": "Conta",
+      "description": "Informações da conta, código QR."
+    },
+    "general": {
+      "title": "Geral",
+      "description": "Conversão de moeda, idioma, tema."
+    },
+    "contacts": {
+      "title": "Contatos",
+      "description": "Adicionar, editar, remover e gerenciar seus contatos."
+    },
+    "advanced": {
+      "title": "Avançado",
+      "description": "Controlador de gás, configurações de pop-up."
+    },
+    "networks": {
+      "title": "Redes",
+      "description": "Adicionar e editar redes de API de nós personalizadas."
+    },
+    "connections": {
+      "title": "Conexões",
+      "description": "Lista de DApps, gerenciar suas conexões, adicionar, remover."
+    },
+    "security": {
+      "title": "Segurança e Privacidade",
+      "description": "Configurações de privacidade e Frase de Recuperação Secreta da carteira."
+    },
+    "about": {
+      "title": "Sobre",
+      "description": "Versão, centro de suporte e informações de contato."
+    }
+  },
+  "history": {
+    "title": "Transações",
+    "no_txns": "Você ainda não tem transações.",
+    "queue": "Fila",
+    "history": "Histórico",
+    "clear": "Limpar tudo",
+    "modals": {
+      "details": {
+        "title": "Detalhes da transação",
+        "from": "Remetente",
+        "recipient": "Destinatário",
+        "method": "Método",
+        "hash": "ID (Hash)",
+        "expiry": "Período de expiração",
+        "time": "Hora",
+        "error": "Mensagem de erro"
+      }
+    }
+  },
+  "general": {
+    "title": "Geral",
+    "currency": {
+      "title": "Conversão de Moeda",
+      "description": "Você pode trocar para outra moeda para acompanhar seu saldo."
+    },
+    "theme": {
+      "title": "Tema da Interface.",
+      "description": "Você pode alterar o tema de cores; por padrão, ele detecta automaticamente o tema do sistema."
+    },
+    "lang": {
+      "title": "Idioma da Interface.",
+      "description": "Use seu idioma preferido."
+    }
+  },
+  "contacts": {
+    "title": "Contatos",
+    "add_btn": "Adicionar um novo",
+    "new_contact": "Um novo contato",
+    "items": {
+      "rm": "Remover",
+      "copy": "Copiar"
+    },
+    "no_content": "Ainda não há contatos!",
+    "form": {
+      "add": "Adicionar aos contatos",
+      "name_placeholder": "Digite o nome do contato"
+    }
+  },
+  "confirm": {
+    "btns": {
+      "reject": "Rejeitar",
+      "confirm": "Confirmar",
+      "edit": "Editar"
+    },
+    "params": {
+      "amount": "Valor",
+      "teg": "Tag",
+      "fee": "Taxa",
+      "to": "Destinatário",
+      "types": {
+        "0": "Pagamento",
+        "1": "Comprar Rolls",
+        "2": "Vender Rolls",
+        "3": "Implementar Contrato",
+        "4": "Chamar Contrato"
+      }
+    }
+  },
+  "about": {
+    "title": "Sobre",
+    "issues": "Problemas",
+    "tg": "Telegrama",
+    "manifest_version": "Versão do Manifesto",
+    "version": "Versão do Bearby"
+  },
+  "security": {
+    "title": "Segurança",
+    "p_modal": {
+      "title": "Frase de Recuperação Secreta",
+      "warn": "NÃO compartilhe esta frase com ninguém! Essas palavras podem ser usadas para roubar todas as suas contas."
+    },
+    "password": {
+      "title": "Alterar Senha",
+      "description": "Altere sua senha e algoritmos de criptografia!",
+      "new": "Nova Senha",
+      "current": "Senha Atual"
+    },
+    "phrase": {
+      "title": "Revelar Frase de Recuperação Secreta",
+      "description": "Se você trocar de navegador ou mudar de computador, precisará dessa Frase de Recuperação Secreta para acessar suas contas. Guarde-a em um local seguro e secreto.",
+      "label": "Digite a senha para continuar",
+      "btn": "Revelar"
+    },
+    "key": {
+      "title": "Mostrar Chaves Privadas",
+      "warn": "Atenção: Nunca divulgue esta chave. Qualquer pessoa com suas chaves privadas pode roubar quaisquer ativos em sua conta.",
+      "btn": "Exportar",
+      "for": "Chave Privada para"
+    },
+    "phishing": {
+      "title": "Usar Detecção de Phishing",
+      "warn": "Exibir um aviso para domínios de phishing direcionados aos usuários da Massa."
+    }
+  },
+  "advanced": {
+    "title": "Avançado",
+    "gas": {
+      "title": "Preço do Gás",
+      "description": "Escolha seu preço padrão de gás. Todas as suas transações usarão esses parâmetros de gás."
+    },
+    "popup": {
+      "title": "Popup",
+      "description": "Você pode desativar a janela de confirmação da transação."
+    },
+    "time": {
+      "title": "Tempo de Logout Automático (horas)"
+    },
+    "format": {
+      "title": "Formatação de Número",
+      "description": "Reduza a quantidade de tokens com unidades (K, M, B)"
+    }
+  },
+  "connections": {
+    "title": "Conexões",
+    "no_apps": "Você ainda não possui nenhuma conexão!"
+  },
+  "rolls": {
+    "title": "Rolagens",
+    "buyer": "Comprador",
+    "pay": "Você Paga",
+    "receive": "Você Recebe",
+    "button": "Continuar"
+  },
+  "connect": {
+    "question": {
+      "0": "Você gostaria de se conectar",
+      "1": "à aplicação?"
+    },
+    "btns": {
+      "conf": "Aprovar",
+      "reject": "Rejeitar"
+    },
+    "warn": "Após a confirmação, esta aplicação poderá solicitar dados da blockchain e ver suas contas."
+  },
+  "sig_message": {
+    "title": "Solicitação de Assinatura",
+    "hash": "Mostrar sha256",
+    "signer": "Assinante",
+    "btns": {
+      "confirm": "Assinar",
+      "reject": "Rejeitar"
+    }
+  },
+  "pub_key_req": {
+    "title": "Solicitar chave pública de criptografia",
+    "description": "Você gostaria de fornecer sua chave pública de criptografia? Ao consentir, este site poderá enviar mensagens criptografadas para você.",
+    "btns": {
+      "confirm": "Fornecer",
+      "reject": "Cancelar"
+    }
+  }
+}

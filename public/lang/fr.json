@@ -1,0 +1,370 @@
+{
+  "account_track": {
+    "title": "Suivi du compte",
+    "placeholder": "Nom du compte",
+    "description": "Cette adresse est en lecture seule!"
+  },
+  "start": {
+    "title": "Bearby Wallet",
+    "subt_title": "Commençons.",
+    "btn_restore": "Restaurer",
+    "btn_create": "Créer"
+  },
+  "create": {
+    "title": "Générer une phrase secrète",
+    "sub_title": "Souvenez-vous de vos mots dans l'ordre!!!",
+    "btns": {
+      "refresh": "Aléatoire",
+      "continue": "Continuer",
+      "print": "Imprimer"
+    },
+    "print": [
+      "S'il vous plaît",
+      "<strong>NE PAS OUBLIER</strong> de sauvegarder votre phrase secrète mnémonique. Vous aurez besoin de votre",
+      "<strong>Phrase secrète mnémonique</strong> pour restaurer votre portefeuille.",
+      "Vos mots mnémoniques",
+      "<b>Ne le perdez pas!</b> Il ne pourra pas être récupéré si vous le perdez.",
+      "<b>Ne le partagez pas!</b> Vos fonds seront volés si vous utilisez ce fichier sur un site de phishing.",
+      "<b>Faites une sauvegarde!</b> Protégez-le comme les millions de dollars qu'il pourrait valoir un jour."
+    ]
+  },
+  "verify": {
+    "title": "Vérifier les mots mnémoniques",
+    "placeholder": "Choisissez les mots dans le bon ordre pour recréer votre phrase secrète.",
+    "btn": "Continuer"
+  },
+  "setup_acc": {
+    "title": "Configuration du compte",
+    "name_placeholder": "Nom du compte (3-25 caractères)",
+    "name_description": "Un premier nom de compte.",
+    "name": "Un nom de compte.",
+    "pass_description": "Un mot de passe est requis pour chiffrer votre portefeuille."
+  },
+  "restore": {
+    "title": "Restaurer.",
+    "btn": "Continuer",
+    "advanced": "Avancé",
+    "placeholder": "Saisissez les mots secrets, avec un espace entre les mots.",
+    "pass_placeholder": "Mot de passe",
+    "conf_placeholder": "Confirmer le mot de passe",
+    "pass_len_error": "Erreur de mot de passe, la longueur maximale est de 6",
+    "guard": {
+      "iteractions": "Itérations PBKDF2",
+      "algorithms": "Algorithmes de hachage PBKDF2"
+    }
+  },
+  "wallet_created": {
+    "title": "Le portefeuille est généré !",
+    "subt_title": "Votre compte a été créé - Gardez votre phrase secrète en sécurité. C'est votre responsabilité !",
+    "btn": "Commencer à utiliser !",
+    "tips": {
+      "title": "Conseils pour le stocker en toute sécurité",
+      "list": {
+        "0": "Sauvegardez dans plusieurs endroits",
+        "1": "Ne partagez jamais les mots avec qui que ce soit",
+        "2": "Méfiez-vous du phishing ! Bearby ne vous demandera jamais spontanément votre phrase secrète",
+        "3": "Si vous devez sauvegarder à nouveau votre phrase secrète, vous pouvez la trouver dans les paramètres de sécurité",
+        "4": "Si vous avez des questions ou si vous remarquez quelque chose de suspect, contactez-nous."
+      },
+      "warn": "L'équipe Bearby ne peut pas récupérer vos mots secrets !"
+    }
+  },
+  "lock": {
+    "title": "Bon retour !",
+    "placeholder": "Mot de passe",
+    "btn": "Déverrouiller",
+    "error": "Mot de passe incorrect !",
+    "restore": "Restaurer"
+  },
+  "home": {
+    "btns": {
+      "send": "Envoyer",
+      "receive": "Recevoir"
+    },
+    "clipboard": {
+      "copy": "Copier",
+      "copied": "Copié"
+    },
+    "nav": {
+      "options": {
+        "add": {
+          "title": "Ajouter un compte",
+          "description": "Générer le compte suivant à partir de la phrase secrète."
+        },
+        "import": {
+          "title": "Importer un compte",
+          "description": "Restaurer votre compte à partir de la clé privée."
+        },
+        "track": {
+          "title": "Suivre un compte",
+          "description": "Importer un compte en mode affichage seulement."
+        },
+        "remove": {
+          "title": "Supprimer un compte.",
+          "description": "Supprimer/masquer votre compte sélectionné."
+        }
+      }
+    }
+  },
+  "accounts": {
+    "title": "Comptes",
+    "no_accounts": "Aucun compte avec le nom:",
+    "placeholder": "Rechercher"
+  },
+  "restore_secret": {
+    "title": "Clé secrète",
+    "placeholder": "Entrez la clé secrète"
+  },
+  "network": {
+    "title": "Réseau",
+    "selected": {
+      "title": "Réseau sélectionné",
+      "description": "Changer de réseau pour les tests!"
+    },
+    "config": {
+      "title": "Paramètres du nœud",
+      "description": "Tous les nœuds sont automatiquement mis à jour et quelques-uns des plus rapides sont sélectionnés",
+      "add_placeholder": "Ajouter un nouveau nœud (API publique)",
+      "remove": "Supprimer l'API publique actuelle",
+      "reset": "Réinitialiser"
+    },
+    "downgrade": {
+      "title": "Requête intelligente",
+      "description": "Le portefeuille collecte automatiquement les nœuds du réseau et choisit l'option la plus rapide.",
+      "toggle": "Activer la requête intelligente"
+    },
+    "timeout": {
+      "title": "Délai d'annulation",
+      "description": "Le temps en secondes pour que la requête soit exécutée."
+    },
+    "nodes": {
+      "title": "Nombre de nœuds",
+      "description": "Nombre maximal de nœuds à utiliser."
+    },
+    "https": {
+      "title": "Uniquement Https",
+      "description": "Protège vos requêtes avec le protocole Https/TLS (tous les nœuds ne le prennent pas en charge)",
+      "toggle": "Activer les requêtes Https"
+    },
+    "period": {
+      "title": "Décalage de période",
+      "description": "Le nombre de blocs pour lesquels une transaction doit être confirmée."
+    }
+  },
+  "send": {
+    "title": "Envoyer",
+    "sender": "Expéditeur",
+    "token": "Transfert de jeton",
+    "continue": "Continuer",
+    "recipient": {
+      "title": "Destinataire",
+      "accounts": "Comptes",
+      "contacts": "Contacts",
+      "placeholder": "Entrer l'adresse en Base58"
+    },
+    "modal": {
+      "tokens": "Jetons"
+    }
+  },
+  "account": {
+    "title": "Compte",
+    "modal": {
+      "title": "Comptes"
+    }
+  },
+  "settings": {
+    "account": {
+      "title": "Compte",
+      "description": "Informations sur le compte, code QR."
+    },
+    "general": {
+      "title": "Général",
+      "description": "Conversion de devise, langue, thème."
+    },
+    "contacts": {
+      "title": "Contacts",
+      "description": "Ajouter, modifier, supprimer et gérer vos contacts."
+    },
+    "advanced": {
+      "title": "Avancé",
+      "description": "Contrôleur de gaz, paramètres de la fenêtre contextuelle."
+    },
+    "networks": {
+      "title": "Réseaux",
+      "description": "Ajouter et modifier des réseaux d'API de nœuds personnalisés."
+    },
+    "connections": {
+      "title": "Connexions",
+      "description": "Liste des DApps, gestion de vos connexions, ajouter, supprimer."
+    },
+    "security": {
+      "title": "Sécurité et confidentialité",
+      "description": "Paramètres de confidentialité et phrase de récupération secrète du portefeuille."
+    },
+    "about": {
+      "title": "À propos",
+      "description": "Version, centre de support et coordonnées."
+    }
+  },
+  "history": {
+    "title": "Transactions",
+    "no_txns": "Vous n'avez pas encore de transactions.",
+    "queue": "File d'attente",
+    "history": "Historique",
+    "clear": "Tout effacer",
+    "modals": {
+      "details": {
+        "title": "Détails de la transaction",
+        "from": "Expéditeur",
+        "recipient": "Destinataire",
+        "method": "Méthode",
+        "hash": "ID (Hash)",
+        "expiry": "Période d'expiration",
+        "time": "Heure",
+        "error": "Message d'erreur"
+      }
+    }
+  },
+  "general": {
+    "title": "Général",
+    "currency": {
+      "title": "Conversion de devise",
+      "description": "Vous pouvez passer à une autre devise pour suivre votre solde."
+    },
+    "theme": {
+      "title": "Thème de l'interface.",
+      "description": "Vous pouvez changer le thème de couleur ; par défaut, il détecte automatiquement le thème du système."
+    },
+    "lang": {
+      "title": "Langue de l'interface.",
+      "description": "Utilisez votre langue préférée."
+    }
+  },
+  "contacts": {
+    "title": "Contacts",
+    "add_btn": "Ajouter un nouveau",
+    "new_contact": "Un nouveau contact",
+    "items": {
+      "rm": "Supprimer",
+      "copy": "Copier"
+    },
+    "no_content": "Pas encore de contacts !",
+    "form": {
+      "add": "Ajouter aux contacts",
+      "name_placeholder": "Entrer le nom du contact"
+    }
+  },
+  "confirm": {
+    "btns": {
+      "reject": "Rejeter",
+      "confirm": "Confirmer",
+      "edit": "Modifier"
+    },
+    "params": {
+      "amount": "Montant",
+      "teg": "Étiquette",
+      "fee": "Frais",
+      "to": "Bénéficiaire",
+      "types": {
+        "0": "Paiement",
+        "1": "Acheter des Rolls",
+        "2": "Vendre des Rolls",
+        "3": "Déployer un contrat",
+        "4": "Appeler un contrat"
+      }
+    }
+  },
+  "about": {
+    "title": "À propos",
+    "issues": "Problèmes",
+    "tg": "Telegram",
+    "manifest_version": "Version de la manifeste",
+    "version": "Version Bearby"
+  },
+  "security": {
+    "title": "Sécurité",
+    "p_modal": {
+      "title": "Phrase de récupération secrète",
+      "warn": "NE PARTAGEZ PAS cette phrase avec qui que ce soit ! Ces mots peuvent être utilisés pour voler tous vos comptes."
+    },
+    "password": {
+      "title": "Changer de mot de passe",
+      "description": "Changez votre mot de passe et les algorithmes de chiffrement !",
+      "new": "Nouveau mot de passe",
+      "current": "Mot de passe actuel"
+    },
+    "phrase": {
+      "title": "Révéler la phrase de récupération secrète",
+      "description": "Si vous changez de navigateur ou de machine, vous aurez besoin de cette phrase de récupération secrète pour accéder à vos comptes. Enregistrez-la quelque part de sûr et secret.",
+      "label": "Entrez le mot de passe pour continuer",
+      "btn": "Révéler"
+    },
+    "key": {
+      "title": "Afficher les clés privées",
+      "warn": "Avertissement : Ne divulguez jamais cette clé. Toute personne possédant vos clés privées peut voler tous les actifs détenus sur votre compte.",
+      "btn": "Exporter",
+      "for": "Clé privée pour"
+    },
+    "phishing": {
+      "title": "Utiliser la détection de phishing",
+      "warn": "Afficher un avertissement pour les domaines de phishing ciblant les utilisateurs de Massa."
+    }
+  },
+  "advanced": {
+    "title": "Avancé",
+    "gas": {
+      "title": "Prix du gaz",
+      "description": "Choisissez votre prix du gaz par défaut. Toutes vos transactions utiliseront ces paramètres de gaz."
+    },
+    "popup": {
+      "title": "Fenêtre contextuelle",
+      "description": "Vous pouvez désactiver l'apparition de la fenêtre de confirmation de transaction."
+    },
+    "time": {
+      "title": "Temps de déconnexion automatique (heures)"
+    },
+    "format": {
+      "title": "Formatage des nombres",
+      "description": "Raccourcir le montant du jeton avec des unités (K, M, B)"
+    }
+  },
+  "connections": {
+    "title": "Connexions",
+    "no_apps": "Vous n'avez pas encore de connexions !"
+  },
+  "rolls": {
+    "title": "Rolls",
+    "buyer": "Acheteur",
+    "pay": "Vous payez",
+    "receive": "Vous recevez",
+    "button": "Continuer"
+  },
+  "connect": {
+    "question": {
+      "0": "Souhaitez-vous vous connecter à",
+      "1": "l'application?"
+    },
+    "btns": {
+      "conf": "Approuver",
+      "reject": "Rejeter"
+    },
+    "warn": "Après confirmation, cette application pourra demander des données à la blockchain et voir vos comptes."
+  },
+  "sig_message": {
+    "title": "Demande de signature",
+    "hash": "Afficher le sha256",
+    "signer": "Signataire",
+    "btns": {
+      "confirm": "Signer",
+      "reject": "Rejeter"
+    }
+  },
+  "pub_key_req": {
+    "title": "Demande de clé de chiffrement publique",
+    "description": "Souhaitez-vous fournir votre clé de chiffrement publique ? En donnant votre consentement, ce site pourra vous envoyer des messages chiffrés.",
+    "btns": {
+      "confirm": "Fournir",
+      "reject": "Annuler"
+    }
+  }
+}

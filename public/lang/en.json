@@ -2,7 +2,7 @@
   "account_track": {
     "title": "Track Account",
     "placeholder": "Account Name",
-    "description": "This Address view only!"
+    "description": "This address is view-only!"
   },
   "start": {
     "title": "Bearby Wallet",
@@ -29,8 +29,8 @@
     ]
   },
   "verify": {
-    "title": "Mnemonic words verify",
-    "placeholder": "Pick words here in order and recreate your secret phrase.",
+    "title": "Verify Mnemonic Words",
+    "placeholder": "Pick words in the correct order to recreate your secret phrase.",
     "btn": "Continue"
   },
   "setup_acc": {
@@ -38,7 +38,7 @@
     "name_placeholder": "Name of account (3-25 characters)",
     "name_description": "A first account name.",
     "name": "An account name.",
-    "pass_description": "A password required for encrypt your wallet."
+    "pass_description": "A password is required to encrypt your wallet."
   },
   "restore": {
     "title": "Restore.",
@@ -55,18 +55,18 @@
   },
   "wallet_created": {
     "title": "Wallet is generated!",
-    "subt_title": "Your account has been created - Keep your secret phase safe, it’s your responsibility!",
+    "subt_title": "Your account has been created - Keep your secret phrase safe. It’s your responsibility!",
     "btn": "Start using!",
     "tips": {
       "title": "Tips on storing it safely",
       "list": {
         "0": "Save a backup in multiple places",
         "1": "Never share the words with anyone",
-        "2": "Be careful of phising! bearby will never spontaneously ask for your secret phrase",
+        "2": "Be careful of phishing! Bearby will never spontaneously ask for your secret phrase",
         "3": "If you need to back up your secret phrase again, you can find it in Security",
         "4": "If you ever have a question or see something fishy, contact us."
       },
-      "warn": "bearby team cannot recover your secret words!"
+      "warn": "Bearby team cannot recover your secret words!"
     }
   },
   "lock": {
@@ -89,7 +89,7 @@
       "options": {
         "add": {
           "title": "Add Account",
-          "description": "Generate next account from secret phrase."
+          "description": "Generate the next account from the secret phrase."
         },
         "import": {
           "title": "Import Account",
@@ -130,7 +130,7 @@
     },
     "downgrade": {
       "title": "Smart Request",
-      "description": "The wallet automatically collecte node in network and chose faster option.",
+      "description": "The wallet automatically collects nodes in the network and chooses the faster option.",
       "toggle": "Enable smart request"
     },
     "timeout": {
@@ -139,11 +139,11 @@
     },
     "nodes": {
       "title": "Number of nodes",
-      "description": "maximum number of nodes to use."
+      "description": "Maximum number of nodes to use."
     },
     "https": {
       "title": "Https only",
-      "description": "Protects your requests by the protocol Https/TLS (not all nodes support)",
+      "description": "Protects your requests with the Https/TLS protocol (not all nodes support)",
       "toggle": "Enable Https Request"
     },
     "period": {
@@ -160,7 +160,7 @@
       "title": "Recipient",
       "accounts": "Accounts",
       "contacts": "Contacts",
-      "placeholder": "Input base58 address"
+      "placeholder": "Input Base58 address"
     },
     "modal": {
       "tokens": "Tokens"
@@ -175,7 +175,7 @@
   "settings": {
     "account": {
       "title": "Account",
-      "description": "Account information, qrcode."
+      "description": "Account information, QR code."
     },
     "general": {
       "title": "General",
@@ -195,7 +195,7 @@
     },
     "connections": {
       "title": "Connections",
-      "description": "Dapps list, manage your connections, add, remove."
+      "description": "DApps list, manage your connections, add, remove."
     },
     "security": {
       "title": "Security & Privacy",
@@ -214,11 +214,11 @@
     "clear": "Clear All",
     "modals": {
       "details": {
-        "title": "Transactions details",
+        "title": "Transaction Details",
         "from": "Sender",
         "recipient": "Recipient",
         "method": "Method",
-        "hash": "ID(Hash)",
+        "hash": "ID (Hash)",
         "expiry": "Expiry period",
         "time": "Time",
         "error": "Error message"
@@ -233,11 +233,11 @@
     },
     "theme": {
       "title": "Interface theme.",
-      "description": "You can change color theme, by default it detect system theme automatically."
+      "description": "You can change the color theme; by default, it detects the system theme automatically."
     },
     "lang": {
       "title": "Interface language.",
-      "description": "Use your prefer language."
+      "description": "Use your preferred language."
     }
   },
   "contacts": {
@@ -262,7 +262,7 @@
     },
     "params": {
       "amount": "Amount",
-      "teg": "Teg",
+      "teg": "Tag",
       "fee": "Fee",
       "to": "Recipient",
       "types": {
@@ -279,23 +279,23 @@
     "issues": "Issues",
     "tg": "Telegram",
     "manifest_version": "Manifest version",
-    "version": "bearby version"
+    "version": "Bearby version"
   },
   "security": {
     "title": "Security",
     "p_modal": {
       "title": "Secret Recovery Phrase",
-      "warn": "DO NOT share this phrase with anyone! These words can be used to steal all your accounts."
+      "warn": "DO NOT share this phrase with anyone! These words can be used to steal all of your accounts."
     },
     "password": {
       "title": "Change Password",
-      "description": "Change password and Algorithms for encryption!",
+      "description": "Change your password and algorithms for encryption!",
       "new": "New Password",
       "current": "Current Password"
     },
     "phrase": {
       "title": "Reveal Secret Recovery Phrase",
-      "description": "If you ever change browsers or move computers, you will need this Secret Recovery Phrase to access your accounts. Save them somewhere safe and secret.",
+      "description": "If you ever change browsers or move computers, you will need this Secret Recovery Phrase to access your accounts. Save it somewhere safe and secret.",
       "label": "Enter password to continue",
       "btn": "Reveal"
     },
@@ -303,34 +303,34 @@
       "title": "Show Private Keys",
       "warn": "Warning: Never disclose this key. Anyone with your private keys can steal any assets held in your account.",
       "btn": "Export",
-      "for": "PrivateKey for"
+      "for": "Private Key for"
     },
     "phishing": {
       "title": "Use Phishing Detection",
-      "warn": "Display a warning for phishing domains targeting Massa users"
+      "warn": "Display a warning for phishing domains targeting Massa users."
     }
   },
   "advanced": {
     "title": "Advanced",
     "gas": {
-      "title": "GasPrice.",
-      "description": "Choose your default gas price, all your transactions will use these gas parameters."
+      "title": "Gas Price",
+      "description": "Choose your default gas price. All of your transactions will use these gas parameters."
     },
     "popup": {
       "title": "Popup",
       "description": "You can disable the appearance of the transaction confirmation window."
     },
     "time": {
-      "title": "Auto logout time (hours)"
+      "title": "Auto Logout Time (hours)"
     },
     "format": {
-      "title": "Number formatting",
-      "description": "Short of tokens amount, with units (K, M, B)"
+      "title": "Number Formatting",
+      "description": "Shorten the token amount with units (K, M, B)"
     }
   },
   "connections": {
     "title": "Connections",
-    "no_apps": "You have no connections yet!"
+    "no_apps": "You don't have any connections yet!"
   },
   "rolls": {
     "title": "Rolls",
@@ -342,7 +342,7 @@
   "connect": {
     "question": {
       "0": "Would you like to connect to",
-      "1": "application?"
+      "1": "the application?"
     },
     "btns": {
       "conf": "Approve",
@@ -361,7 +361,7 @@
   },
   "pub_key_req": {
     "title": "Request encryption public key",
-    "description": "Would like your public encryption key. By consenting, this site will be able to compose encrypted messages to you.",
+    "description": "Would you like to provide your public encryption key? By consenting, this site will be able to compose encrypted messages to you.",
     "btns": {
       "confirm": "Provide",
       "reject": "Cancel"
