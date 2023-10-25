@@ -89,6 +89,7 @@
 	h1 {
 		color: var(--text-color);
 		font-size: 22pt;
+		text-align: center;
 	}
 	span {
 		cursor: pointer;
