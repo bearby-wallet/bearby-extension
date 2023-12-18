@@ -28,38 +28,39 @@ export interface JsonRPCResponseNodeStatus extends JsonRPCResponse {
       [key: string]: Array<boolean | string>;
     },
     consensus_stats: {
-        clique_count: number;
-        end_timespan: number;
-        final_block_count: number;
-        final_operation_count: number;
-        staker_count: number;
-        stale_block_count: number;
-        start_timespan: number;
+      clique_count: number;
+      end_timespan: number;
+      final_block_count: number;
+      final_operation_count: number;
+      staker_count: number;
+      stale_block_count: number;
+      start_timespan: number;
     },
     current_cycle: number;
     current_time: number;
     last_slot?: {
-        period: number;
-        thread: number;
+      period: number;
+      thread: number;
     },
     network_stats: {
-        active_node_count: number;
-        banned_peer_count: number;
-        in_connection_count: number;
-        known_peer_count: number;
-        out_connection_count: number;
+      active_node_count: number;
+      banned_peer_count: number;
+      in_connection_count: number;
+      known_peer_count: number;
+      out_connection_count: number;
     },
     next_slot: {
-        period: number;
-        thread: number;
+      period: number;
+      thread: number;
     },
     node_id: string;
     node_ip: string;
     pool_stats: {
-        endorsement_count: number;
-        operation_count: number;
+      endorsement_count: number;
+      operation_count: number;
     },
     version: string;
+    chain_id: number | null;
   };
 }
 

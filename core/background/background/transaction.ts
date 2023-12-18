@@ -217,10 +217,23 @@ export class BackgroundTransaction {
       const nextSlot = Number(slotResponse.result?.next_slot.period);
       const expiryPeriod = nextSlot + this.#core.settings.period.periodOffset;
       const bytesCompact = await this.#confirmToBytes(confirmParams, expiryPeriod);
-      const txBytes = Uint8Array.from([
-        ...pair.pubKey,
-        ...bytesCompact
-      ]);
+      let array = [];
+      if (slotResponse.result?.chain_id) {
+        const chainIdBuffer = new ArrayBuffer(8);
+        const view = new DataView(chainIdBuffer);
+        view.setBigUint64(0, BigInt(slotResponse.result.chain_id), false);
+        array = [
+          ...new Uint8Array(chainIdBuffer),
+          ...pair.pubKey,
+          ...bytesCompact
+        ];
+      } else {
+        array = [
+          ...pair.pubKey,
+          ...bytesCompact
+        ];
+      }
+      const txBytes = Uint8Array.from(array);
       const sig = await this.#core.massa.sign(txBytes, pair);
       const txDataObject = await this.#core.massa.getTransactionData(
         bytesCompact,
