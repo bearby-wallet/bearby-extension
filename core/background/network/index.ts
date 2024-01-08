@@ -7,11 +7,11 @@ import { assert } from 'lib/assert';
 import { FAIL_SYNC, INVALID_CONFIG, INVALID_SELECTED, NetworkError, UNIQUE_PROVIDER } from './errors';
 
 
-const [, buildnet] = NETWORK_KEYS;
+const [mainnet,] = NETWORK_KEYS;
 
 export class NetworkControl {
   #config = NETWORK;
-  #selected = buildnet;
+  #selected = mainnet;
 
   get config() {
     return this.#config;
@@ -64,7 +64,7 @@ export class NetworkControl {
   }
 
   async reset() {
-    this.#selected = buildnet;
+    this.#selected = mainnet;
     this.#config = NETWORK;
 
     await BrowserStorage.set(
