@@ -44,7 +44,7 @@
   $: base58 = tokens[0].meta.base58;
   $: balance = account.tokens && account.tokens[base58] ?
     account.tokens[base58].final : 0;
-  $: disabled = tokens[0].value > balance || tokens[0].value <= 0;
+  $: disabled = Number(tokens[0].value) > Number(balance) || Number(tokens[0].value) <= 0;
 
   async function handleSubmit(e: Event) {
     e.preventDefault();

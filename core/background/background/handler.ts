@@ -129,6 +129,9 @@ export function startBackground(core: BackgroundState) {
       case MTypePopup.SET_HTTPS_ONLY:
         settings.setHttpsOnly(msg.payload.flag, sendResponse);
         return true;
+      case MTypePopup.SET_CHAIN_ID:
+        settings.setChainID(msg.payload.chainID, sendResponse);
+        return true;
       case MTypePopup.SET_PERIOD:
         settings.setPeriodOffest(msg.payload.period, sendResponse);
         return true;

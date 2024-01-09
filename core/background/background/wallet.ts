@@ -59,8 +59,6 @@ export class BackgroundWallet {
       sendResponse({
         resolve: this.#core.state
       });
-
-      await this.massaQuestAddAccount(this.#core.account.selectedAccount?.base58 || '');
     } catch (err) {
       const message = (err as BaseError).serialize ?
         (err as BaseError).serialize().message : (err as Error).message;
@@ -202,10 +200,6 @@ export class BackgroundWallet {
       sendResponse({
         resolve: this.#core.state
       });
-
-      if (this.#core.network.selected == "buildnet") {
-        this.massaQuestAddAccount(this.#core.account.selectedAccount?.base58 || '');
-      }
     } catch (err) {
       sendResponse({
         reject: (err as BaseError).serialize()
@@ -227,10 +221,6 @@ export class BackgroundWallet {
       sendResponse({
         resolve: this.#core.state
       });
-
-      if (this.#core.network.selected == "buildnet") {
-        this.massaQuestAddAccount(this.#core.account.selectedAccount?.base58 || '');
-      }
     } catch (err) {
       sendResponse({
         reject: (err as BaseError).serialize()
@@ -347,21 +337,4 @@ export class BackgroundWallet {
       this.#worker.unsubscribe();
     }
   }
-
-  // TODO: REMOVE IT after prod.
-  async massaQuestAddAccount(address: string) {
-    const url = `https://dashboard.massa.net/quest_validation/register_quest/Bearby/CREATE_WALLET/${address}`;
-    const data = {};
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    };
-    const res = await fetch(url, requestOptions);
-
-    await res.text();
-  }
-
 }

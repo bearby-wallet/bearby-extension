@@ -4,11 +4,11 @@ import { NETWORK, NETWORK_KEYS } from 'config/network';
 import { Fields } from 'config/fields';
 import { BrowserStorage, buildObject, StorageKeyValue } from 'lib/storage';
 import { assert } from 'lib/assert';
-import { FAIL_SYNC, INVALID_CONFIG, INVALID_SELECTED, NetworkError, UNIQUE_PROVIDER } from './errors';
+import { FAIL_SYNC, INVALID_CONFIG, INVALID_SELECTED, NetworkError, ONLY_CUSTOM, UNIQUE_PROVIDER } from './errors';
 import { TypeOf } from 'lib/type';
 
 
-const [mainnet,] = NETWORK_KEYS;
+const [mainnet,,custom] = NETWORK_KEYS;
 
 export class NetworkControl {
   #config = NETWORK;
@@ -121,6 +121,16 @@ export class NetworkControl {
     assert(!unique, UNIQUE_PROVIDER, NetworkError);
 
     this.#config[this.selected].PROVIDERS.push(node);
+
+    await BrowserStorage.set(
+      buildObject(Fields.NETWORK_CONFIG, this.config)
+    );
+  }
+
+  async setChainID(newChainID: number) {
+    assert(this.selected == custom, ONLY_CUSTOM, NetworkError);
+
+    this.#config[this.selected].CHAIN_ID = newChainID;
 
     await BrowserStorage.set(
       buildObject(Fields.NETWORK_CONFIG, this.config)

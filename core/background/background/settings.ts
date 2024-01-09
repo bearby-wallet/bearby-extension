@@ -77,6 +77,21 @@ export class BackgroundSettings {
     }
   }
 
+  async setChainID(chainID: number, sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+      await this.#core.network.setChainID(chainID);
+
+      return sendResponse({
+        resolve: this.#core.state
+      });
+    } catch (err) {
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
   async setHttpsOnly(flag: boolean, sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();
