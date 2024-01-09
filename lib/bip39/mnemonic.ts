@@ -13,11 +13,13 @@ import { utils } from 'aes-js';
 
 
 export class MnemonicController {
+  async generateMnemonic(size = 12) {
+    assert(size >= 12 && size <= 24, INVALID_ENTROPY, Bip39Error);
+    let entropy = randomBytes((size / 3) * 4);
 
-  async generateMnemonic(strength = 128) {
-    assert(Boolean(strength % 32 === 0), INVALID_ENTROPY, Bip39Error);
+    let words = await this.entropyToMnemonic(entropy, size);
 
-    return await this.entropyToMnemonic(randomBytes(strength / 8));
+    return words;
   }
 
   getPath(index: number) {
@@ -29,6 +31,50 @@ export class MnemonicController {
     const saltBuffer = utils.utf8.toBytes(this.#salt(this.#normalize(password)));
 
     return await pbkdf2(mnemonicBuffer, saltBuffer, 2048);
+  }
+
+  async entropyToMnemonic(entropy: Uint8Array, size: number) {
+    const MAX_ENTROPY_BITS = 256;
+    const MIN_ENTROPY_BITS = 128;
+    const MAX_CHECKSUM_BITS = 8;
+    const MAX_NB_WORDS = size;
+
+    let nbBytes = entropy.length;
+    let nbBits = nbBytes * 8;
+
+    if (nbBits % 32 !== 0) {
+      throw new Bip39Error(`Bip39BadEntropyBitCount: ${nbBits}`);
+    }
+    if (nbBits < MIN_ENTROPY_BITS || nbBits > MAX_ENTROPY_BITS) {
+      throw new Bip39Error(`Bip39BadEntropyBitCount: ${nbBits}`);
+    }
+
+    const check = await sha256(new Uint8Array(entropy));
+
+    let bits = new Array(MAX_ENTROPY_BITS + MAX_CHECKSUM_BITS).fill(false);
+    for (let i = 0; i < nbBytes; i++) {
+      for (let j = 0; j < 8; j++) {
+        bits[i * 8 + j] = (entropy[i] & (1 << (7 - j))) > 0;
+      }
+    }
+    for (let i = 0; i < nbBytes / 4; i++) {
+      bits[8 * nbBytes + i] = (check[i / 8] & (1 << (7 - (i % 8)))) > 0;
+    }
+
+    let words = new Array(MAX_NB_WORDS).fill(Number.MAX_SAFE_INTEGER);
+    let nbWords = nbBytes * 3 / 4;
+    for (let i = 0; i < nbWords; i++) {
+      let idx = 0;
+      for (let j = 0; j < 11; j++) {
+        if (bits[i * 11 + j]) {
+          idx += 1 << (10 - j);
+        }
+      }
+      words[i] = idx;
+    }
+    let indicators = words.map((i) => WORD_LIST[i]);
+
+    return indicators;
   }
 
   mnemonicToEntropy(mnemonic: string) {
@@ -68,33 +114,6 @@ export class MnemonicController {
     return true;
   }
 
-  async entropyToMnemonic(entropy: Uint8Array, wordlist = WORD_LIST) {
-
-    // 128 <= ENT <= 256
-    assert(entropy.length >= 16, INVALID_ENTROPY, Bip39Error);
-    assert(entropy.length <= 32, INVALID_ENTROPY, Bip39Error);
-    assert(entropy.length % 4 === 0, INVALID_ENTROPY, Bip39Error);
-
-    const entropyBits = this.#bytesToBinary(entropy);
-    const checksumBits = await this.#deriveChecksumBits(entropy);
-    const bits = entropyBits + checksumBits;
-    const chunks = bits.match(/(.{1,11})/g) || [];
-
-    assert(Boolean(chunks) || chunks.length === 0, INVALID_ENTROPY, Bip39Error);
-
-    const words = chunks.map((binary) => {
-        const index = this.#binaryToByte(binary);
-        return wordlist[index];
-    });
-
-    return words.join(' ');
-  }
-
-  #bytesToBinary(bytes: Uint8Array) {
-    return Array
-      .from(bytes)
-      .map((x) => this.#lpad(x.toString(2), '0', 8)).join('');
-  }
 
   #salt(password: string) {
     return 'mnemonic' + (password || '');
@@ -106,7 +125,7 @@ export class MnemonicController {
 
   #lpad(str: string, padString: string, length: number) {
     while (str.length < length) {
-        str = padString + str;
+      str = padString + str;
     }
     return str;
   }
@@ -114,12 +133,5 @@ export class MnemonicController {
   #binaryToByte(bin: string) {
     return parseInt(bin, 2);
   }
-
-  async #deriveChecksumBits(entropyBuffer: Uint8Array) {
-    const ENT = entropyBuffer.length * 8;
-    const CS = ENT / 32;
-    const hash = await sha256(new Uint8Array(entropyBuffer));
-
-    return this.#bytesToBinary(hash).slice(0, CS);
-  }
 }
+

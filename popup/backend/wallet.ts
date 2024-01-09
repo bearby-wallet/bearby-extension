@@ -14,7 +14,7 @@ export async function getRandomWords(n: number) {
       length: n
     }
   }).send();
-  return warpMessage(data) as string;
+  return warpMessage(data) as string[];
 }
 
 export async function createWallet(words: string, password: string, name: string, algorithm: ShaAlgorithms, iteractions: number) {

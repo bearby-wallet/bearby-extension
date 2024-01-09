@@ -10,17 +10,15 @@
 
   import BackBar from '../components/BackBar.svelte';
   import PickButton from '../components/PickButton.svelte';
-  import Toggle from '../components/Toggle.svelte';
 
 
-  let length = 128;
+  let length = 12;
   let words: string[] = [];
 
 	$: disabled = words.length < 12;
 
   const hanldeRandomWords = async() => {
-    const mnemonic = await getRandomWords(length);
-    words = mnemonic.split(' ');
+    words = await getRandomWords(length);
   };
   const hanldeOnContinue = () => {
     wordsStore.set(words);
@@ -40,8 +38,8 @@
     }
   };
 
-  const handleToggle = () => {
-    length = length === 128 ? 256 : 128;
+  const handleOnSelectNet = (event: Event) => {
+    length = Number((event.target as HTMLInputElement).value);
     hanldeRandomWords();
   };
 
@@ -62,13 +60,16 @@
     {$_('create.sub_title')}
   </h3>
   <div class="sw">
-    <p>
-      {length === 128 ? 12 : 24}
-    </p>
-    <Toggle
-      checked={length === 256}
-      on:toggle={handleToggle}
-    />
+    <select on:input={handleOnSelectNet}>
+      {#each [12, 15, 18, 21, 24] as v}
+        <option
+          value={v}
+          selected={length === v}
+        >
+          {v}
+        </option>
+      {/each}
+    </select>
   </div>
   <div class="wrapper">
     {#each words as w, i}
