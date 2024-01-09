@@ -10,7 +10,7 @@ import { BrowserStorage, buildObject } from 'lib/storage';
 import { TokenError } from './errors';
 
 
-const [mainnet, buildnet, testnet, custom] = NETWORK_KEYS;
+const [mainnet, buildnet, custom] = NETWORK_KEYS;
 
 export const MAS = {
   decimals: 9,
@@ -30,7 +30,6 @@ export const ROLL = {
 const INIT = {
   [mainnet]: [MAS, ROLL],
   [buildnet]: [MAS, ROLL],
-  [testnet]: [MAS, ROLL],
   [custom]: [MAS, ROLL]
 };
 
@@ -116,7 +115,6 @@ export class TokenControl {
   async reset() {
     const mainnetField = `${Fields.TOKENS}/${mainnet}`;
     const buildnetField = `${Fields.TOKENS}/${buildnet}`;
-    const testnetField = `${Fields.TOKENS}/${testnet}`;
     const customField = `${Fields.TOKENS}/${custom}`;
     const init = INIT[this.#network.selected];
 
@@ -124,7 +122,6 @@ export class TokenControl {
 
     await BrowserStorage.set(
       buildObject(mainnetField, INIT[mainnet]),
-      buildObject(testnetField, INIT[testnet]),
       buildObject(buildnetField, INIT[buildnet]),
       buildObject(customField, INIT[custom])
     );
