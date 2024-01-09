@@ -5,6 +5,7 @@ import { Fields } from 'config/fields';
 import { BrowserStorage, buildObject, StorageKeyValue } from 'lib/storage';
 import { assert } from 'lib/assert';
 import { FAIL_SYNC, INVALID_CONFIG, INVALID_SELECTED, NetworkError, UNIQUE_PROVIDER } from './errors';
+import { TypeOf } from 'lib/type';
 
 
 const [mainnet,] = NETWORK_KEYS;
@@ -49,6 +50,11 @@ export class NetworkControl {
 
       if (data[Fields.NETWORK_CONFIG]) {
         const config = JSON.parse(data[Fields.NETWORK_CONFIG]);
+
+        if (!TypeOf.isNumber(config[mainnet].CHAIN_ID)) {
+          // reset
+          throw new Error();
+        }
 
         if (Object.keys(config).length < NETWORK_KEYS.length) {
           this.#config = NETWORK;

@@ -112,7 +112,6 @@
 			<select on:input={handleOnSelectNet}>
 				{#each NETWORK_KEYS as net}
 					<option
-            disabled={net === 'mainnet'}
 						value={net}
 						selected={net === $networkStore}
 					>
