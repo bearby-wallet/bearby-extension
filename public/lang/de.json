@@ -123,6 +123,7 @@
     },
     "config": {
       "title": "Knoteneinstellungen",
+      "chainid": "Blockchain -Kennung",
       "description": "Alle Knoten werden automatisch aktualisiert und einige der schnellsten ausgewählt",
       "add_placeholder": "Füge einen neuen Knoten hinzu (öffentliche API)",
       "remove": "Aktuelle öffentliche API entfernen",

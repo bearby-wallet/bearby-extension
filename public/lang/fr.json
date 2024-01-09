@@ -123,6 +123,7 @@
     },
     "config": {
       "title": "Paramètres du nœud",
+      "chainid": "Identifiant de blockchain",
       "description": "Tous les nœuds sont automatiquement mis à jour et quelques-uns des plus rapides sont sélectionnés",
       "add_placeholder": "Ajouter un nouveau nœud (API publique)",
       "remove": "Supprimer l'API publique actuelle",

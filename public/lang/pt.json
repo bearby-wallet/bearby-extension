@@ -123,6 +123,7 @@
     },
     "config": {
       "title": "Configurações do nó",
+      "chainid": "Identificador de rede",
       "description": "Todos os nós são atualizados automaticamente e alguns dos mais rápidos são selecionados",
       "add_placeholder": "Adicionar um novo nó (API pública)",
       "remove": "Remover API pública atual",

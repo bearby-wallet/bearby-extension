@@ -123,6 +123,7 @@
     },
     "config": {
       "title": "Impostazioni nodo",
+      "chainid": "Identificatore blockchain",
       "description": "Tutti i nodi vengono aggiornati automaticamente e ne vengono selezionati alcuni tra i più veloci",
       "add_placeholder": "Aggiungi un nuovo nodo (API pubblica)",
       "remove": "Rimuovi l'API pubblica corrente",
