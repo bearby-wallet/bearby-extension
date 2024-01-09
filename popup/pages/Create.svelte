@@ -38,7 +38,7 @@
     }
   };
 
-  const handleOnSelectNet = (event: Event) => {
+  const handleOnChangeLen = (event: Event) => {
     length = Number((event.target as HTMLInputElement).value);
     hanldeRandomWords();
   };
@@ -60,7 +60,7 @@
     {$_('create.sub_title')}
   </h3>
   <div class="sw">
-    <select on:input={handleOnSelectNet}>
+    <select on:input={handleOnChangeLen}>
       {#each [12, 15, 18, 21, 24] as v}
         <option
           value={v}

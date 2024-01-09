@@ -14,7 +14,6 @@
 	import NavClose from '../components/NavClose.svelte';
   import Guard from '../components/Guard.svelte';
 
-
   let error = '';
   let passError = '';
   let name = `${DEFAULT_NAME} 0`;
@@ -22,6 +21,11 @@
   let password: string;
   let confirmPassword: string;
 	let loading = false;
+
+  // BIP39
+  let length = 12;
+  // BIP39
+
   // guard
   let algorithm = ShaAlgorithms.Sha512;
   let iteractions = ITERACTIONS;
@@ -45,6 +49,9 @@
   const handleInputTextarea = () => {
 		error = '';
 	};
+  const handleOnChangeLen = (event: Event) => {
+    length = Number((event.target as HTMLInputElement).value);
+  };
   const handleInputPassword = () => {
     passError = '';
 	};
@@ -62,7 +69,27 @@
 <main>
   <NavClose title={$_('restore.title')}/>
   <form on:submit={handleSubmit}>
-    <label>
+    <div class="sw">
+      <select on:input={handleOnChangeLen}>
+        {#each [12, 15, 18, 21, 24] as v}
+          <option
+            value={v}
+            selected={length === v}
+          >
+            {v}
+          </option>
+        {/each}
+      </select>
+    </div>
+    <div class="inputs-warp">
+      {#each Array(length) as v, index}
+        <input
+          type="text"
+          placeholder={'#' + (index + 1)}
+        >
+      {/each}
+    </div>
+    <!-- <label>
       {error}
       <textarea
         bind:value={words}
@@ -71,7 +98,7 @@
         required
         on:input={handleInputTextarea}
       />
-    </label>
+    </label> -->
     <input
       bind:value={name}
       maxlength={MAX_NAME_LEN}
@@ -128,9 +155,45 @@
     width: 100%;
     @include flex-center-column;
 
+    & > .inputs-warp {
+      overflow-y: scroll;
+
+      height: fit-content;
+      max-height: calc(100vh - 30px);
+      width: 100%;
+      max-width: 450px;
+
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-between;
+
+      & > input {
+        max-width: 100pt;
+        margin: 2pt;
+        height: 30pt;
+        font-size: 11pt;
+        line-height: 21pt;
+        padding: 5pt;
+      }
+    }
     & > input, button {
       max-width: 290px;
       margin: 10px;
+    }
+  }
+  div.sw {
+    max-height: calc(100vh - 30px);
+    width: 100%;
+    max-width: 450px;
+
+    padding: 5px;
+
+    display: flex;
+    justify-content: flex-end;
+
+    & > p {
+      margin: 5px;
     }
   }
   label {
