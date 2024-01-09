@@ -78,6 +78,18 @@ export async function setPeriodOffset(period: number) {
   return resolve;
 }
 
+export async function setChainId(newChainId: number) {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.SET_CHAIN_ID,
+    payload: {
+      chainID: newChainId
+    }
+  }).send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}
+
 export async function setTheme(theme: string) {
   const data = await new Message<SendResponseParams>({
     type: MTypePopup.SET_THEME,

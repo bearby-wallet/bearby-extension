@@ -21,26 +21,26 @@
     removeNode,
     resetNetworkConfig
   } from 'popup/backend/network';
-  import { setAbortTimeout, setDowngradeNodeFlag, setHttpsOnly, setNumberNodes, setPeriodOffset } from 'popup/backend/settings';
+  import { setAbortTimeout, setChainId, setDowngradeNodeFlag, setHttpsOnly, setNumberNodes, setPeriodOffset } from 'popup/backend/settings';
   import { PERIOD_OFFSET } from 'config/common';
   import { NETWORK_INIT_STATE } from 'config/network';
 
 
-  const [,,, custom] = NETWORK_KEYS;
+  const [,, custom] = NETWORK_KEYS;
   const SECONDS_DEMON = 1000;
 
   let nodeURL = '';
   let networkConfig: NetworkConfig;
   let periodOffset = $settingsStore.periodOffset;
+  let chainID: number;
 
-  
   $: abortTimeout = $settingsStore.network.abortTimeout / SECONDS_DEMON;
-
 
   async function handleOnSelectNet(event: Event) {
     const net = (event.target as HTMLInputElement).value;
 
     await selectNetwork(net);
+    chainID = networkConfig[$networkStore].CHAIN_ID;
   }
 
   async function handleSortNodes(event: Event) {
@@ -95,10 +95,12 @@
 
   async function resetConfigNodes() {
     networkConfig = await resetNetworkConfig();
+    chainID = networkConfig[$networkStore].CHAIN_ID;
   }
 
   onMount(async() => {
     networkConfig = await getNetworkConfig();
+    chainID = networkConfig[$networkStore].CHAIN_ID;
   });
 </script>
 
@@ -119,6 +121,19 @@
 					</option>
 				{/each}
 			</select>
+      <div class="input">
+        <label>
+          <b>
+            {$_('network.config.chainid')}
+          </b>
+          <input
+            bind:value={chainID}
+            type="number"
+            disabled={$networkStore !== custom}
+            on:input={() => setChainId(chainID)}
+          >
+        </label>
+      </div>
 		</Jumbotron>
   </div>
   {#if networkConfig}

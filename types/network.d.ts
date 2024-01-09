@@ -2,6 +2,7 @@ export interface NetworkConfig {
   [key: string]: {
     PROVIDERS: string[];
     VERSION: number;
+    CHAIN_ID: number
   };
 }
 
