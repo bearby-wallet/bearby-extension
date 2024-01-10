@@ -43,6 +43,17 @@ export async function createWallet(words: string, password: string, name: string
   throw new Error("Try again");
 }
 
+export async function checBip39Word(words: string[]) {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.BIP39_WORD_CHECK,
+    payload: {
+      words
+    }
+  }).send();
+  const resolve = warpMessage(data);
+  return resolve as boolean[];
+}
+
 export async function changePassword(payload: SetPasswordPayload) {
   const data = await new Message<SendResponseParams>({
     type: MTypePopup.WALET_PASSWORD_CHANGE,

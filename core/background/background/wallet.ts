@@ -11,6 +11,7 @@ import { isBase58Address, pubKeyFromBytes } from "lib/address";
 import { privateKeyBytesToBase58 } from "lib/validator";
 import { MTypeTab } from "config/stream-keys";
 import { TabsMessage } from "lib/stream/tabs-message";
+import { WORD_LIST } from "lib/bip39/wordlists";
 
 
 export class BackgroundWallet {
@@ -40,6 +41,16 @@ export class BackgroundWallet {
         reject: (err as BaseError).serialize()
       });
     }
+  }
+
+  checBip39Words(words: string[], sendResponse: StreamResponse) {
+    const wordsHas = words.map((w) =>
+      WORD_LIST.some((wl) => wl === w)
+    );
+
+    sendResponse({
+      resolve: wordsHas
+    });
   }
 
   async initSeedWallet(payload: WordsPayloadToEncrypt, sendResponse: StreamResponse) {

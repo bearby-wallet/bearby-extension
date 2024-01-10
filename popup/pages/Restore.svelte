@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { push } from 'svelte-spa-router';
 	import { _ } from 'popup/i18n';
-  import { createWallet } from "popup/backend/wallet";
+  import { createWallet, checBip39Word } from "popup/backend/wallet";
   import {
     MIN_PASSWORD_LEN,
     MAX_NAME_LEN,
@@ -17,13 +17,14 @@
   let error = '';
   let passError = '';
   let name = `${DEFAULT_NAME} 0`;
-  let words: string;
   let password: string;
   let confirmPassword: string;
 	let loading = false;
 
   // BIP39
   let length = 12;
+  let errors = Array(length).fill(true);
+  let words = Array(length).fill("");
   // BIP39
 
   // guard
@@ -38,7 +39,16 @@
     loading = true;
 
 		try {
-      await createWallet(words, password, name, algorithm, iteractions);
+      errors = await checBip39Word(words);
+      let hasTrue = errors.some((e) => e === false);
+
+      if (hasTrue) {
+        error = 'invalid words';
+        loading = false;
+        return;
+      }
+
+      await createWallet(words.join(" "), password, name, algorithm, iteractions);
       loading = false;
       push('/created');
 		} catch (err) {
@@ -46,15 +56,24 @@
 		}
 		loading = false;
 	}
-  const handleInputTextarea = () => {
-		error = '';
-	};
   const handleOnChangeLen = (event: Event) => {
+    error = '';
     length = Number((event.target as HTMLInputElement).value);
   };
   const handleInputPassword = () => {
     passError = '';
 	};
+  const handleInputWord = (event: Event) => {
+    error = '';
+    let value = String((event.target as HTMLInputElement).value);
+    let splited = value.split(" ");
+
+    if (splited.length == 12 || splited.length == 15 || splited.length == 18 || splited.length == 21 || splited.length == 24) {
+      length = splited.length;
+      errors = Array(length).fill(true);
+      words = splited;
+    }
+  };
   const handleOnBlurPassword = () => {
     if (password && password.length < MIN_PASSWORD_LEN) {
       passError = $_('restore.pass_len_error');
@@ -86,19 +105,17 @@
         <input
           type="text"
           placeholder={'#' + (index + 1)}
+          bind:value={words[index]}
+          class:error={!errors[index]}
+          on:input={handleInputWord}
         >
       {/each}
     </div>
-    <!-- <label>
-      {error}
-      <textarea
-        bind:value={words}
-        class:error="{Boolean(error)}"
-        placeholder={$_('restore.placeholder')}
-        required
-        on:input={handleInputTextarea}
-      />
-    </label> -->
+    <div class="error">
+      <p>
+        {error}
+      </p>
+    </div>
     <input
       bind:value={name}
       maxlength={MAX_NAME_LEN}
@@ -151,6 +168,12 @@
 
 		@include flex-center-top-column;
   }
+  div.error {
+    & > p {
+      font-size: 14pt;
+      color: var(--danger-color);
+    }
+  }
   form {
     width: 100%;
     @include flex-center-column;
@@ -175,6 +198,11 @@
         font-size: 11pt;
         line-height: 21pt;
         padding: 5pt;
+
+        &.error {
+          border-color: var(--danger-color);
+          color: var(--danger-color);
+        }
       }
     }
     & > input, button {
@@ -191,10 +219,6 @@
 
     display: flex;
     justify-content: flex-end;
-
-    & > p {
-      margin: 5px;
-    }
   }
   label {
     color: var(--danger-color);

@@ -130,10 +130,6 @@
 
     display: flex;
     justify-content: flex-end;
-
-    & > p {
-      margin: 5px;
-    }
   }
   div.btns {
     width: 290px;
