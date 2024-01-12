@@ -59,6 +59,11 @@
   const handleOnChangeLen = (event: Event) => {
     error = '';
     length = Number((event.target as HTMLInputElement).value);
+    
+    for (let index = words.length; index < length; index++) {
+      words[index] = "";
+      errors[index] = true;
+    }
   };
   const handleInputPassword = () => {
     passError = '';
