@@ -36,7 +36,23 @@ export class Message<T> {
   /**
    * Send MessageSelf object.
    */
-  public send(): Promise<T> {
+  async send(): Promise<T> {
+    for (let index = 0; index < 100; index++) {
+      try {
+        const res = await this.#trySend();
+
+        if (res) {
+          return res;
+        }
+      } catch {
+        continue;
+      }
+    }
+
+    throw new Error("service_worker_stoped");
+  }
+
+  #trySend(): Promise<T> {
     return new Promise((resolve) => {
       try {
         Runtime
@@ -46,6 +62,6 @@ export class Message<T> {
         console.error(this, err);
         window.location.reload();
       }
-    })
+    });
   }
 }
