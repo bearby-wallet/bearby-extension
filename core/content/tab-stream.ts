@@ -65,6 +65,9 @@ export class ContentTabStream {
       case MTypeTab.TX_TO_SEND:
         new Message(msg).send();
         break;
+      case MTypeTab.NETWORK_CHANGED:
+        new Message(msg).send();
+        break;
       case MTypeTab.SIGN_MESSAGE:
         new Message(msg).send();
         break;

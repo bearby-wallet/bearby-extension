@@ -285,10 +285,6 @@ export class BackgroundTransaction {
       sendResponse({
         resolve: this.#core.state
       });
-
-      if (this.#core.network.selected == "buildnet") {
-        this.#massaQuestSendCoins(this.#core.account.selectedAccount?.base58 || '');
-      }
     } catch (err) {
       console.log(err);
       const message = (err as BaseError).serialize ?
@@ -378,21 +374,6 @@ export class BackgroundTransaction {
         reject: (err as BaseError).serialize()
       });
     }
-  }
-
-  async #massaQuestSendCoins(address: string) {
-    const url = `https://dashboard.massa.net/quest_validation/register_quest/Bearby/SEND_COINS/${address}`;
-    const data = {};
-    const requestOptions = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    };
-    const res = await fetch(url, requestOptions);
-
-    await res.text();
   }
 
   async #confirmToBytes(confirmParams: ConfirmParams, expiryPeriod: number) {
