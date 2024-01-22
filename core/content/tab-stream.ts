@@ -71,6 +71,15 @@ export class ContentTabStream {
       case MTypeTab.SIGN_MESSAGE:
         new Message(msg).send();
         break;
+      case MTypeTab.REQUEST_PING:
+        new ContentMessage({
+          type: MTypeTab.PING_RESPONSE,
+          payload: {
+            uuid: msg.payload.uuid,
+            resolve: true
+          },
+        }).send(this.#stream, MTypeTabContent.INJECTED);
+        break;
       default:
         break;
     }

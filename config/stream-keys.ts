@@ -94,5 +94,7 @@ export const MTypeTab = {
   SING_MESSAGE_RESULT: `@/${app}/sign-message-response`,
   RESPONSE_PUB_KEY: `@/${app}/response-pub-key`,
   CHECK_MASSA_ADDRESS: `@/${app}/check-massa-address`,
-  CHECK_MASSA_ADDRESS_RES: `@/${app}/check-massa-address-response`
+  CHECK_MASSA_ADDRESS_RES: `@/${app}/check-massa-address-response`,
+  REQUEST_PING: `@/${app}/req-content-ping`,
+  PING_RESPONSE: `@/${app}/res-content-ping`,
 };
