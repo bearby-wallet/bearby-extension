@@ -42,7 +42,7 @@ export interface MinTransactionParams {
   code?: string;
   deployer?: string;
   params?: CallParam[];
-  unsafeParams?: { [key: number]: number };
+  unsafeParams?: string; // in hex string
   maxCoins?: string;
   coins?: string;
 }

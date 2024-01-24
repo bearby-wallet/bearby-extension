@@ -410,7 +410,7 @@ export class BackgroundTransaction {
           confirmParams.code || '',
           confirmParams.deployer || '',
           confirmParams.params,
-          confirmParams.unsafeParams ? Uint8Array.from(Object.values(confirmParams.unsafeParams)) : undefined
+          confirmParams.unsafeParams ? utils.hex.toBytes(confirmParams.unsafeParams) : undefined
         ).bytes();
       case OperationsType.CallSC:
         assert(Boolean(confirmParams.func), INCORRECT_PARAM);
@@ -424,7 +424,7 @@ export class BackgroundTransaction {
           confirmParams.gasPrice,
           confirmParams.coins || '0',
           confirmParams.toAddr,
-          confirmParams.unsafeParams ? Uint8Array.from(Object.values(confirmParams.unsafeParams)) : undefined
+          confirmParams.unsafeParams ? utils.hex.toBytes(confirmParams.unsafeParams) : undefined
         ).bytes();
       default:
         throw new TransactionsError(UNKONOW_TX_TYPE);
