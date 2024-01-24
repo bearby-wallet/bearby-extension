@@ -138,7 +138,7 @@ export class ExecuteSmartContractBuild {
     code: string, // as Base58
     deployer: string, // deployer contract as base58.
     parameters?: CallParam[],
-    unsaveParameters?: Uint8Array,
+    unsafeParameters?: Uint8Array,
   ) {
     this.fee = fee;
     this.maxGas = maxGas;
@@ -171,7 +171,7 @@ export class ExecuteSmartContractBuild {
       );
     }
 
-    if (unsaveParameters) {
+    if (unsafeParameters) {
       datastore.set(
         Uint8Array.from(
           new Args()
@@ -179,7 +179,7 @@ export class ExecuteSmartContractBuild {
             .addUint8Array(u8toByte(0))
             .serialize(),
         ),
-        Uint8Array.from(unsaveParameters)
+        Uint8Array.from(unsafeParameters)
       );
     }
 
@@ -250,7 +250,7 @@ export class CallSmartContractBuild {
   targetAddress: string;
   expirePeriod: number;
 
-  args: Args;
+  serializedArgs: Uint8Array;
 
   constructor(
     functionName: string,
@@ -272,11 +272,11 @@ export class CallSmartContractBuild {
     this.targetAddress = targetAddress;
 
     if (parameters && parameters.length > 0) {
-      this.args = parseParams(parameters);
+      this.serializedArgs = Uint8Array.from(parseParams(parameters).serialize());
     } else if (unsafeParameters) {
-      this.args = new Args(unsafeParameters);
+      this.serializedArgs = unsafeParameters;
     } else {
-      this.args = new Args();
+      this.serializedArgs = Uint8Array.from(new Args().serialize());
     }
   }
 
@@ -289,9 +289,8 @@ export class CallSmartContractBuild {
     const coinsEncoded = new VarintEncode().encode(this.coins);
     const gasLimit = new VarintEncode().encode(this.gasLimit);
     const functionNameEncoded = utils.utf8.toBytes(this.functionName);
-    const parametersEncoded = this.args.serialize();
     const functionNameLengthEncoded = new VarintEncode().encode(functionNameEncoded.length);
-    const parametersLengthEncoded = new VarintEncode().encode(parametersEncoded.length);
+    const parametersLengthEncoded = new VarintEncode().encode(this.serializedArgs.length);
     let targetAddressEncoded = (await base58Decode(this.targetAddress.slice(ADDRESS_PREFIX.length)));
 
     targetAddressEncoded = Uint8Array.from([
@@ -309,7 +308,7 @@ export class CallSmartContractBuild {
       ...functionNameLengthEncoded,
       ...functionNameEncoded,
       ...parametersLengthEncoded,
-      ...parametersEncoded
+      ...this.serializedArgs
     ]);
   }
 }
