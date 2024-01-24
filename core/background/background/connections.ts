@@ -18,6 +18,7 @@ export class BackgroundConnection {
   async disconnect(domain: string, uuid: string, sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();
+      await this.#core.connections.checkConnection(domain);
 
       let foundIndex = this
         .#core
@@ -201,6 +202,7 @@ export class BackgroundConnection {
   async requestPubKey(payload: AppConnection, sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();
+      await this.#core.connections.checkConnection(payload.domain);
 
       const prompt = new PromptService(this.#core.settings.popup.enabledPopup);
 

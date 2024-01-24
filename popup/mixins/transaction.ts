@@ -7,11 +7,25 @@ import { viewIcon } from "app/utils/icon-view";
 import { OperationsType } from "background/provider/operations";
 import gasStore from 'popup/store/gas';
 import { GAS_PRICE } from "config/gas";
+import { getManifestVersion } from "lib/runtime/manifest";
+import { ManifestVersions } from "config/manifest-versions";
+import { Runtime } from "lib/runtime";
 
 
 export async function addConfirmTransaction(amount: number, recipient: string, token: Token) {
+  let domain = '';
+
+  if (getManifestVersion() == ManifestVersions.V3) {
+    const { id } = await Runtime.windows.getCurrent();
+
+    domain = String(id);
+  } else {
+    domain = Runtime.runtime.id;
+  }
+
   const gas = get(gasStore);
   const params: MinTransactionParams = {
+    domain,
     type: OperationsType.Payment,
     toAddr: recipient,
     code: '',
@@ -32,8 +46,19 @@ export async function addConfirmTransaction(amount: number, recipient: string, t
 }
 
 export async function addConfirmBuyRolls(rolls: number, recipient: string, token: Token) {
+  let domain = '';
+
+  if (getManifestVersion() == ManifestVersions.V3) {
+    const { id } = await Runtime.windows.getCurrent();
+
+    domain = String(id);
+  } else {
+    domain = Runtime.runtime.id;
+  }
+
   const gas = get(gasStore);
   const params: MinTransactionParams = {
+    domain,
     type: OperationsType.RollBuy,
     toAddr: recipient,
     code: '',
@@ -54,8 +79,18 @@ export async function addConfirmBuyRolls(rolls: number, recipient: string, token
 }
 
 export async function addConfirmSellRolls(rolls: number, recipient: string, token: Token) {
+  let domain = '';
+
+  if (getManifestVersion() == ManifestVersions.V3) {
+    const { id } = await Runtime.windows.getCurrent();
+
+    domain = String(id);
+  } else {
+    domain = Runtime.runtime.id;
+  }
   const gas = get(gasStore);
   const params: MinTransactionParams = {
+    domain,
     type: OperationsType.RollSell,
     toAddr: recipient,
     code: '',

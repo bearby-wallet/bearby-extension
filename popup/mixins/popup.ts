@@ -11,10 +11,10 @@ export async function closePopup() {
     } catch {
       ////
     }
-  
+
     try {
       const { id } = await Runtime.windows.getCurrent();
-  
+
       if (String(id)) {
         Runtime.windows.remove(Number(id), console.error);
       }

@@ -15,7 +15,6 @@ import { assert } from "lib/assert";
 import { NOT_FOUND_CONFIRM, TransactionsError, UNKONOW_TX_TYPE } from "background/transactions/errors";
 import { OperationsType } from "background/provider/operations";
 import { BuyRollsBuild, CallSmartContractBuild, ExecuteSmartContractBuild, PaymentBuild, SellRollsBuild } from "background/provider/transaction";
-import { WALLET_NOT_CONNECTED } from "content/errors";
 import { PromptService } from "lib/prompt";
 import { MTypeTab } from "config/stream-keys";
 import { TabsMessage } from "lib/stream/tabs-message";
@@ -33,6 +32,7 @@ export class BackgroundTransaction {
   async addSignMessage(params: SignMessageParams, sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();
+      await this.#core.connections.checkConnection(params.domain);
 
       const prompt = new PromptService(this.#core.settings.popup.enabledPopup);
       const messageBytes = utils.utf8.toBytes(params.message);
@@ -74,11 +74,7 @@ export class BackgroundTransaction {
   async addToConfirm(params: MinTransactionParams, sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();
-
-      if (params.domain) {
-        const has = this.#core.connections.has(params.domain);
-        assert(has, WALLET_NOT_CONNECTED);
-      }
+      await this.#core.connections.checkConnection(String(params.domain));
 
       if (!params.token) {
         const [massa, rolls] = this.#core.tokens.identities;
@@ -90,7 +86,6 @@ export class BackgroundTransaction {
           symbol: token.symbol
         };
       }
-
 
       if (!params.gasPrice) {
         params.gasPrice = this.#core.gas.state.gasPrice * this.#core.gas.state.multiplier;

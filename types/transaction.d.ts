@@ -10,6 +10,7 @@ export interface TransactionToken {
 }
 
 export interface SignMessageParams {
+  domain: string;
   message: string;
   uuid: string;
   title: string;

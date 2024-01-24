@@ -4,7 +4,10 @@ import type { AppConnection } from 'types';
 import { assert } from 'lib/assert';
 import { Fields } from 'config/fields';
 import { BrowserStorage, buildObject, StorageKeyValue } from 'lib/storage';
-import { APP_UNIQUE, ConnectionsError, INCORRECT_PARAM, QUEUED } from './errors';
+import { APP_NOT_CONNECTED, APP_UNIQUE, ConnectionsError, INCORRECT_PARAM, QUEUED } from './errors';
+import { getManifestVersion } from 'lib/runtime/manifest';
+import { ManifestVersions } from 'config/manifest-versions';
+import { Runtime } from 'lib/runtime';
 
 
 export class AppConnectController {
@@ -27,6 +30,20 @@ export class AppConnectController {
 
   has(domain: string) {
     return this.#identities.some((a) => a.domain === domain);
+  }
+
+  async checkConnection(domain: string) {
+    let checkPopup = false;
+
+    if (getManifestVersion() == ManifestVersions.V3) {
+      const { id } = await Runtime.windows.getCurrent();
+
+      checkPopup = String(id) == domain;
+    } else if (getManifestVersion() == ManifestVersions.V2) {
+      checkPopup = Runtime.runtime.id == domain;
+    }
+
+    assert((this.has(domain) || checkPopup), `${APP_NOT_CONNECTED} ${domain}`, ConnectionsError);
   }
 
   async addAppFroConfirm(connect: AppConnection) {
