@@ -5,7 +5,7 @@
   import { push } from 'svelte-spa-router';
 
   import { trim } from 'popup/filters/trim';
-  import { viewIcon } from 'popup/utils/icon-view';
+  import { TokenType, viewIcon } from 'popup/utils/icon-view';
 	import { generateBlockies } from 'popup/mixins/blockies';
   import { getContacts } from 'popup/backend/contacts';
   import { addConfirmTransaction } from 'popup/mixins/transaction';
@@ -169,7 +169,7 @@
           on:click={() => tokensModal = !tokensModal}
         >
           <img
-            src={viewIcon(token.base58)}
+            src={viewIcon(token.base58, TokenType.FT)}
             height="45"
             alt={token.symbol}
           />
@@ -196,7 +196,7 @@
       </div>
       <div class="input">
         <SmartInput
-          img={viewIcon(token.base58)}
+          img={viewIcon(token.base58, TokenType.FT)}
           symbol={token.symbol}
           max={Number(balance)}
           value={String(amount)}

@@ -4,7 +4,7 @@
   import { createEventDispatcher } from 'svelte';
 	import { _ } from 'popup/i18n';
 
-  import { viewIcon } from 'popup/utils/icon-view';
+  import { TokenType, viewIcon } from 'popup/utils/icon-view';
   import { formatNumber } from 'popup/filters/numbers';
 
   import settingsStore from 'popup/store/settings';
@@ -67,7 +67,7 @@
         rightText={formatNumber(0, $settingsStore.currency)}
       >
         <img
-          src={viewIcon(token.base58)}
+          src={viewIcon(token.base58, TokenType.FT)}
           alt={token.symbol}
           width="36"
         />

@@ -60,7 +60,11 @@ export class BackgroundState {
   async sync() {
     console.log('start sync');
 
-    Runtime.runtime.onInstalled.addListener(this.#onInstalled);
+    try {
+      Runtime.runtime.onInstalled.addListener(this.#onInstalled);
+    } catch (err) {
+      console.warn(err);
+    }
 
     await this.guard.sync();
     await this.network.sync();

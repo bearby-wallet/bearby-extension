@@ -5,7 +5,7 @@
 
   import { trim } from 'popup/filters/trim';
   import { Massa } from 'lib/explorer';
-  import { viewIcon } from "app/utils/icon-view";
+  import { TokenType, viewIcon } from "app/utils/icon-view";
   import { formatNumber, toKG } from 'popup/filters/numbers';
 
 	import gasStore from 'popup/store/gas';
@@ -16,7 +16,7 @@
 	export let tx: ConfirmParams;
 
 	$: amount = Number(tx.tokenAmount) / 10**tx.token.decimals;
-  $: img = viewIcon(tx.token.base58);
+  $: img = viewIcon(tx.token.base58, TokenType.FT);
   $: multiplier = tx.gasMultiplier || $gasStore.multiplier;
   $: fee = tx.gasPrice * tx.gasLimit * multiplier;
 </script>

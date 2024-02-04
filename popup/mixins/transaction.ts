@@ -3,7 +3,7 @@ import type { Token } from "types/token";
 
 import { get } from 'svelte/store';
 import { addToConfirmTransaction } from "app/backend/transactions";
-import { viewIcon } from "app/utils/icon-view";
+import { TokenType, viewIcon } from "app/utils/icon-view";
 import { OperationsType } from "background/provider/operations";
 import gasStore from 'popup/store/gas';
 import { GAS_PRICE } from "config/gas";
@@ -33,7 +33,7 @@ export async function addConfirmTransaction(amount: number, recipient: string, t
     amount: amount * 10 ** token.decimals,
     gasPrice: GAS_PRICE,
     gasLimit: gas.gasLimit,
-    icon: viewIcon(token.base58),
+    icon: viewIcon(token.base58, TokenType.FT),
     title: token.name,
     token: {
       decimals: token.decimals,
@@ -66,7 +66,7 @@ export async function addConfirmBuyRolls(rolls: number, recipient: string, token
     amount: rolls,
     gasPrice: GAS_PRICE,
     gasLimit: gas.gasLimit,
-    icon: viewIcon(token.base58),
+    icon: viewIcon(token.base58, TokenType.FT),
     title: token.name,
     token: {
       decimals: token.decimals,
@@ -98,7 +98,7 @@ export async function addConfirmSellRolls(rolls: number, recipient: string, toke
     amount: rolls,
     gasPrice: GAS_PRICE,
     gasLimit: gas.gasLimit,
-    icon: viewIcon(token.base58),
+    icon: viewIcon(token.base58, TokenType.FT),
     title: token.name,
     token: {
       decimals: token.decimals,

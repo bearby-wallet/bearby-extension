@@ -5,7 +5,7 @@
   import { push } from 'svelte-spa-router';
 
   import { trim } from 'popup/filters/trim';
-  import { viewIcon } from 'popup/utils/icon-view';
+  import { TokenType, viewIcon } from 'popup/utils/icon-view';
 	import { generateBlockies } from 'popup/mixins/blockies';
   import { addConfirmBuyRolls, addConfirmSellRolls } from 'popup/mixins/transaction';
 
@@ -137,7 +137,7 @@
       {$_('rolls.pay')}
     </p>
     <SmartInput
-      img={viewIcon(tokens[0].meta.base58)}
+      img={viewIcon(tokens[0].meta.base58, TokenType.FT)}
       symbol={tokens[0].meta.symbol}
       max={Number(balance)}
       value={String(tokens[0].value)}
@@ -153,7 +153,7 @@
       </span>
     </div>
     <SmartInput
-      img={viewIcon(tokens[1].meta.base58)}
+      img={viewIcon(tokens[1].meta.base58, TokenType.FT)}
       symbol={tokens[1].meta.symbol}
       value={String(tokens[1].value)}
       loading={loading}

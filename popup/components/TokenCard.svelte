@@ -3,7 +3,7 @@
 
   import { createEventDispatcher } from 'svelte';
   import { formatNumber } from 'popup/filters/numbers';
-  import { viewIcon } from 'popup/utils/icon-view';
+  import { TokenType, viewIcon } from 'popup/utils/icon-view';
 
   import walletStore from 'popup/store/wallet';
   import settingsStore from 'popup/store/settings';
@@ -21,7 +21,7 @@
   export let disabled = false;
 
   $: account = $walletStore.identities[$walletStore.selectedAddress];
-  $: img = viewIcon(token.base58);
+  $: img = viewIcon(token.base58, TokenType.FT);
   $: balance = account.tokens && account.tokens[token.base58] ?
     account.tokens[token.base58].final : 0;
   $: converted = 0;

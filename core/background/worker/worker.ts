@@ -29,7 +29,7 @@ export class WorkerController {
   readonly #settings: SettingsControl;
 
   readonly #fieldAlarm = "massa-block-tracker";
-    
+
   #delay = WORKER_POOLING;
   #period = 0;
   #cycle = 0;
@@ -78,7 +78,7 @@ export class WorkerController {
     return {
       unsubscribe() {
         if (intervalId !== undefined) {
-          globalThis.clearInterval(intervalId);
+          globalThis.clearInterval(Number(intervalId));
         } else {
           Runtime.alarms.clear(alarmName);
         }
@@ -127,7 +127,7 @@ export class WorkerController {
   }
 
   async #trackTransactions() {
-    const list =  this.#transactions.history;
+    const list = this.#transactions.history;
     const now = new Date().getTime();
     const dilaySeconds = 3000;
     const identities = list.filter((t) => {
@@ -224,19 +224,17 @@ export class WorkerController {
   }
 
   async sync() {
-    // TODO: enable only when mainnet will launch.
-    // const content = await BrowserStorage.get(Fields.PERIOD);
-    // const block = Number(content);
+    const content = await BrowserStorage.get(Fields.PERIOD);
+    const block = Number(content);
 
-    // if (isNaN(block)) {
-    //   await BrowserStorage.set(
-    //     buildObject(Fields.PERIOD, String(this.#period))
-    //   );
+    if (isNaN(block)) {
+      await BrowserStorage.set(
+        buildObject(Fields.PERIOD, String(this.#period))
+      );
+      return;
+    }
 
-    //   return;
-    // }
-
-    // this.#period = block;
+    this.#period = block;
   }
 
   async #setPeriod(block: number) {
