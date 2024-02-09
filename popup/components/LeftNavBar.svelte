@@ -1,41 +1,41 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
-  import { link } from 'svelte-spa-router';
-	import { _ } from 'popup/i18n';
-  import { AccountTypes } from 'config/account-type';
+  import { createEventDispatcher } from "svelte";
+  import { link } from "svelte-spa-router";
+  import { _ } from "popup/i18n";
+  import { AccountTypes } from "config/account-type";
 
-	import {
+  import {
     togglePopupEnabled,
     setDowngradeNodeFlag,
-    toggleFormatNumbers
-  } from 'popup/backend/settings';
-	import { removeAccount } from 'popup/backend/wallet';
+    toggleFormatNumbers,
+  } from "popup/backend/settings";
+  import { removeAccount } from "popup/backend/wallet";
 
-	import walletStore from 'popup/store/wallet';
-	import settingsStore from 'popup/store/settings';
+  import walletStore from "popup/store/wallet";
+  import settingsStore from "popup/store/settings";
 
-  import Close from './icons/Close.svelte';
-	import TextElement from './TextElement.svelte';
-  import Toggle from './Toggle.svelte';
+  import Close from "./icons/Close.svelte";
+  import TextElement from "./TextElement.svelte";
+  import Toggle from "./Toggle.svelte";
 
   const dispatch = createEventDispatcher();
 
   export let show = false;
 
-	$: account = $walletStore.identities[$walletStore.selectedAddress];
+  $: account = $walletStore.identities[$walletStore.selectedAddress];
   $: canRemove = !(account.index === 0 && account.type === AccountTypes.Seed);
 
-	const handleOnChangePromt = async () => {
-		await togglePopupEnabled();
-	};
+  const handleOnChangePromt = async () => {
+    await togglePopupEnabled();
+  };
   const handleOnChangeFormat = async () => {
-		await toggleFormatNumbers();
-	};
+    await toggleFormatNumbers();
+  };
   async function toggleDowngrade() {
-    await setDowngradeNodeFlag(!$settingsStore.downgradeNode);
+    await setDowngradeNodeFlag(!$settingsStore.network.downgrade);
   }
   const onClose = () => {
-    dispatch('close');
+    dispatch("close");
   };
   const onRemoveAccount = async () => {
     await removeAccount();
@@ -43,7 +43,7 @@
   };
 </script>
 
-<nav class:show={show}>
+<nav class:show>
   <h1>
     {account.name}
     <span on:mouseup={onClose}>
@@ -53,30 +53,27 @@
   <hr />
   <a href="/add" use:link>
     <TextElement
-      title={$_('home.nav.options.add.title')}
-      description={$_('home.nav.options.add.description')}
+      title={$_("home.nav.options.add.title")}
+      description={$_("home.nav.options.add.description")}
     />
   </a>
   <a href="/import" use:link>
     <TextElement
-      title={$_('home.nav.options.import.title')}
-      description={$_('home.nav.options.import.description')}
+      title={$_("home.nav.options.import.title")}
+      description={$_("home.nav.options.import.description")}
     />
   </a>
   <a href="/add-track" use:link>
     <TextElement
-      title={$_('home.nav.options.track.title')}
-      description={$_('home.nav.options.track.description')}
+      title={$_("home.nav.options.track.title")}
+      description={$_("home.nav.options.track.description")}
     />
   </a>
   {#if canRemove}
-    <span
-      class="remove"
-      on:mouseup={onRemoveAccount}
-    >
+    <span class="remove" on:mouseup={onRemoveAccount}>
       <TextElement
-        title={$_('home.nav.options.remove.title')}
-        description={$_('home.nav.options.remove.description')}
+        title={$_("home.nav.options.remove.title")}
+        description={$_("home.nav.options.remove.description")}
       />
     </span>
   {/if}
@@ -84,25 +81,22 @@
   <div class="toggles">
     <div>
       <b>
-        {$_('advanced.popup.title')}
+        {$_("advanced.popup.title")}
       </b>
-      <Toggle
-        checked={$settingsStore.popup}
-        on:toggle={handleOnChangePromt}
-      />
+      <Toggle checked={$settingsStore.popup} on:toggle={handleOnChangePromt} />
     </div>
     <div>
       <b>
-        {$_('network.downgrade.toggle')}
+        {$_("network.downgrade.toggle")}
       </b>
       <Toggle
-        checked={$settingsStore.downgradeNode}
+        checked={$settingsStore.network.downgrade}
         on:toggle={toggleDowngrade}
       />
     </div>
     <div>
       <b>
-        {$_('advanced.format.title')}
+        {$_("advanced.format.title")}
       </b>
       <Toggle
         checked={$settingsStore.format}
@@ -111,17 +105,13 @@
     </div>
   </div>
 </nav>
-<div
-  class="close"
-  class:show={show}
-  on:mouseup={onClose}
-/>
+<div class="close" class:show on:mouseup={onClose} />
 
 <style lang="scss">
   @import "../styles/mixins";
   :global(span.close:hover > svg > line) {
     stroke: var(--primary-color) !important;
-	}
+  }
   div.toggles {
     width: 100%;
 
@@ -192,7 +182,7 @@
       @include flex-left-column;
     }
     animation: back-in-left 0.4s;
-    animation-timing-function: cubic-bezier(.3,.17,.23,.96);
+    animation-timing-function: cubic-bezier(0.3, 0.17, 0.23, 0.96);
   }
   span {
     cursor: pointer;
