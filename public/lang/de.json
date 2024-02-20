@@ -341,10 +341,6 @@
     "button": "Weiter"
   },
   "connect": {
-    "question": {
-      "0": "Möchten Sie eine Verbindung herstellen",
-      "1": "zur Anwendung?"
-    },
     "btns": {
       "conf": "Genehmigen",
       "reject": "Ablehnen"

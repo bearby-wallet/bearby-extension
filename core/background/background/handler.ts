@@ -180,7 +180,7 @@ export function startBackground(core: BackgroundState) {
         connections.removeConnections(msg.payload.index, sendResponse);
         return true;
       case MTypePopup.APPROVE_CONNECTION:
-        connections.approveConnections(msg.payload.index, sendResponse);
+        connections.approveConnections(msg.payload.index, msg.payload.accounts, sendResponse);
         return true;
       case MTypePopup.REJECT_CONNECTION:
         connections.rejectConnections(msg.payload.index, sendResponse);

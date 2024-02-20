@@ -341,10 +341,6 @@
     "button": "Continua"
   },
   "connect": {
-    "question": {
-      "0": "Vuoi connetterti a",
-      "1": "l'applicazione?"
-    },
     "btns": {
       "conf": "Approva",
       "reject": "Rifiuta"

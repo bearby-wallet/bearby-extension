@@ -8,6 +8,7 @@ export interface ContentWalletData {
   phishing: boolean;
   net?: string;
   base58?: string;
+  accounts: string[];
 }
 
 export interface ProxyContentType {

@@ -3,4 +3,5 @@ export interface AppConnection {
   icon: string;
   title: string;
   uuid?: string;
+  accounts: number[];
 }

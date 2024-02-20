@@ -78,11 +78,13 @@ export class BackgroundConnection {
     }
   }
 
-  async approveConnections(index: number, sendResponse: StreamResponse) {
+  async approveConnections(index: number, accounts: number[], sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();
 
-      const connection = this.#core.connections.confirm[index];
+      let connection = this.#core.connections.confirm[index];
+
+      connection.accounts = accounts;
 
       new TabsMessage({
         type: MTypeTab.RESPONSE_CONNECT_APP,
@@ -90,6 +92,7 @@ export class BackgroundConnection {
           uuid: connection.uuid,
           net: this.#core.network.selected,
           base58: this.#core.account.selectedAccount?.base58,
+          accounts: accounts.map((index) => this.#core.account.wallet.identities[index].base58),
           resolve: true
         }
       }).send();
@@ -163,12 +166,15 @@ export class BackgroundConnection {
 
   async resolveContentData(domain: string, sendResponse: StreamResponse) {
     const enabled = this.#core.guard.isEnable;
-    const connected = this.#core.connections.has(domain);
+    const app = this.#core.connections.has(domain);
+    const connected = Boolean(app);
     const account = this.#core.account.selectedAccount;
     const base58 = (connected && enabled && account) ? account.base58 : undefined;
     const net = connected ? this.#core.network.selected : undefined;
+    const accounts = app ? app.accounts.map((index) => this.#core.account.wallet.identities[index].base58) : [];
 
     const data: ContentWalletData = {
+      accounts,
       base58,
       connected,
       enabled,

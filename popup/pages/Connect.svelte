@@ -1,18 +1,29 @@
 <script lang="ts">
-	import { scale } from 'svelte/transition';
-	import { _ } from 'popup/i18n';
-	import { closePopup } from 'popup/mixins/popup';
+	import { scale } from "svelte/transition";
+	import { _ } from "popup/i18n";
+	import { closePopup } from "popup/mixins/popup";
 
-	import connectAppStore from 'popup/store/confirm-apps';
-	import { approveConnection, rejectConnection } from 'popup/backend/connections';
+	import OptionAccount from '../components/OptionAccount.svelte';
 
+	import connectAppStore from "popup/store/confirm-apps";
+	import walletStore from 'popup/store/wallet';
+
+	import {
+		approveConnection,
+		rejectConnection,
+	} from "popup/backend/connections";
 
 	let index = 0;
+	let accounts = $walletStore.identities.map((_, index) => index == $walletStore.selectedAddress);
 	let app = $connectAppStore[index];
 
 	const hanldeOnConfirm = async () => {
+		let accountIdxs = accounts
+			.map((v, index) => v ? index : null)
+			.filter((i) => i !== null);
+
 		try {
-			await approveConnection(index);
+			await approveConnection(index, accountIdxs as number[]);
 		} catch {
 			///
 		}
@@ -20,6 +31,9 @@
 		if ($connectAppStore.length === 0) {
 			await closePopup();
 		}
+	};
+	const onSelectAccount = (index: number)  => {
+		accounts[index] = !accounts[index];
 	};
 	const hanldeOnReject = async () => {
 		await rejectConnection(index);
@@ -32,37 +46,40 @@
 
 {#if Boolean(app)}
 	<main in:scale>
-		<h1>{app.title}</h1>
-		<img
-			src={app.icon}
-			alt="logo"
-			width="55px"
-			height="55px"
-		/>
-		<div>
-			<h2>
-				{$_('connect.question.0')}
-				<mark>
-					{app.domain}
-				</mark>
-				{$_('connect.question.1')}
-			</h2>
+		<img src={app.icon} alt="logo" width="55px" height="55px" />
+		<div class="info">
+			<mark>
+				{app.domain}
+			</mark>
+			<mark>
+				{app.title}
+			</mark>
 			<p>
-				{$_('connect.warn')}
+				{$_("connect.warn")}
 			</p>
 		</div>
+		<ul class="accounts">
+			{#each $walletStore.identities as account, index}
+				<li
+					on:mouseup={() => onSelectAccount(index)}
+				>
+					<OptionAccount
+						account={account}
+						selected={accounts[index]}
+					/>
+				</li>
+			{/each}
+		</ul>
 		<div class="btn-wrap">
 			<button
 				class="primary"
+				disabled={!accounts.some(Boolean)}
 				on:mouseup={hanldeOnConfirm}
 			>
-				{$_('connect.btns.conf')}
+				{$_("connect.btns.conf")}
 			</button>
-			<button
-        class="outline"
-        on:mouseup={hanldeOnReject}
-      >
-				{$_('connect.btns.reject')}
+			<button class="outline" on:mouseup={hanldeOnReject}>
+				{$_("connect.btns.reject")}
 			</button>
 		</div>
 	</main>
@@ -74,39 +91,44 @@
 		height: 100vh;
 		text-align: center;
 
-		justify-content: space-between;
-
-		@include flex-center-column;
-	}
-	h1 {
-		@include fluid-text(720px, 20pt, 30pt);
-		@include text-shorten;
-	}
-	h2 {
-		@include fluid-text(720px, 15pt, 20pt);
+		@include flex-center-top-column;
 	}
 	img {
-		margin: 16px;
+		margin: 5px;
 		display: auto;
 	}
-	div,
-	h1 {
-		max-width: 500px;
-		width: calc(100vw - 30px);
-		padding-left: 16px;
-		padding-right: 16px;
-	}
-	div {
-		&.btn-wrap {
-			max-width: 400px;
-			min-width: 290px;
-			width: 100%;
-			margin-block-start: 10vh;
-			@include flex-between-row;
+	div.btn-wrap {
+		margin-bottom: 16pt;
+		margin-top: 16pt;
 
-			& > button {
-				margin: 5px;
-			}
+		& > button {
+			min-width: 100pt;
+		}
+	}
+	ul {
+		padding: 0;
+    margin: 0;
+    overflow-y: scroll;
+
+		width: 100%;
+    height: calc(100vh - 250px);
+
+		&.accounts {
+			padding: 16pt;
+			border: solid 1pt var(--secondary-color);
+
+			width: calc(100vw - 15px);
+
+			@include border-radius(16px);
+		}
+
+		& > li {
+			cursor: pointer;
+
+			padding-left: 10px;
+			padding-right: 10px;
+
+			@include flex-between-row;
 		}
 	}
 </style>
