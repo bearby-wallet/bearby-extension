@@ -22,7 +22,7 @@ import { INVALID_BASE58_ADDRESS } from 'lib/address/errors';
 import { addressFromPublicKey, isBase58Address, publicKeyBytesFromPrivateKey, pubKeyFromBytes, base58PubKeyToBytes } from 'lib/address';
 import { base58PrivateKeyToBytes, isPrivateKey } from 'lib/validator';
 import { TypeOf } from 'lib/type';
-import { VERSION_NUMBER } from 'config/common';
+import { USER_VERSION_NUMBER } from 'config/common';
 
 
 export class AccountController {
@@ -228,7 +228,7 @@ export class AccountController {
       index,
       base58,
       type,
-      version: VERSION_NUMBER,
+      version: USER_VERSION_NUMBER,
       pubKey: '',
       nft: {},
       tokens: {}

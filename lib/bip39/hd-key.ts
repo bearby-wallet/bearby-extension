@@ -6,7 +6,7 @@ import { assert } from 'lib/assert';
 import { addressFromPublicKey, publicKeyBytesFromPrivateKey } from 'lib/address';
 import { CHAIN_CODE_EMPTY, INVALID_PATH, INVALID_PATH_INDEX } from './errors';
 import { writeUint32BE } from 'lib/crypto/bytes';
-import { VERSION_NUMBER } from 'config/common';
+import { USER_VERSION_NUMBER } from 'config/common';
 
 
 const ED25519_CURVE = utils.utf8.toBytes('ed25519 seed');
@@ -57,7 +57,7 @@ export class HDKey {
 
     return publicKeyBytesFromPrivateKey({
       privKey,
-      version: VERSION_NUMBER
+      version: USER_VERSION_NUMBER
     });
   }
 

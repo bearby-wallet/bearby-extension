@@ -5,11 +5,12 @@ import { toByteArray } from "base64-js";
 import { base58Decode, isBase58Address } from "lib/address";
 import { assert } from "lib/assert";
 import { VarintEncode } from 'lib/varint';
-import { INVLID_RECIPIENT } from "./errors";
+import { INVLID_RECIPIENT, INVLID_ADDRESS_PREFIX } from "./errors";
 import { OperationsType } from "./operations";
-import { ADDRESS_PREFIX, CONTRACT_VERSION_NUMBER, VERSION_NUMBER } from "config/common";
+import { ADDRESS_PREFIX, USER_VERSION_NUMBER, CONTRACT_VERSION_NUMBER, CONTRACT_ADDRESS_PREFIX } from "config/common";
 import { Args, parseParams } from "lib/args";
 import { u64ToBytes, u8toByte } from "lib/args/numbers";
+import { BaseError } from "lib/error";
 
 
 export class PaymentBuild {
@@ -39,9 +40,16 @@ export class PaymentBuild {
     const expirePeriod = new VarintEncode().encode(this.expirePeriod);
     const typeIdEncoded = new VarintEncode().encode(PaymentBuild.operation);
     const amount = new VarintEncode().encode(this.amount);
+    const prefix = this.recipientAddress.slice(0, ADDRESS_PREFIX.length);
     let recipient = (await base58Decode(this.recipientAddress.slice(ADDRESS_PREFIX.length)));
 
-    recipient = Uint8Array.from([VERSION_NUMBER, ...recipient]);
+    if (prefix == ADDRESS_PREFIX) {
+      recipient = Uint8Array.from([USER_VERSION_NUMBER, ...recipient]);
+    } else if (prefix == CONTRACT_ADDRESS_PREFIX) {
+      recipient = Uint8Array.from([CONTRACT_VERSION_NUMBER, ...recipient]);
+    } else {
+      throw new BaseError(INVLID_ADDRESS_PREFIX);
+    }
 
     return Uint8Array.from([
       ...fee,
