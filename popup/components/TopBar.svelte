@@ -10,6 +10,7 @@
   // import Refresh from './icons/Refresh.svelte';
   import ExpandIcon from './icons/Expand.svelte';
   import LockIcon from './icons/Lock.svelte';
+  import ConnectedIcon from './icons/Connected.svelte';
 
   import { logout } from 'app/backend/wallet';
 
@@ -48,6 +49,16 @@
   >
     <span />
   </a>
+  <div class="connections">
+    <ConnectedIcon
+      className="connected-icon"
+      width="40"
+      height="10"
+    />
+    <p>
+      example.comdasdasdsa
+    </p>
+  </div>
   <div class="icons-warp">
     {#if lock}
       <span
@@ -107,6 +118,33 @@
 
     @media screen and (min-width: 899px) {
       @include border-bottom-radius(16px);
+    }
+  }
+  div.connections {
+    cursor: pointer;
+    width: 100pt;
+    border: solid 2pt var(--primary-color);
+    border-radius: 8pt;
+    margin: 10pt;
+    height: 19pt;
+    padding-left: 5pt;
+    padding-right: 5pt;
+
+    @include flex-between-row;
+
+    & > p {
+      text-indent: 2pt;
+      width: 100pt;
+
+      @include text-shorten;
+    }
+
+    &:hover {
+      border: solid 2pt var(--secondary-color);
+
+      :global(svg.connected-icon > path) {
+        fill: var(--secondary-color);
+      }
     }
   }
   a.network {
