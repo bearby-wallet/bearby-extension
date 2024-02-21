@@ -66,6 +66,7 @@
 <section>
 	<TopBar
 		view
+		conn
 		on:refresh={() => onRefresh(true)}
 	/>
 	<img

@@ -21,6 +21,7 @@
   export let expand = true;
   export let view = false;
   export let lock = true;
+  export let conn = false;
 
   $: account = $walletStore.identities[$walletStore.selectedAddress];
   $: isMainnet = $networkStore === NETWORK_KEYS[0];
@@ -48,17 +49,19 @@
       {/if}
     </div>
     <div class="center">
-      <div class="connections">
-        {#if $connectionStore.accounts.some((c) => c == $walletStore.selectedAddress)}
-          <ConnectedIcon className="connected-icon" width="40" height="10" />
-        {:else}
-           <!-- else content here -->
-           <DisconnectedIcon className="connected-icon" width="40" height="10" />
-        {/if}
-        <p>
-          {$connectionStore.domain}
-        </p>
-      </div>
+      {#if conn && $connectionStore.domain}
+        <div class="connections">
+          {#if $connectionStore.accounts.some((c) => c == $walletStore.selectedAddress)}
+            <ConnectedIcon className="connected-icon" width="40" height="10" />
+          {:else}
+            <!-- else content here -->
+            <DisconnectedIcon className="connected-icon" width="40" height="10" />
+          {/if}
+          <p>
+            {$connectionStore.domain}
+          </p>
+        </div>
+      {/if}
     </div>
     <div class="right">
       {#if lock}
