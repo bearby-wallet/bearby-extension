@@ -9,9 +9,10 @@
   import { formatNumber, toKG } from 'popup/filters/numbers';
 
 	import gasStore from 'popup/store/gas';
+	import netStore from 'popup/store/network';
 
 
-  const massaExplorer = new Massa();
+  const massaExplorer = new Massa().setNetwork($netStore);
 
 	export let tx: ConfirmParams;
 

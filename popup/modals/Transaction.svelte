@@ -10,13 +10,14 @@
   import { clipboardCopy } from 'popup/mixins/clipboard';
 
   import settingsStore from 'popup/store/settings';
+	import netStore from 'popup/store/network';
 
   import Tooltip from '../components/Tooltip.svelte';
-
+  import ExplorerIcon from '../components/icons/explorer.svelte';
 
   export let tx: HistoryTransaction;
 
-  const massaExplorer = new Massa();
+  const massaExplorer = new Massa().setNetwork($netStore);
 
   let tip = $_('home.clipboard.copy');
 
@@ -152,12 +153,9 @@
     {/if}
   </ul>
   <div class="buttons">
-    <img
-      src="/icons/massexplo.webp"
-      alt="massexplo"
-      height="40"
-      on:mouseup={hanldeOnExplorer}
-    >
+    <div on:mouseup={hanldeOnExplorer}>
+      <ExplorerIcon />
+    </div>
   </div>
 </div>
 
@@ -240,10 +238,14 @@
     }
   }
   div.buttons {
-    & > img {
+    & > div {
       cursor: pointer;
-      box-shadow: rgb(0 0 0 / 1%) 0px 0px 1px, rgb(0 0 0 / 4%) 0px 4px 8px, rgb(0 0 0 / 4%) 0px 16px 24px, rgb(0 0 0 / 1%) 0px 24px 32px;
-      @include border-radius(16px);
-    }
+
+      &:hover {
+        :global(svg > path) {
+          fill: var(--secondary-color);
+        }
+      }
+    } 
   }
 </style>

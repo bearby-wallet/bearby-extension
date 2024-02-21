@@ -254,7 +254,7 @@ export class WorkerController {
   }
 
   #makeNotify(title: string, hash: string, message: string) {
-    const url = new Massa().transaction(hash);
+    const url = new Massa().setNetwork(this.#network.selected).transaction(hash);
     new NotificationController(
       url,
       title,
