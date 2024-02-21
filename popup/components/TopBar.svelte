@@ -4,15 +4,14 @@
   import { link, location, push } from 'svelte-spa-router';
   import { createEventDispatcher } from 'svelte';
 
-  // import { logout } from 'popup/backend/wallet';
-
   import { linksExpand } from 'popup/mixins/link';
   import networkStore from 'popup/store/network';
 
   // import Refresh from './icons/Refresh.svelte';
   import ExpandIcon from './icons/Expand.svelte';
-  // import ViewIcon from './icons/View.svelte';
-  // import LockIcon from './icons/Lock.svelte';
+  import LockIcon from './icons/Lock.svelte';
+
+  import { logout } from 'app/backend/wallet';
 
 	// import walletStore from 'popup/store/wallet';
   // import netStore from 'popup/store/network';
@@ -22,7 +21,7 @@
   // export let refresh = false;
   export let expand = true;
   // export let view = false;
-  // export let lock = false;
+  export let lock = true;
 
   // $: account = $walletStore.identities[$walletStore.selectedAddress];
   $: isMainnet = $networkStore === NETWORK_KEYS[0];
@@ -34,10 +33,10 @@
   //   // const url = viewAddress(account.bech32, $netStore.selected);
   //   // openTab(url);
   // };
-  // const handleOnLock = async () => {
-  //   await logout();
-  //   push('/lock');
-  // };
+  const handleLogout = async () => {
+    await logout();
+    push('/lock');
+  };
 </script>
 
 <nav>
@@ -50,6 +49,14 @@
     <span />
   </a>
   <div class="icons-warp">
+    {#if lock}
+      <span
+        class="lock"
+        on:mouseup={handleLogout}
+      >
+        <LockIcon className="icon-lock" />
+      </span>
+    {/if}
     {#if expand}
       <span
         class="expand"
@@ -142,7 +149,7 @@
         stroke: var(--primary-color);
       }
       :global(svg.icon-lock > path) {
-        fill: var(--primary-color);
+        stroke: var(--primary-color);
       }
       :global(svg.icon > path) {
         fill: var(--primary-color);

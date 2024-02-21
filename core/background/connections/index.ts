@@ -51,7 +51,6 @@ export class AppConnectController {
     assert(Boolean(connect.icon), INCORRECT_PARAM + 'icon', ConnectionsError);
     assert(Boolean(connect.title), INCORRECT_PARAM + 'title', ConnectionsError);
     assert(Boolean(connect.uuid), INCORRECT_PARAM + 'uuid', ConnectionsError);
-    // assert(Boolean(connect.accounts), INCORRECT_PARAM + 'accunts', ConnectionsError);
 
     const has = this.#confirm.some((a) => a.domain === connect.domain);
 
@@ -123,10 +122,6 @@ export class AppConnectController {
     try {
       if (jsonData[Fields.CONNECTIONS_LIST]) {
         let data: AppConnection[] = JSON.parse(String(jsonData[Fields.CONNECTIONS_LIST]));
-
-        data = data.filter((c) => {
-          c.domain && c.accounts && c.accounts.length > 0 && c.icon && c.title
-        });
 
         this.#identities = data;
       }
