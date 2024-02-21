@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-
   import { NETWORK_KEYS } from 'config/network';
 
   import { link, location, push } from 'svelte-spa-router';
@@ -33,14 +31,6 @@
     await logout();
     push('/lock');
   };
-
-  onMount(async() => {
-    chrome.tabs.onActivated.addListener(function(activeInfo) {
-      chrome.tabs.get(activeInfo.tabId, function(tab) {
-        console.log(tab.url);
-      });
-    });
-	});
 </script>
 
 <nav>
