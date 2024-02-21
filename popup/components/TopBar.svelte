@@ -9,13 +9,14 @@
   import ExpandIcon from "./icons/Expand.svelte";
   import LockIcon from "./icons/Lock.svelte";
   import ConnectedIcon from "./icons/Connected.svelte";
+  import DisconnectedIcon from "./icons/Disconnected.svelte";
   import ViewIcon from "./icons/View.svelte";
 
   import { logout } from "app/backend/wallet";
 
   import networkStore from "popup/store/network";
   import walletStore from "popup/store/wallet";
-  import connectionsStore from "app/store/connection";
+  import connectionStore from "app/store/connection";
 
   export let expand = true;
   export let view = false;
@@ -48,9 +49,14 @@
     </div>
     <div class="center">
       <div class="connections">
-        <ConnectedIcon className="connected-icon" width="40" height="10" />
+        {#if $connectionStore.accounts.some((c) => c == $walletStore.selectedAddress)}
+          <ConnectedIcon className="connected-icon" width="40" height="10" />
+        {:else}
+           <!-- else content here -->
+           <DisconnectedIcon className="connected-icon" width="40" height="10" />
+        {/if}
         <p>
-          {$connectionsStore.domain}
+          {$connectionStore.domain}
         </p>
       </div>
     </div>
