@@ -2,38 +2,32 @@
   import { NETWORK_KEYS } from 'config/network';
 
   import { link, location, push } from 'svelte-spa-router';
-  import { createEventDispatcher } from 'svelte';
 
-  import { linksExpand } from 'popup/mixins/link';
-  import networkStore from 'popup/store/network';
+  import { linksExpand, openTab } from 'popup/mixins/link';
+  import { Massa } from 'lib/explorer';
 
-  // import Refresh from './icons/Refresh.svelte';
   import ExpandIcon from './icons/Expand.svelte';
   import LockIcon from './icons/Lock.svelte';
   import ConnectedIcon from './icons/Connected.svelte';
+  import ViewIcon from './icons/View.svelte';
 
   import { logout } from 'app/backend/wallet';
 
-	// import walletStore from 'popup/store/wallet';
+  import networkStore from 'popup/store/network';
+	import walletStore from 'popup/store/wallet';
   // import netStore from 'popup/store/network';
 
-  const dispatch = createEventDispatcher();
-
-  // export let refresh = false;
   export let expand = true;
-  // export let view = false;
+  export let view = false;
   export let lock = true;
 
-  // $: account = $walletStore.identities[$walletStore.selectedAddress];
+  $: account = $walletStore.identities[$walletStore.selectedAddress];
   $: isMainnet = $networkStore === NETWORK_KEYS[0];
 
-  // const onRefresh = () => {
-  //   dispatch('refresh');
-  // };
-  // const viewOnViewBlock = () => {
-  //   // const url = viewAddress(account.bech32, $netStore.selected);
-  //   // openTab(url);
-  // };
+  const viewOnViewBlock = () => {
+    const url = new Massa().setNetwork($networkStore).address(account.base58);
+    openTab(url);
+  };
   const handleLogout = async () => {
     await logout();
     push('/lock');
@@ -41,65 +35,55 @@
 </script>
 
 <nav>
-  <a
-    class="network"
-    class:mainnet={isMainnet}
-    href="/network"
-    use:link
-  >
-    <span />
-  </a>
-  <div class="connections">
-    <ConnectedIcon
-      className="connected-icon"
-      width="40"
-      height="10"
-    />
-    <p>
-      example.comdasdasdsa
-    </p>
-  </div>
-  <div class="icons-warp">
-    {#if lock}
-      <span
-        class="lock"
-        on:mouseup={handleLogout}
+  <div class="grid-container">
+    <div class="left">
+      <a
+        class="network"
+        class:mainnet={isMainnet}
+        href="/network"
+        use:link
       >
-        <LockIcon className="icon-lock" />
-      </span>
-    {/if}
-    {#if expand}
-      <span
-        class="expand"
-        on:mouseup={() => linksExpand($location)}
-      >
-        <ExpandIcon className="icon" />
-      </span>
-    {/if}
-    <!-- {#if refresh}
-      <span
-        class="refresh"
-        on:mouseup={onRefresh}
-      >
-        <Refresh className="icon" />
-      </span>
-    {/if}
-    {#if view}
-      <span
-        class="view"
-        on:mouseup={viewOnViewBlock}
-      >
-        <ViewIcon className="icon-view" />
-      </span>
-    {/if}
-    {#if lock}
-      <span
-        class="lock"
-        on:mouseup={handleOnLock}
-      >
-        <LockIcon className="icon-lock" />
-      </span>
-    {/if} -->
+        <span />
+      </a>
+      {#if view}
+        <span
+          class="view-btn"
+          on:mouseup={viewOnViewBlock}
+        >
+          <ViewIcon className="icon-view"/>
+        </span>
+      {/if}
+    </div>
+    <div class="center">
+      <div class="connections">
+        <ConnectedIcon
+          className="connected-icon"
+          width="40"
+          height="10"
+        />
+        <p>
+          example.comdasdasdsa
+        </p>
+      </div>
+    </div>
+    <div class="right">
+      {#if lock}
+        <span
+          class="lock"
+          on:mouseup={handleLogout}
+        >
+          <LockIcon className="icon-lock" />
+        </span>
+      {/if}
+      {#if expand}
+        <span
+          class="expand"
+          on:mouseup={() => linksExpand($location)}
+        >
+          <ExpandIcon className="icon" />
+        </span>
+      {/if}
+    </div>
   </div>
 </nav>
 
@@ -123,7 +107,7 @@
   div.connections {
     cursor: pointer;
     width: 100pt;
-    border: solid 2pt var(--primary-color);
+    border: solid 1pt var(--primary-color);
     border-radius: 8pt;
     margin: 10pt;
     height: 19pt;
@@ -133,26 +117,34 @@
     @include flex-between-row;
 
     & > p {
-      text-indent: 2pt;
+      text-indent: 3pt;
       width: 100pt;
 
       @include text-shorten;
     }
 
     &:hover {
-      border: solid 2pt var(--secondary-color);
+      border: solid 1pt var(--secondary-color);
 
       :global(svg.connected-icon > path) {
         fill: var(--secondary-color);
       }
     }
   }
+  span.view-btn {
+    cursor: pointer;
+    height: 25px;
+
+    &:hover {
+      :global(svg.icon-view > *) {
+        stroke: var(--primary-color);
+      }
+    }
+  }
   a.network {
+    display: inline-block;
     height: 15px;
     width: 15px;
-
-    margin: 11px;
-    margin-left: 16px;
 
     border-radius: 100%;
     background-color: var(--warning-color);
@@ -160,10 +152,6 @@
     &.mainnet {
       background-color: var(--success-color);
     }
-  }
-  .icons-warp {
-    text-align: end;
-    width: 200px;
   }
   span {
     cursor: pointer;
@@ -180,18 +168,32 @@
       :global(svg.icon-view > circle) {
         stroke: var(--primary-color);
       }
-      :global(svg.icon-view > line) {
-        stroke: var(--primary-color);
-      }
-      :global(svg.icon-view > path) {
-        stroke: var(--primary-color);
-      }
       :global(svg.icon-lock > path) {
         stroke: var(--primary-color);
       }
       :global(svg.icon > path) {
         fill: var(--primary-color);
       }
+    }
+  }
+
+  .grid-container {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+  }
+
+  .center,
+  .left,
+  .right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    & > * {
+      margin: 5pt;
     }
   }
 </style>
