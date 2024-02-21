@@ -2,6 +2,7 @@ import { Runtime } from 'lib/runtime';
 import App from './App.svelte';
 import { getWalletState } from './backend/wallet';
 import { getTransactionHistory } from 'popup/backend/transactions';
+import { loadTab } from 'popup/utils/tabs';
 
 
 let app = {};
@@ -31,13 +32,10 @@ getWalletState()
 
 		events.addListener(listener);
 
-		// chrome.tabs.onActivated.addListener(function(activeInfo) {
-    //   chrome.tabs.get(activeInfo.tabId, function(tab) {
-    //     console.log(tab.url);
-    //   });
-    // });
-
-    // chrome.tabs.onActivated.removeListener(handleTabActivated);
+		chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => loadTab(tab));
+		Runtime.tabs.onActivated.addListener((activeInfo) => {
+			chrome.tabs.get(activeInfo.tabId, async (tab) => loadTab(tab));
+		});
 	});
 
 export default app;

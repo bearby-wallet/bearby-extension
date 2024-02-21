@@ -1,20 +1,21 @@
 <script lang="ts">
-  import { NETWORK_KEYS } from 'config/network';
+  import { NETWORK_KEYS } from "config/network";
 
-  import { link, location, push } from 'svelte-spa-router';
+  import { link, location, push } from "svelte-spa-router";
 
-  import { linksExpand, openTab } from 'popup/mixins/link';
-  import { Massa } from 'lib/explorer';
+  import { linksExpand, openTab } from "popup/mixins/link";
+  import { Massa } from "lib/explorer";
 
-  import ExpandIcon from './icons/Expand.svelte';
-  import LockIcon from './icons/Lock.svelte';
-  import ConnectedIcon from './icons/Connected.svelte';
-  import ViewIcon from './icons/View.svelte';
+  import ExpandIcon from "./icons/Expand.svelte";
+  import LockIcon from "./icons/Lock.svelte";
+  import ConnectedIcon from "./icons/Connected.svelte";
+  import ViewIcon from "./icons/View.svelte";
 
-  import { logout } from 'app/backend/wallet';
+  import { logout } from "app/backend/wallet";
 
-  import networkStore from 'popup/store/network';
-	import walletStore from 'popup/store/wallet';
+  import networkStore from "popup/store/network";
+  import walletStore from "popup/store/wallet";
+  import connectionsStore from "app/store/connection";
 
   export let expand = true;
   export let view = false;
@@ -29,56 +30,38 @@
   };
   const handleLogout = async () => {
     await logout();
-    push('/lock');
+    push("/lock");
   };
 </script>
 
 <nav>
   <div class="grid-container">
     <div class="left">
-      <a
-        class="network"
-        class:mainnet={isMainnet}
-        href="/network"
-        use:link
-      >
+      <a class="network" class:mainnet={isMainnet} href="/network" use:link>
         <span />
       </a>
       {#if view}
-        <span
-          class="view-btn"
-          on:mouseup={viewOnViewBlock}
-        >
-          <ViewIcon className="icon-view"/>
+        <span class="view-btn" on:mouseup={viewOnViewBlock}>
+          <ViewIcon className="icon-view" />
         </span>
       {/if}
     </div>
     <div class="center">
       <div class="connections">
-        <ConnectedIcon
-          className="connected-icon"
-          width="40"
-          height="10"
-        />
+        <ConnectedIcon className="connected-icon" width="40" height="10" />
         <p>
-          example.comdasdasdsa
+          {$connectionsStore.domain}
         </p>
       </div>
     </div>
     <div class="right">
       {#if lock}
-        <span
-          class="lock"
-          on:mouseup={handleLogout}
-        >
+        <span class="lock" on:mouseup={handleLogout}>
           <LockIcon className="icon-lock" />
         </span>
       {/if}
       {#if expand}
-        <span
-          class="expand"
-          on:mouseup={() => linksExpand($location)}
-        >
+        <span class="expand" on:mouseup={() => linksExpand($location)}>
           <ExpandIcon className="icon" />
         </span>
       {/if}
@@ -95,7 +78,11 @@
     background-color: var(--card-color);
     z-index: 2;
 
-    box-shadow: rgb(0 0 0 / 1%) 0px 0px 1px, rgb(0 0 0 / 4%) 0px 4px 8px, rgb(0 0 0 / 4%) 0px 16px 24px, rgb(0 0 0 / 1%) 0px 24px 32px;
+    box-shadow:
+      rgb(0 0 0 / 1%) 0px 0px 1px,
+      rgb(0 0 0 / 4%) 0px 4px 8px,
+      rgb(0 0 0 / 4%) 0px 16px 24px,
+      rgb(0 0 0 / 1%) 0px 24px 32px;
 
     @include flex-between-row;
 

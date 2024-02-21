@@ -3,6 +3,11 @@ import type { KeyValue } from "types/general";
 import type { CallParam } from "./contacts";
 
 
+export interface ConnectionStore {
+  domain: string;
+  accounts: number[];
+}
+
 export interface TransactionToken {
   decimals: number;
   symbol: string;
