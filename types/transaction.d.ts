@@ -31,7 +31,7 @@ export interface SignedMessage {
 
 
 export interface MinTransactionParams {
-  amount: number;
+  coins: string;
   gasPrice: number;
   gasLimit: number;
   toAddr: string;
@@ -50,7 +50,6 @@ export interface MinTransactionParams {
   params?: CallParam[];
   unsafeParams?: string; // in hex string
   maxCoins?: string;
-  coins?: string;
 }
 
 export interface ConfirmParams extends MinTransactionParams {
@@ -71,7 +70,7 @@ export interface HistoryTransaction {
   tokenAmount: string;
   timestamp: number;
   recipient: string;
-  amount: number;
+  coins: string;
   expiryPeriod: number;
   nextSlot: number;
   period: number;

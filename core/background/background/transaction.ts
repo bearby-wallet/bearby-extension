@@ -98,7 +98,7 @@ export class BackgroundTransaction {
       const gasLimit = params.gasLimit ?? this.#core.gas.state.gasLimit;
       const confirmParams: ConfirmParams = {
         ...params,
-        tokenAmount: String(params.amount),
+        tokenAmount: String(params.coins ?? 0),
         fee: isNaN(Number(params.fee))
           ? Number(gasLimit) * Number(params.gasPrice) : Number(params.fee),
         recipient: params.toAddr
@@ -266,7 +266,7 @@ export class BackgroundTransaction {
         tokenAmount: confirmParams.tokenAmount,
         timestamp: new Date().getTime(),
         recipient: confirmParams.recipient,
-        amount: confirmParams.amount,
+        coins: confirmParams.coins,
         code: confirmParams.code,
         params: confirmParams.params,
         period: this.#core.settings.period.periodOffset,
@@ -376,20 +376,20 @@ export class BackgroundTransaction {
       case OperationsType.Payment:
         return await new PaymentBuild(
           confirmParams.fee,
-          confirmParams.amount,
+          Number(confirmParams.coins),
           confirmParams.toAddr,
           expiryPeriod
         ).bytes();
       case OperationsType.RollBuy:
         return await new BuyRollsBuild(
           confirmParams.fee,
-          confirmParams.amount,
+          Number(confirmParams.coins),
           expiryPeriod
         ).bytes();
       case OperationsType.RollSell:
         return await new SellRollsBuild(
           confirmParams.fee,
-          confirmParams.amount,
+          Number(confirmParams.coins),
           expiryPeriod
         ).bytes();
       case OperationsType.ExecuteSC:
