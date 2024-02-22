@@ -46,6 +46,16 @@ export class AppConnectController {
     assert((Boolean(this.has(domain)) || checkPopup), `${APP_NOT_CONNECTED} ${domain}`, ConnectionsError);
   }
 
+  async updateAccounts(index: number, accounts: number[]) {
+    assert(Boolean(this.identities[index]), INCORRECT_PARAM + 'index', ConnectionsError);
+
+    this.identities[index].accounts = accounts;
+
+    await BrowserStorage.set(
+      buildObject(Fields.CONNECTIONS_LIST, this.identities)
+    );
+  }
+
   async addAppFroConfirm(connect: AppConnection) {
     assert(Boolean(connect.domain), INCORRECT_PARAM + 'domain', ConnectionsError);
     assert(Boolean(connect.icon), INCORRECT_PARAM + 'icon', ConnectionsError);

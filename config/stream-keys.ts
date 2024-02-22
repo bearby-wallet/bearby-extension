@@ -66,6 +66,7 @@ export const MTypePopup = {
   GET_CONNECTIONS: `@/${app}/get-connections`,
   REMOVE_CONNECTION: `@/${app}/remove-connection`,
   APPROVE_CONNECTION: `@/${app}/approve-connection`,
+  UPDATE_CONNECTION: `@/${app}/update-connection`,
   REJECT_CONNECTION: `@/${app}/reject-connection`,
 
   REJECT_MESSAGE: `@/${app}/reject-message`,

@@ -28,6 +28,19 @@ export async function removeConnection(index: number) {
   return resolve;
 }
 
+export async function updateConnectionAccounts(index: number, accounts: number[]) {
+  const data = await new Message<SendResponseParams>({
+    type: MTypePopup.UPDATE_CONNECTION,
+    payload: {
+      index,
+      accounts
+    }
+  }).send();
+  const resolve = warpMessage(data) as WalletState;
+  updateState(resolve);
+  return resolve;
+}
+
 export async function approveConnection(index: number, accounts: number[]) {
   const data = await new Message<SendResponseParams>({
     type: MTypePopup.APPROVE_CONNECTION,

@@ -78,6 +78,23 @@ export class BackgroundConnection {
     }
   }
 
+  async updateConnections(index: number, accounts: number[], sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+      await this.#core.connections.updateAccounts(index, accounts);
+
+      // TODO: maybe need trigger web3 side.
+
+      return sendResponse({
+        resolve: this.#core.state
+      });
+    } catch (err) {
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
   async approveConnections(index: number, accounts: number[], sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();

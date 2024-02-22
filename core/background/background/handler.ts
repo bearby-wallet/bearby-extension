@@ -179,6 +179,9 @@ export function startBackground(core: BackgroundState) {
       case MTypePopup.REMOVE_CONNECTION:
         connections.removeConnections(msg.payload.index, sendResponse);
         return true;
+      case MTypePopup.UPDATE_CONNECTION:
+        connections.updateConnections(msg.payload.index, msg.payload.accounts, sendResponse);
+        return true;
       case MTypePopup.APPROVE_CONNECTION:
         connections.approveConnections(msg.payload.index, msg.payload.accounts, sendResponse);
         return true;

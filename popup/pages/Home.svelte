@@ -1,27 +1,28 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { _ } from 'popup/i18n';
-	import { link, push } from 'svelte-spa-router';
+	import { onMount } from "svelte";
+	import { _ } from "popup/i18n";
+	import { link, push } from "svelte-spa-router";
 
-	import TopBar from '../components/TopBar.svelte';
-	import LeftNavBar from '../components/LeftNavBar.svelte';
-	import Burger from '../components/Burger.svelte';
-	import TokenCard from '../components/TokenCard.svelte';
-	import CopyAccount from '../components/CopyAccount.svelte';
-	import BottomTabs from '../components/BottomTabs.svelte';
-  import Modal from '../components/Modal.svelte';
-	import ConnectAccounts from '../modals/ConnectAccounts.svelte';
+	import TopBar from "../components/TopBar.svelte";
+	import LeftNavBar from "../components/LeftNavBar.svelte";
+	import Burger from "../components/Burger.svelte";
+	import TokenCard from "../components/TokenCard.svelte";
+	import CopyAccount from "../components/CopyAccount.svelte";
+	import BottomTabs from "../components/BottomTabs.svelte";
+	import Modal from "../components/Modal.svelte";
+	import ConnectAccounts from "../modals/ConnectAccounts.svelte";
 
-	import { balanceUpdate } from 'popup/backend/wallet';
-	import { uuidv4 } from 'lib/crypto/uuid';
-	import { generateBlockies } from 'popup/mixins/blockies';
+	import { balanceUpdate } from "popup/backend/wallet";
+	import { updateConnectionAccounts } from "popup/backend/connections";
+	import { uuidv4 } from "lib/crypto/uuid";
+	import { generateBlockies } from "popup/mixins/blockies";
 
-	import walletStore from 'popup/store/wallet';
-	import tokensStore from 'popup/store/tokens';
+	import walletStore from "popup/store/wallet";
+	import tokensStore from "popup/store/tokens";
 	import connectionsAppsStore from "popup/store/connections";
 	import appsStore from "popup/store/connection";
 
-	import { AccountTypes } from 'config/account-type';
+	import { AccountTypes } from "config/account-type";
 
 	let uuid = uuidv4();
 	let loading = true;
@@ -29,9 +30,11 @@
 	let connectionsModal = false;
 
 	$: account = $walletStore.identities[$walletStore.selectedAddress];
-	$: app = $appsStore.domain ? $connectionsAppsStore.find((a) => a.domain == $appsStore.domain) : null;
+	$: app = $appsStore.domain
+		? $connectionsAppsStore.find((a) => a.domain == $appsStore.domain)
+		: null;
 
-  const onRefresh = async (rate = false) => {
+	const onRefresh = async (rate = false) => {
 		loading = true;
 		try {
 			await balanceUpdate();
@@ -46,18 +49,23 @@
 	const onToken = (index: number) => {
 		if (index === 1) {
 			// index = 1 is Roll Token
-			return push('/rolls');
+			return push("/rolls");
 		}
 
 		return push(`/send/${index}`);
 	};
-	const onChangeAppConnection = (e: CustomEvent) => {
+	const onChangeAppConnection = async (e: CustomEvent) => {
 		let indexies = e.detail;
+		let appIndex = $connectionsAppsStore.findIndex(
+			(a) => a.domain == $appsStore.domain,
+		);
 
-		console.log(indexies);
+		if (appIndex >= 0) {
+			await updateConnectionAccounts(appIndex, indexies);
+		}
 	};
 
-	onMount(async() => {
+	onMount(async () => {
 		const ctx = document.getElementById(uuid);
 
 		if (ctx) {
@@ -68,21 +76,15 @@
 	});
 </script>
 
-
 <Modal
-  show={Boolean(connectionsModal)}
-  title={$_('accounts.title')}
-  on:close={() => connectionsModal = !connectionsModal}
+	show={Boolean(connectionsModal)}
+	title={$_("accounts.title")}
+	on:close={() => (connectionsModal = !connectionsModal)}
 >
-  <div class="m-warp">
+	<div class="m-warp">
 		{#if Boolean(app)}
 			<div class="app-info">
-				<img
-					src={app?.icon}
-					alt="app-icon"
-					width="55px"
-					height="55px"
-				/>
+				<img src={app?.icon} alt="app-icon" width="55px" height="55px" />
 				<mark>
 					{app?.domain}
 				</mark>
@@ -93,39 +95,25 @@
 				on:changed={onChangeAppConnection}
 			/>
 		{/if}
-  </div>
+	</div>
 </Modal>
-<LeftNavBar
-	show={leftBar}
-	on:close={onToggleLeftBar}
-/>
+<LeftNavBar show={leftBar} on:close={onToggleLeftBar} />
 <section>
 	<TopBar
 		view
 		conn
 		on:refresh={() => onRefresh(true)}
-		on:connections={() => connectionsModal = !connectionsModal}
+		on:connections={() => (connectionsModal = !connectionsModal)}
 	/>
-	<img
-		src="/imgs/logo.webp"
-		alt="logo"
-		class="logo"
-	>
+	<img src="/imgs/logo.webp" alt="logo" class="logo" />
 	<main>
 		<div class="bar-wrapper">
-			<span
-				class="burger"
-				on:mouseup={onToggleLeftBar}
-			>
+			<span class="burger" on:mouseup={onToggleLeftBar}>
 				<Burger />
 			</span>
 			<CopyAccount />
-			<a
-				href="/accounts"
-				class="acc"
-				use:link
-			>
-				<div id={uuid}/>
+			<a href="/accounts" class="acc" use:link>
+				<div id={uuid} />
 			</a>
 		</div>
 		<div class="btns">
@@ -134,24 +122,21 @@
 				disabled={account.type === AccountTypes.Track}
 				on:mouseup={() => push(`/send/0`)}
 			>
-				{$_('home.btns.send')}
+				{$_("home.btns.send")}
 			</button>
-			<button
-				class="action primary"
-				on:mouseup={() => push('/account')}
-			>
-				{$_('home.btns.receive')}
+			<button class="action primary" on:mouseup={() => push("/account")}>
+				{$_("home.btns.receive")}
 			</button>
 		</div>
 		<div class="wrapper">
 			{#each $tokensStore as token, index}
-        <TokenCard
-					token={token}
+				<TokenCard
+					{token}
 					disabled={account.type === AccountTypes.Track}
-					loading={loading}
+					{loading}
 					on:select={() => onToken(index)}
 				/>
-      {/each}
+			{/each}
 		</div>
 	</main>
 	<BottomTabs />
@@ -160,7 +145,7 @@
 <style lang="scss">
 	@import "../styles/mixins";
 	main {
-    background: inherit;
+		background: inherit;
 		height: calc(100vh - 86px);
 		z-index: 3;
 
@@ -175,7 +160,7 @@
 		img.logo {
 			display: none;
 		}
-  }
+	}
 	img.logo {
 		position: fixed;
 		max-width: 900px;
@@ -188,8 +173,8 @@
 	}
 	div.btns {
 		display: flex;
-    justify-content: space-around;
-    width: 100%;
+		justify-content: space-around;
+		width: 100%;
 		max-width: 270px;
 
 		margin-block-end: 15px;
@@ -203,7 +188,7 @@
 	}
 	div.bar-wrapper {
 		max-width: 500px;
-    width: calc(100vw - 25px);
+		width: calc(100vw - 25px);
 		@include flex-between-row;
 
 		& > span.burger {
@@ -218,7 +203,7 @@
 		border: solid 2px var(--muted-color);
 
 		width: 43px;
-    height: 43px;
+		height: 43px;
 
 		@include border-radius(200px);
 
@@ -237,8 +222,8 @@
 
 		flex-wrap: wrap;
 
-    display: flex;
-    justify-content: flex-start;
+		display: flex;
+		justify-content: flex-start;
 
 		overflow-y: scroll;
 	}
