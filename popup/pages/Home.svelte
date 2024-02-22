@@ -18,10 +18,10 @@
 	import tokensStore from 'popup/store/tokens';
 	import { AccountTypes } from 'config/account-type';
 
-
 	let uuid = uuidv4();
 	let loading = true;
 	let leftBar = false;
+	let connectionsModal = false;
 
 	$: account = $walletStore.identities[$walletStore.selectedAddress];
 
@@ -37,8 +37,7 @@
 	const onToggleLeftBar = () => {
 		leftBar = !leftBar;
 	};
-
-	function onToken(index: number) {
+	const  onToken = (index: number) => {
 		if (index === 1) {
 			// index = 1 is Roll Token
 			return push('/rolls');
@@ -68,6 +67,7 @@
 		view
 		conn
 		on:refresh={() => onRefresh(true)}
+		on:connections={() => connectionsModal = !connectionsModal}
 	/>
 	<img
 		src="/imgs/logo.webp"

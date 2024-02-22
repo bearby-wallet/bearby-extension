@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Account } from 'types';
 
-	import { onMount } from 'svelte';
+	import { onMount, createEventDispatcher } from 'svelte';
 
   import { trim } from 'popup/filters/trim';
 
@@ -9,9 +9,16 @@
 	import { uuidv4 } from 'lib/crypto/uuid';
 
   const uid = uuidv4();
+	const dispatch = createEventDispatcher();
 
+  export let selected: boolean;
   export let account: Account;
-  export let selected = false;
+
+  const handleInputCheckBox = (_: Event) => {
+    selected = !selected;
+
+    dispatch('changed', selected);
+  }
 
   onMount(async() => {
 		const ctx = document.getElementById(uid);
@@ -22,7 +29,7 @@
 	});
 </script>
 
-<div class="wrapper">
+<label class="wrapper">
   <span class:selected={selected}>
     <span id={uid}/>
   </span>
@@ -36,10 +43,14 @@
       </p>
     </div>
     <div>
-      <input type="checkbox" checked={selected} />
+      <input
+        type="checkbox"
+        checked={selected}
+        on:change={handleInputCheckBox}
+      />
     </div>
   </div>
-</div>
+</label>
 
 <style lang="scss">
 	@import "../styles/mixins";
@@ -51,7 +62,7 @@
     font-size: 8pt;
     margin-block-start: 0;
   }
-  div.wrapper {
+  label.wrapper {
     width: 100%;
     @include flex-between-row;
 

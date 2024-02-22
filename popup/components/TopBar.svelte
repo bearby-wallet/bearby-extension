@@ -1,6 +1,8 @@
 <script lang="ts">
   import { NETWORK_KEYS } from "config/network";
 
+	import { createEventDispatcher } from 'svelte';
+
   import { link, location, push } from "svelte-spa-router";
 
   import { linksExpand, openTab } from "popup/mixins/link";
@@ -18,6 +20,9 @@
   import walletStore from "popup/store/wallet";
   import connectionStore from "app/store/connection";
 
+
+	const dispatch = createEventDispatcher();
+
   export let expand = true;
   export let view = false;
   export let lock = true;
@@ -26,6 +31,9 @@
   $: account = $walletStore.identities[$walletStore.selectedAddress];
   $: isMainnet = $networkStore === NETWORK_KEYS[0];
 
+  const onShowConnections = () => {
+    dispatch('connections');
+  };
   const viewOnViewBlock = () => {
     const url = new Massa().setNetwork($networkStore).address(account.base58);
     openTab(url);
@@ -50,7 +58,10 @@
     </div>
     <div class="center">
       {#if conn && $connectionStore.domain}
-        <div class="connections">
+        <div
+          class="connections"
+          on:mouseup={onShowConnections}
+        >
           {#if $connectionStore.accounts.some((c) => c == $walletStore.selectedAddress)}
             <ConnectedIcon className="connected-icon" width="40" height="10" />
           {:else}

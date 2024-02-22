@@ -3,7 +3,7 @@
 	import { _ } from "popup/i18n";
 	import { closePopup } from "popup/mixins/popup";
 
-	import OptionAccount from '../components/OptionAccount.svelte';
+	import ConnectAccounts from '../modals/ConnectAccounts.svelte';
 
 	import connectAppStore from "popup/store/confirm-apps";
 	import walletStore from 'popup/store/wallet';
@@ -14,16 +14,12 @@
 	} from "popup/backend/connections";
 
 	let index = 0;
-	let accounts = $walletStore.identities.map((_, index) => index == $walletStore.selectedAddress);
+	let indexies: number[] = [$walletStore.selectedAddress];
 	let app = $connectAppStore[index];
 
 	const hanldeOnConfirm = async () => {
-		let accountIdxs = accounts
-			.map((v, index) => v ? index : null)
-			.filter((i) => i !== null);
-
 		try {
-			await approveConnection(index, accountIdxs as number[]);
+			await approveConnection(index, indexies);
 		} catch {
 			///
 		}
@@ -32,8 +28,8 @@
 			await closePopup();
 		}
 	};
-	const onSelectAccount = (index: number)  => {
-		accounts[index] = !accounts[index];
+	const onChange = (e: CustomEvent) => {
+		indexies = e.detail;
 	};
 	const hanldeOnReject = async () => {
 		await rejectConnection(index);
@@ -58,22 +54,15 @@
 				{$_("connect.warn")}
 			</p>
 		</div>
-		<ul class="accounts">
-			{#each $walletStore.identities as account, index}
-				<li
-					on:mouseup={() => onSelectAccount(index)}
-				>
-					<OptionAccount
-						account={account}
-						selected={accounts[index]}
-					/>
-				</li>
-			{/each}
-		</ul>
+		<ConnectAccounts
+			selected={$walletStore.selectedAddress}
+			identities={$walletStore.identities}
+			on:changed={onChange}
+		/>
 		<div class="btn-wrap">
 			<button
 				class="primary"
-				disabled={!accounts.some(Boolean)}
+				disabled={indexies.length === 0}
 				on:mouseup={hanldeOnConfirm}
 			>
 				{$_("connect.btns.conf")}
@@ -103,32 +92,6 @@
 
 		& > button {
 			min-width: 100pt;
-		}
-	}
-	ul {
-		padding: 0;
-    margin: 0;
-    overflow-y: scroll;
-
-		width: 100%;
-    height: calc(100vh - 250px);
-
-		&.accounts {
-			padding: 16pt;
-			border: solid 1pt var(--secondary-color);
-
-			width: calc(100vw - 15px);
-
-			@include border-radius(16px);
-		}
-
-		& > li {
-			cursor: pointer;
-
-			padding-left: 10px;
-			padding-right: 10px;
-
-			@include flex-between-row;
 		}
 	}
 </style>
