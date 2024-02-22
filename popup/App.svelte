@@ -1,14 +1,13 @@
 <script>
-	import Router from 'svelte-spa-router';
-	import { onMount } from 'svelte';
+	import Router from "svelte-spa-router";
+	import { onMount } from "svelte";
 
-	import { setupI18n } from 'popup/i18n';
-  import routes from './routers';
-	
-	import settingsStore from 'popup/store/settings';
+	import { setupI18n } from "popup/i18n";
+	import routes from "./routers";
 
-	import { Locales } from 'config/locale';
+	import settingsStore from "popup/store/settings";
 
+	import { Locales } from "config/locale";
 
 	let loaded = false;
 
@@ -19,13 +18,13 @@
 				await setupI18n();
 			} else {
 				await setupI18n({
-					withLocale: locale
+					withLocale: locale,
 				});
 			}
 		} catch (err) {
 			console.error(err);
 			await setupI18n({
-				withLocale: Locales.EN
+				withLocale: Locales.EN,
 			});
 		}
 
@@ -33,9 +32,8 @@
 	});
 </script>
 
-
 {#if loaded}
-	<Router  {routes} />
+	<Router {routes} />
 {/if}
 
 <style lang="scss">

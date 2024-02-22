@@ -1,7 +1,7 @@
 <script lang="ts">
   import { NETWORK_KEYS } from "config/network";
 
-	import { createEventDispatcher } from 'svelte';
+  import { createEventDispatcher } from "svelte";
 
   import { link, location, push } from "svelte-spa-router";
 
@@ -19,9 +19,9 @@
   import networkStore from "popup/store/network";
   import walletStore from "popup/store/wallet";
   import connectionStore from "app/store/connection";
+  import appsStore from "app/store/connections";
 
-
-	const dispatch = createEventDispatcher();
+  const dispatch = createEventDispatcher();
 
   export let expand = true;
   export let view = false;
@@ -30,9 +30,12 @@
 
   $: account = $walletStore.identities[$walletStore.selectedAddress];
   $: isMainnet = $networkStore === NETWORK_KEYS[0];
+  $: app = $appsStore.find((a) => a.domain == $connectionStore.domain);
 
   const onShowConnections = () => {
-    dispatch('connections');
+    if (app) {
+      dispatch("connections");
+    }
   };
   const viewOnViewBlock = () => {
     const url = new Massa().setNetwork($networkStore).address(account.base58);
@@ -60,13 +63,17 @@
       {#if conn && $connectionStore.domain}
         <div
           class="connections"
+          class:enabled={Boolean(app)}
           on:mouseup={onShowConnections}
         >
           {#if $connectionStore.accounts.some((c) => c == $walletStore.selectedAddress)}
             <ConnectedIcon className="connected-icon" width="40" height="10" />
           {:else}
-            <!-- else content here -->
-            <DisconnectedIcon className="connected-icon" width="40" height="10" />
+            <DisconnectedIcon
+              className="connected-icon"
+              width="40"
+              height="10"
+            />
           {/if}
           <p>
             {$connectionStore.domain}
@@ -111,9 +118,8 @@
     }
   }
   div.connections {
-    cursor: pointer;
     width: 100pt;
-    border: solid 1pt var(--primary-color);
+    border: solid 1pt var(--muted-color);
     border-radius: 8pt;
     margin: 10pt;
     height: 19pt;
@@ -122,19 +128,28 @@
 
     @include flex-between-row;
 
+    &.enabled {
+      cursor: pointer;
+      border: solid 1pt var(--primary-color);
+
+      &:hover {
+        border: solid 1pt var(--secondary-color);
+
+        & > p {
+          color: var(--secondary-color);
+        }
+
+        :global(svg.connected-icon > path) {
+          fill: var(--secondary-color);
+        }
+      }
+    }
+
     & > p {
       text-indent: 3pt;
       width: 100pt;
 
       @include text-shorten;
-    }
-
-    &:hover {
-      border: solid 1pt var(--secondary-color);
-
-      :global(svg.connected-icon > path) {
-        fill: var(--secondary-color);
-      }
     }
   }
   span.view-btn {

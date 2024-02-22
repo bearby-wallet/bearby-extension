@@ -1,29 +1,28 @@
 <script lang="ts">
-  import { createEventDispatcher, onMount } from 'svelte';
-	import { _ } from 'popup/i18n';
-  import { trim } from 'popup/filters/trim';
+	import { createEventDispatcher, onMount } from "svelte";
+	import { _ } from "popup/i18n";
+	import { trim } from "popup/filters/trim";
 
-	import walletStore from 'popup/store/wallet';
-	import contactsStore from 'popup/store/contacts';
+	import walletStore from "popup/store/wallet";
+	import contactsStore from "popup/store/contacts";
 
-	import SearchBox from '../components/SearchBox.svelte';
+	import SearchBox from "../components/SearchBox.svelte";
 
-	import { generateBlockies } from 'popup/mixins/blockies';
+	import { generateBlockies } from "popup/mixins/blockies";
 
+	const dispatch = createEventDispatcher();
 
-  const dispatch = createEventDispatcher();
+	let search = "";
 
-	let search = '';
-
-	$: accounts = $walletStore.identities.filter(
-		(acc) => String(acc.name).toLowerCase().includes(String(search).toLowerCase())
+	$: accounts = $walletStore.identities.filter((acc) =>
+		String(acc.name).toLowerCase().includes(String(search).toLowerCase()),
 	);
-  $: contacts = $contactsStore.filter(
-		(contact) => String(contact.name).toLowerCase().includes(String(search).toLowerCase())
+	$: contacts = $contactsStore.filter((contact) =>
+		String(contact.name).toLowerCase().includes(String(search).toLowerCase()),
 	);
 
 	const onSelect = async (address: string) => {
-		dispatch('selected', address);
+		dispatch("selected", address);
 	};
 	const onInputSearch = (e: CustomEvent) => {
 		search = e.detail;
@@ -50,18 +49,18 @@
 </script>
 
 <SearchBox
-  placeholder={$_('accounts.placeholder')}
-  focus
-  on:input={onInputSearch}
+	placeholder={$_("accounts.placeholder")}
+	focus
+	on:input={onInputSearch}
 />
 <ul>
 	{#if contacts.length > 0}
 		<p>
-			{$_('send.recipient.contacts')}
+			{$_("send.recipient.contacts")}
 		</p>
 		{#each contacts as contact}
 			<li on:mouseup={() => onSelect(contact.address)}>
-				<span id={contact.address}/>
+				<span id={contact.address} />
 				<div class="text">
 					<b>
 						{contact.name}
@@ -75,11 +74,11 @@
 	{/if}
 	{#if accounts.length > 0}
 		<p>
-			{$_('send.recipient.accounts')}
+			{$_("send.recipient.accounts")}
 		</p>
-		{#each accounts as account, i}
+		{#each accounts as account}
 			<li on:mouseup={() => onSelect(account.base58)}>
-				<span id={account.pubKey}/>
+				<span id={account.pubKey} />
 				<div class="text">
 					<b>
 						{account.name}
@@ -97,8 +96,8 @@
 	@import "../styles/mixins";
 	ul {
 		padding: 0;
-    margin: 0;
-    overflow-y: scroll;
+		margin: 0;
+		overflow-y: scroll;
 		padding-block-end: 70px;
 
 		max-width: 500px;
