@@ -9,6 +9,8 @@
 	import TokenCard from '../components/TokenCard.svelte';
 	import CopyAccount from '../components/CopyAccount.svelte';
 	import BottomTabs from '../components/BottomTabs.svelte';
+  import Modal from '../components/Modal.svelte';
+	import ConnectAccounts from '../modals/ConnectAccounts.svelte';
 
 	import { balanceUpdate } from 'popup/backend/wallet';
 	import { uuidv4 } from 'lib/crypto/uuid';
@@ -16,6 +18,9 @@
 
 	import walletStore from 'popup/store/wallet';
 	import tokensStore from 'popup/store/tokens';
+	import connectionsAppsStore from "popup/store/connections";
+	import appsStore from "popup/store/connection";
+
 	import { AccountTypes } from 'config/account-type';
 
 	let uuid = uuidv4();
@@ -24,6 +29,7 @@
 	let connectionsModal = false;
 
 	$: account = $walletStore.identities[$walletStore.selectedAddress];
+	$: app = $appsStore.domain ? $connectionsAppsStore.find((a) => a.domain == $appsStore.domain) : null;
 
   const onRefresh = async (rate = false) => {
 		loading = true;
@@ -37,14 +43,19 @@
 	const onToggleLeftBar = () => {
 		leftBar = !leftBar;
 	};
-	const  onToken = (index: number) => {
+	const onToken = (index: number) => {
 		if (index === 1) {
 			// index = 1 is Roll Token
 			return push('/rolls');
 		}
 
 		return push(`/send/${index}`);
-	}
+	};
+	const onChangeAppConnection = (e: CustomEvent) => {
+		let indexies = e.detail;
+
+		console.log(indexies);
+	};
 
 	onMount(async() => {
 		const ctx = document.getElementById(uuid);
@@ -58,6 +69,32 @@
 </script>
 
 
+<Modal
+  show={Boolean(connectionsModal)}
+  title={$_('accounts.title')}
+  on:close={() => connectionsModal = !connectionsModal}
+>
+  <div class="m-warp">
+		{#if Boolean(app)}
+			<div class="app-info">
+				<img
+					src={app?.icon}
+					alt="app-icon"
+					width="55px"
+					height="55px"
+				/>
+				<mark>
+					{app?.domain}
+				</mark>
+			</div>
+			<ConnectAccounts
+				selected={$walletStore.selectedAddress}
+				identities={$walletStore.identities}
+				on:changed={onChangeAppConnection}
+			/>
+		{/if}
+  </div>
+</Modal>
 <LeftNavBar
 	show={leftBar}
 	on:close={onToggleLeftBar}
@@ -72,6 +109,7 @@
 	<img
 		src="/imgs/logo.webp"
 		alt="logo"
+		class="logo"
 	>
 	<main>
 		<div class="bar-wrapper">
@@ -128,12 +166,17 @@
 
 		@include flex-center-top-column;
 	}
+	div.app-info {
+		font-size: 19pt;
+		margin: 16pt;
+		@include flex-center-top-column;
+	}
 	:global(body[theme="dark"]) {
-		img {
+		img.logo {
 			display: none;
 		}
   }
-	img {
+	img.logo {
 		position: fixed;
 		max-width: 900px;
 		width: 110vw;

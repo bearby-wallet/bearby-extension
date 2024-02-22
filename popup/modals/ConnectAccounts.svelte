@@ -44,6 +44,7 @@
     overflow-y: scroll;
 
 		width: 100%;
+		max-width: 350pt;
     height: calc(100vh - 250px);
 
 		&.accounts {
