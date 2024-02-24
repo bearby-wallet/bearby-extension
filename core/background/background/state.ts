@@ -107,6 +107,7 @@ export class BackgroundState {
   }
 
   triggerLock() {
+    // TODO: make it directly to tabs...
     new TabsMessage({
       type: MTypeTab.LOCKED,
       payload: {

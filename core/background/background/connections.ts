@@ -202,7 +202,7 @@ export class BackgroundConnection {
     const account = this.#core.account.selectedAccount;
     const base58 = (connected && enabled && account) ? account.base58 : undefined;
     const net = connected ? this.#core.network.selected : undefined;
-    const accounts = app ? app.accounts
+    const accounts = enabled && app ? app.accounts
       .map((index) => this.#core.account.wallet.identities[index])
       .filter(Boolean)
       .map((value) => value.base58) : [];

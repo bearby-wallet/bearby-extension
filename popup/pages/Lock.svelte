@@ -1,34 +1,35 @@
 <script lang="ts">
-  import { tick, onMount } from 'svelte';
-	import { push } from 'svelte-spa-router';
-	import { _ } from 'popup/i18n';
-	import { linksExpand } from 'popup/mixins/link';
-	import { unlockWallet } from 'popup/backend/wallet';
-
+	import { tick, onMount } from "svelte";
+	import { push } from "svelte-spa-router";
+	import { _ } from "popup/i18n";
+	import { linksExpand } from "popup/mixins/link";
+	import { unlockWallet } from "popup/backend/wallet";
+	import { Runtime } from "lib/runtime";
+	import { loadTab } from "app/utils/tabs";
 
 	let inputEl: HTMLInputElement | undefined;
-	let password = '';
-	let error = '';
+	let password = "";
+	let error = "";
 	let loading = false;
 
 	$: disabled = loading || !password;
 
 	onMount(() => {
-    if (inputEl && inputEl.focus) {
-      inputEl.focus();
-    }
-  });
+		if (inputEl && inputEl.focus) {
+			inputEl.focus();
+		}
+	});
 
 	const handleInput = () => {
-		error = '';
+		error = "";
 	};
 	const handleBlur = async () => {
-    await tick();
-		
-    if (inputEl && inputEl.focus) {
-      inputEl.focus();
-    }
-  };
+		await tick();
+
+		if (inputEl && inputEl.focus) {
+			inputEl.focus();
+		}
+	};
 
 	const handleSubmit = async (e: Event) => {
 		e.preventDefault();
@@ -39,22 +40,20 @@
 
 			if (state.guard.isEnable && state.guard.isReady) {
 				loading = false;
-				push('/');
+
+				push("/");
 			}
 		} catch (err) {
-			error = `${$_('lock.error')}-(${(err as Error).message})`;
+			error = `${$_("lock.error")}-(${(err as Error).message})`;
 		}
 		loading = false;
-	}
+	};
 </script>
 
 <main>
-	<img
-		src="/imgs/logo.webp"
-		alt="logo"
-	>
+	<img src="/imgs/logo.webp" alt="logo" />
 	<h1>
-		{$_('lock.title')}
+		{$_("lock.title")}
 	</h1>
 	<form on:submit={handleSubmit}>
 		<label>
@@ -64,21 +63,17 @@
 				class:error={Boolean(error)}
 				type="password"
 				autocomplete="off"
-				placeholder={$_('lock.placeholder')}
+				placeholder={$_("lock.placeholder")}
 				required
 				on:blur={handleBlur}
 				on:input={handleInput}
-			>
+			/>
 		</label>
-		<button
-			class="outline"
-			class:loading={loading}
-			disabled={Boolean(disabled || error)}
-		>
-			{$_('lock.btn')}
+		<button class="outline" class:loading disabled={Boolean(disabled || error)}>
+			{$_("lock.btn")}
 		</button>
-		<span on:mouseup={() => linksExpand('/start')}>
-			{$_('lock.restore')}
+		<span on:mouseup={() => linksExpand("/start")}>
+			{$_("lock.restore")}
 		</span>
 	</form>
 </main>
@@ -103,7 +98,7 @@
 	}
 	img {
 		max-width: 500px;
-    width: calc(100vw - 90px);
+		width: calc(100vw - 90px);
 	}
 	main {
 		background: inherit;
@@ -115,7 +110,7 @@
 		width: inherit;
 		& > input.error {
 			outline-color: var(--danger-color);
-			animation: shake .4s linear;
+			animation: shake 0.4s linear;
 		}
 	}
 	button {
