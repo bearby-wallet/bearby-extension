@@ -14,6 +14,11 @@ getWalletState()
 		});
 		const events = Runtime.storage.local.onChanged;
 
+		Runtime.tabs.query({ active: true, currentWindow: true }, ([tab]) => loadTab(tab));
+		Runtime.tabs.onActivated.addListener((activeInfo) => {
+			chrome.tabs.get(activeInfo.tabId, async (tab) => loadTab(tab));
+		});
+
 		async function listener() {
 			await getWalletState();
 
@@ -31,11 +36,6 @@ getWalletState()
 		}
 
 		events.addListener(listener);
-
-		chrome.tabs.query({ active: true, currentWindow: true }, ([tab]) => loadTab(tab));
-		Runtime.tabs.onActivated.addListener((activeInfo) => {
-			chrome.tabs.get(activeInfo.tabId, async (tab) => loadTab(tab));
-		});
 	});
 
 export default app;

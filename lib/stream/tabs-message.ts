@@ -28,6 +28,30 @@ export class TabsMessage {
     this._body = msg;
   }
 
+  /// sending to the current tab
+  public async signal(domain: string) {
+    return new Promise((resolve, reject) => {
+      Runtime.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
+        if (!tab) {
+          return reject(new Error('no active tabs'));
+        }
+
+        const { hostname } = new URL(String(tab.url));
+
+        if (hostname !== domain) {
+          return reject(new Error('invalid domain'));
+        }
+
+        const seralized = JSON.stringify(this._body);
+        const deserialized = JSON.parse(seralized);
+
+        Runtime.tabs.sendMessage(Number(tab.id), deserialized);
+
+        return resolve('');
+      });
+    });
+  }
+
   /**
    * Send msg for tabs.
    */

@@ -8,11 +8,13 @@
 
 	const dispatch = createEventDispatcher();
 
-	export let selected: number;
 	export let identities: Account[];
+	export let indexies: number[];
 
 	let isAll = false;
-	let accounts = identities.map((_, index) => index == selected);
+	let accounts = identities.map((_, index) =>
+		indexies.some((i) => i === index),
+	);
 
 	const onSelectAccount = (index: number, e: CustomEvent) => {
 		accounts[index] = e.detail;
@@ -24,7 +26,6 @@
 		dispatch("changed", indexies);
 	};
 	const onSelectAll = () => {
-		isAll = !isAll;
 		accounts = accounts.map((_) => isAll);
 		let indexies = isAll ? accounts.map((_, i) => i) : [];
 

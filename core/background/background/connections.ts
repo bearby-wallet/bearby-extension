@@ -83,7 +83,18 @@ export class BackgroundConnection {
       this.#core.guard.checkSession();
       await this.#core.connections.updateAccounts(index, accounts);
 
-      // TODO: maybe need trigger web3 side.
+      const app = this.#core.connections.identities[index];
+
+      await new TabsMessage({
+        type: MTypeTab.CONNECTION_CHANGED,
+        payload: {
+          base58: this.#core.account.selectedAccount?.base58,
+          accounts: accounts
+            .map((index) => this.#core.account.wallet.identities[index])
+            .filter(Boolean)
+            .map((value) => value.base58),
+        }
+      }).signal(app.domain);
 
       return sendResponse({
         resolve: this.#core.state
@@ -109,7 +120,10 @@ export class BackgroundConnection {
           uuid: connection.uuid,
           net: this.#core.network.selected,
           base58: this.#core.account.selectedAccount?.base58,
-          accounts: accounts.map((index) => this.#core.account.wallet.identities[index].base58),
+          accounts: accounts
+            .map((index) => this.#core.account.wallet.identities[index])
+            .filter(Boolean)
+            .map((value) => value.base58),
           resolve: true
         }
       }).send();
@@ -188,7 +202,10 @@ export class BackgroundConnection {
     const account = this.#core.account.selectedAccount;
     const base58 = (connected && enabled && account) ? account.base58 : undefined;
     const net = connected ? this.#core.network.selected : undefined;
-    const accounts = app ? app.accounts.map((index) => this.#core.account.wallet.identities[index].base58) : [];
+    const accounts = app ? app.accounts
+      .map((index) => this.#core.account.wallet.identities[index])
+      .filter(Boolean)
+      .map((value) => value.base58) : [];
 
     const data: ContentWalletData = {
       accounts,

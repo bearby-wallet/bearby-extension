@@ -3,10 +3,10 @@
 	import { _ } from "popup/i18n";
 	import { closePopup } from "popup/mixins/popup";
 
-	import ConnectAccounts from '../modals/ConnectAccounts.svelte';
+	import ConnectAccounts from "../modals/ConnectAccounts.svelte";
 
 	import connectAppStore from "popup/store/confirm-apps";
-	import walletStore from 'popup/store/wallet';
+	import walletStore from "popup/store/wallet";
 
 	import {
 		approveConnection,
@@ -55,8 +55,8 @@
 			</p>
 		</div>
 		<ConnectAccounts
-			selected={$walletStore.selectedAddress}
 			identities={$walletStore.identities}
+			indexies={[$walletStore.selectedAddress]}
 			on:changed={onChange}
 		/>
 		<div class="btn-wrap">
@@ -81,6 +81,10 @@
 		text-align: center;
 
 		@include flex-center-top-column;
+	}
+	div.info {
+		width: calc(100vw - 30px);
+		word-wrap: break-word;
 	}
 	img {
 		margin: 5px;

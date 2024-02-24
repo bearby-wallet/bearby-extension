@@ -13,7 +13,10 @@
 	import ConnectAccounts from "../modals/ConnectAccounts.svelte";
 
 	import { balanceUpdate } from "popup/backend/wallet";
-	import { updateConnectionAccounts } from "popup/backend/connections";
+	import {
+		getConnections,
+		updateConnectionAccounts,
+	} from "popup/backend/connections";
 	import { uuidv4 } from "lib/crypto/uuid";
 	import { generateBlockies } from "popup/mixins/blockies";
 
@@ -35,6 +38,7 @@
 		: null;
 
 	const onRefresh = async (rate = false) => {
+		await getConnections();
 		loading = true;
 		try {
 			await balanceUpdate();
@@ -90,8 +94,8 @@
 				</mark>
 			</div>
 			<ConnectAccounts
-				selected={$walletStore.selectedAddress}
 				identities={$walletStore.identities}
+				indexies={app?.accounts ?? []}
 				on:changed={onChangeAppConnection}
 			/>
 		{/if}

@@ -80,6 +80,7 @@ export const MTypeTab = {
   REQUEST_RPC_PROXY: `@/${app}/make-request-rpc-proxy`,
   NEW_SLOT: `@/${app}/new-slot-emited`,
   ACCOUNT_CHANGED: `@/${app}/accounts-just-changed`,
+  CONNECTION_CHANGED: `@/${app}/connection-account-changed`,
   CONTENT_PROXY_MEHTOD: `@/${app}/proxy-method`,
   CONTENT_PROXY_RESULT: `@/${app}/response-from-content`,
   DISCONNECT_APP: `@/${app}/disconnect_app`,
