@@ -50,7 +50,7 @@ export class BackgroundTransaction {
           uuid: params.uuid,
           reject: (err as BaseError).message
         }
-      }).send();
+      }).send(params.domain);
       return sendResponse({
         reject: (err as BaseError).serialize()
       });
@@ -115,14 +115,14 @@ export class BackgroundTransaction {
         resolve: this.#core.state
       });
     } catch (err) {
-      if (params.uuid) {
+      if (params.uuid && params.domain) {
         new TabsMessage({
           type: MTypeTab.TX_TO_SEND_RESULT,
           payload: {
             uuid: params.uuid,
             reject: (err as BaseError).message
           }
-        }).send();
+        }).send(params.domain);
       }
       return sendResponse({
         reject: (err as BaseError).serialize()
@@ -152,14 +152,14 @@ export class BackgroundTransaction {
 
       const confirmTxns = this.#core.transaction.confirm;
 
-      if (confirmTxns[index].uuid) {
+      if (confirmTxns[index].uuid && confirmTxns[index].domain) {
         new TabsMessage({
           type: MTypeTab.TX_TO_SEND_RESULT,
           payload: {
             uuid: confirmTxns[index].uuid,
             reject: REJECTED
           }
-        }).send();
+        }).send(String(confirmTxns[index].domain));
       }
 
       await this.#core.transaction.rmConfirm(index);
@@ -241,15 +241,17 @@ export class BackgroundTransaction {
 
       const [hash] = result as string[];
       const token = confirmParams.token;
-      if (confirmParams.uuid) {
-        new TabsMessage({
+
+      if (confirmParams.uuid && confirmParams.domain) {
+        await new TabsMessage({
           type: MTypeTab.TX_TO_SEND_RESULT,
           payload: {
             uuid: confirmParams.uuid,
             resolve: hash
           }
-        }).send();
+        }).send(confirmParams.domain);
       }
+
       const newHistoryTx: HistoryTransaction = {
         token,
         hash,
@@ -312,13 +314,13 @@ export class BackgroundTransaction {
         publicKey: await pubKeyFromBytes(pair.pubKey)
       };
 
-      new TabsMessage({
+      await new TabsMessage({
         type: MTypeTab.SING_MESSAGE_RESULT,
         payload: {
           uuid: message.uuid,
           resolve: payload
         }
-      }).send();
+      }).send(message.domain);
 
       await this.#core.transaction.removeMessage();
 
@@ -333,7 +335,7 @@ export class BackgroundTransaction {
             uuid: message.uuid,
             reject: (err as BaseError).message
           }
-        }).send();
+        }).send(message.domain);
       }
       await this.#core.transaction.removeMessage();
       return sendResponse({
@@ -353,13 +355,13 @@ export class BackgroundTransaction {
 
       await this.#core.transaction.removeMessage();
 
-      new TabsMessage({
+      await new TabsMessage({
         type: MTypeTab.SING_MESSAGE_RESULT,
         payload: {
           uuid: message.uuid,
           reject: REJECTED
         }
-      }).send();
+      }).send(message.domain);
 
       return sendResponse({
         resolve: this.#core.state

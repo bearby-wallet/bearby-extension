@@ -86,6 +86,11 @@ export class BackgroundState {
   }
 
   triggerAccount() {
+    const domains = this
+      .connections
+      .identities
+      .filter((app) => app.accounts.includes(this.account.wallet.selectedAddress))
+      .map((app) => app.domain);
     const account = this.account.selectedAccount;
 
     new TabsMessage({
@@ -93,27 +98,28 @@ export class BackgroundState {
       payload: {
         base58: account?.base58
       }
-    }).send();
+    }).send(...domains);
   }
 
   triggerNetwork() {
+    const domains = this.connections.identities.map((app) => app.domain);
+
     new TabsMessage({
       type: MTypeTab.NETWORK_CHANGED,
       payload: {
         net: this.network.selected,
         period: this.worker.period
       }
-    }).send();
+    }).send(...domains);
   }
 
   triggerLock() {
-    // TODO: make it directly to tabs...
     new TabsMessage({
       type: MTypeTab.LOCKED,
       payload: {
         enabled: this.guard.isEnable
       }
-    }).send();
+    }).sendAll();
   }
 
   #onInstalled(event: chrome.runtime.InstalledDetails) {

@@ -13,7 +13,7 @@ import { Runtime } from 'lib/runtime';
  *   .then(() => / Do something... /)
  */
 export class TabsMessage {
-  private readonly _body: ReqBody;
+  readonly _body: ReqBody;
 
   static tabs(): Promise<chrome.tabs.Tab[]> {
     return new Promise(resolve => {
@@ -29,7 +29,7 @@ export class TabsMessage {
   }
 
   /// sending to the current tab
-  public async signal(domain: string) {
+  async signal(domain: string) {
     return new Promise((resolve, reject) => {
       Runtime.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
         if (!tab) {
@@ -52,10 +52,23 @@ export class TabsMessage {
     });
   }
 
+  async send(...domains: string[]) {
+    const tabs = await TabsMessage.tabs();
+
+    tabs.forEach((tab) => {
+      if (tab && tab.url && domains.includes(new URL(tab.url).hostname)) {
+        const seralized = JSON.stringify(this._body);
+        const deserialized = JSON.parse(seralized);
+
+        Runtime.tabs.sendMessage(Number(tab.id), deserialized);
+      }
+    });
+  }
+
   /**
    * Send msg for tabs.
    */
-  public async send() {
+  async sendAll() {
     // Get all active tabs.
     const tabs = (await TabsMessage.tabs())
       .filter((tab) => tab.url && !tab.url.includes('chrome://'));

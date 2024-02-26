@@ -305,10 +305,9 @@ export class BackgroundWallet {
     });
   }
 
-  async isBase58Massa(addr: string, uuid: string, sendResponse: StreamResponse) {
+  async isBase58Massa(addr: string, uuid: string, domain: string, sendResponse: StreamResponse) {
     try {
       const isMassaAddreess = await isBase58Address(addr);
-      console.log(addr, uuid, isMassaAddreess);
 
       new TabsMessage({
         type: MTypeTab.CHECK_MASSA_ADDRESS_RES,
@@ -316,7 +315,7 @@ export class BackgroundWallet {
           uuid,
           resolve: isMassaAddreess
         }
-      }).send();
+      }).send(domain);
 
       sendResponse({
         resolve: isMassaAddreess

@@ -112,7 +112,7 @@ export class WorkerController {
     new TabsMessage({
       type: MTypeTab.NEW_SLOT,
       payload: newPeriod
-    }).send();
+    }).sendAll();
 
     if (newCycle > this.#cycle) {
       await this.#setCycle(newCycle);
