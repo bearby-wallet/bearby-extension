@@ -15,8 +15,6 @@
 
   export let tx: ConfirmParams;
 
-  console.log(tx);
-
   $: amount = Number(tx.tokenAmount) / 10 ** tx.token.decimals;
   $: img = viewIcon(tx.token.base58, TokenType.FT);
   $: multiplier = tx.gasMultiplier || $gasStore.multiplier;
