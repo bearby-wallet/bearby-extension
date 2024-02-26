@@ -36,7 +36,7 @@ export class BackgroundConnection {
           base58: null,
           resolve: true
         }
-      }).send();
+      }).send(domain);
 
       return sendResponse({
         resolve: true
@@ -126,7 +126,7 @@ export class BackgroundConnection {
             .map((value) => value.base58),
           resolve: true
         }
-      }).send();
+      }).send(connection.domain);
 
       if (this.#core.connections.has(connection.domain)) {
         await this.#core.connections.removeConfirmConnection(index);
@@ -161,7 +161,7 @@ export class BackgroundConnection {
           uuid: app.uuid,
           reject: REJECTED
         }
-      }).send();
+      }).send(app.domain);
 
       await this.#core.connections.removeConfirmConnection(index);
 
@@ -187,7 +187,7 @@ export class BackgroundConnection {
             uuid: app.uuid,
             reject: REJECTED
           }
-        }).send();
+        }).send(app.domain);
       }
       return sendResponse({
         reject: (err as BaseError).serialize()
@@ -257,7 +257,7 @@ export class BackgroundConnection {
           uuid: payload.uuid,
           reject: (err as BaseError).message
         }
-      }).send();
+      }).send(payload.domain);
       return sendResponse({
         reject: (err as BaseError).serialize()
       });
@@ -275,7 +275,7 @@ export class BackgroundConnection {
             uuid: this.#core.account.requestPubKey?.uuid,
             resolve: this.#core.account.selectedAccount?.pubKey
           }
-        }).send();
+        }).send(String(this.#core.account.requestPubKey?.domain));
       } else {
         new TabsMessage({
           type: MTypeTab.RESPONSE_PUB_KEY,
@@ -283,7 +283,7 @@ export class BackgroundConnection {
             uuid: this.#core.account.requestPubKey?.uuid,
             reject: REJECTED
           }
-        }).send();
+        }).send(String(this.#core.account.requestPubKey?.domain));
       }
 
       this.#core.account.setPubKeyRequest();
@@ -309,7 +309,7 @@ export class BackgroundConnection {
             base58: this.#core.account.selectedAccount?.base58,
             resolve: true
           }
-        }).send();
+        }).send(app.domain);
 
         return sendResponse({
           resolve: true
@@ -332,7 +332,7 @@ export class BackgroundConnection {
             uuid: app.uuid,
             reject: (err as BaseError).message
           }
-        }).send();
+        }).send(app.domain);
       }
       return sendResponse({
         reject: (err as BaseError).serialize()
