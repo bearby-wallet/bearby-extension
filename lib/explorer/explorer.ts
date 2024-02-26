@@ -4,8 +4,12 @@ const [mainnet] = NETWORK_KEYS;
 
 export class Massa {
   #network = mainnet;
-  #url = `https://explorer.massa.net`;
-  
+  #url = `https://massexplo.io`;
+
+  get network() {
+    return `network=${this.#network}`;
+  }
+
   setNetwork(net: string): Massa {
     this.#network = net;
 
@@ -13,14 +17,14 @@ export class Massa {
   }
 
   address(addr: string) {
-    return `${this.#url}/${this.#network}/address/${addr}`;
+    return `${this.#url}/address/${addr}?${this.network}`;
   }
 
   transaction(hash: string) {
-    return `${this.#url}/${this.#network}/operation/${hash}`;
+    return `${this.#url}/tx/${hash}?${this.network}`;
   }
 
   block(blocknumber: number) {
-    return `${this.#url}/${this.#network}/block/${blocknumber}`;
+    return `${this.#url}/block/${blocknumber}?${this.network}`;
   }
 }
