@@ -11,23 +11,25 @@
 	export let identities: Account[];
 	export let indexies: number[];
 
-	let isAll = false;
+	let isAll = indexies.length === identities.length;
 	let accounts = identities.map((_, index) =>
 		indexies.some((i) => i === index),
 	);
 
 	const onSelectAccount = (index: number, e: CustomEvent) => {
 		accounts[index] = e.detail;
-
-		let indexies = accounts
+		indexies = accounts
 			.map((v, index) => (v ? index : null))
-			.filter((i) => i !== null);
+			.filter((i) => i !== null) as number[];
+
+		isAll = indexies.length === identities.length;
 
 		dispatch("changed", indexies);
 	};
 	const onSelectAll = () => {
+		isAll = !isAll;
 		accounts = accounts.map((_) => isAll);
-		let indexies = isAll ? accounts.map((_, i) => i) : [];
+		indexies = isAll ? identities.map((_, i) => i) : [];
 
 		dispatch("changed", indexies);
 	};
