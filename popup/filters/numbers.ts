@@ -6,6 +6,10 @@ import settingsStore from 'popup/store/settings';
 export function formatNumber(balance: number | string, currency?: string) {
   const { format } = get(settingsStore);
 
+  if (Number(balance) <= 0.9) {
+    return `${currency || ''} ${Number(balance)}`;
+  }
+
   if (!format || Number(balance) < 100000) {
     return `${currency || ''} ${Number(balance).toFixed()}`;
   }

@@ -1,36 +1,36 @@
 <script lang="ts">
-  import type { HistoryTransaction } from 'types';
+  import type { HistoryTransaction } from "types";
 
-	import { _ } from 'popup/i18n';
+  import { _ } from "popup/i18n";
 
-  import { trim } from 'popup/filters/trim';
-  import { Massa } from 'lib/explorer';
-  import { openTab } from 'popup/mixins/link';
-  import { formatNumber, toKG } from 'popup/filters/numbers';
-  import { clipboardCopy } from 'popup/mixins/clipboard';
+  import { trim } from "popup/filters/trim";
+  import { Massa } from "lib/explorer";
+  import { openTab } from "popup/mixins/link";
+  import { formatNumber, toKG } from "popup/filters/numbers";
+  import { clipboardCopy } from "popup/mixins/clipboard";
 
-  import settingsStore from 'popup/store/settings';
-	import netStore from 'popup/store/network';
+  import settingsStore from "popup/store/settings";
+  import netStore from "popup/store/network";
 
-  import Tooltip from '../components/Tooltip.svelte';
-  import ExplorerIcon from '../components/icons/explorer.svelte';
+  import Tooltip from "../components/Tooltip.svelte";
+  import ExplorerIcon from "../components/icons/explorer.svelte";
 
   export let tx: HistoryTransaction;
 
   const massaExplorer = new Massa().setNetwork($netStore);
 
-  let tip = $_('home.clipboard.copy');
+  let tip = $_("home.clipboard.copy");
 
-  $: amount = Number(tx.tokenAmount) / 10**tx.token.decimals;
+  $: amount = Number(tx.tokenAmount) / 10 ** tx.token.decimals;
   $: hash = tx.hash;
-  $: operate = Number(tx.amount) > 0 ? '-' : '';
+  $: operate = Number(tx.coins) > 0 ? "-" : "";
   $: converted = 0;
 
   function hanldeOnCopy(content: string) {
     clipboardCopy(content);
-    tip = $_('home.clipboard.copied');
+    tip = $_("home.clipboard.copied");
     setTimeout(() => {
-      tip = $_('home.clipboard.copy');
+      tip = $_("home.clipboard.copy");
     }, 500);
   }
 
@@ -39,24 +39,16 @@
 
     openTab(url);
   }
-
-  function hanldeOnRecipient() {
-    const url = massaExplorer.address(tx.recipient);
-
-    openTab(url);
-  }
 </script>
 
 <div class="tx">
   {#if tx.icon}
-    <img
-      src={tx.icon}
-      alt={tx.title}
-      width="30"
-    />
+    <img src={tx.icon} alt={tx.title} width="30" />
   {/if}
   <h1>
-    {operate} {formatNumber(amount, tx.token.symbol)} <span>
+    {operate}
+    {formatNumber(amount, tx.token.symbol)}
+    <span>
       + {toKG(tx.fee)}
     </span>
   </h1>
@@ -71,16 +63,10 @@
     </li>
     <li>
       <span>
-        {$_('history.modals.details.from')}
+        {$_("history.modals.details.from")}
       </span>
-      <Tooltip
-        tip={tip}
-        bottom
-      >
-        <span
-          class="pointer"
-          on:mouseup={() => hanldeOnCopy(tx.from)}
-        >
+      <Tooltip {tip} bottom>
+        <span class="pointer" on:mouseup={() => hanldeOnCopy(tx.from)}>
           {trim(tx.from)}
         </span>
       </Tooltip>
@@ -88,7 +74,7 @@
     {#if tx.recipient}
       <li>
         <span>
-          {$_('history.modals.details.recipient')}
+          {$_("history.modals.details.recipient")}
         </span>
         <span>
           <a
@@ -103,7 +89,7 @@
     {/if}
     <li>
       <span>
-        {$_('history.modals.details.method')}
+        {$_("history.modals.details.method")}
       </span>
       <span>
         {tx.func || $_(`confirm.params.types.${tx.type}`)}
@@ -111,23 +97,17 @@
     </li>
     <li>
       <span>
-        {$_('history.modals.details.hash')}
+        {$_("history.modals.details.hash")}
       </span>
-      <Tooltip
-        tip={tip}
-        bottom
-      >
-        <span
-          class="pointer"
-          on:mouseup={() => hanldeOnCopy(hash)}
-        >
+      <Tooltip {tip} bottom>
+        <span class="pointer" on:mouseup={() => hanldeOnCopy(hash)}>
           {trim(hash)}
         </span>
       </Tooltip>
     </li>
     <li>
       <span>
-        {$_('history.modals.details.expiry')}
+        {$_("history.modals.details.expiry")}
       </span>
       <span>
         {tx.expiryPeriod}
@@ -135,7 +115,7 @@
     </li>
     <li>
       <span>
-        {$_('history.modals.details.time')}
+        {$_("history.modals.details.time")}
       </span>
       <span>
         {new Date(tx.timestamp).toLocaleString()}
@@ -144,7 +124,7 @@
     {#if tx.error}
       <li class="error">
         <span>
-          {$_('history.modals.details.error')}
+          {$_("history.modals.details.error")}
         </span>
         <span>
           {tx.error}
@@ -153,14 +133,14 @@
     {/if}
   </ul>
   <div class="buttons">
-    <div on:mouseup={hanldeOnExplorer}>
+    <div class="explorer" on:mouseup={hanldeOnExplorer}>
       <ExplorerIcon />
     </div>
   </div>
 </div>
 
 <style lang="scss">
-	@import "../styles/mixins";
+  @import "../styles/mixins";
   div.tx {
     height: 600px;
     @include flex-center-top-column;
@@ -190,7 +170,11 @@
 
     padding: 10px;
     background-color: var(--card-color);
-    box-shadow: rgb(0 0 0 / 1%) 0px 0px 1px, rgb(0 0 0 / 4%) 0px 4px 8px, rgb(0 0 0 / 4%) 0px 16px 24px, rgb(0 0 0 / 1%) 0px 24px 32px;
+    box-shadow:
+      rgb(0 0 0 / 1%) 0px 0px 1px,
+      rgb(0 0 0 / 4%) 0px 4px 8px,
+      rgb(0 0 0 / 4%) 0px 16px 24px,
+      rgb(0 0 0 / 1%) 0px 24px 32px;
 
     @include border-radius(16px);
 
@@ -220,8 +204,8 @@
         }
       }
       &:last-child {
-				border-bottom: solid 1px transparent;
-			}
+        border-bottom: solid 1px transparent;
+      }
       & > span {
         color: var(--text-color);
 
@@ -238,14 +222,14 @@
     }
   }
   div.buttons {
-    & > div {
+    & > div.explorer {
       cursor: pointer;
 
       &:hover {
-        :global(svg > path) {
+        :global(svg > g > path) {
           fill: var(--secondary-color);
         }
       }
-    } 
+    }
   }
 </style>
