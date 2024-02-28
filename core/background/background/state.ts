@@ -93,40 +93,56 @@ export class BackgroundState {
       .map((app) => app.domain);
     const account = this.account.selectedAccount;
 
-    new TabsMessage({
-      type: MTypeTab.ACCOUNT_CHANGED,
-      payload: {
-        base58: account?.base58
-      }
-    }).send(...domains);
+    try {
+      new TabsMessage({
+        type: MTypeTab.ACCOUNT_CHANGED,
+        payload: {
+          base58: account?.base58
+        }
+      }).send(...domains);
+    } catch (err) {
+      console.warn(err);
+    }
   }
 
   triggerNetwork() {
     const domains = this.connections.identities.map((app) => app.domain);
 
-    new TabsMessage({
-      type: MTypeTab.NETWORK_CHANGED,
-      payload: {
-        net: this.network.selected,
-        period: this.worker.period
-      }
-    }).send(...domains);
+    try {
+      new TabsMessage({
+        type: MTypeTab.NETWORK_CHANGED,
+        payload: {
+          net: this.network.selected,
+          period: this.worker.period
+        }
+      }).send(...domains);
+    } catch (err) {
+      console.warn(err);
+    }
   }
 
   triggerLock() {
-    new TabsMessage({
-      type: MTypeTab.LOCKED,
-      payload: {
-        enabled: this.guard.isEnable
-      }
-    }).sendAll();
+    try {
+      new TabsMessage({
+        type: MTypeTab.LOCKED,
+        payload: {
+          enabled: this.guard.isEnable
+        }
+      }).sendAll();
+    } catch (err) {
+      console.warn(err);
+    }
   }
 
   #onInstalled(event: chrome.runtime.InstalledDetails) {
-    if (event.reason === Runtime.runtime.OnInstalledReason.INSTALL) {
-      const url = Runtime.runtime.getURL(PROMT_PAGE);
-      Runtime.tabs.create({ url });
-      Runtime.runtime.onInstalled.removeListener(this.#onInstalled);
+    try {
+      if (event.reason === Runtime.runtime.OnInstalledReason.INSTALL) {
+        const url = Runtime.runtime.getURL(PROMT_PAGE);
+        Runtime.tabs.create({ url });
+        Runtime.runtime.onInstalled.removeListener(this.#onInstalled);
+      }
+    } catch {
+      ///
     }
   }
 }

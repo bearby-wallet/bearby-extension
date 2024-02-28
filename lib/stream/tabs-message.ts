@@ -1,6 +1,7 @@
 import type { ReqBody } from 'types';
 
 import { Runtime } from 'lib/runtime';
+import { BaseError } from 'lib/error';
 
 
 /**
@@ -33,13 +34,13 @@ export class TabsMessage {
     return new Promise((resolve, reject) => {
       Runtime.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
         if (!tab) {
-          return reject(new Error('no active tabs'));
+          return reject(new BaseError('no active tabs'));
         }
 
         const { hostname } = new URL(String(tab.url));
 
         if (hostname !== domain) {
-          return reject(new Error('invalid domain'));
+          return reject(new BaseError('invalid domain'));
         }
 
         const seralized = JSON.stringify(this._body);
