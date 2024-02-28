@@ -86,14 +86,14 @@ export class BackgroundState {
   }
 
   triggerAccount() {
-    const domains = this
-      .connections
-      .identities
-      .filter((app) => app.accounts.includes(this.account.wallet.selectedAddress))
-      .map((app) => app.domain);
-    const account = this.account.selectedAccount;
-
     try {
+      const domains = this
+        .connections
+        .identities
+        .filter((app) => app.accounts && app.accounts.includes(this.account.wallet.selectedAddress))
+        .map((app) => app.domain);
+      const account = this.account.selectedAccount;
+
       new TabsMessage({
         type: MTypeTab.ACCOUNT_CHANGED,
         payload: {
