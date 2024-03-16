@@ -133,7 +133,7 @@ export class AppConnectController {
       if (jsonData[Fields.CONNECTIONS_LIST]) {
         let data: AppConnection[] = JSON.parse(String(jsonData[Fields.CONNECTIONS_LIST]));
 
-        this.#identities = data;
+        this.#identities = data.filter((el) => el.accounts && el.domain);
       }
     } catch (err) {
       this.#identities = [];
