@@ -60,7 +60,7 @@
       {/if}
     </div>
     <div class="center">
-      {#if conn && $connectionStore.domain}
+      {#if conn && $connectionStore.domain && $connectionStore.accounts}
         <div
           class="connections"
           class:enabled={Boolean(app)}
