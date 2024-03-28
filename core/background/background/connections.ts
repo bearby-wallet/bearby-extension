@@ -95,6 +95,8 @@ export class BackgroundConnection {
             .map((value) => value.base58),
         }
       }).signal(app.domain);
+      this.#core.triggerAccount();
+
 
       return sendResponse({
         resolve: this.#core.state
