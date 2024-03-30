@@ -10,7 +10,10 @@
 	import walletStore from 'popup/store/wallet';
 	import { createNextSeedAccount, balanceUpdate } from 'popup/backend/wallet';
 
+	import connectionsAppsStore from "popup/store/connections";
+
   import NavClose from '../components/NavClose.svelte';
+	import AppSelect from '../modals/AppSelect.svelte';
 
 
   let lastIndex = $walletStore
@@ -20,11 +23,15 @@
   let name = `${DEFAULT_NAME} ${lastIndex}`;
 	let loading = false;
 
-  $: disabled = loading || name.length < MIN_NAME_LEN;
+ $: disabled = loading || name.length < MIN_NAME_LEN;
 
   const handleSubmit = async (e: Event) => {
     e.preventDefault();
     loading = true;
+
+    console.log($connectionsAppsStore);
+
+    return;
 
 		try {
       await createNextSeedAccount(name);
@@ -58,6 +65,7 @@
 				{$_('setup_acc.name')}
       </p>
 		</label>
+    <AppSelect identities={$connectionsAppsStore} />
     <button
       class="primary"
       class:loading={loading}
