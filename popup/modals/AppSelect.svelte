@@ -98,7 +98,6 @@
 				margin: 0;
 				background-color: var(--card-color);
 				border: solid 1px var(--card-color);
-				margin: 5px;
 				border: solid 1px transparent;
 
 				@include border-radius(16px);

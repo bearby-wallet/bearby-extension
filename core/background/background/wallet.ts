@@ -5,7 +5,7 @@ import type {
 } from "types/account";
 import type { StreamResponse } from "types/stream";
 import type { BackgroundState } from "./state";
-import type { BaseError } from "lib/error";
+import { BaseError } from "lib/error";
 
 import { isBase58Address, pubKeyFromBytes } from "lib/address";
 import { privateKeyBytesToBase58 } from "lib/validator";
@@ -197,7 +197,7 @@ export class BackgroundWallet {
     }
   }
 
-  async createAccountFromSeed(name: string, sendResponse: StreamResponse) {
+  async createAccountFromSeed(name: string, appIndexies: number[], sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();
 
@@ -205,6 +205,7 @@ export class BackgroundWallet {
         this.#core.guard.seed,
         name
       );
+      await this.#core.connections.addAccountApps(appIndexies, this.#core.account.wallet.selectedAddress);
       this.#core.triggerAccount();
       await this.#core.transaction.sync();
 

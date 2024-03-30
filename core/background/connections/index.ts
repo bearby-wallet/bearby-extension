@@ -32,6 +32,16 @@ export class AppConnectController {
     return this.#identities.find((a) => a.domain === domain);
   }
 
+  async addAccountApps(indexies: number[], accountIndex: number) {
+    for (let index = 0; index < indexies.length; index++) {
+      this.#identities[index].accounts.push(accountIndex);
+    }
+
+    await BrowserStorage.set(
+      buildObject(Fields.CONNECTIONS_LIST, this.identities)
+    );
+  }
+
   async checkConnection(domain: string) {
     let checkPopup = false;
 

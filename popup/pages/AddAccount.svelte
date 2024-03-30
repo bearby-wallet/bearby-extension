@@ -1,88 +1,92 @@
 <script lang="ts">
-	import { push } from 'svelte-spa-router';
-	import { _ } from 'popup/i18n';
-  import { AccountTypes } from 'config/account-type';
+  import { push } from "svelte-spa-router";
+  import { _ } from "popup/i18n";
+  import { AccountTypes } from "config/account-type";
   import {
     MAX_NAME_LEN,
     MIN_NAME_LEN,
-    DEFAULT_NAME
-  } from 'popup/config/account';
-	import walletStore from 'popup/store/wallet';
-	import { createNextSeedAccount, balanceUpdate } from 'popup/backend/wallet';
+    DEFAULT_NAME,
+  } from "popup/config/account";
+  import walletStore from "popup/store/wallet";
+  import { createNextSeedAccount, balanceUpdate } from "popup/backend/wallet";
 
-	import connectionsAppsStore from "popup/store/connections";
+  import connectionsAppsStore from "popup/store/connections";
 
-  import NavClose from '../components/NavClose.svelte';
-	import AppSelect from '../modals/AppSelect.svelte';
+  import NavClose from "../components/NavClose.svelte";
+  import AppSelect from "../modals/AppSelect.svelte";
 
-
-  let lastIndex = $walletStore
-    .identities
-    .filter((acc) => acc.type === AccountTypes.Seed)
-    .length;
+  let lastIndex = $walletStore.identities.filter(
+    (acc) => acc.type === AccountTypes.Seed,
+  ).length;
   let name = `${DEFAULT_NAME} ${lastIndex}`;
-	let loading = false;
+  let loading = false;
+  let indexies: number[] = [];
+  let error = "";
 
- $: disabled = loading || name.length < MIN_NAME_LEN;
+  $: disabled = loading || name.length < MIN_NAME_LEN;
+
+  const handleConnectionsChange = (e: CustomEvent) => {
+    error = "";
+    indexies = e.detail;
+  };
 
   const handleSubmit = async (e: Event) => {
     e.preventDefault();
     loading = true;
 
-    console.log($connectionsAppsStore);
-
-    return;
-
-		try {
-      await createNextSeedAccount(name);
-		} catch (err) {
-      console.error(err);
-      ////
-		}
+    try {
+      await createNextSeedAccount(name, indexies);
+    } catch (err) {
+      error = (err as Error).message;
+      loading = false;
+      return;
+    }
 
     try {
       await balanceUpdate();
     } catch {
       ///
     }
-    push('/');
+    push("/");
     loading = false;
   };
 </script>
 
 <main>
-	<NavClose title={$_('setup_acc.title')}/>
+  <NavClose title={$_("setup_acc.title")} />
   <form on:submit={handleSubmit}>
     <label>
-			<input
-				bind:value={name}
+      <input
+        bind:value={name}
         maxlength={MAX_NAME_LEN}
         minlength={MIN_NAME_LEN}
-				placeholder={$_('setup_acc.name_placeholder')}
+        placeholder={$_("setup_acc.name_placeholder")}
         required
-			>
-			<p>
-				{$_('setup_acc.name')}
+      />
+      <p>
+        {$_("setup_acc.name")}
       </p>
-		</label>
-    <AppSelect identities={$connectionsAppsStore} />
-    <button
-      class="primary"
-      class:loading={loading}
-      disabled={disabled}
-    >
-      {$_('restore.btn')}
+    </label>
+    <p class="error">
+      {error}
+    </p>
+    <AppSelect
+      identities={$connectionsAppsStore}
+      on:changed={handleConnectionsChange}
+    />
+    <button class="primary" class:loading {disabled}>
+      {$_("restore.btn")}
     </button>
   </form>
 </main>
 
 <style lang="scss">
-	@import "../styles/mixins";
-	main {
-		height: 100vh;
+  @import "../styles/mixins";
+  main {
+    height: 100vh;
 
-		@include flex-center-top-column;
-	}
+    @include flex-center-top-column;
+  }
   form {
     width: 100%;
     @include flex-center-column;
@@ -92,6 +96,11 @@
       width: 100%;
       max-width: 290px;
       margin: 10px;
+    }
+
+    & > p.error {
+      font-size: 12pt;
+      color: var(--danger-color);
     }
 
     & > label > p {

@@ -56,8 +56,8 @@ export async function changePassword(payload: SetPasswordPayload) {
 
 export async function getWalletState() {
   const data = await Message
-  .signal(MTypePopup.GET_WALLET_STATE)
-  .send();
+    .signal(MTypePopup.GET_WALLET_STATE)
+    .send();
   const resolve = warpMessage(data) as WalletState;
   updateState(resolve);
   return resolve;
@@ -114,11 +114,12 @@ export async function selectAccount(index: number) {
   return resolve;
 }
 
-export async function createNextSeedAccount(name: string) {
+export async function createNextSeedAccount(name: string, appIndexies: number[]) {
   const data = await new Message<SendResponseParams>({
     type: MTypePopup.ADD_ACCOUNT,
     payload: {
-      name
+      name,
+      appIndexies
     }
   }).send();
   const resolve = warpMessage(data);
