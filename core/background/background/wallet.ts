@@ -5,7 +5,7 @@ import type {
 } from "types/account";
 import type { StreamResponse } from "types/stream";
 import type { BackgroundState } from "./state";
-import { BaseError } from "lib/error";
+import type { BaseError } from "lib/error";
 
 import { isBase58Address, pubKeyFromBytes } from "lib/address";
 import { privateKeyBytesToBase58 } from "lib/validator";
