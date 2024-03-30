@@ -92,7 +92,7 @@ export function startBackground(core: BackgroundState) {
         wallet.importTrackAccount(msg.payload.base58, msg.payload.name, sendResponse);
         return true;
       case MTypePopup.RESTORE_KEY:
-        wallet.restoreKey(msg.payload, sendResponse);
+        wallet.restoreKey(msg.payload, msg.payload.appIndexies, sendResponse);
         return true;
       case MTypePopup.EXPORT_KEY:
         wallet.exportPrivateKey(msg.payload.password, sendResponse);

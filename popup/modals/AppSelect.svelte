@@ -77,7 +77,8 @@
 
 		width: 100%;
 		max-width: 350pt;
-		height: calc(100vh - 250px);
+		height: calc(100vh - 280px);
+		max-height: 500px;
 
 		&.connections {
 			padding: 8pt;
@@ -99,6 +100,7 @@
 				background-color: var(--card-color);
 				border: solid 1px var(--card-color);
 				border: solid 1px transparent;
+				margin-top: 2pt;
 
 				@include border-radius(16px);
 

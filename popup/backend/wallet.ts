@@ -127,12 +127,13 @@ export async function createNextSeedAccount(name: string, appIndexies: number[])
   return resolve;
 }
 
-export async function restoreSecretKey(key: string, name: string) {
+export async function restoreSecretKey(key: string, name: string, appIndexies: number[]) {
   const data = await new Message<SendResponseParams>({
     type: MTypePopup.RESTORE_KEY,
     payload: {
       name,
-      key
+      key,
+      appIndexies
     }
   }).send();
   const resolve = warpMessage(data);

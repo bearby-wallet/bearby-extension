@@ -219,7 +219,7 @@ export class BackgroundWallet {
     }
   }
 
-  async restoreKey(payload: KeyAccountPayload, sendResponse: StreamResponse) {
+  async restoreKey(payload: KeyAccountPayload, appIndexies: number[], sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();
 
@@ -227,6 +227,7 @@ export class BackgroundWallet {
         payload.key,
         payload.name
       );
+      await this.#core.connections.addAccountApps(appIndexies, this.#core.account.wallet.selectedAddress);
       this.#core.triggerAccount();
       await this.#core.transaction.sync();
 
