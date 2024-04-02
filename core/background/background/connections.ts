@@ -1,11 +1,15 @@
 import type { AppConnection, ContentWalletData, RPCBody, StreamResponse } from "types";
 import type { BackgroundState } from "./state";
 import type { BaseError } from "lib/error";
+import type { CallParam } from "types";
 
 import { MTypeTab } from "config/stream-keys";
 import { PromptService } from "lib/prompt";
 import { TabsMessage } from "lib/stream/tabs-message";
 import { REJECTED } from "background/connections/errors";
+import { TypeOf } from "lib/type";
+import { parseParams } from "lib/args";
+import { JsonRPCRequestMethods } from "background/provider";
 
 
 export class BackgroundConnection {
@@ -226,8 +230,22 @@ export class BackgroundConnection {
   async makeProxyRequest(bodies: RPCBody[], sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();
-      const rpcBodies = bodies.map(
-        ({ method, params }) => this.#core.massa.provider.buildBody(method, params)
+      const rpcBodies = bodies.map(({ method, params }) => {
+        if (method == JsonRPCRequestMethods.EXECUTE_READ_ONLY_CALL) {
+          params = params.map((param) => {
+            if (TypeOf.isArray(param)) {
+              return (param as any).map((req: any) => ({
+                ...req,
+                parameter: Array.from(parseParams(req.parameter).serialize())
+              }));
+            }
+
+            return param;
+          })
+        }
+
+        return this.#core.massa.provider.buildBody(method, params)
+      }
       );
       const respone = await this.#core.massa.sendJson(...rpcBodies);
 

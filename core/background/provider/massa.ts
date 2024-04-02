@@ -23,7 +23,6 @@ import { REQUEST_FALLED, MassaHttpError, EMPTY_ACCOUNT, INCORRECT_PUB_KEY } from
 import { JsonRPCRequestMethods } from './methods';
 import { assert } from 'lib/assert';
 import { base58Encode, pubKeyFromBytes } from 'lib/address';
-import { PUBLIC_KEY_PREFIX } from 'config/common';
 
 
 export class MassaControl {
