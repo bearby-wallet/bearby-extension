@@ -164,6 +164,12 @@ export interface OperationResponse extends JsonRPCResponse {
   result?: string[];
 }
 
+export interface ExecuteReadOnlyCallResponse extends JsonRPCResponse {
+  result?: {
+    result: { Ok: number[] };
+  }[];
+}
+
 export interface TransactionData {
   signature: string;
   serialized_content: number[];

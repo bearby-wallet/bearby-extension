@@ -1,4 +1,4 @@
-import type { Balance, Token } from 'types';
+import type { Balance, SCReadData, Token } from 'types';
 import type { MassaControl } from 'background/provider';
 import type { NetworkControl } from 'background/network';
 import type { AccountController } from 'background/account';
@@ -8,6 +8,7 @@ import { NETWORK_KEYS } from 'config/network';
 import { Fields } from 'config/fields';
 import { BrowserStorage, buildObject } from 'lib/storage';
 import { TokenError } from './errors';
+import { Args } from 'lib/args';
 
 
 const [mainnet, buildnet, custom] = NETWORK_KEYS;
@@ -63,6 +64,8 @@ export class TokenControl {
     const [resonses] = await this.#massa.getAddresses(...addresses);
 
     const balances: Balance[] = [];
+
+    await this.#buidlBodiesTokens();
 
     if (resonses.result) {
       for (let index = 0; index < resonses.result.length; index++) {
@@ -125,5 +128,24 @@ export class TokenControl {
       buildObject(buildnetField, INIT[buildnet]),
       buildObject(customField, INIT[custom])
     );
+  }
+
+  async #buidlBodiesTokens() {
+    // TODO: make const for MAX and fee
+    let user = Array.from(new Args().addString('AU1aFiPAan1ucLZjS6iREznGYHHpTseRFAXEYvYsbCocU9RL64GW').serialize());
+    const addresses: string[] = ['AS1sKBEGsqtm8vQhQzi7KJ4YhyaKTSkhJrLkRc7mQtPqme3VcFHm', 'AS186NRhT6itQ8LuCS7a8n6xQYiXrqDcaaoeiYpTSUsJWKEMgTEw'];
+    const data = addresses.map((address) => ({
+      max_gas: 2100000,
+      target_address: address,
+      target_function: "balanceOf",
+      parameter: user,
+    } as SCReadData));
+    const [resonses] = await this.#massa.executeReadOnlyCall(...data);
+    if (resonses.result) {
+      const result = resonses.result[0].result.Ok;
+      console.log(result);
+    }
+
+    console.log(resonses);
   }
 }

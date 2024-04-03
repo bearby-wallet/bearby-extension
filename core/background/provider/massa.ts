@@ -8,7 +8,9 @@ import type {
   MassaBlock,
   KeyPair,
   TransactionData,
-  OperationResponse
+  OperationResponse,
+  SCReadData,
+  ExecuteReadOnlyCallResponse
 } from 'types';
 import type { SettingsControl } from 'background/settings';
 import type { NetworkControl } from "background/network";
@@ -49,6 +51,11 @@ export class MassaControl {
 
   async getAddresses(...addresses: string[]): Promise<JsonRPCResponseNodeStatusAddresses[]> {
     const body = this.provider.buildBody(JsonRPCRequestMethods.GET_ADDRESSES, [addresses]);
+    return await this.sendJson(body);
+  }
+
+  async executeReadOnlyCall(...data: SCReadData[]): Promise<ExecuteReadOnlyCallResponse[]> {
+    const body = this.provider.buildBody(JsonRPCRequestMethods.EXECUTE_READ_ONLY_CALL, [data]);
     return await this.sendJson(body);
   }
 

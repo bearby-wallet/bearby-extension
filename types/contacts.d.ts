@@ -10,3 +10,11 @@ export interface CallParam {
   vname?: string;
   value: NativeType | NativeType[] | Uint8Array;
 }
+
+export interface SCReadData {
+  caller_address?: string;
+  max_gas: number;
+  parameter: number[];
+  target_address: string;
+  target_function: string;
+}
