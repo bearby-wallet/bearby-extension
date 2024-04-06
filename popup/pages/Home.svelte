@@ -11,6 +11,7 @@
 	import BottomTabs from "../components/BottomTabs.svelte";
 	import Modal from "../components/Modal.svelte";
 	import ConnectAccounts from "../modals/ConnectAccounts.svelte";
+	import ManageIcon from "../components/icons/Manage.svelte";
 
 	import { balanceUpdate } from "popup/backend/wallet";
 	import {
@@ -132,6 +133,11 @@
 				{$_("home.btns.receive")}
 			</button>
 		</div>
+		<div class="manage-tokens">
+			<a class="manage-btn" href="/tokens" use:link>
+				<ManageIcon />
+			</a>
+		</div>
 		<div class="wrapper">
 			{#each $tokensStore as token, index}
 				<TokenCard
@@ -215,14 +221,29 @@
 			border: solid 2px var(--primary-color);
 		}
 	}
-	div.wrapper {
-		margin-top: 15px;
-		padding-left: 10px;
-		padding-right: 10px;
+	div.manage-tokens {
+		display: flex;
+		justify-content: end;
 
+		& > a.manage-btn {
+			cursor: pointer;
+
+			&:hover {
+				:global(svg > path) {
+					stroke: var(--primary-color);
+				}
+			}
+		}
+	}
+	div.wrapper,
+	div.manage-tokens {
 		min-width: 290px;
 		max-width: 320px;
 		width: fit-content;
+	}
+	div.wrapper {
+		padding-left: 10px;
+		padding-right: 10px;
 
 		flex-wrap: wrap;
 
