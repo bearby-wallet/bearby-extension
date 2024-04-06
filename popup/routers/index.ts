@@ -3,6 +3,7 @@ import { routerGuard } from './guard';
 
 import Home from '../pages/Home.svelte';
 import AccountsPage from '../pages/Accounts.svelte';
+import TokensPage from '../pages/tokens.svelte';
 import AddSeedAccountPage from '../pages/AddAccount.svelte';
 import RestorePrivateKeyPage from '../pages/KeyRestore.svelte';
 import SendPage from '../pages/Send.svelte';
@@ -48,6 +49,12 @@ export default {
   }),
   '/accounts': wrap({
     component: AccountsPage,
+    conditions: [
+      routerGuard
+    ]
+  }),
+  '/tokens': wrap({
+    component: TokensPage,
     conditions: [
       routerGuard
     ]

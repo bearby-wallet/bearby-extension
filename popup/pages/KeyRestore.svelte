@@ -101,9 +101,6 @@
 
     @include flex-center-top-column;
   }
-  textarea {
-    width: calc(100vw - 30px);
-  }
   form {
     width: calc(100vw - 30px);
     @include flex-center-column;
