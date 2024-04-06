@@ -1,6 +1,4 @@
 <script lang="ts">
-  import type { Token } from "types/token";
-
   import { _ } from "popup/i18n";
 
   import NavClose from "../components/NavClose.svelte";
@@ -19,7 +17,8 @@
 
   let search = "";
   let tokenAddModal = false;
-  let tokensList: Token[] = $tokensStore.slice(SKIP);
+
+  $: tokensList = $tokensStore.slice(SKIP);
 
   const onInputSearch = (e: CustomEvent) => {
     search = e.detail;
