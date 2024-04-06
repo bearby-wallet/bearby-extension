@@ -72,6 +72,8 @@ export const MTypePopup = {
   REJECT_MESSAGE: `@/${app}/reject-message`,
   APPROVE_MESSAGE: `@/${app}/approve-message`,
 
+  GET_FT_STATES: `@/${app}/get-ft-state`,
+
   APPROVE_PUB_KEY_REQ: `@/${app}/apprvoe-pub-key-request`
 };
 

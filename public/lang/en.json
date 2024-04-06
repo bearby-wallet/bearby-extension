@@ -106,6 +106,20 @@
       }
     }
   },
+  "tokens": {
+    "title": "FT Tokens",
+    "notokens": "No Tokens here...",
+    "placeholder": "Filter FT",
+    "modals": {
+      "add": {
+        "title": "Add FT",
+        "placeholder": "Input FT address",
+        "btns": {
+          "fetch": "fetch FT state"
+        }
+      }
+    }
+  },
   "accounts": {
     "title": "Accounts",
     "no_accounts": "No accounts with name:",

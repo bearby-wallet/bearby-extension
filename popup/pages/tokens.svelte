@@ -4,20 +4,33 @@
   import NavClose from "../components/NavClose.svelte";
   import SearchBox from "../components/SearchBox.svelte";
   import AddIcon from "../components/icons/Add.svelte";
+  import Modal from "../components/Modal.svelte";
+  import AddTokenModal from "../modals/AddToken.svelte";
 
   let search = "";
   let tokenAddModal = false;
+  let tokensList = [];
 
   const onInputSearch = (e: CustomEvent) => {
     search = e.detail;
   };
 </script>
 
+<Modal
+  show={Boolean(tokenAddModal)}
+  title={$_("tokens.modals.add.title")}
+  on:close={() => (tokenAddModal = !tokenAddModal)}
+>
+  <div class="m-warp">
+    <AddTokenModal />
+  </div>
+</Modal>
+
 <main>
   <NavClose title={$_("tokens.title")} />
   <div>
     <SearchBox
-      placeholder={$_("accounts.placeholder")}
+      placeholder={$_("tokens.placeholder")}
       focus
       on:input={onInputSearch}
     >
@@ -25,6 +38,13 @@
         <AddIcon />
       </span>
     </SearchBox>
+    <ul>
+      {#if tokensList.length == 0}
+        <p>
+          {$_("tokens.notokens")}
+        </p>
+      {/if}
+    </ul>
   </div>
 </main>
 
