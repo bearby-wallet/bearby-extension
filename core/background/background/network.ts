@@ -16,6 +16,8 @@ export class BackgroundNetwork {
 
       await this.#core.network.setNetwork(net);
       this.#core.triggerNetwork();
+      await this.#core.transaction.sync();
+      await this.#core.tokens.sync();
 
       return sendResponse({
         resolve: this.#core.state

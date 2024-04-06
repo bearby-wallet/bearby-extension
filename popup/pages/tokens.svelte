@@ -22,7 +22,7 @@
   on:close={() => (tokenAddModal = !tokenAddModal)}
 >
   <div class="m-warp">
-    <AddTokenModal />
+    <AddTokenModal on:close={() => (tokenAddModal = !tokenAddModal)} />
   </div>
 </Modal>
 

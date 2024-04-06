@@ -20,7 +20,7 @@ export async function getFTTokens(...addresses: string[]) {
 
 export async function addFTToken(state: TokenRes) {
   const data = await new Message<SendResponseParams>({
-    type: MTypePopup.GET_FT_STATES,
+    type: MTypePopup.ADD_FT_TOKEN,
     payload: {
       state
     }

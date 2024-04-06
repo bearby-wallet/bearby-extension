@@ -7,11 +7,13 @@ import { ROLL_ADDRESS, ZERO_ADDRESS } from 'config/common';
 import { NETWORK_KEYS } from 'config/network';
 import { Fields } from 'config/fields';
 import { BrowserStorage, buildObject } from 'lib/storage';
-import { FAIL_FETCH_TOKEN_STATE, TokenError } from './errors';
+import { FAIL_FETCH_TOKEN_STATE, INVALID_DECIMALS, INVALID_NAME, INVALID_SYMBOL, TokenError, TOKEN_UNIQUE } from './errors';
 import { Args } from 'lib/args';
 import { bytesToU256 } from 'lib/args/numbers';
 import { MIN_GAS_READ } from 'config/gas';
 import { bytesToStr } from 'lib/args/strings';
+import { assert } from 'lib/assert';
+import { TypeOf } from 'lib/type';
 
 
 const [mainnet, buildnet, custom] = NETWORK_KEYS;
@@ -62,6 +64,29 @@ export class TokenControl {
     this.#massa = massa;
   }
 
+  async addFT(state: TokenRes) {
+    assert(state.decimals > 0 || state.decimals < 255, INVALID_DECIMALS, TokenError);
+    assert(state.name.length > 0, INVALID_NAME, TokenError);
+    assert(state.symbol.length > 0, INVALID_SYMBOL, TokenError);
+    assert(this.identities.some(
+      ({ base58, symbol, name }) => base58 !== state.base58
+        && symbol !== state.symbol
+        && name !== state.name
+    ), TOKEN_UNIQUE, TokenError);
+
+    this.#identities.push({
+      decimals: state.decimals,
+      rate: 0,
+      name: state.name,
+      symbol: state.symbol,
+      base58: state.base58,
+    });
+
+    await BrowserStorage.set(
+      buildObject(this.field, this.identities),
+    );
+  }
+
   async tokenfetch(addresses: string[]): Promise<TokenRes[]> {
     const limit = addresses.length;
     const decimalsBody = addresses.map((address) => ({
@@ -102,7 +127,7 @@ export class TokenControl {
         decimals: Number(decimal),
         symbol: String(symbolRes[index]),
         name: String(nameRes[index]),
-        address: addresses[index],
+        base58: addresses[index],
         balance: {
           [this.#account.wallet.selectedAddress]: String(balanceRes[index])
         }
@@ -146,26 +171,24 @@ export class TokenControl {
     return balances;
   }
 
-  // TODO: enable when add TOKENS.
   async sync() {
-    // const jsonList = await BrowserStorage.get(this.field);
-    //
-    // try {
-    //   const list = JSON.parse(String(jsonList));
-    //
-    //   if (!list || !TypeOf.isArray(list)) {
-    //     return this.reset();
-    //   }
-    //
-    //   if (list.length < this.#identities.length) {
-    //     return this.reset();
-    //   }
-    //
-    //   this.#identities = list;
-    // } catch {
-    //   await this.reset();
-    // }
-    await this.reset();
+    const jsonList = await BrowserStorage.get(this.field);
+
+    try {
+      const list = JSON.parse(String(jsonList));
+
+      if (!list || !TypeOf.isArray(list)) {
+        return this.reset();
+      }
+
+      if (list.length < this.#identities.length) {
+        return this.reset();
+      }
+
+      this.#identities = list;
+    } catch {
+      await this.reset();
+    }
   }
 
   async reset() {
