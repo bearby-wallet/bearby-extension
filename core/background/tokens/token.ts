@@ -68,10 +68,10 @@ export class TokenControl {
     assert(state.decimals > 0 || state.decimals < 255, INVALID_DECIMALS, TokenError);
     assert(state.name.length > 0, INVALID_NAME, TokenError);
     assert(state.symbol.length > 0, INVALID_SYMBOL, TokenError);
-    assert(this.identities.some(
-      ({ base58, symbol, name }) => base58 !== state.base58
-        && symbol !== state.symbol
-        && name !== state.name
+    assert(!this.identities.some(
+      ({ base58, symbol, name }) => base58 === state.base58
+        || symbol === state.symbol
+        || name === state.name
     ), TOKEN_UNIQUE, TokenError);
 
     this.#identities.push({
@@ -139,7 +139,7 @@ export class TokenControl {
     }
   }
 
-  async getBalances() {
+  async getBalances(): Promise<Balance[]> {
     const addresses = this.#account.wallet.identities.map((acc) => acc.base58);
     const [resonses] = await this.#massa.getAddresses(...addresses);
 
@@ -181,12 +181,8 @@ export class TokenControl {
         return this.reset();
       }
 
-      if (list.length < this.#identities.length) {
-        return this.reset();
-      }
-
       this.#identities = list;
-    } catch {
+    } catch (err) {
       await this.reset();
     }
   }
