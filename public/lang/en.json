@@ -115,8 +115,14 @@
         "title": "Add FT",
         "placeholder": "Input FT address",
         "btns": {
-          "fetch": "fetch FT state"
-        }
+          "fetch": "fetch FT state",
+          "add": "Add FT"
+        },
+        "address": "FT Address",
+        "decimals": "Decimals",
+        "name": "Name",
+        "symbol": "Symbol",
+        "balance": "Balance"
       }
     }
   },

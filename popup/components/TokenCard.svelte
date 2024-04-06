@@ -1,44 +1,41 @@
 <script lang="ts">
-  import type { Token } from 'types';
+  import type { Token } from "types";
 
-  import { createEventDispatcher } from 'svelte';
-  import { formatNumber } from 'popup/filters/numbers';
-  import { TokenType, viewIcon } from 'popup/utils/icon-view';
+  import { createEventDispatcher } from "svelte";
+  import { formatNumber } from "popup/filters/numbers";
+  import { TokenType, viewIcon } from "popup/utils/icon-view";
 
-  import walletStore from 'popup/store/wallet';
-  import settingsStore from 'popup/store/settings';
+  import walletStore from "popup/store/wallet";
+  import settingsStore from "popup/store/settings";
 
   const dispatch = createEventDispatcher();
 
   export let token: Token = {
     decimals: 9,
     rate: 1,
-    name: '',
-    symbol: '',
-    base58: ''
+    name: "",
+    symbol: "",
+    base58: "",
   };
   export let loading = false;
   export let disabled = false;
 
   $: account = $walletStore.identities[$walletStore.selectedAddress];
   $: img = viewIcon(token.base58, TokenType.FT);
-  $: balance = account.tokens && account.tokens[token.base58] ?
-    account.tokens[token.base58].final : 0;
+  $: balance =
+    account.tokens && account.tokens[token.base58]
+      ? account.tokens[token.base58].final
+      : 0;
   $: converted = 0;
 
   const onClick = () => {
     if (!disabled) {
-      dispatch('select');
+      dispatch("select");
     }
   };
 </script>
 
-<div
-  class="token-card"
-  class:loading={loading}
-  class:disabled={disabled}
-  on:mouseup={onClick}
->
+<div class="token-card" class:loading class:disabled on:mouseup={onClick}>
   <div>
     <p class="symbol">
       {token.symbol}
@@ -51,13 +48,7 @@
     </p>
   </div>
   <div class="img-wrapper">
-    <img
-      src={img}
-      alt={token.symbol}
-      width="28"
-      height="28"
-      loading="lazy"
-    />
+    <img src={img} alt={token.symbol} width="28" height="28" loading="lazy" />
   </div>
 </div>
 
@@ -79,13 +70,17 @@
     border: solid 2px var(--card-color);
     background-color: var(--card-color);
 
-    box-shadow: rgb(0 0 0 / 1%) 0px 0px 1px, rgb(0 0 0 / 4%) 0px 4px 8px, rgb(0 0 0 / 4%) 0px 16px 24px, rgb(0 0 0 / 1%) 0px 24px 32px;
+    box-shadow:
+      rgb(0 0 0 / 1%) 0px 0px 1px,
+      rgb(0 0 0 / 4%) 0px 4px 8px,
+      rgb(0 0 0 / 4%) 0px 16px 24px,
+      rgb(0 0 0 / 1%) 0px 24px 32px;
 
     @include flex-between-row;
     @include border-radius(16px);
 
     &.loading {
-			border-color: transparent;
+      border-color: transparent;
 
       @include loading-gradient(var(--loading-color), var(--card-color));
     }

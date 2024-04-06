@@ -102,6 +102,7 @@ export class TokenControl {
         decimals: Number(decimal),
         symbol: String(symbolRes[index]),
         name: String(nameRes[index]),
+        address: addresses[index],
         balance: {
           [this.#account.wallet.selectedAddress]: String(balanceRes[index])
         }

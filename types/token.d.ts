@@ -20,5 +20,6 @@ export interface TokenRes {
   decimals: number;
   name: string;
   symbol: string;
+  address: string;
 }
 

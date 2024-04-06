@@ -1,33 +1,27 @@
 <script lang="ts">
-  import { trim } from 'popup/filters/trim';
-  import { clipboardCopy } from 'popup/mixins/clipboard';
-	import { _ } from 'popup/i18n';
+  import { trim } from "popup/filters/trim";
+  import { clipboardCopy } from "popup/mixins/clipboard";
+  import { _ } from "popup/i18n";
 
-	import walletStore from 'popup/store/wallet';
+  import walletStore from "popup/store/wallet";
 
-  import Tooltip from './Tooltip.svelte';
+  import Tooltip from "./Tooltip.svelte";
 
-  let tip = $_('home.clipboard.copy');
+  let tip = $_("home.clipboard.copy");
 
   $: account = $walletStore.identities[$walletStore.selectedAddress];
 
   const handleOnCopy = () => {
     clipboardCopy(account.base58);
-    tip = $_('home.clipboard.copied');
+    tip = $_("home.clipboard.copied");
     setTimeout(() => {
-      tip = $_('home.clipboard.copy');
+      tip = $_("home.clipboard.copy");
     }, 500);
   };
 </script>
 
-<Tooltip
-  tip={tip}
-  bottom
->
-  <div
-    class="warp-tip"
-    on:mouseup={handleOnCopy}
-  >
+<Tooltip {tip} bottom>
+  <div class="warp-tip" on:mouseup={handleOnCopy}>
     <h1>
       {account.name}
     </h1>

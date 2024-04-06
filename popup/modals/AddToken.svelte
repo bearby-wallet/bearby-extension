@@ -2,9 +2,17 @@
   import type { TokenRes } from "types/token";
 
   import { createEventDispatcher, onMount } from "svelte";
+  import { fade } from "svelte/transition";
   import { _ } from "popup/i18n";
+  import { trim } from "popup/filters/trim";
 
-  import { getFTTokens } from "popup/backend/tokens";
+  import { getFTTokens, addFTToken } from "popup/backend/tokens";
+  import { TokenType, viewIcon } from "popup/utils/icon-view";
+
+  import walletStore from "popup/store/wallet";
+  import { formatNumber, toMass } from "app/filters/numbers";
+
+  const dispatch = createEventDispatcher();
 
   let inputEl: HTMLInputElement;
   let address = "";
@@ -16,7 +24,6 @@
   const hanldeOnInput = async () => {
     error = "";
     try {
-      // await fromBech32(address);
       disabled = false;
     } catch {
       disabled = true;
@@ -29,9 +36,19 @@
     loading = true;
     try {
       let [data] = await getFTTokens(address);
+      state = data;
+    } catch (err) {
+      console.error(err);
+      error = (err as Error).message;
+    }
+    loading = false;
+  };
 
-      console.log(data);
-      // TODO: Fetch the state.
+  const addToken = async () => {
+    loading = true;
+    try {
+      await addFTToken(state);
+      dispatch("close");
     } catch (err) {
       console.error(err);
       error = (err as Error).message;
@@ -50,24 +67,107 @@
   <h2 class="error">
     {error}
   </h2>
-  <form autocomplete="off" on:submit={handleSubmit}>
-    <label>
-      <input
-        bind:this={inputEl}
-        bind:value={address}
-        type="text"
-        autocomplete="off"
-        autocorrect="off"
-        class:loading
-        disabled={loading}
-        placeholder={$_("tokens.modals.add.placeholder")}
-        on:input={hanldeOnInput}
-      />
-    </label>
-    <button class="primary" disabled={disabled || loading} class:loading>
-      {$_("tokens.modals.add.btns.fetch")}
+  {#if state}
+    <img
+      src={viewIcon(address, TokenType.FT)}
+      alt={state.symbol}
+      height="78px"
+    />
+    <ul in:fade>
+      <li>
+        <span>
+          <b>
+            {$_("tokens.modals.add.balance")}
+          </b>
+        </span>
+        <span>
+          <p>
+            {formatNumber(
+              toMass(
+                String(state.balance[$walletStore.selectedAddress] || 0),
+                state.decimals,
+              ),
+            )}
+          </p>
+        </span>
+      </li>
+      <li>
+        <span>
+          <b>
+            {$_("tokens.modals.add.address")}
+          </b>
+        </span>
+        <span>
+          <p>
+            {trim(address)}
+          </p>
+        </span>
+      </li>
+      <li>
+        <span>
+          <b>
+            {$_("tokens.modals.add.decimals")}
+          </b>
+        </span>
+        <span>
+          <p>
+            {state.decimals}
+          </p>
+        </span>
+      </li>
+      <li>
+        <span>
+          <b>
+            {$_("tokens.modals.add.name")}
+          </b>
+        </span>
+        <span>
+          <p>
+            {state.name}
+          </p>
+        </span>
+      </li>
+      <li>
+        <span>
+          <b>
+            {$_("tokens.modals.add.symbol")}
+          </b>
+        </span>
+        <span>
+          <p>
+            {state.symbol}
+          </p>
+        </span>
+      </li>
+    </ul>
+    <button
+      class="primary"
+      disabled={loading}
+      class:loading
+      on:mouseup={addToken}
+    >
+      {$_("tokens.modals.add.btns.add")}
     </button>
-  </form>
+  {:else}
+    <form autocomplete="off" on:submit={handleSubmit}>
+      <label>
+        <input
+          bind:this={inputEl}
+          bind:value={address}
+          type="text"
+          autocomplete="off"
+          autocorrect="off"
+          class:loading
+          disabled={loading}
+          placeholder={$_("tokens.modals.add.placeholder")}
+          on:input={hanldeOnInput}
+        />
+      </label>
+      <button class="primary" disabled={disabled || loading} class:loading>
+        {$_("tokens.modals.add.btns.fetch")}
+      </button>
+    </form>
+  {/if}
 </div>
 
 <style lang="scss">
@@ -90,13 +190,14 @@
       rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
       rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 
-    @include border-radius(16);
+    @include border-radius(16px);
 
     & > li {
       padding: 5px;
-      border-bottom: solid 1px var(--border-color);
+      border-bottom: solid 1px var(--hover-color);
       font-family: Regular;
       color: var(--text-color);
+      font-size: 12pt;
 
       @include flex-between-row;
 
@@ -110,14 +211,10 @@
         font-family: Demi;
         text-align: right;
       }
-      & > div {
-        text-align: right;
-
-        & > p {
-          margin: 0;
-        }
-      }
     }
+  }
+  p {
+    line-height: 0;
   }
   form {
     @include flex-center-top-column;
