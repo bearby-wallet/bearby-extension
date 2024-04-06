@@ -1,4 +1,4 @@
-import type { Balance, SCReadData, Token } from 'types';
+import type { Balance, SCReadData, Token, TokenRes } from 'types';
 import type { MassaControl } from 'background/provider';
 import type { NetworkControl } from 'background/network';
 import type { AccountController } from 'background/account';
@@ -7,8 +7,11 @@ import { ROLL_ADDRESS, ZERO_ADDRESS } from 'config/common';
 import { NETWORK_KEYS } from 'config/network';
 import { Fields } from 'config/fields';
 import { BrowserStorage, buildObject } from 'lib/storage';
-import { TokenError } from './errors';
+import { FAIL_FETCH_TOKEN_STATE, TokenError } from './errors';
 import { Args } from 'lib/args';
+import { bytesToU256 } from 'lib/args/numbers';
+import { MIN_GAS_READ } from 'config/gas';
+import { bytesToStr } from 'lib/args/strings';
 
 
 const [mainnet, buildnet, custom] = NETWORK_KEYS;
@@ -65,8 +68,6 @@ export class TokenControl {
 
     const balances: Balance[] = [];
 
-    await this.#buidlBodiesTokens();
-
     if (resonses.result) {
       for (let index = 0; index < resonses.result.length; index++) {
         const resonse = resonses.result[index];
@@ -113,6 +114,8 @@ export class TokenControl {
     //   await this.reset();
     // }
     await this.reset();
+
+    await this.#tokenfetch();
   }
 
   async reset() {
@@ -130,22 +133,86 @@ export class TokenControl {
     );
   }
 
-  async #buidlBodiesTokens() {
-    // TODO: make const for MAX and fee
+  async #tokenfetch(addresses: string[]): Promise<TokenRes[]> {
+    const limit = addresses.length;
+    const decimalsBody = addresses.map((address) => ({
+      max_gas: MIN_GAS_READ,
+      target_address: address,
+      target_function: "decimals",
+      parameter: [],
+    } as SCReadData));
+    const symbolBody = addresses.map((address) => ({
+      max_gas: MIN_GAS_READ,
+      target_address: address,
+      target_function: "symbol",
+      parameter: [],
+    } as SCReadData));
+    const nameBody = addresses.map((address) => ({
+      max_gas: MIN_GAS_READ,
+      target_address: address,
+      target_function: "name",
+      parameter: [],
+    } as SCReadData));
+    const balanceBody = addresses.map((address) => ({
+      max_gas: MIN_GAS_READ,
+      target_address: address,
+      target_function: "balanceOf",
+      parameter: Array.from(new Args().addString(this.#account.selectedAccount?.base58 || '').serialize()),
+    } as SCReadData));
+    const body = [...decimalsBody, ...symbolBody, ...nameBody, ...balanceBody];
+    const [resonses] = await this.#massa.executeReadOnlyCall(...body);
+
+    if (resonses.result) {
+      const results = resonses.result.map((r) => Uint8Array.from(r.result.Ok));
+      let decimalsRes = results.slice(0, limit).map((r) => r[0]);
+      let symbolRes = results.slice(limit, limit * 2).map(bytesToStr);
+      let nameRes = results.slice(limit * 2, limit * 3).map(bytesToStr);
+      let balanceRes = results.slice(limit * 3, limit * 4).map((bytes) => bytesToU256(bytes));
+
+      const result = decimalsRes.map((decimal, index) => ({
+        decimals: Number(decimal),
+        symbol: String(symbolRes[index]),
+        name: String(nameRes[index]),
+        balance: {
+          [this.#account.wallet.selectedAddress]: String(balanceRes[index])
+        }
+      }));
+
+      return result;
+    } else {
+      throw new TokenError(FAIL_FETCH_TOKEN_STATE);
+    }
+  }
+
+  async #buidlBodiesTokens(addresses: string[]) {
     let user = Array.from(new Args().addString('AU1aFiPAan1ucLZjS6iREznGYHHpTseRFAXEYvYsbCocU9RL64GW').serialize());
-    const addresses: string[] = ['AS1sKBEGsqtm8vQhQzi7KJ4YhyaKTSkhJrLkRc7mQtPqme3VcFHm', 'AS186NRhT6itQ8LuCS7a8n6xQYiXrqDcaaoeiYpTSUsJWKEMgTEw'];
     const data = addresses.map((address) => ({
-      max_gas: 2100000,
+      max_gas: MIN_GAS_READ,
       target_address: address,
       target_function: "balanceOf",
       parameter: user,
     } as SCReadData));
     const [resonses] = await this.#massa.executeReadOnlyCall(...data);
     if (resonses.result) {
-      const result = resonses.result[0].result.Ok;
-      console.log(result);
+      const result = Uint8Array.from(resonses.result[1].result.Ok);
+      console.log(bytesToU256(result));
     }
-
-    console.log(resonses);
   }
+
+  // async #buidlBodiesTokens() {
+  //   // TODO: make const for MAX and fee
+  //   let user = Array.from(new Args().addString('AU1aFiPAan1ucLZjS6iREznGYHHpTseRFAXEYvYsbCocU9RL64GW').serialize());
+  //   const addresses: string[] = ['AS1sKBEGsqtm8vQhQzi7KJ4YhyaKTSkhJrLkRc7mQtPqme3VcFHm', 'AS186NRhT6itQ8LuCS7a8n6xQYiXrqDcaaoeiYpTSUsJWKEMgTEw'];
+  //   const data = addresses.map((address) => ({
+  //     max_gas: 2100000,
+  //     target_address: address,
+  //     target_function: "balanceOf",
+  //     parameter: user,
+  //   } as SCReadData));
+  //   const [resonses] = await this.#massa.executeReadOnlyCall(...data);
+  //   if (resonses.result) {
+  //     const result = Uint8Array.from(resonses.result[1].result.Ok);
+  //     console.log(bytesToU256(result));
+  //   }
+  // }
 }

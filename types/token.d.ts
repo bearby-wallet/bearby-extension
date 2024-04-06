@@ -12,3 +12,13 @@ export interface Balance {
     final: string;
   }
 }
+
+export interface TokenRes {
+  balance: {
+    [index: number]: string;
+  };
+  decimals: number;
+  name: string;
+  symbol: string;
+}
+
