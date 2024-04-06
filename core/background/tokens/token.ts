@@ -1,5 +1,5 @@
 import type { Balance, SCReadData, Token, TokenRes } from 'types';
-import type { MassaControl } from 'background/provider';
+import { JsonRPCRequestMethods, MassaControl } from 'background/provider';
 import type { NetworkControl } from 'background/network';
 import type { AccountController } from 'background/account';
 
@@ -140,8 +140,13 @@ export class TokenControl {
   }
 
   async getBalances(): Promise<Balance[]> {
+    // TODO: make FT tokens balance fetcher.
+    const skipAmount = INIT[this.#network.selected].length;
+    const tokensAddresses = this.identities.slice(skipAmount);
     const addresses = this.#account.wallet.identities.map((acc) => acc.base58);
-    const [resonses] = await this.#massa.getAddresses(...addresses);
+    const nativeTokensBody = this.#massa.provider.buildBody(JsonRPCRequestMethods.GET_ADDRESSES, [addresses]);
+    const ftTokensBody = [];
+    const [resonses] = await this.#massa.sendJson(nativeTokensBody);
 
     const balances: Balance[] = [];
 
@@ -185,6 +190,8 @@ export class TokenControl {
     } catch (err) {
       await this.reset();
     }
+
+    await this.getBalances();
   }
 
   async reset() {

@@ -2,6 +2,7 @@
   import type { TokenRes } from "types/token";
 
   import { createEventDispatcher, onMount } from "svelte";
+
   import { fade } from "svelte/transition";
   import { _ } from "popup/i18n";
   import { trim } from "popup/filters/trim";

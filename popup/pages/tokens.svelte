@@ -1,4 +1,6 @@
 <script lang="ts">
+  import type { Token } from "types/token";
+
   import { _ } from "popup/i18n";
 
   import NavClose from "../components/NavClose.svelte";
@@ -6,13 +8,22 @@
   import AddIcon from "../components/icons/Add.svelte";
   import Modal from "../components/Modal.svelte";
   import AddTokenModal from "../modals/AddToken.svelte";
+  import Toggle from "../components/Toggle.svelte";
+
+  import tokensStore from "popup/store/tokens";
+
+  import { TokenType, viewIcon } from "app/utils/icon-view";
 
   let search = "";
   let tokenAddModal = false;
-  let tokensList = [];
+  let tokensList: Token[] = $tokensStore.slice(2);
 
   const onInputSearch = (e: CustomEvent) => {
     search = e.detail;
+  };
+
+  const handleOnToggle = (token: Token, index: number) => {
+    console.log(token, index);
   };
 </script>
 
@@ -28,24 +39,43 @@
 
 <main>
   <NavClose title={$_("tokens.title")} />
-  <div>
-    <SearchBox
-      placeholder={$_("tokens.placeholder")}
-      focus
-      on:input={onInputSearch}
-    >
-      <span class="add" on:mouseup={() => (tokenAddModal = !tokenAddModal)}>
-        <AddIcon />
-      </span>
-    </SearchBox>
-    <ul>
-      {#if tokensList.length == 0}
-        <p>
-          {$_("tokens.notokens")}
-        </p>
-      {/if}
-    </ul>
-  </div>
+  <SearchBox
+    placeholder={$_("tokens.placeholder")}
+    focus
+    on:input={onInputSearch}
+  >
+    <span class="add" on:mouseup={() => (tokenAddModal = !tokenAddModal)}>
+      <AddIcon />
+    </span>
+  </SearchBox>
+  <ul>
+    {#if tokensList.length == 0}
+      <p>
+        {$_("tokens.notokens")}
+      </p>
+    {/if}
+    {#each tokensList as token, i}
+      <li>
+        <img
+          src={viewIcon(token.base58, TokenType.FT)}
+          alt={token.symbol}
+          width="36"
+          loading="lazy"
+        />
+        <div>
+          <h3>
+            {token.symbol}
+          </h3>
+          <b>
+            {token.name}
+          </b>
+        </div>
+        <span>
+          <Toggle checked={true} on:toggle={() => handleOnToggle(token, i)} />
+        </span>
+      </li>
+    {/each}
+  </ul>
 </main>
 
 <style lang="scss">
@@ -70,6 +100,45 @@
       }
       :global(svg > rect) {
         fill: var(--primary-color);
+      }
+    }
+  }
+  ul {
+    margin: 0;
+    padding: 0;
+    margin-block-start: 25px;
+    overflow-y: scroll;
+
+    & > li {
+      min-width: 270px;
+
+      margin: 5px;
+      padding: 5px;
+
+      padding-left: 16px;
+      padding-right: 16px;
+
+      background-color: var(--card-color);
+      border: solid 1px var(--card-color);
+
+      @include border-radius(16px);
+      @include flex-between-row;
+
+      // &.loading {
+      //   @include loading-gradient(var(--background-color), var(--card-color));
+      // }
+
+      & > div {
+        width: 100%;
+        padding-left: 10px;
+
+        & > * {
+          @include text-shorten;
+          max-width: 120px;
+        }
+        & > h3 {
+          margin-block-end: 0.3em;
+        }
       }
     }
   }
