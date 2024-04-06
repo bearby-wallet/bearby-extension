@@ -33,6 +33,9 @@
       dispatch("select");
     }
   };
+  const hanldeLoadError = (e) => {
+    e.target.src = "/icons/unknown.svg";
+  };
 </script>
 
 <div class="token-card" class:loading class:disabled on:mouseup={onClick}>
@@ -48,7 +51,14 @@
     </p>
   </div>
   <div class="img-wrapper">
-    <img src={img} alt={token.symbol} width="28" height="28" loading="lazy" />
+    <img
+      src={img}
+      alt={token.symbol}
+      width="28"
+      height="28"
+      loading="lazy"
+      on:error={hanldeLoadError}
+    />
   </div>
 </div>
 

@@ -38,6 +38,9 @@
 
 		dispatch("changed", fromBool(indexies));
 	};
+	const hanldeLoadError = (e) => {
+		console.log(e);
+	};
 </script>
 
 <ul class="connections">
@@ -49,7 +52,7 @@
 	</li>
 	{#each identities as app, index}
 		<li class="card" class:selected={indexies[index]}>
-			<img src={app.icon} alt="icon" width="30" />
+			<img src={app.icon} alt="icon" width="30" on:error={hanldeLoadError} />
 			<div>
 				<div class="domain">
 					{app.domain}
