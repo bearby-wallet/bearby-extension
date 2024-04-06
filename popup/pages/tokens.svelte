@@ -13,17 +13,20 @@
   import tokensStore from "popup/store/tokens";
 
   import { TokenType, viewIcon } from "app/utils/icon-view";
+  import { rmFTToken } from "app/backend/tokens";
+
+  const SKIP = 2; // skipt 2 native tokens
 
   let search = "";
   let tokenAddModal = false;
-  let tokensList: Token[] = $tokensStore.slice(2);
+  let tokensList: Token[] = $tokensStore.slice(SKIP);
 
   const onInputSearch = (e: CustomEvent) => {
     search = e.detail;
   };
 
-  const handleOnToggle = (token: Token, index: number) => {
-    console.log(token, index);
+  const handleOnToggle = (index: number) => {
+    rmFTToken(index + SKIP);
   };
 </script>
 
@@ -71,7 +74,7 @@
           </b>
         </div>
         <span>
-          <Toggle checked={true} on:toggle={() => handleOnToggle(token, i)} />
+          <Toggle checked={true} on:toggle={() => handleOnToggle(i)} />
         </span>
       </li>
     {/each}

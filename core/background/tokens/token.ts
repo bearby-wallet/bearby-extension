@@ -87,6 +87,14 @@ export class TokenControl {
     );
   }
 
+  async removeFT(index: number) {
+    this.#identities.splice(index, 1);
+
+    await BrowserStorage.set(
+      buildObject(this.field, this.identities),
+    );
+  }
+
   async tokenfetch(addresses: string[]): Promise<TokenRes[]> {
     const limit = addresses.length;
     const decimalsBody = addresses.map((address) => ({
@@ -190,8 +198,6 @@ export class TokenControl {
     } catch (err) {
       await this.reset();
     }
-
-    await this.getBalances();
   }
 
   async reset() {

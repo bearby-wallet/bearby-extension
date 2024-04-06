@@ -26,6 +26,21 @@ export class BackgroundTokens {
     }
   }
 
+  async removeFTStates(index: number, sendResponse: StreamResponse) {
+    try {
+      this.#core.guard.checkSession();
+      await this.#core.tokens.removeFT(index);
+
+      return sendResponse({
+        resolve: this.#core.state
+      });
+    } catch (err) {
+      return sendResponse({
+        reject: (err as BaseError).serialize()
+      });
+    }
+  }
+
   async getFTStates(addresses: string[], sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();

@@ -74,6 +74,7 @@ export const MTypePopup = {
 
   GET_FT_STATES: `@/${app}/get-ft-state`,
   ADD_FT_TOKEN: `@/${app}/add-ft-token`,
+  RM_FT_TOKEN: `@/${app}/rm-ft-token`,
 
   APPROVE_PUB_KEY_REQ: `@/${app}/apprvoe-pub-key-request`
 };

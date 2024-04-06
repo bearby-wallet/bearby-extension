@@ -221,6 +221,9 @@ export function startBackground(core: BackgroundState) {
       case MTypePopup.ADD_FT_TOKEN:
         tokens.addFTToken(msg.payload.state, sendResponse);
         return true;
+      case MTypePopup.RM_FT_TOKEN:
+        tokens.removeFTStates(msg.payload.index, sendResponse);
+        return true;
 
       case MTypePopup.CLEAR_ALL_HISTORY:
         transaction.clearAllHistory(sendResponse);
