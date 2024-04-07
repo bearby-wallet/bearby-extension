@@ -8,12 +8,8 @@ Big.PE = 99;
 export function formatNumber(balance: number | string | Big, currency?: string) {
   const { format } = get(settingsStore);
 
-  if (Number(balance) <= 0.9) {
+  if (String(balance).length <= 10) {
     return `${currency || ''} ${Number(balance)}`;
-  }
-
-  if (!format || Number(balance) < 100000) {
-    return `${currency || ''} ${Number(balance).toFixed()}`;
   }
 
   const locale = 'en';// navigator.language;

@@ -2,12 +2,13 @@
   import type { Token } from "types";
 
   import { createEventDispatcher } from "svelte";
-  import { formatNumber } from "popup/filters/numbers";
+  import { formatNumber, toMass } from "popup/filters/numbers";
   import { TokenType, viewIcon } from "popup/utils/icon-view";
   import TokenImage from "./TokenImage.svelte";
 
   import walletStore from "popup/store/wallet";
   import settingsStore from "popup/store/settings";
+  import { ROLL_ADDRESS, ZERO_ADDRESS } from "config/common";
 
   const dispatch = createEventDispatcher();
 
@@ -28,6 +29,10 @@
       ? account.tokens[token.base58].final
       : 0;
   $: converted = 0;
+  $: decimalsBalance =
+    token.base58 == (ZERO_ADDRESS || token.base58 == ROLL_ADDRESS)
+      ? balance
+      : toMass(String(balance), token.decimals).toString();
 
   const onClick = () => {
     if (!disabled) {
@@ -42,7 +47,7 @@
       {token.symbol}
     </p>
     <p class="balance">
-      {formatNumber(balance)}
+      {formatNumber(decimalsBalance)}
     </p>
     <p class="conv">
       {formatNumber(converted, $settingsStore.currency)}
