@@ -11,6 +11,8 @@
   import gasStore from "popup/store/gas";
   import netStore from "popup/store/network";
 
+  import TokenImage from "./TokenImage.svelte";
+
   const massaExplorer = new Massa().setNetwork($netStore);
 
   export let tx: ConfirmParams;
@@ -27,7 +29,7 @@
       {$_("confirm.params.amount")}
     </span>
     <span>
-      <img src={img} width="20" height="20" alt="app" />
+      <TokenImage src={img} width="20" height="20" alt="app" />
       {formatNumber(amount, tx.token.symbol)}
       <span>
         + {toKG(fee)}
@@ -98,9 +100,6 @@
         & > span {
           font-size: 8pt;
           color: var(--muted-color);
-        }
-        & > img {
-          margin: 5px;
         }
         & > a {
           color: inherit;

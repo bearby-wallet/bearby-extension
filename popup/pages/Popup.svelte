@@ -23,6 +23,7 @@
   import AccountsModal from "../modals/Accounts.svelte";
   import TransactionParams from "../components/TransactionParams.svelte";
   import GasControl from "../components/GasControl.svelte";
+  import TokenImage from "../components/TokenImage.svelte";
 
   import { AccountTypes } from "config/account-type";
 
@@ -150,7 +151,12 @@
           {transaction.title || "BearBy"}
         </h2>
         {#if transaction.icon}
-          <img src={transaction.icon} height="40" alt="icon" />
+          <TokenImage
+            src={transaction.icon}
+            height="40"
+            width="40"
+            alt="icon"
+          />
         {/if}
         <p class="error">
           {err}
