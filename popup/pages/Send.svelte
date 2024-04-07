@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import Big from "big.js";
   import { _ } from "popup/i18n";
   import { uuidv4 } from "lib/crypto/uuid";
   import { push } from "svelte-spa-router";
@@ -26,6 +27,9 @@
   import AccountSelectorModal from "../modals/AccountSelector.svelte";
   import TokenImage from "../components/TokenImage.svelte";
   import { ZERO_ADDRESS } from "config/common";
+  import { fromMass, toMass } from "app/filters/numbers";
+
+  Big.PE = 99;
 
   export let params = {
     index: 0,
@@ -35,7 +39,7 @@
   let uuid = uuidv4();
   let error = "";
   let loading = false;
-  let amount = 0;
+  let amount = Big(0);
   let recipient = params.recipient;
   let accountIndex = $walletStore.selectedAddress;
   let selectedToken = Number(params.index);
@@ -48,13 +52,13 @@
   $: account = $walletStore.identities[accountIndex];
   $: balance =
     account.tokens && account.tokens[token.base58]
-      ? account.tokens[token.base58].final
+      ? toMass(account.tokens[token.base58].final, token.decimals)
       : 0;
-  $: disabled = amount <= 0 || Number(amount) > Number(balance) || !recipient;
+  $: disabled = amount.lte(0) || amount.gt(balance) || !recipient;
 
   function hanldeOnInput(event: CustomEvent) {
     error = "";
-    amount = event.detail;
+    amount = Big(event.detail);
   }
 
   const onSelectAccount = async (event: CustomEvent) => {
@@ -89,11 +93,12 @@
 
   async function onSubmin() {
     loading = true;
+    const bigAmt = fromMass(amount, token.decimals).toString();
     try {
       if (token.base58 == ZERO_ADDRESS) {
-        await addConfirmTransaction(amount, recipient, token);
+        await addConfirmTransaction(bigAmt, recipient, token);
       } else {
-        await addConfirmTransferFT(amount, recipient, token);
+        await addConfirmTransferFT(bigAmt, recipient, token);
       }
       push("/confirm");
     } catch (err) {
@@ -197,8 +202,8 @@
         <SmartInput
           img={viewIcon(token.base58, TokenType.FT)}
           symbol={token.symbol}
-          max={Number(balance)}
-          value={String(amount)}
+          max={balance}
+          value={amount}
           {loading}
           on:select={() => (tokensModal = !tokensModal)}
           on:input={hanldeOnInput}

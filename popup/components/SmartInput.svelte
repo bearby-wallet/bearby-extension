@@ -19,10 +19,10 @@
 	export let loading = false;
 	export let converted = 0;
 	export let placeholder = "";
-	export let max = 0;
+	export let max: string | number | Big = 0;
 	export let img: string;
 	export let symbol: string;
-	export let value: string;
+	export let value: string | Big;
 
 	let inputEl: HTMLInputElement | undefined;
 

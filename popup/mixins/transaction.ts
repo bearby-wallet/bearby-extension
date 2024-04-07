@@ -16,7 +16,7 @@ import { fromMass } from "app/filters/numbers";
 
 Big.PE = 99;
 
-export async function addConfirmTransaction(amount: number, recipient: string, token: Token) {
+export async function addConfirmTransaction(amount: number | Big | string, recipient: string, token: Token) {
   let domain = '';
 
   if (getManifestVersion() == ManifestVersions.V3) {
@@ -49,7 +49,7 @@ export async function addConfirmTransaction(amount: number, recipient: string, t
   await addToConfirmTransaction(params);
 }
 
-export async function addConfirmBuyRolls(rolls: number, recipient: string, token: Token) {
+export async function addConfirmBuyRolls(rolls: number | string | Big, recipient: string, token: Token) {
   let domain = '';
 
   if (getManifestVersion() == ManifestVersions.V3) {
@@ -82,7 +82,7 @@ export async function addConfirmBuyRolls(rolls: number, recipient: string, token
   await addToConfirmTransaction(params);
 }
 
-export async function addConfirmSellRolls(rolls: number, recipient: string, token: Token) {
+export async function addConfirmSellRolls(rolls: number | string | Big, recipient: string, token: Token) {
   let domain = '';
 
   if (getManifestVersion() == ManifestVersions.V3) {
@@ -114,7 +114,7 @@ export async function addConfirmSellRolls(rolls: number, recipient: string, toke
   await addToConfirmTransaction(params);
 }
 
-export async function addConfirmTransferFT(amount: number, recipient: string, token: Token) {
+export async function addConfirmTransferFT(amount: number | string | Big, recipient: string, token: Token) {
   let domain = '';
 
   if (getManifestVersion() == ManifestVersions.V3) {
@@ -139,10 +139,10 @@ export async function addConfirmTransferFT(amount: number, recipient: string, to
       },
       {
         type: ArgTypes.U256,
-        value: amount
+        value: String(amount)
       }
     ],
-    coins: fromMass(amount, token.decimals).toString(),
+    coins: '0',
     gasPrice: GAS_PRICE,
     gasLimit: gas.gasLimit,
     icon: viewIcon(token.base58, TokenType.FT),
