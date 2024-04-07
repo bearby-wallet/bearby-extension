@@ -1,6 +1,7 @@
 import type { MinTransactionParams } from "types/transaction";
 import type { Token } from "types/token";
 
+import Big from 'big.js';
 import { get } from 'svelte/store';
 import { addToConfirmTransaction } from "app/backend/transactions";
 import { TokenType, viewIcon } from "app/utils/icon-view";
@@ -10,7 +11,10 @@ import { GAS_PRICE } from "config/gas";
 import { getManifestVersion } from "lib/runtime/manifest";
 import { ManifestVersions } from "config/manifest-versions";
 import { Runtime } from "lib/runtime";
+import { ArgTypes } from "config/arg-types";
+import { fromMass } from "app/filters/numbers";
 
+Big.PE = 99;
 
 export async function addConfirmTransaction(amount: number, recipient: string, token: Token) {
   let domain = '';
@@ -30,7 +34,7 @@ export async function addConfirmTransaction(amount: number, recipient: string, t
     toAddr: recipient,
     code: '',
     params: [],
-    coins: String(amount * 10 ** token.decimals),
+    coins: fromMass(amount, token.decimals).toString(),
     gasPrice: GAS_PRICE,
     gasLimit: gas.gasLimit,
     icon: viewIcon(token.base58, TokenType.FT),
@@ -96,6 +100,49 @@ export async function addConfirmSellRolls(rolls: number, recipient: string, toke
     code: '',
     params: [],
     coins: String(rolls),
+    gasPrice: GAS_PRICE,
+    gasLimit: gas.gasLimit,
+    icon: viewIcon(token.base58, TokenType.FT),
+    title: token.name,
+    token: {
+      decimals: token.decimals,
+      symbol: token.symbol,
+      base58: token.base58
+    }
+  };
+
+  await addToConfirmTransaction(params);
+}
+
+export async function addConfirmTransferFT(amount: number, recipient: string, token: Token) {
+  let domain = '';
+
+  if (getManifestVersion() == ManifestVersions.V3) {
+    const { id } = await Runtime.windows.getCurrent();
+
+    domain = String(id);
+  } else {
+    domain = Runtime.runtime.id;
+  }
+
+  const gas = get(gasStore);
+  const params: MinTransactionParams = {
+    domain,
+    type: OperationsType.CallSC,
+    toAddr: token.base58,
+    code: '',
+    func: 'transfer',
+    params: [
+      {
+        type: ArgTypes.STRING,
+        value: recipient
+      },
+      {
+        type: ArgTypes.U256,
+        value: amount
+      }
+    ],
+    coins: fromMass(amount, token.decimals).toString(),
     gasPrice: GAS_PRICE,
     gasLimit: gas.gasLimit,
     icon: viewIcon(token.base58, TokenType.FT),

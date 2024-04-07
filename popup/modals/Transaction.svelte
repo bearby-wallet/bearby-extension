@@ -14,6 +14,7 @@
 
   import Tooltip from "../components/Tooltip.svelte";
   import ExplorerIcon from "../components/icons/explorer.svelte";
+  import TokenImage from "../components/TokenImage.svelte";
 
   export let tx: HistoryTransaction;
 
@@ -43,7 +44,7 @@
 
 <div class="tx">
   {#if tx.icon}
-    <img src={tx.icon} alt={tx.title} width="30" />
+    <TokenImage src={tx.icon} alt={String(tx.title)} width="30" height="30" />
   {/if}
   <h1>
     {operate}

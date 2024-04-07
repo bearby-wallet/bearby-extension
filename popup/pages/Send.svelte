@@ -8,7 +8,10 @@
   import { TokenType, viewIcon } from "popup/utils/icon-view";
   import { generateBlockies } from "popup/mixins/blockies";
   import { getContacts } from "popup/backend/contacts";
-  import { addConfirmTransaction } from "popup/mixins/transaction";
+  import {
+    addConfirmTransaction,
+    addConfirmTransferFT,
+  } from "popup/mixins/transaction";
 
   import walletStore from "popup/store/wallet";
   import tokensStore from "popup/store/tokens";
@@ -22,6 +25,7 @@
   import TokensModal from "../modals/Tokens.svelte";
   import AccountSelectorModal from "../modals/AccountSelector.svelte";
   import TokenImage from "../components/TokenImage.svelte";
+  import { ZERO_ADDRESS } from "config/common";
 
   export let params = {
     index: 0,
@@ -86,7 +90,11 @@
   async function onSubmin() {
     loading = true;
     try {
-      await addConfirmTransaction(amount, recipient, token);
+      if (token.base58 == ZERO_ADDRESS) {
+        await addConfirmTransaction(amount, recipient, token);
+      } else {
+        await addConfirmTransferFT(amount, recipient, token);
+      }
       push("/confirm");
     } catch (err) {
       error = (err as Error).message;

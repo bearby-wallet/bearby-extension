@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { createEventDispatcher } from "svelte";
+	import Big from "big.js";
 
 	import settingsStore from "popup/store/settings";
 
@@ -7,6 +8,8 @@
 	import { uuidv4 } from "lib/crypto/uuid";
 
 	import TokenImage from "../components/TokenImage.svelte";
+
+	Big.PE = 99;
 
 	const dispatch = createEventDispatcher();
 	const uuid = uuidv4();
@@ -48,9 +51,12 @@
 	};
 	const onPercentInput = (n: number) => {
 		try {
-			const value = (Number(max) * n) / 100;
+			const _max = Big(max);
+			const _n = Big(n);
+			const _100 = Big(100);
+			const newValue = _max.mul(_n).div(_100);
 
-			dispatch("input", value);
+			dispatch("input", newValue.toString());
 		} catch (err) {
 			console.log(err);
 		}

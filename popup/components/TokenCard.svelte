@@ -8,7 +8,6 @@
 
   import walletStore from "popup/store/wallet";
   import settingsStore from "popup/store/settings";
-  import { ROLL_ADDRESS, ZERO_ADDRESS } from "config/common";
 
   const dispatch = createEventDispatcher();
 
@@ -26,13 +25,9 @@
   $: img = viewIcon(token.base58, TokenType.FT);
   $: balance =
     account.tokens && account.tokens[token.base58]
-      ? account.tokens[token.base58].final
+      ? toMass(account.tokens[token.base58].final, token.decimals)
       : 0;
   $: converted = 0;
-  $: decimalsBalance =
-    token.base58 == (ZERO_ADDRESS || token.base58 == ROLL_ADDRESS)
-      ? balance
-      : toMass(String(balance), token.decimals).toString();
 
   const onClick = () => {
     if (!disabled) {
@@ -47,7 +42,7 @@
       {token.symbol}
     </p>
     <p class="balance">
-      {formatNumber(decimalsBalance)}
+      {formatNumber(balance)}
     </p>
     <p class="conv">
       {formatNumber(converted, $settingsStore.currency)}

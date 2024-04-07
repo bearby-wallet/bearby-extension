@@ -1,22 +1,19 @@
-import { get } from 'svelte/store';
 import Big from 'big.js';
-
-import settingsStore from 'popup/store/settings';
 
 Big.PE = 99;
 
 export function formatNumber(balance: number | string | Big, currency?: string) {
-  const { format } = get(settingsStore);
-
   if (String(balance).length <= 10) {
     return `${currency || ''} ${Number(balance)}`;
   }
 
+  const digits = 5;
   const locale = 'en';// navigator.language;
   let opt: Intl.NumberFormatOptions = {
     style: undefined,
     currency: undefined,
-    maximumSignificantDigits: 5,
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
     notation: "compact"
   };
 
@@ -45,6 +42,13 @@ export function toMass(value: string | Big, decimals: number): Big {
   const _balance = Big(value);
 
   return _balance.div(_decimals);
+}
+
+export function fromMass(value: string | Big | number, decimals: number): Big {
+  const _decimals = Big(10).pow(decimals);
+  const _balance = Big(value);
+
+  return _balance.mul(_decimals).round();
 }
 
 export function toKG(value: number) {

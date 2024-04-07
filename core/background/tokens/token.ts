@@ -2,7 +2,7 @@ import type { Balance, SCReadData, Token, TokenRes, ExecuteReadOnlyCallResponse 
 import type { NetworkControl } from 'background/network';
 import type { AccountController } from 'background/account';
 
-import { ROLL_ADDRESS, ZERO_ADDRESS } from 'config/common';
+import { MASSA_DECIMALS, ROLL_ADDRESS, ZERO_ADDRESS } from 'config/common';
 import { JsonRPCRequestMethods, MassaControl } from 'background/provider';
 import { NETWORK_KEYS } from 'config/network';
 import { Fields } from 'config/fields';
@@ -173,8 +173,8 @@ export class TokenControl {
         const resonse = nativeResonses.result[index];
         let balanceObject: Balance = {
           [MAS.base58]: {
-            final: resonse.final_balance,
-            candidate: resonse.candidate_balance
+            final: String(Number(resonse.final_balance) * 10 ** MASSA_DECIMALS),
+            candidate: String(Number(resonse.candidate_balance) * 10 ** MASSA_DECIMALS)
           },
           [ROLL.base58]: {
             final: String(resonse.final_roll_count),
