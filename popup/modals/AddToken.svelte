@@ -7,6 +7,8 @@
   import { _ } from "popup/i18n";
   import { trim } from "popup/filters/trim";
 
+  import TokenImage from "../components/TokenImage.svelte";
+
   import { getFTTokens, addFTToken } from "popup/backend/tokens";
   import { TokenType, viewIcon } from "popup/utils/icon-view";
 
@@ -69,10 +71,11 @@
     {error}
   </h2>
   {#if state}
-    <img
+    <TokenImage
       src={viewIcon(address, TokenType.FT)}
       alt={state.symbol}
-      height="78px"
+      height="78"
+      width="78"
     />
     <ul in:fade>
       <li>

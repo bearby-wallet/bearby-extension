@@ -4,6 +4,7 @@
   import { createEventDispatcher } from "svelte";
   import { formatNumber } from "popup/filters/numbers";
   import { TokenType, viewIcon } from "popup/utils/icon-view";
+  import TokenImage from "./TokenImage.svelte";
 
   import walletStore from "popup/store/wallet";
   import settingsStore from "popup/store/settings";
@@ -33,9 +34,6 @@
       dispatch("select");
     }
   };
-  const hanldeLoadError = (e) => {
-    e.target.src = "/icons/unknown.svg";
-  };
 </script>
 
 <div class="token-card" class:loading class:disabled on:mouseup={onClick}>
@@ -51,14 +49,7 @@
     </p>
   </div>
   <div class="img-wrapper">
-    <img
-      src={img}
-      alt={token.symbol}
-      width="28"
-      height="28"
-      loading="lazy"
-      on:error={hanldeLoadError}
-    />
+    <TokenImage src={img} alt={token.symbol} width="28" height="28" />
   </div>
 </div>
 

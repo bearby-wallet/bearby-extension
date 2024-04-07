@@ -7,6 +7,7 @@
   import Modal from "../components/Modal.svelte";
   import AddTokenModal from "../modals/AddToken.svelte";
   import Toggle from "../components/Toggle.svelte";
+  import TokenImage from "../components/TokenImage.svelte";
 
   import tokensStore from "popup/store/tokens";
 
@@ -58,11 +59,11 @@
     {/if}
     {#each tokensList as token, i}
       <li>
-        <img
+        <TokenImage
           src={viewIcon(token.base58, TokenType.FT)}
           alt={token.symbol}
           width="36"
-          loading="lazy"
+          height="36"
         />
         <div>
           <h3>
@@ -140,6 +141,7 @@
         }
         & > h3 {
           margin-block-end: 0.3em;
+          margin-block-start: 0.3em;
         }
       }
     }
