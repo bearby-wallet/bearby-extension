@@ -94,12 +94,14 @@ export class BackgroundState {
         .map((app) => app.domain);
       const account = this.account.selectedAccount;
 
-      new TabsMessage({
-        type: MTypeTab.ACCOUNT_CHANGED,
-        payload: {
-          base58: account?.base58
-        }
-      }).send(...domains);
+      if (account) {
+        new TabsMessage({
+          type: MTypeTab.ACCOUNT_CHANGED,
+          payload: {
+            base58: account.base58,
+          }
+        }).send(...domains);
+      }
     } catch (err) {
       console.warn(err);
     }
