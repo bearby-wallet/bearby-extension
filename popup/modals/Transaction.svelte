@@ -161,9 +161,6 @@
   span.pointer {
     cursor: pointer;
   }
-  img {
-    margin: 10px;
-  }
   ul {
     min-width: 300px;
     max-width: 490px;
