@@ -1,34 +1,35 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher } from "svelte";
 
-  import settingsStore from 'popup/store/settings';
+	import settingsStore from "popup/store/settings";
 
-	import { formatNumber } from 'popup/filters/numbers';
-	import { uuidv4 } from 'lib/crypto/uuid';
+	import { formatNumber } from "popup/filters/numbers";
+	import { uuidv4 } from "lib/crypto/uuid";
 
+	import TokenImage from "../components/TokenImage.svelte";
 
-  const dispatch = createEventDispatcher();
+	const dispatch = createEventDispatcher();
 	const uuid = uuidv4();
 
 	export let percents = [0, 10, 30, 50, 70, 100];
 	export let disabled = false;
-  export let loading = false;
+	export let loading = false;
 	export let converted = 0;
-	export let placeholder = '';
+	export let placeholder = "";
 	export let max = 0;
-  export let img: string;
-  export let symbol : string;
+	export let img: string;
+	export let symbol: string;
 	export let value: string;
 
 	let inputEl: HTMLInputElement | undefined;
 
 	const onClick = () => {
-    dispatch('select');
-  };
+		dispatch("select");
+	};
 	const onInput = (e: Event) => {
 		const target = e.target as HTMLInputElement;
-	
-		if (target.value.endsWith('.')) {
+
+		if (target.value.endsWith(".")) {
 			return;
 		}
 
@@ -43,54 +44,48 @@
 			value = String(newValue);
 		}
 
-		dispatch('input', newValue);
-  };
+		dispatch("input", newValue);
+	};
 	const onPercentInput = (n: number) => {
 		try {
-			const value = Number(max) * n / 100;
+			const value = (Number(max) * n) / 100;
 
-			dispatch('input', value);
+			dispatch("input", value);
 		} catch (err) {
 			console.log(err);
 		}
 	};
 </script>
 
-<label
-	class:loading={loading}
-	for={uuid}
->
-  <span on:mouseup={onClick}>
-    <img
-      src={img}
-      alt="input-token"
-    />
-    <h3>
-      {symbol}
-    </h3>
-  </span>
-  <div class="column">
-    <input
-			bind:value={value}
+<label class:loading for={uuid}>
+	<span on:mouseup={onClick}>
+		<TokenImage src={img} alt="input-token" width={28} height={28} />
+		<h3>
+			{symbol}
+		</h3>
+	</span>
+	<div class="column">
+		<input
+			bind:value
 			bind:this={inputEl}
 			id={uuid}
-			placeholder={placeholder}
+			{placeholder}
 			disabled={loading || disabled}
 			on:input={onInput}
 		/>
-    <div>
+		<div>
 			{#if converted}
 				<b>{formatNumber(converted, $settingsStore.currency)}</b>
 			{/if}
-      {#each percents as percent}
-        <p on:mouseup={() => onPercentInput(percent)}>{percent}%</p>
-      {/each}
-    </div>
-  </div>
+			{#each percents as percent}
+				<p on:mouseup={() => onPercentInput(percent)}>{percent}%</p>
+			{/each}
+		</div>
+	</div>
 </label>
 
 <style lang="scss">
-  @import "../styles/mixins";
+	@import "../styles/mixins";
 
 	label {
 		display: flex;
@@ -99,17 +94,17 @@
 		background-color: var(--card-color);
 		border: solid 1px var(--card-color);
 		width: 100%;
-		
+
 		@include border-radius(16px);
 
 		&.loading {
 			border: solid 1px transparent;
-      @include loading-gradient(var(--loading-color), var(--card-color));
+			@include loading-gradient(var(--loading-color), var(--card-color));
 
 			& > span {
 				cursor: inherit;
 			}
-    }
+		}
 
 		& > span {
 			cursor: pointer;
@@ -121,10 +116,6 @@
 
 			@include flex-between-row;
 
-			& > img {
-				height: 25px;
-				width: 25px;
-			}
 			& > h3 {
 				font-size: 10px;
 				padding-left: 2px;

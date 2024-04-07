@@ -1,35 +1,35 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-	import { _ } from 'popup/i18n';
-  import { uuidv4 } from 'lib/crypto/uuid';
-  import { push } from 'svelte-spa-router';
+  import { onMount } from "svelte";
+  import { _ } from "popup/i18n";
+  import { uuidv4 } from "lib/crypto/uuid";
+  import { push } from "svelte-spa-router";
 
-  import { trim } from 'popup/filters/trim';
-  import { TokenType, viewIcon } from 'popup/utils/icon-view';
-	import { generateBlockies } from 'popup/mixins/blockies';
-  import { getContacts } from 'popup/backend/contacts';
-  import { addConfirmTransaction } from 'popup/mixins/transaction';
+  import { trim } from "popup/filters/trim";
+  import { TokenType, viewIcon } from "popup/utils/icon-view";
+  import { generateBlockies } from "popup/mixins/blockies";
+  import { getContacts } from "popup/backend/contacts";
+  import { addConfirmTransaction } from "popup/mixins/transaction";
 
-	import walletStore from 'popup/store/wallet';
-	import tokensStore from 'popup/store/tokens';
+  import walletStore from "popup/store/wallet";
+  import tokensStore from "popup/store/tokens";
 
-	import NavClose from '../components/NavClose.svelte';
-  import SmartInput from '../components/SmartInput.svelte';
-  import SelectCard from '../components/SelectCard.svelte';
-  import ContactIcon from '../components/icons/Contact.svelte';
-  import Modal from '../components/Modal.svelte';
-  import AccountsModal from '../modals/Accounts.svelte';
-  import TokensModal from '../modals/Tokens.svelte';
-  import AccountSelectorModal from '../modals/AccountSelector.svelte';
-
+  import NavClose from "../components/NavClose.svelte";
+  import SmartInput from "../components/SmartInput.svelte";
+  import SelectCard from "../components/SelectCard.svelte";
+  import ContactIcon from "../components/icons/Contact.svelte";
+  import Modal from "../components/Modal.svelte";
+  import AccountsModal from "../modals/Accounts.svelte";
+  import TokensModal from "../modals/Tokens.svelte";
+  import AccountSelectorModal from "../modals/AccountSelector.svelte";
+  import TokenImage from "../components/TokenImage.svelte";
 
   export let params = {
     index: 0,
-    recipient: ''
+    recipient: "",
   };
 
-	let uuid = uuidv4();
-  let error = '';
+  let uuid = uuidv4();
+  let error = "";
   let loading = false;
   let amount = 0;
   let recipient = params.recipient;
@@ -38,59 +38,56 @@
   let tokensModal = false;
   let accountsModal = false;
   let contactsModal = false;
-  let recipientError = '';
+  let recipientError = "";
 
   $: token = $tokensStore[selectedToken];
-	$: account = $walletStore.identities[accountIndex];
-  $: balance = account.tokens && account.tokens[token.base58] ?
-    account.tokens[token.base58].final : 0;
+  $: account = $walletStore.identities[accountIndex];
+  $: balance =
+    account.tokens && account.tokens[token.base58]
+      ? account.tokens[token.base58].final
+      : 0;
   $: disabled = amount <= 0 || Number(amount) > Number(balance) || !recipient;
 
-
   function hanldeOnInput(event: CustomEvent) {
-    error = '';
+    error = "";
     amount = event.detail;
   }
 
   const onSelectAccount = async (event: CustomEvent) => {
-    error = '';
-		accountIndex = event.detail;
+    error = "";
+    accountIndex = event.detail;
     const ctx = document.getElementById(uuid);
 
     if (ctx) {
-      ctx['textContent'] = '';
+      ctx["textContent"] = "";
       generateBlockies($walletStore.identities[accountIndex].pubKey, ctx);
     }
 
     accountsModal = !accountsModal;
-	};
+  };
 
   const onSelectToken = async (event: CustomEvent) => {
-    error = '';
+    error = "";
     selectedToken = event.detail;
     tokensModal = !tokensModal;
   };
 
   function onSelectRecipient(event: CustomEvent) {
-    error = '';
+    error = "";
     recipient = event.detail;
     contactsModal = !contactsModal;
   }
 
   function onInputRecipient(e: Event) {
-    error = '';
+    error = "";
     recipient = (e.target as HTMLInputElement).value;
   }
 
   async function onSubmin() {
     loading = true;
     try {
-      await addConfirmTransaction(
-        amount,
-        recipient,
-        token
-      );
-      push('/confirm');
+      await addConfirmTransaction(amount, recipient, token);
+      push("/confirm");
     } catch (err) {
       error = (err as Error).message;
       console.error(err);
@@ -98,8 +95,7 @@
     loading = false;
   }
 
-
-  onMount(async() => {
+  onMount(async () => {
     const ctxAccount = document.getElementById(uuid);
 
     if (ctxAccount) {
@@ -110,11 +106,10 @@
   });
 </script>
 
-
 <Modal
   show={accountsModal}
-  title={$_('account.modal.title')}
-  on:close={() => accountsModal = !accountsModal}
+  title={$_("account.modal.title")}
+  on:close={() => (accountsModal = !accountsModal)}
 >
   <div class="m-warp">
     <AccountsModal
@@ -126,49 +121,49 @@
 </Modal>
 <Modal
   show={contactsModal}
-  title={$_('send.recipient.title')}
-  on:close={() => contactsModal = !contactsModal}
+  title={$_("send.recipient.title")}
+  on:close={() => (contactsModal = !contactsModal)}
 >
   <div class="m-warp">
-    <AccountSelectorModal on:selected={onSelectRecipient}/>
+    <AccountSelectorModal on:selected={onSelectRecipient} />
   </div>
 </Modal>
 <Modal
   show={tokensModal}
-  title={$_('send.modal.tokens')}
-  on:close={() => tokensModal = !tokensModal}
+  title={$_("send.modal.tokens")}
+  on:close={() => (tokensModal = !tokensModal)}
 >
   <div class="m-warp">
     <TokensModal
       list={$tokensStore}
       index={selectedToken}
-      account={account}
+      {account}
       on:selected={onSelectToken}
     />
   </div>
 </Modal>
 <main>
-	<NavClose title={$_('send.title')}/>
+  <NavClose title={$_("send.title")} />
   <div class="wrapper">
     <div>
       <div>
         <SelectCard
-          title={$_('send.sender')}
+          title={$_("send.sender")}
           header={account.name}
           text={trim(account.base58, 10)}
-          on:click={() => accountsModal = !accountsModal}
+          on:click={() => (accountsModal = !accountsModal)}
         >
-          <div id={uuid}/>
+          <div id={uuid} />
         </SelectCard>
       </div>
       <div>
         <SelectCard
-          title={$_('send.token')}
+          title={$_("send.token")}
           header={token.name}
           text={trim(token.base58, 10)}
-          on:click={() => tokensModal = !tokensModal}
+          on:click={() => (tokensModal = !tokensModal)}
         >
-          <img
+          <TokenImage
             src={viewIcon(token.base58, TokenType.FT)}
             height="45"
             alt={token.symbol}
@@ -180,18 +175,14 @@
     <div>
       <div class="input">
         <label class:error={recipientError}>
-          <div on:mouseup={() => contactsModal = !contactsModal}>
-            <ContactIcon
-              width="23"
-              height="26"
-              className="cont-icon"
-            />
+          <div on:mouseup={() => (contactsModal = !contactsModal)}>
+            <ContactIcon width="23" height="26" className="cont-icon" />
           </div>
           <input
             bind:value={recipient}
-            placeholder={$_('send.recipient.placeholder')}
+            placeholder={$_("send.recipient.placeholder")}
             on:input={onInputRecipient}
-          >
+          />
         </label>
       </div>
       <div class="input">
@@ -200,8 +191,8 @@
           symbol={token.symbol}
           max={Number(balance)}
           value={String(amount)}
-          loading={loading}
-          on:select={() => tokensModal = !tokensModal}
+          {loading}
+          on:select={() => (tokensModal = !tokensModal)}
           on:input={hanldeOnInput}
         />
       </div>
@@ -212,25 +203,20 @@
           </b>
         </div>
       {/if}
-      <button
-        class="outline"
-        class:loading={loading}
-        disabled={disabled}
-        on:mouseup={onSubmin}
-      >
-        {$_('send.continue')}
+      <button class="outline" class:loading {disabled} on:mouseup={onSubmin}>
+        {$_("send.continue")}
       </button>
     </div>
   </div>
 </main>
 
 <style lang="scss">
-	@import "../styles/mixins";
+  @import "../styles/mixins";
   main {
     background: inherit;
-		height: 100vh;
+    height: 100vh;
 
-		@include flex-center-top-column;
+    @include flex-center-top-column;
 
     & > div {
       width: 100%;
@@ -238,7 +224,7 @@
       padding-left: 5px;
       padding-right: 5px;
     }
-	}
+  }
   div.error-warp {
     width: 290px;
     text-align: center;
