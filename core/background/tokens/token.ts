@@ -1,9 +1,9 @@
-import type { Balance, SCReadData, Token, TokenRes } from 'types';
-import { JsonRPCRequestMethods, MassaControl } from 'background/provider';
+import type { Balance, SCReadData, Token, TokenRes, ExecuteReadOnlyCallResponse } from 'types';
 import type { NetworkControl } from 'background/network';
 import type { AccountController } from 'background/account';
 
 import { ROLL_ADDRESS, ZERO_ADDRESS } from 'config/common';
+import { JsonRPCRequestMethods, MassaControl } from 'background/provider';
 import { NETWORK_KEYS } from 'config/network';
 import { Fields } from 'config/fields';
 import { BrowserStorage, buildObject } from 'lib/storage';
@@ -148,21 +148,30 @@ export class TokenControl {
   }
 
   async getBalances(): Promise<Balance[]> {
-    // TODO: make FT tokens balance fetcher.
     const skipAmount = INIT[this.#network.selected].length;
     const tokensAddresses = this.identities.slice(skipAmount);
     const addresses = this.#account.wallet.identities.map((acc) => acc.base58);
     const nativeTokensBody = this.#massa.provider.buildBody(JsonRPCRequestMethods.GET_ADDRESSES, [addresses]);
-    const ftTokensBody = [];
-    const [resonses] = await this.#massa.sendJson(nativeTokensBody);
+    const ftTokensData: SCReadData[] = addresses.map((addr) => tokensAddresses.map((tokenAddr) => ({
+      max_gas: MIN_GAS_READ,
+      target_address: tokenAddr.base58,
+      target_function: "balanceOf",
+      parameter: Array.from(new Args().addString(addr).serialize()),
+    }))).flat();
+    const ftTokensBody = this.#massa.provider.buildBody(JsonRPCRequestMethods.EXECUTE_READ_ONLY_CALL, [ftTokensData]);
+    const [nativeResonses, ftResonses] = await this.#massa.sendJson(nativeTokensBody, ftTokensBody);
+    const ftResult: ExecuteReadOnlyCallResponse = ftResonses;
+    const ftBalances = ftResult.result ?
+      ftResult.result.map((result) => bytesToU256(Uint8Array.from(result.result.Ok)))
+      :
+      new Array(ftTokensData.length).fill(0n);
 
     const balances: Balance[] = [];
 
-    if (resonses.result) {
-      for (let index = 0; index < resonses.result.length; index++) {
-        const resonse = resonses.result[index];
-
-        balances.push({
+    if (nativeResonses.result) {
+      for (let index = 0; index < nativeResonses.result.length; index++) {
+        const resonse = nativeResonses.result[index];
+        let balanceObject: Balance = {
           [MAS.base58]: {
             final: resonse.final_balance,
             candidate: resonse.candidate_balance
@@ -171,14 +180,26 @@ export class TokenControl {
             final: String(resonse.final_roll_count),
             candidate: String(resonse.candidate_roll_count)
           }
-        });
+        };
+
+        for (let tokenIndex = 0; tokenIndex < tokensAddresses.length; tokenIndex++) {
+          const data = ftTokensData[tokenIndex + index];
+          const tokenbalance = ftBalances[tokenIndex + index];
+
+          balanceObject[data.target_address] = {
+            final: String(tokenbalance),
+            candidate: "0"
+          }
+        }
+
+        balances.push(balanceObject);
       }
-    } else if (resonses.error) {
-      if (resonses.error.message) {
-        throw new TokenError(`code: ${resonses.error.code}, ${resonses.error.message}`);
+    } else if (nativeResonses.error) {
+      if (nativeResonses.error.message) {
+        throw new TokenError(`code: ${nativeResonses.error.code}, ${nativeResonses.error.message}`);
       }
 
-      throw new TokenError(JSON.stringify(resonses.error));
+      throw new TokenError(JSON.stringify(nativeResonses.error));
     }
 
     return balances;
