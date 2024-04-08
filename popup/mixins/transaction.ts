@@ -34,7 +34,7 @@ export async function addConfirmTransaction(amount: number | Big | string, recip
     toAddr: recipient,
     code: '',
     params: [],
-    coins: fromMass(amount, token.decimals).toString(),
+    coins: amount.toString(),
     gasPrice: GAS_PRICE,
     gasLimit: gas.gasLimit,
     icon: viewIcon(token.base58, TokenType.FT),
