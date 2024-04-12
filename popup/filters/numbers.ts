@@ -1,4 +1,5 @@
 import Big from 'big.js';
+import { MASSA_DECIMALS } from 'config/common';
 
 Big.PE = 99;
 
@@ -52,5 +53,5 @@ export function fromMass(value: string | Big | number, decimals: number): Big {
 }
 
 export function toKG(value: number) {
-  return formatNumber(value / 10e4, 'KG');
+  return formatNumber(value / 10 ** MASSA_DECIMALS, 'MAS');
 }

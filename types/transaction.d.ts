@@ -37,6 +37,7 @@ export interface MinTransactionParams {
   token: TransactionToken;
   fee?: number;
   maxGas?: string;
+  gasLimit?: string; /// TODO: Remove after some time to void break users space.
   //
   icon?: string;
   uuid?: string;

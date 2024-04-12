@@ -87,6 +87,11 @@ export class BackgroundTransaction {
         };
       }
 
+      if (params.gasLimit && !params.maxGas) {
+        /// TODO: remove after some time...
+        params.maxGas = params.gasLimit;
+      }
+
       if (!params.fee) {
         params.fee = this.#core.gas.fee;
       }
