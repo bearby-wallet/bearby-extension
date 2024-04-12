@@ -35,7 +35,7 @@ export interface MinTransactionParams {
   toAddr: string;
   type: OperationsType;
   token: TransactionToken;
-  fee?: number;
+  fee?: string;
   maxGas?: string;
   gasLimit?: string; /// TODO: Remove after some time to void break users space.
   //
@@ -53,7 +53,7 @@ export interface MinTransactionParams {
 
 export interface ConfirmParams extends MinTransactionParams {
   tokenAmount: string;
-  fee: number;
+  fee: string;
   maxGas: string;
   recipient: string;
 }
@@ -61,7 +61,7 @@ export interface ConfirmParams extends MinTransactionParams {
 export interface HistoryTransaction {
   type: OperationsType;
   token: TransactionToken;
-  fee: number;
+  fee: string;
   toAddr: string;
   from: string;
   hash: string;

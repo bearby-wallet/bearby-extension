@@ -1,4 +1,4 @@
-type Arg = string | Array<string | number | null | undefined | unknown> | unknown | null | undefined | object | number;
+type Arg = string | Array<string | number | null | undefined | unknown> | unknown | null | undefined | object | number | bigint;
 
 export const TypeOf = Object.freeze({
 
@@ -11,7 +11,7 @@ export const TypeOf = Object.freeze({
   },
 
   isNumber(argument: Arg) {
-    return Object.prototype.toString.call(argument) === '[object Number]' 
+    return Object.prototype.toString.call(argument) === '[object Number]'
       && !isNaN(Number(argument));
   },
 
@@ -43,8 +43,12 @@ export const TypeOf = Object.freeze({
     return Object.prototype.toString.call(argument) === '[object Undefined]';
   },
 
+  isBigInt(argument: Arg) {
+    return typeof argument === 'bigint';
+  },
+
   isEmptyObject(argument: Arg) {
-    if(!this.isObject(argument)) {
+    if (!this.isObject(argument)) {
       return false;
     } else {
       return Object.getOwnPropertyNames(argument).length === 0;
@@ -52,7 +56,7 @@ export const TypeOf = Object.freeze({
   },
 
   isEmptyArray<T>(argument: Array<T>) {
-    if(!this.isArray(argument)) {
+    if (!this.isArray(argument)) {
       return false;
     } else {
       return argument.length === 0;
@@ -60,9 +64,9 @@ export const TypeOf = Object.freeze({
   },
 
   getType(argument: Arg): string {
-    if(Number.isNaN(argument)) {
+    if (Number.isNaN(argument)) {
       return 'NaN';
     }
-    return Object.prototype.toString.call(argument).split(' ')[1].slice(0,-1).toLowerCase();
+    return Object.prototype.toString.call(argument).split(' ')[1].slice(0, -1).toLowerCase();
   }
 });

@@ -66,8 +66,7 @@
     const gasMultiplier = Number(e.detail);
 
     transaction.gasMultiplier = gasMultiplier;
-    transaction.fee =
-      transaction.gasPrice * transaction.gasMultiplier * transaction.gasLimit;
+    transaction.fee = transaction.gasMultiplier * transaction.fee;
 
     await updateConfirm(transaction, txIndex);
   }
@@ -165,8 +164,8 @@
       </div>
       <div class="params" class:loading>
         <GasControl
-          multiplier={$gasStore.multiplier}
-          gasLimit={transaction.fee}
+          multiplier={Number(transaction.gasMultiplier || $gasStore.multiplier)}
+          gasLimit={Number(transaction.fee)}
           on:select={handleOnChangeGasMultiplier}
         />
         <h3 on:mouseup={() => (editModal = !editModal)}>

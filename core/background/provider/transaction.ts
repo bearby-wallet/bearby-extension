@@ -4,7 +4,7 @@ import { utils } from "aes-js";
 import { toByteArray } from "base64-js";
 import { base58Decode, isBase58Address } from "lib/address";
 import { assert } from "lib/assert";
-import { VarintEncode } from 'lib/varint';
+import { varintEncode } from 'lib/varint';
 import { INVLID_RECIPIENT, INVLID_ADDRESS_PREFIX } from "./errors";
 import { OperationsType } from "./operations";
 import { ADDRESS_PREFIX, USER_VERSION_NUMBER, CONTRACT_VERSION_NUMBER, CONTRACT_ADDRESS_PREFIX } from "config/common";
@@ -16,19 +16,19 @@ import { BaseError } from "lib/error";
 export class PaymentBuild {
   static operation = OperationsType.Payment;
 
-  fee: number;
-  amount: number;
+  fee: bigint;
+  amount: bigint;
   recipientAddress: string;
   expirePeriod: number;
 
   constructor(
-    fee: number,
-    amount: number,
+    fee: string,
+    amount: string,
     recipientAddress: string,
     expirePeriod: number
   ) {
-    this.fee = fee;
-    this.amount = amount;
+    this.fee = BigInt(fee);
+    this.amount = BigInt(amount);
     this.recipientAddress = recipientAddress;
     this.expirePeriod = expirePeriod;
   }
@@ -36,10 +36,10 @@ export class PaymentBuild {
   async bytes() {
     assert(await isBase58Address(this.recipientAddress), INVLID_RECIPIENT);
 
-    const fee = new VarintEncode().encode(Number(this.fee));
-    const expirePeriod = new VarintEncode().encode(this.expirePeriod);
-    const typeIdEncoded = new VarintEncode().encode(PaymentBuild.operation);
-    const amount = new VarintEncode().encode(this.amount);
+    const fee = varintEncode(this.fee);
+    const expirePeriod = varintEncode(this.expirePeriod);
+    const typeIdEncoded = varintEncode(PaymentBuild.operation);
+    const amount = varintEncode(this.amount);
     const prefix = this.recipientAddress.slice(0, ADDRESS_PREFIX.length);
     let recipient = (await base58Decode(this.recipientAddress.slice(ADDRESS_PREFIX.length)));
 
@@ -64,25 +64,25 @@ export class PaymentBuild {
 export class BuyRollsBuild {
   static operation = OperationsType.RollBuy;
 
-  fee: number;
-  amount: number;
+  fee: bigint;
+  amount: bigint;
   expirePeriod: number;
 
   constructor(
-    fee: number,
-    amount: number,
+    fee: string,
+    amount: string,
     expirePeriod: number
   ) {
-    this.fee = fee;
-    this.amount = amount;
+    this.fee = BigInt(fee);
+    this.amount = BigInt(amount);
     this.expirePeriod = expirePeriod;
   }
 
   async bytes() {
-    const fee = new VarintEncode().encode(this.fee);
-    const expirePeriod = new VarintEncode().encode(this.expirePeriod);
-    const typeIdEncoded = new VarintEncode().encode(BuyRollsBuild.operation);
-    const amount = new VarintEncode().encode(this.amount);
+    const fee = varintEncode(this.fee);
+    const expirePeriod = varintEncode(this.expirePeriod);
+    const typeIdEncoded = varintEncode(BuyRollsBuild.operation);
+    const amount = varintEncode(this.amount);
 
     return Uint8Array.from([
       ...fee,
@@ -96,25 +96,25 @@ export class BuyRollsBuild {
 export class SellRollsBuild {
   static operation = OperationsType.RollSell;
 
-  fee: number;
-  amount: number;
+  fee: bigint;
+  amount: bigint;
   expirePeriod: number;
 
   constructor(
-    fee: number,
-    amount: number,
+    fee: string,
+    amount: string,
     expirePeriod: number
   ) {
-    this.fee = fee;
-    this.amount = amount;
+    this.fee = BigInt(fee);
+    this.amount = BigInt(amount);
     this.expirePeriod = expirePeriod;
   }
 
   async bytes() {
-    const fee = new VarintEncode().encode(this.fee);
-    const expirePeriod = new VarintEncode().encode(this.expirePeriod);
-    const typeIdEncoded = new VarintEncode().encode(SellRollsBuild.operation);
-    const amount = new VarintEncode().encode(this.amount);
+    const fee = varintEncode(this.fee);
+    const expirePeriod = varintEncode(this.expirePeriod);
+    const typeIdEncoded = varintEncode(SellRollsBuild.operation);
+    const amount = varintEncode(this.amount);
 
     return Uint8Array.from([
       ...fee,
@@ -207,20 +207,20 @@ export class ExecuteSmartContractBuild {
   }
 
   bytes() {
-    const feeEncoded = new VarintEncode().encode(Number(this.fee)); // TODO: Replace encode to bigint.
-    const maxGasEncoded = new VarintEncode().encode(Number(this.maxGas)); // TODO: Replace encode to bigint.
-    const maxCoinEncoded = new VarintEncode().encode(Number(this.maxCoins)); // TODO: Replace encode to bigint.
-    const expirePeriodEncoded = new VarintEncode().encode(this.expirePeriod);
-    const typeIdEncoded = new VarintEncode().encode(ExecuteSmartContractBuild.operation);
-    const dataLengthEncoded = new VarintEncode().encode(this.deployer.length);
+    const feeEncoded = varintEncode(this.fee);
+    const maxGasEncoded = varintEncode(this.maxGas);
+    const maxCoinEncoded = varintEncode(this.maxCoins);
+    const expirePeriodEncoded = varintEncode(this.expirePeriod);
+    const typeIdEncoded = varintEncode(ExecuteSmartContractBuild.operation);
+    const dataLengthEncoded = varintEncode(this.deployer.length);
 
     // smart contract operation datastore
     const datastoreKeyMap = this.datastore;
     let datastoreSerializedBuffer = new Uint8Array();
 
     for (const [key, value] of datastoreKeyMap) {
-      const encodedKeyLen = new VarintEncode().encode(key.length);
-      const encodedValueLen = new VarintEncode().encode(value.length);
+      const encodedKeyLen = varintEncode(key.length);
+      const encodedValueLen = varintEncode(value.length);
 
       datastoreSerializedBuffer = Uint8Array.from([
         ...datastoreSerializedBuffer,
@@ -231,7 +231,7 @@ export class ExecuteSmartContractBuild {
       ]);
     }
 
-    const datastoreSerializedBufferLen = new VarintEncode().encode(this.datastore.size);
+    const datastoreSerializedBufferLen = varintEncode(this.datastore.size);
 
     return Uint8Array.from([
       ...feeEncoded,
@@ -252,8 +252,8 @@ export class CallSmartContractBuild {
 
   functionName: string;
   maxGas: bigint;
-  coins: number;
-  fee: number;
+  coins: bigint;
+  fee: bigint;
   targetAddress: string;
   expirePeriod: number;
 
@@ -262,7 +262,7 @@ export class CallSmartContractBuild {
   constructor(
     functionName: string,
     parameters: CallParam[],
-    fee: number,
+    fee: string,
     expirePeriod: number,
     maxGas: bigint,
     coins: string,
@@ -271,8 +271,8 @@ export class CallSmartContractBuild {
   ) {
     this.functionName = functionName;
     this.maxGas = maxGas;
-    this.coins = Number(coins);
-    this.fee = fee;
+    this.coins = BigInt(coins);
+    this.fee = BigInt(fee);
     this.expirePeriod = expirePeriod;
     this.targetAddress = targetAddress;
 
@@ -288,14 +288,14 @@ export class CallSmartContractBuild {
   async bytes() {
     assert(await isBase58Address(this.targetAddress), INVLID_RECIPIENT);
 
-    const fee = new VarintEncode().encode(this.fee);
-    const expirePeriod = new VarintEncode().encode(this.expirePeriod);
-    const typeIdEncoded = new VarintEncode().encode(CallSmartContractBuild.operation);
-    const coinsEncoded = new VarintEncode().encode(this.coins);
-    const maxGas = new VarintEncode().encode(Number(this.maxGas));// TODO: Replace encode to bigint.
+    const fee = varintEncode(this.fee);
+    const expirePeriod = varintEncode(this.expirePeriod);
+    const typeIdEncoded = varintEncode(CallSmartContractBuild.operation);
+    const coinsEncoded = varintEncode(this.coins);
+    const maxGas = varintEncode(this.maxGas);
     const functionNameEncoded = utils.utf8.toBytes(this.functionName);
-    const functionNameLengthEncoded = new VarintEncode().encode(functionNameEncoded.length);
-    const parametersLengthEncoded = new VarintEncode().encode(this.serializedArgs.length);
+    const functionNameLengthEncoded = varintEncode(functionNameEncoded.length);
+    const parametersLengthEncoded = varintEncode(this.serializedArgs.length);
     let targetAddressEncoded = (await base58Decode(this.targetAddress.slice(ADDRESS_PREFIX.length)));
 
     targetAddressEncoded = Uint8Array.from([

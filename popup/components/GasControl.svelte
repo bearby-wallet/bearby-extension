@@ -7,8 +7,8 @@
 
   const dispatch = createEventDispatcher();
 
-  export let multiplier = MULTIPLIER;
-  export let gasLimit = GAS_LIMIT;
+  export let multiplier: number = MULTIPLIER;
+  export let gasLimit: number = GAS_LIMIT;
 
   $: amount = multiplier * gasLimit;
   $: list = Array(3);

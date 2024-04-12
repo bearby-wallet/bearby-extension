@@ -93,7 +93,7 @@ export class BackgroundTransaction {
       }
 
       if (!params.fee) {
-        params.fee = this.#core.gas.fee;
+        params.fee = String(this.#core.gas.fee);
       }
 
       const prompt = new PromptService(
@@ -102,7 +102,7 @@ export class BackgroundTransaction {
       const confirmParams: ConfirmParams = {
         ...params,
         tokenAmount: String(params.coins ?? 0),
-        fee: Number(params.fee),
+        fee: String(params.fee),
         maxGas: String(params.maxGas ?? this.#core.gas.state.gasLimit),
         recipient: params.toAddr
       };
@@ -254,6 +254,7 @@ export class BackgroundTransaction {
         hash,
         expiryPeriod,
         nextSlot,
+        func: confirmParams.func,
         type: confirmParams.type,
         fee: confirmParams.fee,
         icon: confirmParams.icon,
@@ -373,19 +374,19 @@ export class BackgroundTransaction {
       case OperationsType.Payment:
         return await new PaymentBuild(
           confirmParams.fee,
-          Number(confirmParams.coins),
+          confirmParams.coins,
           confirmParams.toAddr, expiryPeriod
         ).bytes();
       case OperationsType.RollBuy:
         return await new BuyRollsBuild(
           confirmParams.fee,
-          Number(confirmParams.coins),
+          confirmParams.coins,
           expiryPeriod
         ).bytes();
       case OperationsType.RollSell:
         return await new SellRollsBuild(
           confirmParams.fee,
-          Number(confirmParams.coins),
+          confirmParams.coins,
           expiryPeriod
         ).bytes();
       case OperationsType.ExecuteSC:

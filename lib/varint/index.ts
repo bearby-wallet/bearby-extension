@@ -1,5 +1,6 @@
 import { BaseError } from 'lib/error';
-import { RANGE_DECODE, RANGE_ENCODE } from './errors';
+import { TypeOf } from 'lib/type';
+import { encode } from './unsigned';
 
 const MSB = 0x80;
 const REST = 0x7F;
@@ -25,7 +26,7 @@ export class VarintDecode {
     do {
       if (counter >= l || shift > 49) {
         this.#bytes = 0;
-        throw new BaseError(RANGE_DECODE);
+        throw new BaseError("Could not decode varint invalid Range");
       }
 
       b = buf[counter++];
@@ -53,7 +54,7 @@ export class VarintEncode {
   encode(num: number, out: number[] = [], offset = 0) {
     if (Number.MAX_SAFE_INTEGER && num > Number.MAX_SAFE_INTEGER) {
       this.#bytes = 0;
-      throw new BaseError(RANGE_ENCODE);
+      throw new BaseError("Could not encode varint invalid Range");
     }
 
     const oldOffset = offset;
@@ -74,3 +75,22 @@ export class VarintEncode {
     return Uint8Array.from(out);
   }
 }
+
+export function varintEncode(data: number | bigint): Uint8Array {
+  if (TypeOf.isBigInt(data)) {
+    return encode(data as bigint);
+  }
+
+  return new VarintEncode().encode(Number(data));
+}
+
+export function varintDecode(data: Uint8Array): {
+  value: number
+  bytes: number
+} {
+  const varint = new VarintDecode();
+  const value = varint.decode(data);
+  const bytes = varint.bytes;
+  return { value, bytes }
+}
+
