@@ -12,8 +12,6 @@
   $: amount = Number(tx.tokenAmount) / 10 ** tx.token.decimals;
   $: converted = 0;
   $: date = new Date(tx.timestamp).toLocaleDateString();
-
-  console.log(tx);
 </script>
 
 <div
@@ -25,7 +23,9 @@
   <div>
     <h3>
       {tx.func || $_(`confirm.params.types.${tx.type}`)}
-      {tx.title ? `(${tx.title})` : ""}
+      <b>
+        {tx.title ? `(${tx.title})` : ""}
+      </b>
     </h3>
     <p>
       {date}
