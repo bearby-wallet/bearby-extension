@@ -36,7 +36,7 @@ export class PaymentBuild {
   async bytes() {
     assert(await isBase58Address(this.recipientAddress), INVLID_RECIPIENT);
 
-    const fee = new VarintEncode().encode(this.fee);
+    const fee = new VarintEncode().encode(Number(this.fee));
     const expirePeriod = new VarintEncode().encode(this.expirePeriod);
     const typeIdEncoded = new VarintEncode().encode(PaymentBuild.operation);
     const amount = new VarintEncode().encode(this.amount);

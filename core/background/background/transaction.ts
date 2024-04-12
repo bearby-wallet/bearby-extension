@@ -209,7 +209,6 @@ export class BackgroundTransaction {
       const pair = await this.#core.account.getKeyPair();
       const nextSlot = Number(slotResponse.result?.next_slot.period);
       const expiryPeriod = nextSlot + this.#core.settings.period.periodOffset;
-      console.log(confirmParams);
       const bytesCompact = await this.#confirmToBytes(confirmParams, expiryPeriod);
       let array = [];
 
