@@ -251,9 +251,8 @@ export class CallSmartContractBuild {
   static operation = OperationsType.CallSC;
 
   functionName: string;
-  gasLimit: number;
+  maxGas: bigint;
   coins: number;
-  gasPrice: number;
   fee: number;
   targetAddress: string;
   expirePeriod: number;
@@ -265,16 +264,14 @@ export class CallSmartContractBuild {
     parameters: CallParam[],
     fee: number,
     expirePeriod: number,
-    gasLimit: number,
-    gasPrice: number,
+    maxGas: bigint,
     coins: string,
     targetAddress: string,
     unsafeParameters?: Uint8Array,
   ) {
     this.functionName = functionName;
-    this.gasLimit = gasLimit;
+    this.maxGas = maxGas;
     this.coins = Number(coins);
-    this.gasPrice = gasPrice;
     this.fee = fee;
     this.expirePeriod = expirePeriod;
     this.targetAddress = targetAddress;
@@ -295,7 +292,7 @@ export class CallSmartContractBuild {
     const expirePeriod = new VarintEncode().encode(this.expirePeriod);
     const typeIdEncoded = new VarintEncode().encode(CallSmartContractBuild.operation);
     const coinsEncoded = new VarintEncode().encode(this.coins);
-    const gasLimit = new VarintEncode().encode(this.gasLimit);
+    const maxGas = new VarintEncode().encode(Number(this.maxGas));// TODO: Replace encode to bigint.
     const functionNameEncoded = utils.utf8.toBytes(this.functionName);
     const functionNameLengthEncoded = new VarintEncode().encode(functionNameEncoded.length);
     const parametersLengthEncoded = new VarintEncode().encode(this.serializedArgs.length);
@@ -310,7 +307,7 @@ export class CallSmartContractBuild {
       ...fee,
       ...expirePeriod,
       ...typeIdEncoded,
-      ...gasLimit,
+      ...maxGas,
       ...coinsEncoded,
       ...targetAddressEncoded,
       ...functionNameLengthEncoded,

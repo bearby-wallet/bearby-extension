@@ -1,32 +1,30 @@
 <script lang="ts">
-  import { GAS_LIMIT, MULTIPLIER, GAS_PRICE } from 'config/gas';
-  import { createEventDispatcher } from 'svelte';
+  import { GAS_LIMIT, MULTIPLIER } from "config/gas";
+  import { createEventDispatcher } from "svelte";
 
-  import Speed from './icons/Speed.svelte';
-  import { toKG } from 'app/filters/numbers';
-
+  import Speed from "./icons/Speed.svelte";
+  import { toKG } from "app/filters/numbers";
 
   const dispatch = createEventDispatcher();
 
   export let multiplier = MULTIPLIER;
-  export let gasPrice = GAS_PRICE;
   export let gasLimit = GAS_LIMIT;
 
-  $: amount = gasPrice * gasLimit;
+  $: amount = multiplier * gasLimit;
   $: list = Array(3);
 
   const handleOnSelect = (index: number) => {
-    dispatch('select', index + 1);
+    dispatch("select", index + 1);
   };
 </script>
 
 <ul>
   {#each list as _, index}
     <li
-      class:selected={(index + 1) === multiplier}
+      class:selected={index + 1 === multiplier}
       on:mouseup={() => handleOnSelect(index)}
     >
-      <Speed length={index + 1}/>
+      <Speed length={index + 1} />
       <h3>
         {toKG(amount * (index + 1))}
       </h3>
@@ -35,9 +33,9 @@
 </ul>
 
 <style lang="scss">
-	@import "../styles/mixins";
+  @import "../styles/mixins";
   ul {
-		padding: 0px;
+    padding: 0px;
     margin: 0;
     background-color: var(--card-color);
 

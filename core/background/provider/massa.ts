@@ -127,9 +127,8 @@ export class MassaControl {
         if (this.#settings.network.state.downgrade) {
           console.info(provider, err);
           await this.#network.removeProvider(provider);
-        } else {
-          break;
         }
+
         continue;
       }
     }

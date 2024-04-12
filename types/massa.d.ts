@@ -59,6 +59,7 @@ export interface JsonRPCResponseNodeStatus extends JsonRPCResponse {
       endorsement_count: number;
       operation_count: number;
     },
+    minimal_fees: string;
     version: string;
     chain_id: number | null;
   };

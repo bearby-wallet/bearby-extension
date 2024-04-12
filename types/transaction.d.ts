@@ -32,15 +32,13 @@ export interface SignedMessage {
 
 export interface MinTransactionParams {
   coins: string;
-  gasPrice: number;
-  gasLimit: number;
   toAddr: string;
   type: OperationsType;
   token: TransactionToken;
+  fee?: number;
+  maxGas?: string;
   //
-  gasMultiplier?: number;
   icon?: string;
-  fee?: string;
   uuid?: string;
   title?: string;
   domain?: string;
@@ -55,6 +53,7 @@ export interface MinTransactionParams {
 export interface ConfirmParams extends MinTransactionParams {
   tokenAmount: string;
   fee: number;
+  maxGas: string;
   recipient: string;
 }
 
@@ -62,8 +61,6 @@ export interface HistoryTransaction {
   type: OperationsType;
   token: TransactionToken;
   fee: number;
-  gasLimit: number;
-  gasPrice: number;
   toAddr: string;
   from: string;
   hash: string;

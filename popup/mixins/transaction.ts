@@ -2,17 +2,13 @@ import type { MinTransactionParams } from "types/transaction";
 import type { Token } from "types/token";
 
 import Big from 'big.js';
-import { get } from 'svelte/store';
 import { addToConfirmTransaction } from "app/backend/transactions";
 import { TokenType, viewIcon } from "app/utils/icon-view";
 import { OperationsType } from "background/provider/operations";
-import gasStore from 'popup/store/gas';
-import { GAS_PRICE } from "config/gas";
 import { getManifestVersion } from "lib/runtime/manifest";
 import { ManifestVersions } from "config/manifest-versions";
 import { Runtime } from "lib/runtime";
 import { ArgTypes } from "config/arg-types";
-import { fromMass } from "app/filters/numbers";
 
 Big.PE = 99;
 
@@ -27,7 +23,6 @@ export async function addConfirmTransaction(amount: number | Big | string, recip
     domain = Runtime.runtime.id;
   }
 
-  const gas = get(gasStore);
   const params: MinTransactionParams = {
     domain,
     type: OperationsType.Payment,
@@ -35,8 +30,6 @@ export async function addConfirmTransaction(amount: number | Big | string, recip
     code: '',
     params: [],
     coins: amount.toString(),
-    gasPrice: GAS_PRICE,
-    gasLimit: gas.gasLimit,
     icon: viewIcon(token.base58, TokenType.FT),
     title: token.name,
     token: {
@@ -60,7 +53,6 @@ export async function addConfirmBuyRolls(rolls: number | string | Big, recipient
     domain = Runtime.runtime.id;
   }
 
-  const gas = get(gasStore);
   const params: MinTransactionParams = {
     domain,
     type: OperationsType.RollBuy,
@@ -68,8 +60,6 @@ export async function addConfirmBuyRolls(rolls: number | string | Big, recipient
     code: '',
     params: [],
     coins: String(rolls),
-    gasPrice: GAS_PRICE,
-    gasLimit: gas.gasLimit,
     icon: viewIcon(token.base58, TokenType.FT),
     title: token.name,
     token: {
@@ -92,7 +82,7 @@ export async function addConfirmSellRolls(rolls: number | string | Big, recipien
   } else {
     domain = Runtime.runtime.id;
   }
-  const gas = get(gasStore);
+
   const params: MinTransactionParams = {
     domain,
     type: OperationsType.RollSell,
@@ -100,8 +90,6 @@ export async function addConfirmSellRolls(rolls: number | string | Big, recipien
     code: '',
     params: [],
     coins: String(rolls),
-    gasPrice: GAS_PRICE,
-    gasLimit: gas.gasLimit,
     icon: viewIcon(token.base58, TokenType.FT),
     title: token.name,
     token: {
@@ -125,7 +113,6 @@ export async function addConfirmTransferFT(amount: number | string | Big, recipi
     domain = Runtime.runtime.id;
   }
 
-  const gas = get(gasStore);
   const params: MinTransactionParams = {
     domain,
     type: OperationsType.CallSC,
@@ -143,8 +130,6 @@ export async function addConfirmTransferFT(amount: number | string | Big, recipi
       }
     ],
     coins: '0',
-    gasPrice: GAS_PRICE,
-    gasLimit: gas.gasLimit,
     icon: viewIcon(token.base58, TokenType.FT),
     title: token.name,
     token: {

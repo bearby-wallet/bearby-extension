@@ -8,7 +8,7 @@ import { FAIL_SYNC, INVALID_CONFIG, INVALID_SELECTED, NetworkError, ONLY_CUSTOM,
 import { TypeOf } from 'lib/type';
 
 
-const [mainnet,,custom] = NETWORK_KEYS;
+const [mainnet, , custom] = NETWORK_KEYS;
 
 export class NetworkControl {
   #config = NETWORK;
@@ -28,6 +28,10 @@ export class NetworkControl {
 
   get version() {
     return this.config[this.selected].VERSION;
+  }
+
+  get chainId() {
+    return this.config[this.selected].CHAIN_ID;
   }
 
   get state() {

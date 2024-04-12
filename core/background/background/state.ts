@@ -38,7 +38,8 @@ export class BackgroundState {
     this.massa,
     this.transaction,
     this.network,
-    this.settings
+    this.settings,
+    this.gas
   );
 
   get state(): WalletState {

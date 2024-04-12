@@ -2,22 +2,35 @@ import type { GasState } from 'types/gas';
 
 import { Fields } from 'config/fields';
 import { BrowserStorage, buildObject } from 'lib/storage';
-import { GAS_LIMIT, GAS_PRICE, MULTIPLIER } from 'config/gas';
+import { GAS_LIMIT, MULTIPLIER } from 'config/gas';
 import { TypeOf } from 'lib/type';
 import { GasError, INVALID_STATE, INVALID_GAS_LIMIT, INVALID_MULTIPLIER } from './errors';
 
 
 export class GasControl {
   #gasLimit = GAS_LIMIT;
-  #gasPrice = GAS_PRICE;
   #multiplier = MULTIPLIER;
 
   get state(): GasState {
     return {
       gasLimit: this.#gasLimit,
       multiplier: this.#multiplier,
-      gasPrice: this.#gasPrice
     };
+  }
+
+  get fee(): number {
+    return this.#gasLimit * this.#multiplier;
+  }
+
+  async setGasLimit(gasLimit: number) {
+    const state = this.state;
+
+    this.#checkState(state);
+    this.#gasLimit = gasLimit;
+
+    await BrowserStorage.set(
+      buildObject(Fields.GAS, this.state)
+    );
   }
 
   async setConfig(state: GasState) {
@@ -66,6 +79,10 @@ export class GasControl {
 
     if (!state.multiplier) {
       throw new GasError(INVALID_MULTIPLIER);
+    }
+
+    if (state.gasLimit < GAS_LIMIT) {
+      throw new GasError(INVALID_GAS_LIMIT);
     }
   }
 }

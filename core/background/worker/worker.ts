@@ -1,8 +1,9 @@
 import type { NetworkControl } from "background/network";
 import type { SettingsControl } from "background/settings";
 import type { MassaControl } from "background/provider";
+import type { GasControl } from "background/gas";
 
-import { WORKER_POOLING } from "config/common";
+import { MASSA_DECIMALS, WORKER_POOLING } from "config/common";
 import { BrowserStorage, buildObject } from "lib/storage";
 import { Fields } from "config/fields";
 import { TransactionsController, HASH_OUT_OF_STORAGE } from "background/transactions";
@@ -27,6 +28,7 @@ export class WorkerController {
   readonly #transactions: TransactionsController;
   readonly #network: NetworkControl;
   readonly #settings: SettingsControl;
+  readonly #gas: GasControl;
 
   readonly #fieldAlarm = "massa-block-tracker";
 
@@ -46,12 +48,14 @@ export class WorkerController {
     massa: MassaControl,
     transactions: TransactionsController,
     network: NetworkControl,
-    settings: SettingsControl
+    settings: SettingsControl,
+    gas: GasControl
   ) {
     this.#transactions = transactions;
     this.#massa = massa;
     this.#network = network;
     this.#settings = settings;
+    this.#gas = gas;
   }
 
   subscribe() {
@@ -97,6 +101,15 @@ export class WorkerController {
 
     if (!result.last_slot) {
       return;
+    }
+
+    if (result.minimal_fees) {
+      try {
+        const newGasLimit = Number(result.minimal_fees) * 10 ** MASSA_DECIMALS;
+        await this.#gas.setGasLimit(newGasLimit);
+      } catch {
+        /// SKIP if cannot set gaslimit.
+      }
     }
 
     const newPeriod = Number(result.last_slot.period);

@@ -26,12 +26,13 @@
   import TokenImage from "../components/TokenImage.svelte";
 
   import { AccountTypes } from "config/account-type";
+  import type { ConfirmParams } from "types/transaction";
 
   const url = new URL(window.location.href);
   let uuid = uuidv4();
   let txIndex = 0;
   let index = $walletStore.selectedAddress;
-  let transaction = $confirmStore[txIndex];
+  let transaction: ConfirmParams = $confirmStore[txIndex];
   let accountsModal = false;
   let editModal = false;
   let loading = false;
@@ -164,9 +165,8 @@
       </div>
       <div class="params" class:loading>
         <GasControl
-          multiplier={transaction.gasMultiplier || $gasStore.multiplier}
-          gasLimit={transaction.gasLimit}
-          gasPrice={transaction.gasPrice}
+          multiplier={$gasStore.multiplier}
+          gasLimit={transaction.fee}
           on:select={handleOnChangeGasMultiplier}
         />
         <h3 on:mouseup={() => (editModal = !editModal)}>

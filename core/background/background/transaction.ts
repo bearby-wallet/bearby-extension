@@ -87,20 +87,18 @@ export class BackgroundTransaction {
         };
       }
 
-      if (!params.gasPrice) {
-        params.gasPrice = this.#core.gas.state.gasPrice * this.#core.gas.state.multiplier;
+      if (!params.fee) {
+        params.fee = this.#core.gas.fee;
       }
 
       const prompt = new PromptService(
         this.#core.settings.popup.enabledPopup && Boolean(params.uuid)
       );
-
-      const gasLimit = params.gasLimit ?? this.#core.gas.state.gasLimit;
       const confirmParams: ConfirmParams = {
         ...params,
         tokenAmount: String(params.coins ?? 0),
-        fee: isNaN(Number(params.fee))
-          ? Number(gasLimit) * Number(params.gasPrice) : Number(params.fee),
+        fee: Number(params.fee),
+        maxGas: String(params.maxGas ?? this.#core.gas.state.gasLimit),
         recipient: params.toAddr
       };
 
@@ -211,23 +209,18 @@ export class BackgroundTransaction {
       const pair = await this.#core.account.getKeyPair();
       const nextSlot = Number(slotResponse.result?.next_slot.period);
       const expiryPeriod = nextSlot + this.#core.settings.period.periodOffset;
+      console.log(confirmParams);
       const bytesCompact = await this.#confirmToBytes(confirmParams, expiryPeriod);
       let array = [];
-      if (slotResponse.result?.chain_id) {
-        const chainIdBuffer = new ArrayBuffer(8);
-        const view = new DataView(chainIdBuffer);
-        view.setBigUint64(0, BigInt(slotResponse.result.chain_id), false);
-        array = [
-          ...new Uint8Array(chainIdBuffer),
-          ...pair.pubKey,
-          ...bytesCompact
-        ];
-      } else {
-        array = [
-          ...pair.pubKey,
-          ...bytesCompact
-        ];
-      }
+
+      const chainIdBuffer = new ArrayBuffer(8);
+      const view = new DataView(chainIdBuffer);
+      view.setBigUint64(0, BigInt(this.#core.network.chainId), false);
+      array = [
+        ...new Uint8Array(chainIdBuffer),
+        ...pair.pubKey,
+        ...bytesCompact
+      ];
       const txBytes = Uint8Array.from(array);
       const sig = await this.#core.massa.sign(txBytes, pair);
       const txDataObject = await this.#core.massa.getTransactionData(
@@ -259,8 +252,6 @@ export class BackgroundTransaction {
         nextSlot,
         type: confirmParams.type,
         fee: confirmParams.fee,
-        gasLimit: confirmParams.gasLimit,
-        gasPrice: confirmParams.gasPrice,
         icon: confirmParams.icon,
         title: confirmParams.title,
         toAddr: confirmParams.toAddr,
@@ -379,8 +370,7 @@ export class BackgroundTransaction {
         return await new PaymentBuild(
           confirmParams.fee,
           Number(confirmParams.coins),
-          confirmParams.toAddr,
-          expiryPeriod
+          confirmParams.toAddr, expiryPeriod
         ).bytes();
       case OperationsType.RollBuy:
         return await new BuyRollsBuild(
@@ -400,7 +390,7 @@ export class BackgroundTransaction {
 
         return new ExecuteSmartContractBuild(
           BigInt(confirmParams.fee),
-          BigInt(confirmParams.gasLimit),
+          BigInt(confirmParams.maxGas),
           BigInt(confirmParams.maxCoins || 0),
           BigInt(confirmParams.coins || 0),
           expiryPeriod,
@@ -417,8 +407,7 @@ export class BackgroundTransaction {
           confirmParams.params || [],
           confirmParams.fee,
           expiryPeriod,
-          confirmParams.gasLimit,
-          confirmParams.gasPrice,
+          BigInt(confirmParams.maxGas),
           confirmParams.coins || '0',
           confirmParams.toAddr,
           confirmParams.unsafeParams ? utils.hex.toBytes(confirmParams.unsafeParams) : undefined
