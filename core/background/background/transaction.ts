@@ -20,6 +20,8 @@ import { MTypeTab } from "config/stream-keys";
 import { TabsMessage } from "lib/stream/tabs-message";
 import { INCORRECT_PARAM, REJECTED } from "background/connections/errors";
 import { base58Encode, pubKeyFromBytes } from "lib/address";
+import { getManifestVersion } from "lib/runtime/manifest";
+import { ManifestVersions } from "config/manifest-versions";
 
 
 export class BackgroundTransaction {
@@ -74,7 +76,11 @@ export class BackgroundTransaction {
   async addToConfirm(params: MinTransactionParams, sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();
-      await this.#core.connections.checkConnection(String(params.domain));
+
+      if (getManifestVersion() !== ManifestVersions.V3) {
+        // TODO: problem with MV3
+        await this.#core.connections.checkConnection(String(params.domain));
+      }
 
       if (!params.token) {
         const [massa, rolls] = this.#core.tokens.identities;
