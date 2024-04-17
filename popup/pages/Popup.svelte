@@ -16,7 +16,6 @@
 
   import walletStore from "popup/store/wallet";
   import confirmStore from "app/store/confirm";
-  import gasStore from "popup/store/gas";
 
   import SelectCard from "../components/SelectCard.svelte";
   import Modal from "../components/Modal.svelte";
@@ -37,6 +36,7 @@
   let editModal = false;
   let loading = false;
   let err = "";
+  let multiplier = 1;
 
   $: account = $walletStore.identities[index];
 
@@ -63,12 +63,7 @@
   }
 
   async function handleOnChangeGasMultiplier(e: CustomEvent) {
-    const gasMultiplier = Number(e.detail);
-
-    transaction.gasMultiplier = gasMultiplier;
-    transaction.fee = transaction.gasMultiplier * transaction.fee;
-
-    await updateConfirm(transaction, txIndex);
+    multiplier = Number(e.detail);
   }
 
   async function onNextTx() {
@@ -92,6 +87,9 @@
   async function handleOnConfirm() {
     loading = true;
     try {
+      transaction.fee = String(multiplier * Number(transaction.fee));
+
+      await updateConfirm(transaction, txIndex);
       await bordercastTransaction(txIndex);
       await onNextTx();
       transaction = $confirmStore[txIndex];
@@ -164,8 +162,8 @@
       </div>
       <div class="params" class:loading>
         <GasControl
-          multiplier={Number(transaction.gasMultiplier || $gasStore.multiplier)}
-          gasLimit={Number(transaction.fee)}
+          {multiplier}
+          fee={Number(transaction.fee)}
           on:select={handleOnChangeGasMultiplier}
         />
         <h3 on:mouseup={() => (editModal = !editModal)}>

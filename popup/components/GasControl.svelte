@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { GAS_LIMIT, MULTIPLIER } from "config/gas";
   import { createEventDispatcher } from "svelte";
 
   import Speed from "./icons/Speed.svelte";
@@ -7,26 +6,26 @@
 
   const dispatch = createEventDispatcher();
 
-  export let multiplier: number = MULTIPLIER;
-  export let gasLimit: number = GAS_LIMIT;
+  export let multiplier: number = 1;
+  export let fee: number;
 
-  $: amount = multiplier * gasLimit;
-  $: list = Array(3);
+  $: list = [1, 2, 3];
 
   const handleOnSelect = (index: number) => {
-    dispatch("select", index + 1);
+    multiplier = index;
+    dispatch("select", index);
   };
 </script>
 
 <ul>
-  {#each list as _, index}
+  {#each list as index}
     <li
-      class:selected={index + 1 === multiplier}
+      class:selected={index === multiplier}
       on:mouseup={() => handleOnSelect(index)}
     >
-      <Speed length={index + 1} />
+      <Speed length={index} />
       <h3>
-        {toKG(amount * (index + 1))}
+        {toKG(fee * index)}
       </h3>
     </li>
   {/each}
