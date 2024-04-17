@@ -285,7 +285,6 @@ export class BackgroundTransaction {
         resolve: this.#core.state
       });
     } catch (err) {
-      console.log(err);
       const message = (err as BaseError).serialize ?
         (err as BaseError).serialize().message : (err as Error).message;
 
@@ -307,7 +306,7 @@ export class BackgroundTransaction {
       }
 
       const pair = await this.#core.account.getKeyPair();
-      const messageBytes = utils.hex.toBytes(String(message.hash));
+      const messageBytes = utils.utf8.toBytes(message.message);
       const signatureBytes = await this.#core.massa.sign(messageBytes, pair);
       const signature = await base58Encode(signatureBytes);
       const payload: SignedMessage = {
