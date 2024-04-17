@@ -6,7 +6,7 @@
   import { ZERO_ADDRESS } from 'config/common';
 
   import { trim } from 'popup/filters/trim';
-  import { formatNumber } from 'popup/filters/numbers';
+  import { formatNumber, toMass } from 'popup/filters/numbers';
 
 	import { generateBlockies } from 'popup/mixins/blockies';
 	import { uuidv4 } from 'lib/crypto/uuid';
@@ -49,7 +49,7 @@
     </div>
     <div>
       <h3>
-        {formatNumber(balance, massa.symbol)}
+        {formatNumber(toMass(balance, massa.decimals), massa.symbol)}
       </h3>
       <p>
         {formatNumber(0, $settingsStore.currency)}
