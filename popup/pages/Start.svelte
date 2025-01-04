@@ -37,18 +37,18 @@
 
 	img {
 		max-width: 500px;
-    width: calc(100vw - 90px);
+    width: calc(100vw - 0px);
 	}
 
 	h1 {
 		color: var(--text-color);
 		margin-block-end: 0;
-		@include fluid-text(600px, 22pt, 55pt);
+		@include fluid-text(600px, 20pt, 40pt);
 	}
 
 	h3 {
 		color: var(--text-color);
-		@include fluid-text(600px, 16pt, 30pt);
+		@include fluid-text(600px, 14pt, 20pt);
 	}
 
 	main {

@@ -187,7 +187,7 @@
       overflow-y: scroll;
 
       height: fit-content;
-      max-height: calc(100vh - 30px);
+      max-height: calc(100vh - 200px);
       width: 100%;
       max-width: 450px;
 
@@ -199,7 +199,7 @@
       & > input {
         max-width: 100pt;
         margin: 2pt;
-        height: 30pt;
+        height: 25pt;
         font-size: 11pt;
         line-height: 21pt;
         padding: 5pt;
@@ -224,6 +224,10 @@
 
     display: flex;
     justify-content: flex-end;
+
+    & > select  {
+      height: 34px;
+    }
   }
   label {
     color: var(--danger-color);

@@ -1,4 +1,6 @@
 <script lang="ts">
+  import Big from "big.js";
+
   import { onMount } from 'svelte';
 	import { _ } from 'popup/i18n';
   import { uuidv4 } from 'lib/crypto/uuid';
@@ -8,6 +10,7 @@
   import { TokenType, viewIcon } from 'popup/utils/icon-view';
 	import { generateBlockies } from 'popup/mixins/blockies';
   import { addConfirmBuyRolls, addConfirmSellRolls } from 'popup/mixins/transaction';
+  import { fromMass, toMass } from "app/filters/numbers";
 
 	import walletStore from 'popup/store/wallet';
 	import tokensStore from 'popup/store/tokens';
@@ -19,42 +22,49 @@
   import AccountsModal from '../modals/Accounts.svelte';
 	import SwapIcon from '../components/icons/Swap.svelte';
 
+	Big.PE = 99;
 
   const selectedToken = 1; // ROLS.
   const rolls = $tokensStore[selectedToken];
+  const rollPrice = Big(100); // TODO: fetch from nodeStatus.
 
 	let uuid = uuidv4();
   let loading = false;
-  let rollPrice = 100; // TODO: fetch from nodeStatus.
   let accountIndex = $walletStore.selectedAddress;
   let accountsModal = false;
   let recipientError = '';
   let tokens = [
 		{
-			value: 0,
+			value: Big(0),
 			meta: $tokensStore[0]
 		},
 		{
-			value: 0,
+			value: Big(0),
 			meta: $tokensStore[1]
 		}
 	];
 
+  $: token = $tokensStore[0];
 	$: account = $walletStore.identities[accountIndex];
   $: base58 = tokens[0].meta.base58;
   $: balance = account.tokens && account.tokens[base58] ?
     account.tokens[base58].final : 0;
   $: disabled = Number(tokens[0].value) > Number(balance) || Number(tokens[0].value) <= 0;
+  $: balance =
+    account.tokens && account.tokens[token.base58]
+      ? toMass(account.tokens[token.base58].final, token.decimals)
+      : 0;
+
 
   async function handleSubmit(e: Event) {
     e.preventDefault();
     loading = true;
     try {
       if (tokens[0].meta.base58 === rolls.base58) {
-        await addConfirmSellRolls(tokens[0].value, account.base58, rolls);
+        const _decimals = Big(10).pow(tokens[0].meta.decimals);
+        await addConfirmSellRolls(tokens[0].value.mul(_decimals).round(), account.base58, rolls);
       } else {
-        await addConfirmBuyRolls(tokens[1].value, account.base58, rolls);
-
+        await addConfirmBuyRolls(tokens[1].value.round(), account.base58, rolls);
       }
 
       push('/confirm');
@@ -65,16 +75,17 @@
     loading = false;
   }
 
-  function hanldeOnInput(amount: number) {
+  function hanldeOnInput(newAmount: Big) {
+    newAmount = Big(newAmount);
     const newTokens = tokens;
     const index = 0;
 
     if (newTokens[index].meta.base58 === rolls.base58) {
-      newTokens[index].value = amount;
-      newTokens[1].value = Math.floor(amount * rollPrice);
+      newTokens[index].value = newAmount;
+      newTokens[1].value = amount.mul(rollPrice);
     } else {
-      newTokens[index].value = amount;
-      newTokens[1].value = Math.floor(amount / rollPrice);
+      newTokens[index].value = newAmount;
+      newTokens[1].value = newAmount.div(rollPrice).round();
     }
 
     tokens = newTokens;
@@ -140,7 +151,7 @@
       img={viewIcon(tokens[0].meta.base58, TokenType.FT)}
       symbol={tokens[0].meta.symbol}
       max={Number(balance)}
-      value={String(tokens[0].value)}
+      value={tokens[0].value}
       loading={loading}
       on:input={(event) => hanldeOnInput(event.detail)}
     />
@@ -155,7 +166,8 @@
     <SmartInput
       img={viewIcon(tokens[1].meta.base58, TokenType.FT)}
       symbol={tokens[1].meta.symbol}
-      value={String(tokens[1].value)}
+      value={tokens[1].value}
+      max={balance}
       loading={loading}
       percents={[]}
       disabled={true}

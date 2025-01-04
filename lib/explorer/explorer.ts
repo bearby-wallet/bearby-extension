@@ -5,7 +5,7 @@ const [mainnet] = NETWORK_KEYS;
 export class Massa {
   #network = mainnet;
   #url = `https://massexplo.io`;
-
+  
   get network() {
     return `network=${this.#network}`;
   }
