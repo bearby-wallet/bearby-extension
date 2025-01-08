@@ -1,7 +1,7 @@
 import type { PrivateKey, PublicKey } from "types/account";
 
 import blake3 from "blake3-js";
-import { getPublicKey } from "@noble/ed25519";
+import { getPublicKey } from "lib/crypto/ed25519";
 import { sha256 } from "lib/crypto/sha256";
 
 import { base58ToBinary, binaryToBase58 } from "lib/crypto/base58";

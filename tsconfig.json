@@ -1,9 +1,18 @@
 {
   "extends": "@tsconfig/svelte/tsconfig.json",
-  "include": ["popup/**/*", "core/**/*", "lib/**/*", "types/**/*"],
+  "include": [
+    "popup/**/*",
+    "core/**/*",
+    "lib/**/*",
+    "types/**/*",
+    "node_modules/@noble/ed25519/**/*"
+  ],
   "exclude": ["node_modules/*", "__sapper__/*", "public/*", "dist"],
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */
+    "lib": ["es2020", "dom"],
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
 
     "verbatimModuleSyntax": true,
     /* Projects */
@@ -17,6 +26,7 @@
     "types": ["chrome", "svelte"],
     /* Language and Environment */
     "target": "esnext" /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */,
+    "module": "es6",
     // "lib": [],                                        /* Specify a set of bundled library declaration files that describe the target runtime environment. */
     // "jsx": "preserve",                                /* Specify what JSX code is generated. */
     // "experimentalDecorators": true,                   /* Enable experimental support for TC39 stage 2 draft decorators. */
@@ -31,7 +41,7 @@
 
     /* Modules */
     "rootDir": "./" /* Specify the root folder within your source files. */,
-    // "moduleResolution": "node",                       /* Specify how TypeScript looks up a file from a given module specifier. */
+    "moduleResolution": "node" /* Specify how TypeScript looks up a file from a given module specifier. */,
     "baseUrl": "./" /* Specify the base directory to resolve non-relative module names. */,
     "paths": {
       "app/*": ["popup/*"],

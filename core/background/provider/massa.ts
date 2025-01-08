@@ -17,7 +17,8 @@ import type { AccountController } from "background/account";
 
 import blake3 from "blake3-js";
 import { utils } from "aes-js";
-import { sign, verify } from "@noble/ed25519";
+// import { sign, verify } from "@noble/ed25519";
+import { sign, verify } from "lib/crypto/ed25519";
 
 import { HttpProvider } from "../../../lib/http/http";
 import {
@@ -100,12 +101,8 @@ export class MassaControl {
     const messageHashDigest = Uint8Array.from(
       utils.hex.toBytes(blake3.newRegular().update(data).finalize()),
     );
-    const sig = await sign(messageHashDigest, pair.privKey);
-    const isVerified = await verify(
-      sig,
-      messageHashDigest,
-      pair.pubKey.slice(1),
-    );
+    const sig = sign(messageHashDigest, pair.privKey);
+    const isVerified = verify(sig, messageHashDigest, pair.pubKey.slice(1));
 
     assert(isVerified, INCORRECT_PUB_KEY, MassaHttpError);
 

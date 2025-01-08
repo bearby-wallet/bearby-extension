@@ -10,6 +10,7 @@ getWalletState().finally(() => {
   app = new App({
     target: document.body,
   });
+  console.log(app);
   const events = Runtime.storage.local.onChanged;
 
   Runtime.tabs.query({ active: true, currentWindow: true }, ([tab]) =>

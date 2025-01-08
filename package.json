@@ -11,7 +11,7 @@
     "format": "prettier --write ."
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^23.0.7",
+    "@rollup/plugin-commonjs": "^28.0.2",
     "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.0",
     "@rollup/plugin-typescript": "^12.1.2",
@@ -19,7 +19,7 @@
     "@types/aes-js": "^3.1.4",
     "@types/big.js": "^6.2.2",
     "@types/chrome": "^0.0.290",
-    "rollup": "^3.29.5",
+    "rollup": "^4.30.1",
     "rollup-plugin-copy": "^3.5.0",
     "rollup-plugin-css-only": "^4.5.2",
     "rollup-plugin-node-polyfills": "^0.2.1",
@@ -36,7 +36,6 @@
   },
   "dependencies": {
     "@download/blockies": "^1.0.3",
-    "@noble/ed25519": "^2.2.2",
     "aes-js": "^3.1.2",
     "base64-js": "^1.5.1",
     "big.js": "^6.2.2",

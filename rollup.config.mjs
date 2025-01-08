@@ -10,6 +10,7 @@ import json from "@rollup/plugin-json";
 import { terser } from "rollup-plugin-terser";
 import { visualizer } from "rollup-plugin-visualizer";
 import nodePolyfills from "rollup-plugin-node-polyfills";
+import typescript from '@rollup/plugin-typescript';
 
 import pkg from "./package.json" with { type: "json" };
 
@@ -75,17 +76,18 @@ const background = {
     file: "dist/background.js",
   },
   plugins: [
+    nodePolyfills(),
+    typescript({
+      inlineSources: true,
+      sourceMap: !production,
+      inlineSources: !production,
+    }),
     commonjs(),
     resolve({
       jsnext: true,
       main: true,
       brower: true,
       preferBuiltins: false,
-    }),
-    nodePolyfills(),
-    typescript({
-      sourceMap: !production,
-      inlineSources: !production,
     }),
     production &&
       visualizer({
@@ -180,6 +182,6 @@ const content = {
 
 export default [
   popup,
-  // background,
-  // content
+  background,
+  content
 ];

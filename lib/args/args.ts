@@ -1,7 +1,6 @@
 import type { ArgTypes, NativeType } from "config/arg-types";
 
 import {
-  serializableObjectsArrayToBytes,
   bytesToSerializableObjectArray,
   deserializeObj,
   arrayToBytes,

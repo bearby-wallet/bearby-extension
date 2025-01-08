@@ -56,13 +56,17 @@
 			{/if}
 			{#each connections as item}
 				<li class="card">
-					<img
-						src={item.icon}
-						alt="icon"
-						width="30"
-						on:mouseup={() => hanldeOnSelect(item)}
-					/>
-					<div on:mouseup={() => hanldeOnSelect(item)}>
+					<button 
+				    class="icon-button"
+				    on:click={() => hanldeOnSelect(item)}
+				  >
+				    <img
+				      src={item.icon}
+				      alt="icon"
+				      width="30"
+				    />
+				  </button>
+					<div on:mouseup={() => hanldeOnSelect(item)} role="button" tabindex="0">
 						<div class="domain">
 							{item.domain}
 						</div>
@@ -72,6 +76,8 @@
 					</div>
 					<div
 						class="icon"
+						role="button"
+						tabindex="0"
 						on:mouseup={() => hanldeOnRemove(item)}
 					>
 						<CloseIcon />

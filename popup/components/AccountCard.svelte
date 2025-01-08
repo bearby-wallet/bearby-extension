@@ -36,7 +36,7 @@
 
 <div class="wrapper">
   <span class:selected={selected}>
-    <span id={uid}/>
+    <span id={uid}></span>
   </span>
   <div>
     <div>
