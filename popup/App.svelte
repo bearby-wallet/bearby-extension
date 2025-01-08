@@ -28,7 +28,7 @@
   });
 </script>
 
-{#if loading}
+{#if !loading}
   <Router />
 {/if}
 

@@ -39,5 +39,5 @@
 </script>
 
 {#if currentComponent}
-    {currentComponent}
+    <svelte:component this={currentComponent} />
 {/if}
