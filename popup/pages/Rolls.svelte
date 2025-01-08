@@ -4,13 +4,13 @@
   import { onMount } from 'svelte';
 	import { _ } from 'popup/i18n';
   import { uuidv4 } from 'lib/crypto/uuid';
-  import { push } from 'svelte-spa-router';
+  import { goto } from "@mateothegreat/svelte5-router";
 
   import { trim } from 'popup/filters/trim';
   import { TokenType, viewIcon } from 'popup/utils/icon-view';
 	import { generateBlockies } from 'popup/mixins/blockies';
   import { addConfirmBuyRolls, addConfirmSellRolls } from 'popup/mixins/transaction';
-  import { fromMass, toMass } from "app/filters/numbers";
+  import { toMass } from "app/filters/numbers";
 
 	import walletStore from 'popup/store/wallet';
 	import tokensStore from 'popup/store/tokens';
@@ -32,7 +32,6 @@
   let loading = false;
   let accountIndex = $walletStore.selectedAddress;
   let accountsModal = false;
-  let recipientError = '';
   let tokens = [
 		{
 			value: Big(0),
@@ -46,7 +45,6 @@
 
   $: token = $tokensStore[0];
 	$: account = $walletStore.identities[accountIndex];
-  $: base58 = tokens[0].meta.base58;
   $: disabled = Number(tokens[0].value) > Number(balance) || Number(tokens[0].value) <= 0;
   $: balance =
     account.tokens && account.tokens[token.base58]
@@ -65,10 +63,9 @@
         await addConfirmBuyRolls(tokens[1].value.round(), account.base58, rolls);
       }
 
-      push('/confirm');
+      goto('/confirm');
     } catch (err) {
       console.error(err);
-      recipientError = (err as Error).message;
     }
     loading = false;
   }
@@ -138,7 +135,7 @@
         text={trim(account.base58, 10)}
         on:click={() => accountsModal = !accountsModal}
       >
-        <div id={uuid}/>
+        <div id={uuid}></div>
       </SelectCard>
     </div>
     <hr />
@@ -157,7 +154,7 @@
       <p>
         {$_('rolls.receive')}
       </p>
-      <span on:mouseup={hanldeOnSwapTokens}>
+      <span on:mouseup={hanldeOnSwapTokens} role="button" tabindex="0">
         <SwapIcon className="swap-icon"/>
       </span>
     </div>

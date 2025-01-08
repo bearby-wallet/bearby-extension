@@ -1,15 +1,18 @@
 <script lang="ts">
-	import { pop } from 'svelte-spa-router';
 	import CloseIcon from './icons/Close.svelte';
 
   export let title: string;
+
+  function pop() {
+    window.history.back();
+  }
 </script>
 
 <nav>
   <h1>
     {title}
   </h1>
-  <div on:mouseup={pop}>
+  <div on:mouseup={pop} role="button" tabindex="0">
     <CloseIcon />
   </div>
 </nav>

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
-  import { link } from "svelte-spa-router";
+  import { route } from '@mateothegreat/svelte5-router';
   import { _ } from "popup/i18n";
   import { AccountTypes } from "config/account-type";
 
@@ -46,31 +46,31 @@
 <nav class:show>
   <h1>
     {account.name}
-    <span on:mouseup={onClose}>
+    <span on:mouseup={onClose} role="button" tabindex="0">
       <Close />
     </span>
   </h1>
   <hr />
-  <a href="/add" use:link>
+  <a href="/add" use:route>
     <TextElement
       title={$_("home.nav.options.add.title")}
       description={$_("home.nav.options.add.description")}
     />
   </a>
-  <a href="/import" use:link>
+  <a href="/import" use:route>
     <TextElement
       title={$_("home.nav.options.import.title")}
       description={$_("home.nav.options.import.description")}
     />
   </a>
-  <a href="/add-track" use:link>
+  <a href="/add-track" use:route>
     <TextElement
       title={$_("home.nav.options.track.title")}
       description={$_("home.nav.options.track.description")}
     />
   </a>
   {#if canRemove}
-    <span class="remove" on:mouseup={onRemoveAccount}>
+    <span class="remove" on:mouseup={onRemoveAccount} role="button" tabindex="0">
       <TextElement
         title={$_("home.nav.options.remove.title")}
         description={$_("home.nav.options.remove.description")}
@@ -105,7 +105,7 @@
     </div>
   </div>
 </nav>
-<div class="close" class:show on:mouseup={onClose} />
+<div class="close" class:show on:mouseup={onClose} role="button" tabindex="0"></div>
 
 <style lang="scss">
   @import "../styles/mixins";

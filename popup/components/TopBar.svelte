@@ -2,8 +2,8 @@
   import { NETWORK_KEYS } from "config/network";
 
   import { createEventDispatcher } from "svelte";
-
-  import { link, location, push } from "svelte-spa-router";
+  import { goto, route } from "@mateothegreat/svelte5-router";
+  import type { Instance } from "@mateothegreat/svelte5-router";
 
   import { linksExpand, openTab } from "popup/mixins/link";
   import { Massa } from "lib/explorer";
@@ -23,14 +23,12 @@
 
   const dispatch = createEventDispatcher();
 
-  export let expand = true;
-  export let view = false;
-  export let lock = true;
-  export let conn = false;
+ let { expand = true, view = false, lock = true, conn = false } = $props();
 
-  $: account = $walletStore.identities[$walletStore.selectedAddress];
-  $: isMainnet = $networkStore === NETWORK_KEYS[0];
-  $: app = $appsStore.find((a) => a.domain == $connectionStore.domain);
+  let account = $derived($walletStore.identities[$walletStore.selectedAddress]);
+  let isMainnet = $derived($networkStore === NETWORK_KEYS[0]);
+  let app = $derived($appsStore.find((a) => a.domain == $connectionStore.domain));
+  let instance = $state<Instance>();
 
   const onShowConnections = () => {
     if (app) {
@@ -43,18 +41,18 @@
   };
   const handleLogout = async () => {
     await logout();
-    push("/lock");
+    goto("/lock");
   };
 </script>
 
 <nav>
   <div class="grid-container">
     <div class="left">
-      <a class="network" class:mainnet={isMainnet} href="/network" use:link>
-        <span />
+      <a class="network" class:mainnet={isMainnet} href="/network" use:route aria-label="link">
+        <span></span>
       </a>
       {#if view}
-        <span class="view-btn" on:mouseup={viewOnViewBlock}>
+        <span class="view-btn" on:mouseup={viewOnViewBlock} role="button" tabindex="0">
           <ViewIcon className="icon-view" />
         </span>
       {/if}
@@ -65,6 +63,8 @@
           class="connections"
           class:enabled={Boolean(app)}
           on:mouseup={onShowConnections}
+          role="button"
+          tabindex="0"
         >
           {#if $connectionStore.accounts.some((c) => c == $walletStore.selectedAddress)}
             <ConnectedIcon className="connected-icon" width="40" height="10" />
@@ -83,12 +83,12 @@
     </div>
     <div class="right">
       {#if lock}
-        <span class="lock" on:mouseup={handleLogout}>
+        <span class="lock" on:mouseup={handleLogout} role="button" tabindex="0">
           <LockIcon className="icon-lock" />
         </span>
       {/if}
       {#if expand}
-        <span class="expand" on:mouseup={() => linksExpand($location)}>
+        <span class="expand" on:mouseup={() => linksExpand(String(instance?.current.path))} role="button" tabindex="0">
           <ExpandIcon className="icon" />
         </span>
       {/if}

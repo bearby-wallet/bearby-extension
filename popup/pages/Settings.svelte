@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { push } from 'svelte-spa-router';
+	import { goto } from "@mateothegreat/svelte5-router";
 	import { _ } from 'popup/i18n';
 
 	import BottomTabs from '../components/BottomTabs.svelte';
@@ -56,7 +56,7 @@
 	<main>
 		<ul>
 			{#each items as item, i}
-				<li on:mouseup={() => push(item.link)}>
+				<li on:mouseup={() => goto(item.link)}>
 					<TextElement
 						title={item.title}
 						description={item.description}

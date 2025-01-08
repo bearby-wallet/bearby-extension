@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { push } from 'svelte-spa-router';
+	import { goto } from "@mateothegreat/svelte5-router";
 	import { _ } from 'popup/i18n';
 	
   import { getRandomWords } from "popup/backend/wallet";
@@ -22,7 +22,7 @@
   };
   const hanldeOnContinue = () => {
     wordsStore.set(words);
-    push('/verify');
+    goto('/verify');
   };
   const handleOnPrint = () => {
     const phrase = words.join(' ');

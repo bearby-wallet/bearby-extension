@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { push } from 'svelte-spa-router';
+  import { goto } from "@mateothegreat/svelte5-router";
 	import { _ } from 'popup/i18n';
   import { createWallet, checBip39Word } from "popup/backend/wallet";
   import {
@@ -50,7 +50,7 @@
 
       await createWallet(words.join(" "), password, name, algorithm, iteractions);
       loading = false;
-      push('/created');
+      goto('/created');
 		} catch (err) {
 			error = (err as Error).message;
 		}

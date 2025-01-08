@@ -1,18 +1,16 @@
 import svelte from "rollup-plugin-svelte";
 import commonjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
-import sveltePreprocess from "svelte-preprocess";
 import typescript from "@rollup/plugin-typescript";
 import css from "rollup-plugin-css-only";
-import { sass } from "svelte-preprocess-sass";
 import copy from "rollup-plugin-copy";
 import json from "@rollup/plugin-json";
 import { terser } from "rollup-plugin-terser";
 import { visualizer } from "rollup-plugin-visualizer";
 import nodePolyfills from "rollup-plugin-node-polyfills";
-import typescript from '@rollup/plugin-typescript';
-
+import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import pkg from "./package.json" with { type: "json" };
+
 
 const production = !process.env.ROLLUP_WATCH;
 const manifest = process.env.MANIFEST || 3;
@@ -27,10 +25,11 @@ const popup = {
   },
   plugins: [
     svelte({
-      preprocess: sveltePreprocess({
-        sourceMap: !production,
-        style: sass(),
-      }),
+      // preprocess: sveltePreprocess({
+      //   sourceMap: !production,
+      //   style: sass(),
+      // }),
+      preprocess: vitePreprocess(),
       compilerOptions: {
         // enable run-time checks when not in production
         dev: !production,

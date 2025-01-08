@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 	import { _ } from "popup/i18n";
-	import { link, push } from "svelte-spa-router";
+	import { goto, route } from "@mateothegreat/svelte5-router";
 
 	import TopBar from "../components/TopBar.svelte";
 	import LeftNavBar from "../components/LeftNavBar.svelte";
@@ -54,10 +54,10 @@
 	const onToken = (index: number) => {
 		if (index === 1) {
 			// index = 1 is Roll Token
-			return push("/rolls");
+			return goto("/rolls");
 		}
 
-		return push(`/send/${index}`);
+		return goto(`/send/${index}`);
 	};
 	const onChangeAppConnection = async (e: CustomEvent) => {
 		let indexies = e.detail;
@@ -113,28 +113,28 @@
 	<img src="/imgs/logo.webp" alt="logo" class="logo" />
 	<main>
 		<div class="bar-wrapper">
-			<span class="burger" on:mouseup={onToggleLeftBar}>
+			<span class="burger" on:mouseup={onToggleLeftBar} role="button" tabindex="0">
 				<Burger />
 			</span>
 			<CopyAccount />
-			<a href="/accounts" class="acc" use:link>
-				<div id={uuid} />
+			<a href="/accounts" class="acc" use:route aria-label="accounts">
+				<div id={uuid} ></div>
 			</a>
 		</div>
 		<div class="btns">
 			<button
 				class="action primary"
 				disabled={account.type === AccountTypes.Track}
-				on:mouseup={() => push(`/send/0`)}
+				on:mouseup={() => goto(`/send/0`)}
 			>
 				{$_("home.btns.send")}
 			</button>
-			<button class="action primary" on:mouseup={() => push("/account")}>
+			<button class="action primary" on:mouseup={() => goto("/account")}>
 				{$_("home.btns.receive")}
 			</button>
 		</div>
 		<div class="manage-tokens">
-			<a class="manage-btn" href="/tokens" use:link>
+			<a class="manage-btn" href="/tokens" use:route>
 				<ManageIcon />
 			</a>
 		</div>

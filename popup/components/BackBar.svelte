@@ -1,19 +1,22 @@
 <script lang="ts">
   import BackButton from './BackButton.svelte';
-	import { pop } from 'svelte-spa-router';
 
   export let length = 0;
   export let selected = 0;
 
   $: list = new Array(length);
+
+  function goBack() {
+    window.history.back();
+  }
 </script>
 
 <nav>
-  <div on:mouseup={pop} aria-label="Go back" role="button" tabindex="0">
+  <div on:mouseup={goBack} aria-label="Go back" role="button" tabindex="0">
     <BackButton></BackButton>
   </div>
   <ul>
-    {#each list as el, index}
+    {#each list as _, index}
       <li class:selected={index === selected}></li>
     {/each}
   </ul>

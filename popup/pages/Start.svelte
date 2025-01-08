@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { link } from 'svelte-spa-router';
+	import { route } from '@mateothegreat/svelte5-router';
 	import { _ } from 'popup/i18n';
 </script>
 
@@ -17,14 +17,14 @@
 	<div>
 		<a
 			href="/restore"
-			use:link
+			use:route
 			class="btn outline"
 		>
 			{$_('start.btn_restore')}
 		</a>
 		<a
 			href="/create"
-			use:link
+			use:route
 			class="btn primary"
 		>
 			{$_('start.btn_create')}

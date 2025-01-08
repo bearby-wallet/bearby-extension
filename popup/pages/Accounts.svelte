@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { push } from 'svelte-spa-router';
+	import { goto } from "@mateothegreat/svelte5-router";
 	import { _ } from 'popup/i18n';
 
 	import walletStore from 'popup/store/wallet';
@@ -12,7 +12,7 @@
 
 	const onSelectAccount = async (e: CustomEvent) => {
 		await selectAccount(e.detail);
-		push('/');
+		goto('/');
 	};
 </script>
 

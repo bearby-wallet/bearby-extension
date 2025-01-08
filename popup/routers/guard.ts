@@ -1,5 +1,6 @@
 import { get } from "svelte/store";
-import { push } from "svelte-spa-router";
+import { goto } from "@mateothegreat/svelte5-router";
+import type { Route } from "@mateothegreat/svelte5-router";
 
 import guardStore from "popup/store/guard";
 import confirmStore from "app/store/confirm";
@@ -7,7 +8,15 @@ import connectAppStore from "popup/store/confirm-apps";
 import messageStore from "popup/store/message";
 import reqPubKey from "app/store/req-pub-key";
 
-export const routerGuard = () => {
+
+import StartPage from '../pages/Start.svelte';
+import LockPage from '../pages/Lock.svelte';
+import ConnectPage from '../pages/Connect.svelte';
+import PopupPage from '../pages/Popup.svelte';
+import SignMessagePage from '../pages/SignMessage.svelte';
+import PubKeyRequestPage from '../pages/PubKeyRequest.svelte';
+
+export const routerGuard = async (route: Route): Promise<Route> => {
   const guard = get(guardStore);
   const confirm = get(confirmStore);
   const appsConnect = get(connectAppStore);
@@ -15,40 +24,52 @@ export const routerGuard = () => {
   const message = get(messageStore);
 
   if (!guard.isReady) {
-    push("/start");
-
-    return guard.isEnable && guard.isReady;
+    goto("start");
+    return {
+      path: "start",
+      component: StartPage
+    };
   }
 
   if (guard.isReady && !guard.isEnable) {
-    push("/lock");
-
-    return guard.isEnable && guard.isReady;
+    goto("lock");
+    return {
+      path: "lock",
+      component: LockPage
+    };
   }
 
   if (appsConnect.length > 0) {
-    push("/connect");
-
-    return guard.isEnable && guard.isReady;
+    goto("connect");
+    return {
+      path: "connect",
+      component: ConnectPage
+    };
   }
 
   if (confirm.length > 0) {
-    push("/confirm");
-
-    return guard.isEnable && guard.isReady;
+    goto("confirm");
+    return {
+      path: "confirm",
+      component: PopupPage
+    };
   }
 
   if (message) {
-    push("/sign-message");
-
-    return guard.isEnable && guard.isReady;
+    goto("sign-message");
+    return {
+      path: "sign-message",
+      component: SignMessagePage
+    };
   }
 
   if (reqPubKeyState) {
-    push("/req-pubkey");
-
-    return guard.isEnable && guard.isReady;
+    goto("req-pubkey");
+    return {
+      path: "req-pubkey",
+      component: PubKeyRequestPage
+    };
   }
 
-  return guard.isEnable && guard.isReady;
+  return route;
 };

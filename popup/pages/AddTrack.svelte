@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { push } from 'svelte-spa-router';
 	import { _ } from 'popup/i18n';
+	import { goto } from "@mateothegreat/svelte5-router";
   import { AccountTypes } from 'config/account-type';
   import {
     MAX_NAME_LEN,
@@ -30,7 +30,7 @@
     loading = true;
     try {
       await importAccountTracker(address, name);
-      push('/');
+      goto('/');
     } catch (err) {
       addressError = (err as Error).message;
     }

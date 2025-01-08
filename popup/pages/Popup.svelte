@@ -1,7 +1,7 @@
 <script lang="ts">
   import { _ } from "popup/i18n";
   import { onMount } from "svelte";
-  import { push, pop } from "svelte-spa-router";
+  import { goto } from "@mateothegreat/svelte5-router";
   import { generateBlockies } from "popup/mixins/blockies";
 
   import { trim } from "popup/filters/trim";
@@ -75,12 +75,12 @@
           return closePopup();
         }
 
-        pop();
+        window.history.back();
 
         return;
       }
 
-      push("/history");
+      goto("/history");
     }
   }
 
@@ -137,7 +137,7 @@
     text={trim(account.base58, 10)}
     on:click={() => (accountsModal = !accountsModal)}
   >
-    <div id={uuid} />
+    <div id={uuid}></div>
   </SelectCard>
   <div>
     <hr />

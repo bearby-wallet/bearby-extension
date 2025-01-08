@@ -1,10 +1,10 @@
 <script lang="ts">
-	import { push } from 'svelte-spa-router';
+  import { goto } from "@mateothegreat/svelte5-router";
 	import { _ } from 'popup/i18n';
 
 
   const handleOnStart = () => {
-    push('/');
+    goto('/');
   };
 </script>
 

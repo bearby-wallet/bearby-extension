@@ -18,7 +18,7 @@
   import Guard from '../../components/Guard.svelte';
 
 	import { MIN_PASSWORD_LEN } from 'popup/config/account';
-  import { push } from 'svelte-spa-router';
+	import { goto } from "@mateothegreat/svelte5-router";
 
 
 	let phraseModal = false;
@@ -42,6 +42,7 @@
 	const hanldeOnTogglePhishingDetection = async () => {
 		await setPhishingDetection();
 	};
+
 	const hanldeChangeGuard = (e: CustomEvent) => {
     algorithm = e.detail.algorithm;
     iteractions = e.detail.iteractions;
@@ -57,7 +58,7 @@
 				algorithm,
 				iteractions
 			});
-			push('/lock');
+			goto('/lock');
       loading = false;
 		} catch (err) {
 			console.log(err);
@@ -90,18 +91,22 @@
 		>
 			<span
 				class="warning"
+				role="button"
+				tabindex="0"
 				on:mouseup={() => phraseModal = !phraseModal}
 			>
 				{$_('security.phrase.btn')}
-			</span>
+			<span></span>
 		</Jumbotron>
 		{#if !keybtndisbaled}
 			<Jumbotron
-				title={$_('security.key.title')}
+	title={$_('security.key.title')}
 				description={$_('security.key.warn')}
 			>
 				<span
 					class="warning"
+					role="button"
+					tabindex="0"
 					on:mouseup={() => keyModal = !keyModal}
 				>
 					{$_('security.key.btn')}

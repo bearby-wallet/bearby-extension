@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { push } from "svelte-spa-router";
+  import { goto } from "@mateothegreat/svelte5-router";
   import { _ } from "popup/i18n";
   import { AccountTypes } from "config/account-type";
   import {
@@ -47,7 +47,7 @@
     } catch {
       ///
     }
-    push("/");
+    goto("/");
     loading = false;
   };
 </script>

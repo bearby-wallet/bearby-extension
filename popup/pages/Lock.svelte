@@ -1,11 +1,9 @@
 <script lang="ts">
 	import { tick, onMount } from "svelte";
-	import { push } from "svelte-spa-router";
+	import { goto } from "@mateothegreat/svelte5-router";
 	import { _ } from "popup/i18n";
 	import { linksExpand } from "popup/mixins/link";
 	import { unlockWallet } from "popup/backend/wallet";
-	import { Runtime } from "lib/runtime";
-	import { loadTab } from "app/utils/tabs";
 
 	let inputEl: HTMLInputElement | undefined;
 	let password = "";
@@ -41,7 +39,7 @@
 			if (state.guard.isEnable && state.guard.isReady) {
 				loading = false;
 
-				push("/");
+				goto("/");
 			}
 		} catch (err) {
 			error = `${$_("lock.error")}-(${(err as Error).message})`;

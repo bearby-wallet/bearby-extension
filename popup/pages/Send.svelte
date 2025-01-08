@@ -3,7 +3,7 @@
   import Big from "big.js";
   import { _ } from "popup/i18n";
   import { uuidv4 } from "lib/crypto/uuid";
-  import { push } from "svelte-spa-router";
+  import { goto } from "@mateothegreat/svelte5-router";
 
   import { trim } from "popup/filters/trim";
   import { TokenType, viewIcon } from "popup/utils/icon-view";
@@ -100,7 +100,7 @@
       } else {
         await addConfirmTransferFT(bigAmt, recipient, token);
       }
-      push("/confirm");
+      goto("/confirm");
     } catch (err) {
       error = (err as Error).message;
       console.error(err);
@@ -166,7 +166,7 @@
           text={trim(account.base58, 10)}
           on:click={() => (accountsModal = !accountsModal)}
         >
-          <div id={uuid} />
+          <div id={uuid}></div>
         </SelectCard>
       </div>
       <div>
@@ -188,7 +188,7 @@
     <div>
       <div class="input">
         <label class:error={recipientError}>
-          <div on:mouseup={() => (contactsModal = !contactsModal)}>
+          <div on:mouseup={() => (contactsModal = !contactsModal)} role="button" tabindex="0">
             <ContactIcon width="23" height="26" className="cont-icon" />
           </div>
           <input
