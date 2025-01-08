@@ -1,18 +1,27 @@
-type Arg = string | Array<string | number | null | undefined | unknown> | unknown | null | undefined | object | number | bigint;
+type Arg =
+  | string
+  | Array<string | number | null | undefined | unknown>
+  | unknown
+  | null
+  | undefined
+  | object
+  | number
+  | bigint;
 
 export const TypeOf = Object.freeze({
-
   isArray(argument: Arg) {
-    return Object.prototype.toString.call(argument) === '[object Array]';
+    return Object.prototype.toString.call(argument) === "[object Array]";
   },
 
   isObject(argument: Arg) {
-    return Object.prototype.toString.call(argument) === '[object Object]';
+    return Object.prototype.toString.call(argument) === "[object Object]";
   },
 
   isNumber(argument: Arg) {
-    return Object.prototype.toString.call(argument) === '[object Number]'
-      && !isNaN(Number(argument));
+    return (
+      Object.prototype.toString.call(argument) === "[object Number]" &&
+      !isNaN(Number(argument))
+    );
   },
 
   isInt(argument: Arg) {
@@ -24,27 +33,27 @@ export const TypeOf = Object.freeze({
   },
 
   isError(argument: Arg) {
-    return Object.prototype.toString.call(argument) === '[object Error]';
+    return Object.prototype.toString.call(argument) === "[object Error]";
   },
 
   isString(argument: Arg) {
-    return Object.prototype.toString.call(argument) === '[object String]';
+    return Object.prototype.toString.call(argument) === "[object String]";
   },
 
   isBoolean(argument: Arg) {
-    return Object.prototype.toString.call(argument) === '[object Boolean]';
+    return Object.prototype.toString.call(argument) === "[object Boolean]";
   },
 
   isNull(argument: Arg) {
-    return Object.prototype.toString.call(argument) === '[object Null]';
+    return Object.prototype.toString.call(argument) === "[object Null]";
   },
 
   isUndefined(argument: Arg) {
-    return Object.prototype.toString.call(argument) === '[object Undefined]';
+    return Object.prototype.toString.call(argument) === "[object Undefined]";
   },
 
   isBigInt(argument: Arg) {
-    return typeof argument === 'bigint';
+    return typeof argument === "bigint";
   },
 
   isEmptyObject(argument: Arg) {
@@ -65,8 +74,12 @@ export const TypeOf = Object.freeze({
 
   getType(argument: Arg): string {
     if (Number.isNaN(argument)) {
-      return 'NaN';
+      return "NaN";
     }
-    return Object.prototype.toString.call(argument).split(' ')[1].slice(0, -1).toLowerCase();
-  }
+    return Object.prototype.toString
+      .call(argument)
+      .split(" ")[1]
+      .slice(0, -1)
+      .toLowerCase();
+  },
 });

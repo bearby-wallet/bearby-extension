@@ -1,12 +1,12 @@
-import type { Guard } from 'core/background/guard';
-import type { Wallet, Account, KeyPair, Balance, AppConnection } from 'types';
-import type { BadgeControl } from 'background/notifications';
+import type { Guard } from "core/background/guard";
+import type { Wallet, Account, KeyPair, Balance, AppConnection } from "types";
+import type { BadgeControl } from "background/notifications";
 
-import { MnemonicController, HDKey } from 'lib/bip39';
-import { AccountTypes } from 'config/account-type';
-import { BrowserStorage, buildObject } from 'lib/storage';
-import { assert } from 'lib/assert';
-import { Fields } from 'config/fields';
+import { MnemonicController, HDKey } from "lib/bip39";
+import { AccountTypes } from "config/account-type";
+import { BrowserStorage, buildObject } from "lib/storage";
+import { assert } from "lib/assert";
+import { Fields } from "config/fields";
 import {
   AccountError,
   NIL_ACCOUNT,
@@ -16,18 +16,23 @@ import {
   ACCOUNT_NOT_FOUND,
   HARDWARE_NOT_SUPPORT_METHOD,
   ACCOUNT_NAME_MUST_UNIQUE,
-  ACCOUNT_PRODUCT_ID_MUST_UNIQUE
-} from './errors';
-import { INVALID_BASE58_ADDRESS } from 'lib/address/errors';
-import { addressFromPublicKey, isBase58Address, publicKeyBytesFromPrivateKey, pubKeyFromBytes, base58PubKeyToBytes } from 'lib/address';
-import { base58PrivateKeyToBytes, isPrivateKey } from 'lib/validator';
-import { TypeOf } from 'lib/type';
-import { USER_VERSION_NUMBER } from 'config/common';
-
+  ACCOUNT_PRODUCT_ID_MUST_UNIQUE,
+} from "./errors";
+import { INVALID_BASE58_ADDRESS } from "lib/address/errors";
+import {
+  addressFromPublicKey,
+  isBase58Address,
+  publicKeyBytesFromPrivateKey,
+  pubKeyFromBytes,
+  base58PubKeyToBytes,
+} from "lib/address";
+import { base58PrivateKeyToBytes, isPrivateKey } from "lib/validator";
+import { TypeOf } from "lib/type";
+import { USER_VERSION_NUMBER } from "config/common";
 
 export class AccountController {
-  static readonly field0 = 'identities';
-  static readonly field1 = 'selectedAddress';
+  static readonly field0 = "identities";
+  static readonly field1 = "selectedAddress";
 
   readonly bip39 = new MnemonicController();
   readonly #guard: Guard;
@@ -36,7 +41,7 @@ export class AccountController {
   #requestPubKey?: AppConnection;
   #wallet: Wallet = {
     [AccountController.field1]: 0,
-    [AccountController.field0]: []
+    [AccountController.field0]: [],
   };
 
   get wallet() {
@@ -58,38 +63,33 @@ export class AccountController {
   }
 
   get lastIndexPrivKey() {
-    return this.#wallet
-      .identities
-      .filter((acc) => acc.type === AccountTypes.PrivateKey)
-      .length;
+    return this.#wallet.identities.filter(
+      (acc) => acc.type === AccountTypes.PrivateKey,
+    ).length;
   }
 
   get lastIndexTracker() {
-    return this.#wallet
-      .identities
-      .filter((acc) => acc.type === AccountTypes.Track)
-      .length;
+    return this.#wallet.identities.filter(
+      (acc) => acc.type === AccountTypes.Track,
+    ).length;
   }
 
   get lastIndexSeed() {
-    return this.#wallet
-      .identities
-      .filter((acc) => acc.type === AccountTypes.Seed)
-      .length;
+    return this.#wallet.identities.filter(
+      (acc) => acc.type === AccountTypes.Seed,
+    ).length;
   }
 
   get lastIndexLedger() {
-    return this.#wallet
-      .identities
-      .filter((acc) => acc.type === AccountTypes.Ledger)
-      .length;
+    return this.#wallet.identities.filter(
+      (acc) => acc.type === AccountTypes.Ledger,
+    ).length;
   }
 
   get lastIndexTrezor() {
-    return this.#wallet
-      .identities
-      .filter((acc) => acc.type === AccountTypes.Trezor)
-      .length;
+    return this.#wallet.identities.filter(
+      (acc) => acc.type === AccountTypes.Trezor,
+    ).length;
   }
 
   constructor(guard: Guard, badge: BadgeControl) {
@@ -105,7 +105,6 @@ export class AccountController {
       await this.#badge.increase();
     } else {
       await this.#badge.decrease();
-
     }
   }
 
@@ -116,7 +115,7 @@ export class AccountController {
     assert(
       !(account.index === 0 && account.type === AccountTypes.Seed),
       INCORRECT_ACCOUNT,
-      AccountError
+      AccountError,
     );
 
     delete this.#wallet.identities[index];
@@ -127,9 +126,7 @@ export class AccountController {
       this.wallet.selectedAddress -= 1;
     }
 
-    await BrowserStorage.set(
-      buildObject(Fields.WALLET, this.#wallet)
-    );
+    await BrowserStorage.set(buildObject(Fields.WALLET, this.#wallet));
   }
 
   async sync() {
@@ -148,9 +145,7 @@ export class AccountController {
     this.#wallet.identities = [];
     this.#wallet.selectedAddress = 0;
 
-    await BrowserStorage.set(
-      buildObject(Fields.WALLET, this.#wallet)
-    );
+    await BrowserStorage.set(buildObject(Fields.WALLET, this.#wallet));
   }
 
   async fromSeed(seed: Uint8Array, index = 0) {
@@ -176,7 +171,7 @@ export class AccountController {
       version: pubKey.version,
       pubKey: base58PubKey,
       nft: {},
-      tokens: {}
+      tokens: {},
     };
     await this.#add(account);
     return account;
@@ -184,7 +179,8 @@ export class AccountController {
 
   async addAccountFromPrivateKey(privateKey: string, name: string) {
     const index = this.lastIndexPrivKey;
-    const { pubKey, base58, privKey, version } = await this.fromPrivateKey(privateKey);
+    const { pubKey, base58, privKey, version } =
+      await this.fromPrivateKey(privateKey);
     const type = AccountTypes.PrivateKey;
     const encryptedPrivateKey = this.#guard.encryptPrivateKey(privKey);
     const base58PubKey = await pubKeyFromBytes(pubKey);
@@ -197,7 +193,7 @@ export class AccountController {
       pubKey: base58PubKey,
       privKey: encryptedPrivateKey,
       nft: {},
-      tokens: {}
+      tokens: {},
     };
     await this.#add(account);
     return account;
@@ -229,9 +225,9 @@ export class AccountController {
       base58,
       type,
       version: USER_VERSION_NUMBER,
-      pubKey: '',
+      pubKey: "",
       nft: {},
-      tokens: {}
+      tokens: {},
     };
     await this.#add(account);
     return account;
@@ -243,25 +239,27 @@ export class AccountController {
       this.#wallet.identities[index].tokens = balance;
     }
 
-    await BrowserStorage.set(
-      buildObject(Fields.WALLET, this.#wallet)
-    );
+    await BrowserStorage.set(buildObject(Fields.WALLET, this.#wallet));
   }
 
   getAccount(index: number) {
-    assert(index <= this.wallet.identities.length - 1, ACCOUNT_OUT_INDEX, AccountError);
+    assert(
+      index <= this.wallet.identities.length - 1,
+      ACCOUNT_OUT_INDEX,
+      AccountError,
+    );
     return this.wallet.identities[index];
   }
 
   getImportedAccountKeys(): KeyPair[] {
     const imported = this.wallet.identities.filter(
-      (acc) => acc.type === AccountTypes.PrivateKey
+      (acc) => acc.type === AccountTypes.PrivateKey,
     );
     return imported.map((acc) => ({
       pubKey: Uint8Array.from([]),
       privKey: this.#guard.decryptPrivateKey(String(acc.privKey)),
       base58: acc.base58,
-      version: 0 // TODO: change to automaticly
+      version: 0, // TODO: change to automaticly
     }));
   }
 
@@ -276,9 +274,7 @@ export class AccountController {
       return acc;
     });
 
-    await BrowserStorage.set(
-      buildObject(Fields.WALLET, this.#wallet)
-    );
+    await BrowserStorage.set(buildObject(Fields.WALLET, this.#wallet));
   }
 
   async getKeyPair(index = this.wallet.selectedAddress): Promise<KeyPair> {
@@ -291,14 +287,18 @@ export class AccountController {
       case AccountTypes.PrivateKey:
         const encryptedPriveLey = this.selectedAccount?.privKey;
         assert(Boolean(encryptedPriveLey), ACCOUNT_NOT_FOUND, AccountError);
-        const privKey = this.#guard.decryptPrivateKey(String(encryptedPriveLey));
+        const privKey = this.#guard.decryptPrivateKey(
+          String(encryptedPriveLey),
+        );
         const version = Number(this.selectedAccount?.version);
-        const pubKey = await base58PubKeyToBytes(String(this.selectedAccount?.pubKey));
+        const pubKey = await base58PubKeyToBytes(
+          String(this.selectedAccount?.pubKey),
+        );
         return {
           privKey,
           pubKey,
           version,
-          base58: String(this.selectedAccount?.base58)
+          base58: String(this.selectedAccount?.base58),
         };
     }
 
@@ -306,13 +306,15 @@ export class AccountController {
   }
 
   async select(index: number) {
-    assert(index < this.wallet.identities.length, ACCOUNT_OUT_INDEX, AccountError);
+    assert(
+      index < this.wallet.identities.length,
+      ACCOUNT_OUT_INDEX,
+      AccountError,
+    );
 
     this.#wallet.selectedAddress = index;
 
-    await BrowserStorage.set(
-      buildObject(Fields.WALLET, this.#wallet)
-    );
+    await BrowserStorage.set(buildObject(Fields.WALLET, this.#wallet));
 
     return this.selectedAccount;
   }
@@ -320,23 +322,16 @@ export class AccountController {
   async changeAccountName(index: number, name: string) {
     this.#wallet.identities[index].name = name;
 
-    await BrowserStorage.set(
-      buildObject(Fields.WALLET, this.#wallet)
-    );
+    await BrowserStorage.set(buildObject(Fields.WALLET, this.#wallet));
   }
 
   async #add(account: Account) {
     await this.#checkAccount(account);
 
-    this.#wallet
-      .identities
-      .push(account);
-    this.#wallet
-      .selectedAddress = this.wallet.identities.length - 1;
+    this.#wallet.identities.push(account);
+    this.#wallet.selectedAddress = this.wallet.identities.length - 1;
 
-    await BrowserStorage.set(
-      buildObject(Fields.WALLET, this.#wallet)
-    );
+    await BrowserStorage.set(buildObject(Fields.WALLET, this.#wallet));
 
     return this.wallet;
   }
@@ -345,15 +340,16 @@ export class AccountController {
     await this.sync();
 
     const isUniqueAddress = this.wallet.identities.some(
-      (acc) => (acc.base58 === account.base58)
+      (acc) => acc.base58 === account.base58,
     );
     const isUniqueName = this.wallet.identities.some(
-      (acc) => (acc.name === account.name)
+      (acc) => acc.name === account.name,
     );
     const isUniqueProductId = this.wallet.identities.some(
-      (acc) => (!TypeOf.isUndefined(acc.productId) &&
+      (acc) =>
+        !TypeOf.isUndefined(acc.productId) &&
         !TypeOf.isUndefined(account.productId) &&
-        acc.productId === account.productId)
+        acc.productId === account.productId,
     );
 
     assert(!isUniqueAddress, ACCOUNT_MUST_UNIQUE, AccountError);

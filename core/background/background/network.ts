@@ -2,7 +2,6 @@ import type { BaseError } from "lib/error";
 import type { StreamResponse } from "types";
 import type { BackgroundState } from "./state";
 
-
 export class BackgroundNetwork {
   readonly #core: BackgroundState;
 
@@ -20,11 +19,11 @@ export class BackgroundNetwork {
       await this.#core.tokens.sync();
 
       return sendResponse({
-        resolve: this.#core.state
+        resolve: this.#core.state,
       });
     } catch (err) {
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
@@ -36,11 +35,11 @@ export class BackgroundNetwork {
       await this.#core.network.sortProvider(node);
 
       return sendResponse({
-        resolve: this.#core.state
+        resolve: this.#core.state,
       });
     } catch (err) {
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
@@ -52,11 +51,11 @@ export class BackgroundNetwork {
       await this.#core.network.removeProvider(node);
 
       return sendResponse({
-        resolve: this.#core.state
+        resolve: this.#core.state,
       });
     } catch (err) {
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
@@ -68,12 +67,12 @@ export class BackgroundNetwork {
       await this.#core.network.addProvider(node);
 
       return sendResponse({
-        resolve: this.#core.state
+        resolve: this.#core.state,
       });
     } catch (err) {
       console.error(err);
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
@@ -85,19 +84,19 @@ export class BackgroundNetwork {
       await this.#core.network.reset();
 
       return sendResponse({
-        resolve: this.#core.network.config
+        resolve: this.#core.network.config,
       });
     } catch (err) {
       console.error(err);
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
 
   async getNetworkConfig(sendResponse: StreamResponse) {
     return sendResponse({
-      resolve: this.#core.network.config
+      resolve: this.#core.network.config,
     });
   }
 }

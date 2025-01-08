@@ -80,5 +80,5 @@ export const printMnemonic = (phrase: string, t: string) => {
   }
   </style>
 <html>
-`
-}
+`;
+};

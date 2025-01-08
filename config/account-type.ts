@@ -3,5 +3,5 @@ export enum AccountTypes {
   PrivateKey,
   Seed,
   Trezor,
-  Track
+  Track,
 }

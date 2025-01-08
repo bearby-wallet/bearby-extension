@@ -1,4 +1,3 @@
-
 export enum ArgTypes {
   STRING,
   BOOL,
@@ -17,4 +16,4 @@ export enum ArgTypes {
   SERIALIZABLE_OBJECT_ARRAY,
 }
 
-export type NativeType = string | boolean | number | bigint; 
+export type NativeType = string | boolean | number | bigint;

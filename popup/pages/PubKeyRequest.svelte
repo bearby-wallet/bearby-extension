@@ -52,7 +52,7 @@
       text={trim(account.base58)}
       on:click={() => null}
     >
-      <div id={uuid} />
+      <div id={uuid}></div>
     </SelectCard>
     <hr />
     <div class="warp">

@@ -1,9 +1,10 @@
 import { TypeOf } from "lib/type";
-import { assert } from 'lib/assert';
-import { INCORRECT_STRING, INVALID_CHARS } from './errors';
+import { assert } from "lib/assert";
+import { INCORRECT_STRING, INVALID_CHARS } from "./errors";
 
 // Base58 characters must only include numbers 123456789, uppercase ABCDEFGHJKLMNPQRSTUVWXYZ and lowercase abcdefghijkmnopqrstuvwxyz.
-const base58Chars = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+const base58Chars =
+  "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
 
 const base58Map = createBase58Map();
 
@@ -38,19 +39,26 @@ function createBase58Map(): number[] {
  * Logged output will be Uint8Array(3) [15, 239, 64].
  */
 export function base58ToBinary(base58String: string): Uint8Array {
-  assert(Boolean(base58String) && TypeOf.isString(base58String), INCORRECT_STRING);
-  assert(!Boolean(base58String.match(/[IOl0]/gmu)), INVALID_CHARS + base58String.match(/[IOl0]/gmu));
+  assert(
+    Boolean(base58String) && TypeOf.isString(base58String),
+    INCORRECT_STRING,
+  );
+  assert(
+    !Boolean(base58String.match(/[IOl0]/gmu)),
+    INVALID_CHARS + base58String.match(/[IOl0]/gmu),
+  );
 
   const lz = base58String.match(/^1+/gmu);
   const psz = lz ? lz[0].length : 0;
-  const size = ((base58String.length - psz) * (Math.log(58) / Math.log(256)) + 1) >>> 0;
+  const size =
+    ((base58String.length - psz) * (Math.log(58) / Math.log(256)) + 1) >>> 0;
 
   return new Uint8Array([
     ...new Uint8Array(psz),
     ...(base58String.match(/.{1}/gmu) || [])
-      .map(i => base58Chars.indexOf(i))
+      .map((i) => base58Chars.indexOf(i))
       .reduce((acc, i) => {
-        acc = acc.map(j => {
+        acc = acc.map((j) => {
           const x = j * 58 + i;
 
           i = x >> 8;
@@ -60,7 +68,12 @@ export function base58ToBinary(base58String: string): Uint8Array {
         return acc;
       }, new Uint8Array(size))
       .reverse()
-      .filter(((lastValue: boolean | number) => value => (lastValue = lastValue || value))(false))
+      .filter(
+        (
+          (lastValue: boolean | number) => (value) =>
+            (lastValue = lastValue || value)
+        )(false),
+      ),
   ]);
 }
 
@@ -99,7 +112,7 @@ export function binaryToBase58(uint8array: Uint8Array): string {
 
   for (const byte of uint8array) {
     if (byte) break;
-    else result.push('1'.charCodeAt(0));
+    else result.push("1".charCodeAt(0));
   }
 
   result.reverse();

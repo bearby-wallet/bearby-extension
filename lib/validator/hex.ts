@@ -1,6 +1,5 @@
-
 export function tohexString(hex: string) {
-  return String(hex).toLowerCase().replace('0x', '');
+  return String(hex).toLowerCase().replace("0x", "");
 }
 
 export const isByteString = (str: string, len: number) => {

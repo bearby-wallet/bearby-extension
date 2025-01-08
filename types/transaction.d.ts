@@ -2,7 +2,6 @@ import type { OperationsType } from "background/provider/operations";
 import type { KeyValue } from "types/general";
 import type { CallParam } from "./contacts";
 
-
 export interface ConnectionStore {
   domain: string;
   accounts: number[];
@@ -28,7 +27,6 @@ export interface SignedMessage {
   signature: string;
   message: string;
 }
-
 
 export interface MinTransactionParams {
   coins: string;

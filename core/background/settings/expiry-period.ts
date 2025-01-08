@@ -1,9 +1,8 @@
-import { PERIOD_OFFSET } from 'config/common';
-import { Fields } from 'config/fields';
-import { assert } from 'lib/assert';
-import { BrowserStorage, buildObject } from 'lib/storage';
-import { INVALID_PERIOD, SettingsError } from './errors';
-
+import { PERIOD_OFFSET } from "config/common";
+import { Fields } from "config/fields";
+import { assert } from "lib/assert";
+import { BrowserStorage, buildObject } from "lib/storage";
+import { INVALID_PERIOD, SettingsError } from "./errors";
 
 export class PeriodOffset {
   #periodOffset = PERIOD_OFFSET;
@@ -18,7 +17,7 @@ export class PeriodOffset {
     this.#periodOffset = newPeriodOffset;
 
     await BrowserStorage.set(
-      buildObject(Fields.PERIOD_OFFSET, String(this.periodOffset))
+      buildObject(Fields.PERIOD_OFFSET, String(this.periodOffset)),
     );
   }
 
@@ -38,7 +37,7 @@ export class PeriodOffset {
     this.#periodOffset = PERIOD_OFFSET;
 
     await BrowserStorage.set(
-      buildObject(Fields.PERIOD_OFFSET, String(this.periodOffset))
+      buildObject(Fields.PERIOD_OFFSET, String(this.periodOffset)),
     );
   }
 }

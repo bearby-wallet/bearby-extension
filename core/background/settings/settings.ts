@@ -1,16 +1,15 @@
-import type { SettingsState } from 'types/settings';
+import type { SettingsState } from "types/settings";
 
-import { CurrenciesController } from './currencies';
-import { LocaleSettings } from './locale';
-import { PhishingDetection } from './phishing';
-import { PeriodOffset } from './expiry-period';
-import { ThemeSettings } from './theme';
-import { BrowserStorage, StorageKeyValue } from "lib/storage";
-import { Fields } from 'config/fields';
-import { NetworkSettings } from './network';
-import { PopupSettings } from './popup';
-import { FormatSettings } from './format';
-
+import { CurrenciesController } from "./currencies";
+import { LocaleSettings } from "./locale";
+import { PhishingDetection } from "./phishing";
+import { PeriodOffset } from "./expiry-period";
+import { ThemeSettings } from "./theme";
+import { BrowserStorage, type StorageKeyValue } from "lib/storage";
+import { Fields } from "config/fields";
+import { NetworkSettings } from "./network";
+import { PopupSettings } from "./popup";
+import { FormatSettings } from "./format";
 
 export class SettingsControl {
   readonly currencies = new CurrenciesController();
@@ -31,12 +30,12 @@ export class SettingsControl {
       periodOffset: this.period.periodOffset,
       phishing: this.phishing.phishingDetectionEnabled,
       popup: this.popup.enabledPopup,
-      format: this.format.enabled
+      format: this.format.enabled,
     };
   }
 
   async sync() {
-    const data = await BrowserStorage.get(
+    const data = (await BrowserStorage.get(
       Fields.SELECTED_CURRENCY,
       Fields.LOCALE,
       Fields.PHISHING_DETECTION,
@@ -44,8 +43,8 @@ export class SettingsControl {
       Fields.PERIOD_OFFSET,
       Fields.NETWORK_SETTINGS,
       Fields.POPUP_ENABLED,
-      Fields.FORMAT_ENABLED
-    ) as StorageKeyValue;
+      Fields.FORMAT_ENABLED,
+    )) as StorageKeyValue;
 
     await this.currencies.sync(data[Fields.SELECTED_CURRENCY]);
     await this.locale.sync(data[Fields.LOCALE]);

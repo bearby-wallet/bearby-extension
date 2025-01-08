@@ -1,8 +1,7 @@
-import { ManifestVersions } from 'config/manifest-versions';
-import { Runtime } from 'lib/runtime';
-import { getManifestVersion } from 'lib/runtime/manifest';
-import { push } from 'svelte-spa-router';
-
+import { ManifestVersions } from "config/manifest-versions";
+import { Runtime } from "lib/runtime";
+import { getManifestVersion } from "lib/runtime/manifest";
+import { push } from "svelte-spa-router";
 
 export async function closePopup() {
   if (getManifestVersion() == ManifestVersions.V2) {
@@ -27,8 +26,7 @@ export async function closePopup() {
     if (pop.type == "popup") {
       Runtime.windows.remove(Number(pop.id), console.error);
     } else if (pop.type == "normal") {
-      push('/');
+      push("/");
     }
   }
-
 }

@@ -24,7 +24,7 @@ export function strToBytes(str: string): Uint8Array {
  */
 export function bytesToStr(arr: Uint8Array): string {
   if (!arr.length) {
-    return '';
+    return "";
   }
   return utils.utf8.fromBytes(arr);
 }

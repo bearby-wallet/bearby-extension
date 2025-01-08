@@ -47,8 +47,6 @@
   $: token = $tokensStore[0];
 	$: account = $walletStore.identities[accountIndex];
   $: base58 = tokens[0].meta.base58;
-  $: balance = account.tokens && account.tokens[base58] ?
-    account.tokens[base58].final : 0;
   $: disabled = Number(tokens[0].value) > Number(balance) || Number(tokens[0].value) <= 0;
   $: balance =
     account.tokens && account.tokens[token.base58]

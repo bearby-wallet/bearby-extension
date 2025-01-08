@@ -1,1 +1,1 @@
-declare module 'qrcode/lib/browser';
+declare module "qrcode/lib/browser";

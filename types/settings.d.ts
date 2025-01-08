@@ -1,5 +1,4 @@
-import type { NetworkSettingsState } from 'types/network';
-
+import type { NetworkSettingsState } from "types/network";
 
 export interface SettingsState {
   currency: string;

@@ -1,5 +1,4 @@
-import type { Params, RPCBody } from 'types';
-
+import type { Params, RPCBody } from "types";
 
 export interface ContentWalletData {
   enabled: boolean;

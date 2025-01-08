@@ -1,11 +1,10 @@
-import { BackgroundState } from './state';
-import { startBackground } from './handler';
+import { BackgroundState } from "./state";
+import { startBackground } from "./handler";
 
-
-(async function(){
+(async function () {
   const core = new BackgroundState();
 
   await core.sync();
 
   startBackground(core);
-}());
+})();

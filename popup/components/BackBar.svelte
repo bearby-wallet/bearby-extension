@@ -9,15 +9,15 @@
 </script>
 
 <nav>
-  <div on:mouseup={pop}>
-    <BackButton />
+  <div on:mouseup={pop} aria-label="Go back" role="button" tabindex="0">
+    <BackButton></BackButton>
   </div>
   <ul>
     {#each list as el, index}
-      <li class:selected={index === selected} />
+      <li class:selected={index === selected}></li>
     {/each}
   </ul>
-  <span class="empty"/>
+  <span class="empty"></span>
 </nav>
 
 <style lang="scss">

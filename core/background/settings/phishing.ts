@@ -1,7 +1,6 @@
 import { Fields } from "config/fields";
 import { BrowserStorage, buildObject } from "lib/storage";
 
-
 export class PhishingDetection {
   #phishingDetectionEnabled = true;
 
@@ -13,7 +12,10 @@ export class PhishingDetection {
     this.#phishingDetectionEnabled = !this.phishingDetectionEnabled;
 
     await BrowserStorage.set(
-      buildObject(Fields.PHISHING_DETECTION, String(this.phishingDetectionEnabled))
+      buildObject(
+        Fields.PHISHING_DETECTION,
+        String(this.phishingDetectionEnabled),
+      ),
     );
   }
 
@@ -22,14 +24,17 @@ export class PhishingDetection {
       return this.reset();
     }
 
-    this.#phishingDetectionEnabled = (content === 'true');
+    this.#phishingDetectionEnabled = content === "true";
   }
 
   async reset() {
     this.#phishingDetectionEnabled = true;
 
     await BrowserStorage.set(
-      buildObject(Fields.PHISHING_DETECTION, String(this.phishingDetectionEnabled))
+      buildObject(
+        Fields.PHISHING_DETECTION,
+        String(this.phishingDetectionEnabled),
+      ),
     );
   }
 }

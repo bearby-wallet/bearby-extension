@@ -1,205 +1,150 @@
-import { wrap } from 'svelte-spa-router/wrap';
-import { routerGuard } from './guard';
+import { routerGuard } from "./guard";
 
-import Home from '../pages/Home.svelte';
-import AccountsPage from '../pages/Accounts.svelte';
-import TokensPage from '../pages/tokens.svelte';
-import AddSeedAccountPage from '../pages/AddAccount.svelte';
-import RestorePrivateKeyPage from '../pages/KeyRestore.svelte';
-import SendPage from '../pages/Send.svelte';
-import SettingsPage from '../pages/Settings.svelte';
-import HistoryPage from '../pages/History.svelte';
-import PopupPage from '../pages/Popup.svelte';
-import RollsPage from '../pages/Rolls.svelte';
-import ConnectPage from '../pages/Connect.svelte';
-import AddTrackAccountPage from '../pages/AddTrack.svelte';
-import SignMessagePage from '../pages/SignMessage.svelte';
+import Home from "../pages/Home.svelte";
+import AccountsPage from "../pages/Accounts.svelte";
+import TokensPage from "../pages/tokens.svelte";
+import AddSeedAccountPage from "../pages/AddAccount.svelte";
+import RestorePrivateKeyPage from "../pages/KeyRestore.svelte";
+import SendPage from "../pages/Send.svelte";
+import SettingsPage from "../pages/Settings.svelte";
+import HistoryPage from "../pages/History.svelte";
+import PopupPage from "../pages/Popup.svelte";
+import RollsPage from "../pages/Rolls.svelte";
+import ConnectPage from "../pages/Connect.svelte";
+import AddTrackAccountPage from "../pages/AddTrack.svelte";
+import SignMessagePage from "../pages/SignMessage.svelte";
 
-import NetworkPage from '../pages/settings/Network.svelte';
-import AccountPage from '../pages/settings/Account.svelte';
-import GeneralPage from '../pages/settings/General.svelte';
-import AdvancedPage from '../pages/settings/Advanced.svelte';
-import ContactsPage from '../pages/settings/Contacts.svelte';
-import SecurityPage from '../pages/settings/Security.svelte';
-import ConnectionsPage from '../pages/settings/Connections.svelte';
-import AboutPage from '../pages/settings/About.svelte';
+import NetworkPage from "../pages/settings/Network.svelte";
+import AccountPage from "../pages/settings/Account.svelte";
+import GeneralPage from "../pages/settings/General.svelte";
+import AdvancedPage from "../pages/settings/Advanced.svelte";
+import ContactsPage from "../pages/settings/Contacts.svelte";
+import SecurityPage from "../pages/settings/Security.svelte";
+import ConnectionsPage from "../pages/settings/Connections.svelte";
+import AboutPage from "../pages/settings/About.svelte";
 
-import LockPage from '../pages/Lock.svelte';
-import StartPage from '../pages/Start.svelte';
-import CreatePage from '../pages/Create.svelte';
-import WordsVerifyPage from '../pages/WordsVerify.svelte';
-import SetupAccountPage from '../pages/SetupAccount.svelte';
-import CreateSuccessPage from '../pages/CreateSuccess.svelte';
-import RestorePage from '../pages/Restore.svelte';
-import PubKeyRequestPage from '../pages/PubKeyRequest.svelte';
+import LockPage from "../pages/Lock.svelte";
+import StartPage from "../pages/Start.svelte";
+import CreatePage from "../pages/Create.svelte";
+import WordsVerifyPage from "../pages/WordsVerify.svelte";
+import SetupAccountPage from "../pages/SetupAccount.svelte";
+import CreateSuccessPage from "../pages/CreateSuccess.svelte";
+import RestorePage from "../pages/Restore.svelte";
+import PubKeyRequestPage from "../pages/PubKeyRequest.svelte";
 
-
-export default {
-  '/': wrap({
+const routes = {
+  // Protected routes (with guard)
+  "/": {
     component: Home,
-    conditions: [
-      routerGuard
-    ]
-  }),
-  '/add-track': wrap({
+    guard: routerGuard,
+  },
+  "/add-track": {
     component: AddTrackAccountPage,
-    conditions: [
-      routerGuard
-    ]
-  }),
-  '/accounts': wrap({
+    guard: routerGuard,
+  },
+  "/accounts": {
     component: AccountsPage,
-    conditions: [
-      routerGuard
-    ]
-  }),
-  '/tokens': wrap({
+    guard: routerGuard,
+  },
+  "/tokens": {
     component: TokensPage,
-    conditions: [
-      routerGuard
-    ]
-  }),
-  '/confirm': wrap({
+    guard: routerGuard,
+  },
+  "/confirm": {
     component: PopupPage,
-    conditions: [
-      routerGuard
-    ]
-  }),
-  '/req-pubkey': wrap({
+    guard: routerGuard,
+  },
+  "/req-pubkey": {
     component: PubKeyRequestPage,
-    conditions: [
-      routerGuard
-    ]
-  }),
-  '/history': wrap({
+    guard: routerGuard,
+  },
+  "/history": {
     component: HistoryPage,
-    conditions: [
-      routerGuard
-    ]
-  }),
-  '/rolls': wrap({
+    guard: routerGuard,
+  },
+  "/rolls": {
     component: RollsPage,
-    conditions: [
-      routerGuard
-    ]
-  }),
-  '/sign-message': wrap({
+    guard: routerGuard,
+  },
+  "/sign-message": {
     component: SignMessagePage,
-    conditions: [
-      routerGuard
-    ]
-  }),
-  '/account': wrap({
+    guard: routerGuard,
+  },
+  "/account": {
     component: AccountPage,
-    conditions: [
-      routerGuard
-    ]
-  }),
-  '/connect': wrap({
+    guard: routerGuard,
+  },
+  "/connect": {
     component: ConnectPage,
-    conditions: [
-      routerGuard
-    ]
-  }),
-  '/contacts': wrap({
+    guard: routerGuard,
+  },
+  "/contacts": {
     component: ContactsPage,
-    conditions: [
-      routerGuard
-    ]
-  }),
-  '/connections': wrap({
+    guard: routerGuard,
+  },
+  "/connections": {
     component: ConnectionsPage,
-    conditions: [
-      routerGuard
-    ]
-  }),
-  '/settings': wrap({
+    guard: routerGuard,
+  },
+  "/settings": {
     component: SettingsPage,
-    conditions: [
-      routerGuard
-    ]
-  }),
-  '/about': wrap({
+    guard: routerGuard,
+  },
+  "/about": {
     component: AboutPage,
-    conditions: [
-      routerGuard
-    ]
-  }),
-  '/security': wrap({
+    guard: routerGuard,
+  },
+  "/security": {
     component: SecurityPage,
-    conditions: [
-      routerGuard
-    ]
-  }),
-  '/general': wrap({
+    guard: routerGuard,
+  },
+  "/general": {
     component: GeneralPage,
-    conditions: [
-      routerGuard
-    ]
-  }),
-  '/advanced': wrap({
+    guard: routerGuard,
+  },
+  "/advanced": {
     component: AdvancedPage,
-    conditions: [
-      routerGuard
-    ]
-  }),
-  '/send/:index/:recipient?': wrap({
+    guard: routerGuard,
+  },
+  "/send/:index/:recipient?": {
     component: SendPage,
-    conditions: [
-      routerGuard
-    ]
-  }),
-  '/add': wrap({
+    guard: routerGuard,
+  },
+  "/add": {
     component: AddSeedAccountPage,
-    conditions: [
-      routerGuard
-    ]
-  }),
-  '/import': wrap({
+    guard: routerGuard,
+  },
+  "/import": {
     component: RestorePrivateKeyPage,
-    conditions: [
-      routerGuard
-    ]
-  }),
-  '/network': wrap({
+    guard: routerGuard,
+  },
+  "/network": {
     component: NetworkPage,
-    conditions: [
-      routerGuard
-    ]
-  }),
-  '/lock': wrap({
+    guard: routerGuard,
+  },
+
+  // Public routes (without guard)
+  "/lock": {
     component: LockPage,
-    conditions: [
-    ]
-  }),
-  '/start': wrap({
+  },
+  "/start": {
     component: StartPage,
-    conditions: [
-    ]
-  }),
-  '/create': wrap({
+  },
+  "/create": {
     component: CreatePage,
-    conditions: [
-    ]
-  }),
-  '/verify': wrap({
+  },
+  "/verify": {
     component: WordsVerifyPage,
-    conditions: [
-    ]
-  }),
-  '/setup-account': wrap({
+  },
+  "/setup-account": {
     component: SetupAccountPage,
-    conditions: [
-    ]
-  }),
-  '/created': wrap({
+  },
+  "/created": {
     component: CreateSuccessPage,
-    conditions: [
-    ]
-  }),
-  '/restore': wrap({
+  },
+  "/restore": {
     component: RestorePage,
-    conditions: [
-    ]
-  })
+  },
 };
+
+export default routes;

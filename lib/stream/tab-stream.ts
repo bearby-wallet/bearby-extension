@@ -1,15 +1,13 @@
-import type { ReqBody, CustomEvent } from 'types';
+import type { ReqBody, CustomEvent } from "types";
 
-import { MTypeTabContent } from 'config/stream-keys';
-
+import { MTypeTabContent } from "config/stream-keys";
 
 const { document } = globalThis;
 
 /**
  * Used for communication between a web page and an extension's content script.
  */
- export class TabStream {
-
+export class TabStream {
   readonly #eventName: string;
 
   /**
@@ -17,7 +15,7 @@ const { document } = globalThis;
    * @param {String} eventName - Event type.
    */
   constructor(eventName: string) {
-    this.#eventName = eventName
+    this.#eventName = eventName;
   }
 
   /**
@@ -26,7 +24,7 @@ const { document } = globalThis;
   public listen(cb: (payload: ReqBody) => void) {
     document.addEventListener(this.#eventName, (event: CustomEvent) => {
       if (event && event.detail) {
-        cb(JSON.parse(event.detail)); 
+        cb(JSON.parse(event.detail));
       }
     });
   }
@@ -53,16 +51,16 @@ const { document } = globalThis;
    */
   #getEventInit(detail: string) {
     return {
-      detail
+      detail,
     };
   }
 
   /**
- * No modifly data
- * @param encryptedData - No modifly data
- * @param to - Event name.
- */
- #getEvent(detail: string, to: string) {
+   * No modifly data
+   * @param encryptedData - No modifly data
+   * @param to - Event name.
+   */
+  #getEvent(detail: string, to: string) {
     return new CustomEvent(to, this.#getEventInit(detail));
   }
 }

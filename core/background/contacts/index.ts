@@ -6,15 +6,14 @@
  * -----
  * Copyright (c) 2021 ZilPay
  */
-import type { Contact } from 'types';
+import type { Contact } from "types";
 
-import { BrowserStorage, buildObject } from 'lib/storage';
-import { Fields } from 'config/fields';
-import { assert } from 'lib/assert';
-import { UINIQE_NAME, ContactsError, UINIQE_ADDRESS } from './errors';
-import { INVALID_BASE58_ADDRESS } from 'lib/address/errors';
-import { isBase58Address } from 'lib/address';
-
+import { BrowserStorage, buildObject } from "lib/storage";
+import { Fields } from "config/fields";
+import { assert } from "lib/assert";
+import { UINIQE_NAME, ContactsError, UINIQE_ADDRESS } from "./errors";
+import { INVALID_BASE58_ADDRESS } from "lib/address/errors";
+import { isBase58Address } from "lib/address";
 
 export class ContactController {
   #identities: Contact[] = [];
@@ -28,12 +27,12 @@ export class ContactController {
       assert(
         iterator.name.toLowerCase() !== connect.name.toLowerCase(),
         UINIQE_NAME,
-        ContactsError
+        ContactsError,
       );
       assert(
         iterator.address.toLowerCase() !== connect.address.toLowerCase(),
         UINIQE_ADDRESS,
-        ContactsError
+        ContactsError,
       );
     }
   }
@@ -44,14 +43,12 @@ export class ContactController {
     assert(
       await isBase58Address(connect.address),
       INVALID_BASE58_ADDRESS,
-      ContactsError
+      ContactsError,
     );
 
     this.#identities.push(connect);
 
-    await BrowserStorage.set(
-      buildObject(Fields.CONTACTS_LIST, this.list)
-    );
+    await BrowserStorage.set(buildObject(Fields.CONTACTS_LIST, this.list));
   }
 
   async remove(index: number) {
@@ -59,17 +56,13 @@ export class ContactController {
 
     this.#identities = this.#identities.filter(Boolean);
 
-    await BrowserStorage.set(
-      buildObject(Fields.CONTACTS_LIST, this.list)
-    );
+    await BrowserStorage.set(buildObject(Fields.CONTACTS_LIST, this.list));
   }
 
   async reset() {
     this.#identities = [];
 
-    await BrowserStorage.set(
-      buildObject(Fields.CONTACTS_LIST, this.list)
-    );
+    await BrowserStorage.set(buildObject(Fields.CONTACTS_LIST, this.list));
   }
 
   async sync() {

@@ -1,1 +1,1 @@
-declare module 'blake3-js';
+declare module "blake3-js";

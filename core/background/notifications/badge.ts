@@ -1,10 +1,9 @@
-import { Fields } from 'config/fields';
-import { Runtime } from 'lib/runtime';
-import { getManifestVersion } from 'lib/runtime/manifest';
-import { BrowserStorage, buildObject } from 'lib/storage';
-import { TypeOf } from 'lib/type';
-import { ManifestVersions } from 'config/manifest-versions';
-
+import { Fields } from "config/fields";
+import { Runtime } from "lib/runtime";
+import { getManifestVersion } from "lib/runtime/manifest";
+import { BrowserStorage, buildObject } from "lib/storage";
+import { TypeOf } from "lib/type";
+import { ManifestVersions } from "config/manifest-versions";
 
 export class BadgeControl {
   #counter = 0;
@@ -19,7 +18,7 @@ export class BadgeControl {
     this.#showBadge();
 
     await BrowserStorage.set(
-      buildObject(Fields.BADGE_COUNTER, String(this.counter))
+      buildObject(Fields.BADGE_COUNTER, String(this.counter)),
     );
   }
 
@@ -29,7 +28,7 @@ export class BadgeControl {
     this.#showBadge();
 
     await BrowserStorage.set(
-      buildObject(Fields.BADGE_COUNTER, String(this.counter))
+      buildObject(Fields.BADGE_COUNTER, String(this.counter)),
     );
   }
 
@@ -43,7 +42,7 @@ export class BadgeControl {
     this.#showBadge();
 
     await BrowserStorage.set(
-      buildObject(Fields.BADGE_COUNTER, String(this.counter))
+      buildObject(Fields.BADGE_COUNTER, String(this.counter)),
     );
   }
 
@@ -67,7 +66,7 @@ export class BadgeControl {
     this.#counter = 0;
 
     await BrowserStorage.set(
-      buildObject(Fields.BADGE_COUNTER, String(this.counter))
+      buildObject(Fields.BADGE_COUNTER, String(this.counter)),
     );
 
     this.#showBadge();
@@ -75,15 +74,15 @@ export class BadgeControl {
 
   #showBadge() {
     const mvVersion = getManifestVersion();
-    const text = this.counter === 0 ? '' : String(this.counter);
+    const text = this.counter === 0 ? "" : String(this.counter);
 
     if (ManifestVersions.V2 === mvVersion) {
       Runtime.browserAction.setBadgeText({
-        text
+        text,
       });
     } else if (ManifestVersions.V3 === mvVersion) {
       Runtime.action.setBadgeText({
-        text
+        text,
       });
     }
   }

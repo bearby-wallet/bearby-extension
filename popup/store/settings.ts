@@ -1,10 +1,9 @@
-import type { SettingsState } from 'types/settings';
+import type { SettingsState } from "types/settings";
 
-import { PERIOD_OFFSET } from 'config/common';
-import { Locales } from 'config/locale';
-import { Themes } from 'config/theme';
-import { writable } from 'svelte/store';
-
+import { PERIOD_OFFSET } from "config/common";
+import { Locales } from "config/locale";
+import { Themes } from "config/theme";
+import { writable } from "svelte/store";
 
 export default writable<SettingsState>({
   currency: "usd",
@@ -16,8 +15,8 @@ export default writable<SettingsState>({
     downgrade: false,
     https: false,
     abortTimeout: 0,
-    numberOfNodes: 0
+    numberOfNodes: 0,
   },
   popup: true,
-  format: true
+  format: true,
 });

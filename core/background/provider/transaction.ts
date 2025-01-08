@@ -4,14 +4,18 @@ import { utils } from "aes-js";
 import { toByteArray } from "base64-js";
 import { base58Decode, isBase58Address } from "lib/address";
 import { assert } from "lib/assert";
-import { varintEncode } from 'lib/varint';
+import { varintEncode } from "lib/varint";
 import { INVLID_RECIPIENT, INVLID_ADDRESS_PREFIX } from "./errors";
 import { OperationsType } from "./operations";
-import { ADDRESS_PREFIX, USER_VERSION_NUMBER, CONTRACT_VERSION_NUMBER, CONTRACT_ADDRESS_PREFIX } from "config/common";
+import {
+  ADDRESS_PREFIX,
+  USER_VERSION_NUMBER,
+  CONTRACT_VERSION_NUMBER,
+  CONTRACT_ADDRESS_PREFIX,
+} from "config/common";
 import { Args, parseParams } from "lib/args";
 import { u64ToBytes, u8toByte } from "lib/args/numbers";
 import { BaseError } from "lib/error";
-
 
 export class PaymentBuild {
   static operation = OperationsType.Payment;
@@ -25,7 +29,7 @@ export class PaymentBuild {
     fee: string,
     amount: string,
     recipientAddress: string,
-    expirePeriod: number
+    expirePeriod: number,
   ) {
     this.fee = BigInt(fee);
     this.amount = BigInt(amount);
@@ -41,7 +45,9 @@ export class PaymentBuild {
     const typeIdEncoded = varintEncode(PaymentBuild.operation);
     const amount = varintEncode(this.amount);
     const prefix = this.recipientAddress.slice(0, ADDRESS_PREFIX.length);
-    let recipient = (await base58Decode(this.recipientAddress.slice(ADDRESS_PREFIX.length)));
+    let recipient = await base58Decode(
+      this.recipientAddress.slice(ADDRESS_PREFIX.length),
+    );
 
     if (prefix == ADDRESS_PREFIX) {
       recipient = Uint8Array.from([USER_VERSION_NUMBER, ...recipient]);
@@ -56,7 +62,7 @@ export class PaymentBuild {
       ...expirePeriod,
       ...typeIdEncoded,
       ...recipient,
-      ...amount
+      ...amount,
     ]);
   }
 }
@@ -68,11 +74,7 @@ export class BuyRollsBuild {
   amount: bigint;
   expirePeriod: number;
 
-  constructor(
-    fee: string,
-    amount: string,
-    expirePeriod: number
-  ) {
+  constructor(fee: string, amount: string, expirePeriod: number) {
     this.fee = BigInt(fee);
     this.amount = BigInt(amount);
     this.expirePeriod = expirePeriod;
@@ -88,7 +90,7 @@ export class BuyRollsBuild {
       ...fee,
       ...expirePeriod,
       ...typeIdEncoded,
-      ...amount
+      ...amount,
     ]);
   }
 }
@@ -100,11 +102,7 @@ export class SellRollsBuild {
   amount: bigint;
   expirePeriod: number;
 
-  constructor(
-    fee: string,
-    amount: string,
-    expirePeriod: number
-  ) {
+  constructor(fee: string, amount: string, expirePeriod: number) {
     this.fee = BigInt(fee);
     this.amount = BigInt(amount);
     this.expirePeriod = expirePeriod;
@@ -120,7 +118,7 @@ export class SellRollsBuild {
       ...fee,
       ...expirePeriod,
       ...typeIdEncoded,
-      ...amount
+      ...amount,
     ]);
   }
 }
@@ -158,10 +156,7 @@ export class ExecuteSmartContractBuild {
 
     const datastore = new Map<Uint8Array, Uint8Array>();
 
-    datastore.set(
-      new Uint8Array([0x00]),
-      u64ToBytes(1n),
-    );
+    datastore.set(new Uint8Array([0x00]), u64ToBytes(1n));
 
     datastore.set(u64ToBytes(1n), this.code);
 
@@ -170,36 +165,27 @@ export class ExecuteSmartContractBuild {
 
       datastore.set(
         Uint8Array.from(
-          new Args()
-            .addU64(1n)
-            .addUint8Array(u8toByte(0))
-            .serialize(),
+          new Args().addU64(1n).addUint8Array(u8toByte(0)).serialize(),
         ),
-        Uint8Array.from(args.serialize())
+        Uint8Array.from(args.serialize()),
       );
     }
 
     if (unsafeParameters) {
       datastore.set(
         Uint8Array.from(
-          new Args()
-            .addU64(1n)
-            .addUint8Array(u8toByte(0))
-            .serialize(),
+          new Args().addU64(1n).addUint8Array(u8toByte(0)).serialize(),
         ),
-        Uint8Array.from(unsafeParameters)
+        Uint8Array.from(unsafeParameters),
       );
     }
 
     if (coins > 0n) {
       datastore.set(
         new Uint8Array(
-          new Args()
-            .addU64(BigInt(1))
-            .addUint8Array(u8toByte(1))
-            .serialize()
+          new Args().addU64(BigInt(1)).addUint8Array(u8toByte(1)).serialize(),
         ),
-        u64ToBytes(coins)
+        u64ToBytes(coins),
       );
     }
 
@@ -227,7 +213,7 @@ export class ExecuteSmartContractBuild {
         ...encodedKeyLen,
         ...key,
         ...encodedValueLen,
-        ...value
+        ...value,
       ]);
     }
 
@@ -242,7 +228,7 @@ export class ExecuteSmartContractBuild {
       ...dataLengthEncoded,
       ...this.deployer,
       ...datastoreSerializedBufferLen,
-      ...datastoreSerializedBuffer
+      ...datastoreSerializedBuffer,
     ]);
   }
 }
@@ -277,7 +263,9 @@ export class CallSmartContractBuild {
     this.targetAddress = targetAddress;
 
     if (parameters && parameters.length > 0) {
-      this.serializedArgs = Uint8Array.from(parseParams(parameters).serialize());
+      this.serializedArgs = Uint8Array.from(
+        parseParams(parameters).serialize(),
+      );
     } else if (unsafeParameters) {
       this.serializedArgs = unsafeParameters;
     } else {
@@ -296,11 +284,13 @@ export class CallSmartContractBuild {
     const functionNameEncoded = utils.utf8.toBytes(this.functionName);
     const functionNameLengthEncoded = varintEncode(functionNameEncoded.length);
     const parametersLengthEncoded = varintEncode(this.serializedArgs.length);
-    let targetAddressEncoded = (await base58Decode(this.targetAddress.slice(ADDRESS_PREFIX.length)));
+    let targetAddressEncoded = await base58Decode(
+      this.targetAddress.slice(ADDRESS_PREFIX.length),
+    );
 
     targetAddressEncoded = Uint8Array.from([
       CONTRACT_VERSION_NUMBER,
-      ...targetAddressEncoded
+      ...targetAddressEncoded,
     ]);
 
     return Uint8Array.from([
@@ -313,7 +303,7 @@ export class CallSmartContractBuild {
       ...functionNameLengthEncoded,
       ...functionNameEncoded,
       ...parametersLengthEncoded,
-      ...this.serializedArgs
+      ...this.serializedArgs,
     ]);
   }
 }

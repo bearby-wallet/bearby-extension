@@ -2,9 +2,9 @@
 </script>
 
 <div>
-  <span />
-  <span />
-  <span />
+  <span></span>
+  <span></span>
+  <span></span>
 </div>
 
 <style lang="scss">

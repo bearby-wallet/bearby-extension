@@ -68,16 +68,16 @@
 
   &::after {
     animation: loading-button 500ms infinite linear;
-    border: .2rem solid var(--text-color);
-    border-radius: .8rem;
+    border: 0.2rem solid var(--text-color);
+    border-radius: 0.8rem;
     border-right-color: transparent;
     border-top-color: transparent;
     content: "";
     display: block;
     height: 1.2rem;
     left: 50%;
-    margin-left: -.8rem;
-    margin-top: -.8rem;
+    margin-left: -0.8rem;
+    margin-top: -0.8rem;
     position: absolute;
     top: 50%;
     width: 1.2rem;

@@ -1,9 +1,8 @@
-import { getExtensionURL } from 'lib/runtime/get-url';
-
+import { getExtensionURL } from "lib/runtime/get-url";
 
 export class PhishingDetect {
-  #host = String(globalThis.location.host).replace('www.', '');
-  #url = getExtensionURL('phishing.html');
+  #host = String(globalThis.location.host).replace("www.", "");
+  #url = getExtensionURL("phishing.html");
   #checked = false;
 
   get checked() {

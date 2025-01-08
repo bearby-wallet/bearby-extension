@@ -1,6 +1,5 @@
-import { Runtime } from 'lib/runtime';
-import { getExtensionURL } from 'lib/runtime/get-url';
-
+import { Runtime } from "lib/runtime";
+import { getExtensionURL } from "lib/runtime/get-url";
 
 export class NotificationController {
   readonly #url: string;
@@ -16,10 +15,10 @@ export class NotificationController {
   create() {
     try {
       const data: chrome.notifications.NotificationOptions<true> = {
-        type: 'basic',
+        type: "basic",
         title: this.#title,
-        iconUrl: getExtensionURL('/icons/128.png'),
-        message: this.#message
+        iconUrl: getExtensionURL("/icons/128.png"),
+        message: this.#message,
       };
       Runtime.notifications.create(this.#url, data);
 
@@ -30,7 +29,9 @@ export class NotificationController {
   }
 
   #notificationClicked() {
-    if (!Runtime.notifications.onClicked.hasListener(this.#viewOnBlockExplorer)) {
+    if (
+      !Runtime.notifications.onClicked.hasListener(this.#viewOnBlockExplorer)
+    ) {
       Runtime.notifications.onClicked.addListener(this.#viewOnBlockExplorer);
     }
   }

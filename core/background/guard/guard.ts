@@ -1,6 +1,6 @@
-import { toByteArray, fromByteArray } from 'base64-js';
-import { utils } from 'aes-js';
-import { sha256 } from 'lib/crypto/sha256';
+import { toByteArray, fromByteArray } from "base64-js";
+import { utils } from "aes-js";
+import { sha256 } from "lib/crypto/sha256";
 
 import {
   GuardError,
@@ -9,27 +9,27 @@ import {
   INCORRECT_PASSWORD,
   WALLET_NOT_ENABLED,
   TIMER_MUST_BE_INT,
-  INCORRECT_CONFIG_PARAMS
-} from './error';
-import { Cipher } from 'lib/crypto/aes';
-import { MnemonicController } from 'lib/bip39';
-import { assert } from 'lib/assert';
-import { BrowserStorage, buildObject, StorageKeyValue } from 'lib/storage';
-import { Fields } from 'config/fields';
-import { TIME_BEFORE_LOCK } from 'config/common';
-import { isPrivateKey } from 'lib/validator';
-import { TypeOf } from 'lib/type';
-import { ShaAlgorithms } from 'config/sha-algorithms';
-import { pbkdf2 } from 'lib/crypto/pbkdf2';
-import { EXTENSION_ID } from 'lib/runtime/id';
-import { ManifestVersions } from 'config/manifest-versions';
-import { getManifestVersion } from 'lib/runtime/manifest';
-import { Runtime } from 'lib/runtime';
+  INCORRECT_CONFIG_PARAMS,
+} from "./error";
+import { Cipher } from "lib/crypto/aes";
+import { MnemonicController } from "lib/bip39";
+import { assert } from "lib/assert";
+import { BrowserStorage, buildObject, type StorageKeyValue } from "lib/storage";
+import { Fields } from "config/fields";
+import { TIME_BEFORE_LOCK } from "config/common";
+import { isPrivateKey } from "lib/validator";
+import { TypeOf } from "lib/type";
+import { ShaAlgorithms } from "config/sha-algorithms";
+import { pbkdf2 } from "lib/crypto/pbkdf2";
+import { EXTENSION_ID } from "lib/runtime/id";
+import { ManifestVersions } from "config/manifest-versions";
+import { getManifestVersion } from "lib/runtime/manifest";
+import { Runtime } from "lib/runtime";
 
 export enum SessionKeys {
   EndSession = "BEARBY_END_SESSION",
   Hash = "BEABRY_HASH",
-  PrivateExtendedKey = "EXTENDED_KEY"
+  PrivateExtendedKey = "EXTENDED_KEY",
 }
 
 export class Guard {
@@ -58,7 +58,7 @@ export class Guard {
     const session = this.#hash.get(this) as Uint8Array;
     const decryptSeedBytes = Cipher.decrypt(
       this.#privateExtendedKey as Uint8Array,
-      session
+      session,
     );
 
     return decryptSeedBytes;
@@ -84,7 +84,7 @@ export class Guard {
       isEnable: this.isEnable,
       isReady: this.isReady,
       iteractions: this.#iteractions,
-      algorithm: this.#algorithm
+      algorithm: this.#algorithm,
     };
   }
 
@@ -93,11 +93,11 @@ export class Guard {
   }
 
   async sync() {
-    const data = await BrowserStorage.get(
+    const data = (await BrowserStorage.get(
       Fields.VAULT,
       Fields.LOCK_TIME,
-      Fields.GUARD_CONFIG
-    ) as StorageKeyValue;
+      Fields.GUARD_CONFIG,
+    )) as StorageKeyValue;
 
     if (data && data[Fields.VAULT]) {
       this.#encryptMnemonic = toByteArray(data[Fields.VAULT]);
@@ -105,9 +105,14 @@ export class Guard {
     }
 
     if (data && data[Fields.GUARD_CONFIG]) {
-      const [algorithm, iteractions] = String(data[Fields.GUARD_CONFIG]).split(':');
+      const [algorithm, iteractions] = String(data[Fields.GUARD_CONFIG]).split(
+        ":",
+      );
 
-      if (algorithm === ShaAlgorithms.sha256 || algorithm === ShaAlgorithms.Sha512) {
+      if (
+        algorithm === ShaAlgorithms.sha256 ||
+        algorithm === ShaAlgorithms.Sha512
+      ) {
         this.#algorithm = algorithm;
       }
 
@@ -120,7 +125,7 @@ export class Guard {
       this.#time = Number(data[Fields.LOCK_TIME]);
     } else {
       await BrowserStorage.set(
-        buildObject(Fields.LOCK_TIME, String(TIME_BEFORE_LOCK))
+        buildObject(Fields.LOCK_TIME, String(TIME_BEFORE_LOCK)),
       );
     }
 
@@ -128,7 +133,7 @@ export class Guard {
       const data = await Runtime.storage.session.get([
         SessionKeys.EndSession,
         SessionKeys.Hash,
-        SessionKeys.PrivateExtendedKey
+        SessionKeys.PrivateExtendedKey,
       ]);
 
       try {
@@ -141,7 +146,9 @@ export class Guard {
           this.#isEnable = true;
         }
         if (data[SessionKeys.PrivateExtendedKey]) {
-          this.#privateExtendedKey = utils.hex.toBytes(data[SessionKeys.PrivateExtendedKey]);
+          this.#privateExtendedKey = utils.hex.toBytes(
+            data[SessionKeys.PrivateExtendedKey],
+          );
         }
       } catch {
         //
@@ -153,7 +160,7 @@ export class Guard {
     assert(
       algorithm === ShaAlgorithms.sha256 || algorithm === ShaAlgorithms.Sha512,
       INCORRECT_CONFIG_PARAMS,
-      GuardError
+      GuardError,
     );
     assert(iteractions >= 0, INCORRECT_CONFIG_PARAMS, GuardError);
     assert(iteractions % 2 === 0, INCORRECT_CONFIG_PARAMS, GuardError);
@@ -163,9 +170,7 @@ export class Guard {
 
     const newConfig = `${algorithm}:${iteractions}`;
 
-    await BrowserStorage.set(
-      buildObject(Fields.GUARD_CONFIG, newConfig)
-    );
+    await BrowserStorage.set(buildObject(Fields.GUARD_CONFIG, newConfig));
   }
 
   async setLogOutTimer(timer: number) {
@@ -175,7 +180,7 @@ export class Guard {
     this.#time = timer;
 
     await BrowserStorage.set(
-      buildObject(Fields.LOCK_TIME, String(this.lockTime))
+      buildObject(Fields.LOCK_TIME, String(this.lockTime)),
     );
   }
 
@@ -186,7 +191,10 @@ export class Guard {
       assert(Boolean(this.#encryptMnemonic), WALLET_NOT_SYNC, GuardError);
 
       const hash = await this.#getKeyring(password);
-      const mnemonicBytes = Cipher.decrypt(this.#encryptMnemonic as Uint8Array, hash);
+      const mnemonicBytes = Cipher.decrypt(
+        this.#encryptMnemonic as Uint8Array,
+        hash,
+      );
 
       return utils.utf8.fromBytes(mnemonicBytes);
     } catch (err) {
@@ -203,10 +211,17 @@ export class Guard {
 
       const mnemonicController = new MnemonicController();
       const hash = await this.#getKeyring(password);
-      const mnemonicBytes = Cipher.decrypt(this.#encryptMnemonic as Uint8Array, hash);
+      const mnemonicBytes = Cipher.decrypt(
+        this.#encryptMnemonic as Uint8Array,
+        hash,
+      );
       const mnemonic = utils.utf8.fromBytes(mnemonicBytes);
 
-      assert(mnemonicController.validateMnemonic(mnemonic), INCORRECT_PASSWORD, GuardError);
+      assert(
+        mnemonicController.validateMnemonic(mnemonic),
+        INCORRECT_PASSWORD,
+        GuardError,
+      );
 
       const seed = await mnemonicController.mnemonicToSeed(mnemonic);
 
@@ -220,7 +235,9 @@ export class Guard {
         Runtime.storage.session.set({
           [SessionKeys.EndSession]: Number(this.#endSession),
           [SessionKeys.Hash]: utils.hex.fromBytes(hash),
-          [SessionKeys.PrivateExtendedKey]: utils.hex.fromBytes(this.#privateExtendedKey),
+          [SessionKeys.PrivateExtendedKey]: utils.hex.fromBytes(
+            this.#privateExtendedKey,
+          ),
         });
       }
     } catch (err) {
@@ -234,7 +251,7 @@ export class Guard {
     const hash = await this.#getKeyring(password);
     const seed = await new MnemonicController().mnemonicToSeed(
       mnemonic,
-      usePassword ? password : undefined
+      usePassword ? password : undefined,
     );
 
     this.#encryptMnemonic = Cipher.encrypt(mnemonicBuf, hash);
@@ -246,7 +263,7 @@ export class Guard {
     this.#hash.set(this, hash);
 
     await BrowserStorage.set(
-      buildObject(Fields.VAULT, fromByteArray(this.#encryptMnemonic))
+      buildObject(Fields.VAULT, fromByteArray(this.#encryptMnemonic)),
     );
   }
 
@@ -289,7 +306,7 @@ export class Guard {
     const h = Number(this.#time);
     const newSession = new Date();
 
-    newSession.setTime(now + (h * 60 * 60 * 1000));
+    newSession.setTime(now + h * 60 * 60 * 1000);
 
     this.#endSession = newSession;
   }
@@ -302,7 +319,12 @@ export class Guard {
       return await sha256(passwordBytes);
     }
 
-    const key = await pbkdf2(passwordBytes, salt, this.#iteractions, this.#algorithm);
+    const key = await pbkdf2(
+      passwordBytes,
+      salt,
+      this.#iteractions,
+      this.#algorithm,
+    );
 
     return await sha256(key);
   }

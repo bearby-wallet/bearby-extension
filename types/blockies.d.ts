@@ -1,1 +1,1 @@
-declare module '@download/blockies';
+declare module "@download/blockies";

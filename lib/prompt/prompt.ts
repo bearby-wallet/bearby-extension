@@ -1,11 +1,10 @@
-import { Runtime } from 'lib/runtime';
-import { POPUP_HEIGHT, POPUP_WIDTH, PROMT_PAGE } from 'config/common';
-
+import { Runtime } from "lib/runtime";
+import { POPUP_HEIGHT, POPUP_WIDTH, PROMT_PAGE } from "config/common";
 
 export class PromptService {
   readonly #height = POPUP_HEIGHT;
   readonly #width = POPUP_WIDTH;
-  readonly #type = 'popup';
+  readonly #type = "popup";
 
   #id?: number;
   #enabled = true;
@@ -20,7 +19,7 @@ export class PromptService {
 
   openTab() {
     Runtime.tabs.create({
-      url: String(PROMT_PAGE)
+      url: String(PROMT_PAGE),
     });
   }
 
@@ -32,7 +31,7 @@ export class PromptService {
       url: `${PROMT_PAGE}?type=${this.#type}`,
       width: this.#width,
       height: this.#height,
-      focused: true
+      focused: true,
     };
     try {
       const lastPopups = await this.#getPopup();
@@ -44,8 +43,8 @@ export class PromptService {
           Runtime.windows.remove(Number(popup.id), console.error);
         }
       }
-  
-      Runtime.windows.create(createData, (tab) => {
+
+      Runtime.windows.create(createData, (tab: any) => {
         if (tab) {
           this.#id = Number(tab.id);
         }
@@ -57,10 +56,10 @@ export class PromptService {
 
   #getPopup(): Promise<chrome.windows.Window[]> {
     return new Promise((resolve) => {
-      Runtime.windows.getAll({}, (tabs) => {
-        const list = tabs.filter(tab => tab.type === this.#type);
+      Runtime.windows.getAll({}, (tabs: any[]) => {
+        const list = tabs.filter((tab) => tab.type === this.#type);
         resolve(list);
-      })
+      });
     });
   }
 }

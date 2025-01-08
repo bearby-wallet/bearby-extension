@@ -69,12 +69,23 @@
 				on:input={handleInput}
 			/>
 		</label>
-		<button class="outline" class:loading disabled={Boolean(disabled || error)}>
-			{$_("lock.btn")}
-		</button>
-		<span on:mouseup={() => linksExpand("/start")}>
-			{$_("lock.restore")}
-		</span>
+		<button 
+      type="submit"
+      class="outline" 
+      class:loading 
+      disabled={Boolean(disabled || error)} 
+      aria-label="unlock"
+    >
+      {$_("lock.restore")}
+    </button>
+    <button 
+      type="button"
+      on:click={() => linksExpand("/start")} 
+      aria-label="Go back"
+      class="restore-button"
+    >
+      {$_("lock.restore")}
+    </button>
 	</form>
 </main>
 
@@ -120,4 +131,18 @@
 		width: 290px;
 		@include flex-center-column;
 	}
+
+	.restore-button {
+    cursor: pointer;
+    margin-block-start: 16px;
+    font-size: 10pt;
+    color: var(--muted-color);
+    background: none;
+    border: none;
+    padding: 0;
+
+    &:hover {
+      color: var(--primary-color);
+    }
+  }
 </style>

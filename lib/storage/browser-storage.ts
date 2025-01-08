@@ -1,8 +1,7 @@
-import type { StorageKeyValue } from 'lib/storage';
-import type { Fields } from 'config/fields';
+import type { StorageKeyValue } from "lib/storage";
+import type { Fields } from "config/fields";
 
-import { Runtime } from 'lib/runtime';
-
+import { Runtime } from "lib/runtime";
 
 type CallBack = {
   [key: string]: chrome.storage.StorageChange;
@@ -14,8 +13,7 @@ type CallBack = {
  * import { BrowserStorage } from 'lib/storage'
  * new BrowserStorage().get('KEY')
  */
- export const BrowserStorage = Object.freeze({
-
+export const BrowserStorage = Object.freeze({
   /**
    * Create subscribe
    * @example
@@ -25,19 +23,13 @@ type CallBack = {
    *   .unsubscribe()
    */
   subscribe(cb: (changes: CallBack) => void) {
-    Runtime
-      .storage
-      .onChanged
-      .addListener(cb);
+    Runtime.storage.onChanged.addListener(cb);
 
     return {
       unsubscribe() {
-        Runtime
-          .storage
-          .onChanged
-          .removeListener(cb);
-      }
-    }
+        Runtime.storage.onChanged.removeListener(cb);
+      },
+    };
   },
 
   /**
@@ -60,11 +52,11 @@ type CallBack = {
     for (let index = 0; index < args.length; index++) {
       const arg = args[index];
 
-      list.push(new Promise<void>((resolve) => {
-        Runtime
-            .storage
-            .local.set(arg, () => resolve());
-      }));
+      list.push(
+        new Promise<void>((resolve) => {
+          Runtime.storage.local.set(arg, () => resolve());
+        }),
+      );
     }
 
     await Promise.all(list);
@@ -118,5 +110,5 @@ type CallBack = {
     return new Promise<void>((resolve) => {
       Runtime.storage.local.clear(() => resolve());
     });
-  }
+  },
 });

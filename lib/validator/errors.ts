@@ -1,1 +1,1 @@
-export const INVALID_PRIVATE_KEY = 'Invalid privateKey';
+export const INVALID_PRIVATE_KEY = "Invalid privateKey";

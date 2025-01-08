@@ -14,7 +14,7 @@
   user-select: none;
   scrollbar-width: none;
 
-  font-family: 'Inter custom', sans-serif;
+  font-family: "Inter custom", sans-serif;
 }
 
 :global(body),
@@ -37,7 +37,7 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-tap-highlight-color: var(--text-negative);
 
-  font-size-adjust:0.5;
+  font-size-adjust: 0.5;
 }
 
 :global(a:link),
@@ -52,6 +52,6 @@
   list-style-type: none;
 }
 
-:global(::-webkit-scrollbar) { 
-  display: none; 
+:global(::-webkit-scrollbar) {
+  display: none;
 }

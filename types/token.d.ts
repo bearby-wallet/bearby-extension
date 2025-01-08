@@ -10,7 +10,7 @@ export interface Balance {
   [key: string]: {
     candidate: string;
     final: string;
-  }
+  };
 }
 
 export interface TokenRes {
@@ -22,4 +22,3 @@ export interface TokenRes {
   symbol: string;
   base58: string;
 }
-

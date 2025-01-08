@@ -1,7 +1,6 @@
-import type { Fields } from 'config/fields';
+import type { Fields } from "config/fields";
 
-import { TypeOf } from 'lib/type';
-
+import { TypeOf } from "lib/type";
 
 export type StorageKeyValue = {
   [key: string]: string;
@@ -15,7 +14,10 @@ export type StorageKeyValue = {
  *  buildObject('key', 'any payload or object or array')
  * ])
  */
-export function buildObject(key: Fields | string, value: string | object): StorageKeyValue {
+export function buildObject(
+  key: Fields | string,
+  value: string | object,
+): StorageKeyValue {
   let data = value;
 
   if (TypeOf.isObject(value) || TypeOf.isArray(value)) {
@@ -23,6 +25,6 @@ export function buildObject(key: Fields | string, value: string | object): Stora
   }
 
   return {
-    [key]: String(data)
+    [key]: String(data),
   };
 }

@@ -1,16 +1,11 @@
-import { assert } from 'lib/assert';
+import { assert } from "lib/assert";
 
-import { WORD_LIST } from './wordlists';
-import { randomBytes } from 'lib/crypto/random';
-import { pbkdf2 } from 'lib/crypto/pbkdf2';
-import { sha256 } from 'lib/crypto/sha256';
-import {
-  INVALID_ENTROPY,
-  Bip39Error,
-  INCORRECT_MNEMONIC
-} from './errors';
-import { utils } from 'aes-js';
-
+import { WORD_LIST } from "./wordlists";
+import { randomBytes } from "lib/crypto/random";
+import { pbkdf2 } from "lib/crypto/pbkdf2";
+import { sha256 } from "lib/crypto/sha256";
+import { INVALID_ENTROPY, Bip39Error, INCORRECT_MNEMONIC } from "./errors";
+import { utils } from "aes-js";
 
 export class MnemonicController {
   async generateMnemonic(size = 12) {
@@ -28,7 +23,9 @@ export class MnemonicController {
 
   async mnemonicToSeed(mnemonic: string, password?: string) {
     const mnemonicBuffer = utils.utf8.toBytes(this.#normalize(mnemonic));
-    const saltBuffer = utils.utf8.toBytes(this.#salt(this.#normalize(password)));
+    const saltBuffer = utils.utf8.toBytes(
+      this.#salt(this.#normalize(password)),
+    );
 
     return await pbkdf2(mnemonicBuffer, saltBuffer, 2048);
   }
@@ -62,7 +59,7 @@ export class MnemonicController {
     }
 
     let words = new Array(MAX_NB_WORDS).fill(Number.MAX_SAFE_INTEGER);
-    let nbWords = nbBytes * 3 / 4;
+    let nbWords = (nbBytes * 3) / 4;
     for (let i = 0; i < nbWords; i++) {
       let idx = 0;
       for (let j = 0; j < 11; j++) {
@@ -78,25 +75,28 @@ export class MnemonicController {
   }
 
   mnemonicToEntropy(mnemonic: string) {
-    const words = this.#normalize(mnemonic).split(' ');
+    const words = this.#normalize(mnemonic).split(" ");
 
     assert(words.length >= 12, INCORRECT_MNEMONIC, Bip39Error);
     assert(words.length % 3 === 0, INCORRECT_MNEMONIC, Bip39Error);
     // convert word indices to 11 bit binary strings
-    const bits = words.map((word) => {
-      const index = WORD_LIST.indexOf(word);
+    const bits = words
+      .map((word) => {
+        const index = WORD_LIST.indexOf(word);
 
-      assert(index !== -1, INCORRECT_MNEMONIC, Bip39Error);
+        assert(index !== -1, INCORRECT_MNEMONIC, Bip39Error);
 
-      return this.#lpad(index.toString(2), '0', 11);
-    }).join('');
+        return this.#lpad(index.toString(2), "0", 11);
+      })
+      .join("");
 
     // split the binary string into ENT/CS
     const dividerIndex = Math.floor(bits.length / 33) * 32;
     const entropyBits = bits.slice(0, dividerIndex);
     // calculate the checksum and compare
-    const entropyBytes = (entropyBits.match(/(.{1,8})/g) || [])
-      .map(this.#binaryToByte);
+    const entropyBytes = (entropyBits.match(/(.{1,8})/g) || []).map(
+      this.#binaryToByte,
+    );
 
     assert(entropyBytes.length >= 16, INVALID_ENTROPY, Bip39Error);
     assert(entropyBytes.length <= 32, INVALID_ENTROPY, Bip39Error);
@@ -114,13 +114,12 @@ export class MnemonicController {
     return true;
   }
 
-
   #salt(password: string) {
-    return 'mnemonic' + (password || '');
+    return "mnemonic" + (password || "");
   }
 
   #normalize(str?: string) {
-    return (str || '').normalize('NFKD');
+    return (str || "").normalize("NFKD");
   }
 
   #lpad(str: string, padString: string, length: number) {
@@ -134,4 +133,3 @@ export class MnemonicController {
     return parseInt(bin, 2);
   }
 }
-

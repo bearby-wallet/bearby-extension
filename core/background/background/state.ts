@@ -17,7 +17,6 @@ import { AppConnectController } from "background/connections";
 import { MTypeTab } from "config/stream-keys";
 import { TabsMessage } from "lib/stream/tabs-message";
 
-
 export class BackgroundState {
   readonly network = new NetworkControl();
   readonly gas = new GasControl();
@@ -32,14 +31,14 @@ export class BackgroundState {
   readonly transaction = new TransactionsController(
     this.network,
     this.account,
-    this.badge
+    this.badge,
   );
   readonly worker = new WorkerController(
     this.massa,
     this.transaction,
     this.network,
     this.settings,
-    this.gas
+    this.gas,
   );
 
   get state(): WalletState {
@@ -54,12 +53,12 @@ export class BackgroundState {
       reqPubKey: this.account.requestPubKey,
       lockTime: this.guard.lockTime,
       confirmApps: this.connections.confirm,
-      signMessage: this.transaction.message
+      signMessage: this.transaction.message,
     };
   }
 
   async sync() {
-    console.log('start sync');
+    console.log("start sync");
 
     try {
       Runtime.runtime.onInstalled.addListener(this.#onInstalled);
@@ -80,18 +79,22 @@ export class BackgroundState {
 
     const counter = this.transaction.message ? 1 : 0;
     this.badge.setCounter(
-      this.transaction.confirm.length + this.connections.confirm.length + counter
+      this.transaction.confirm.length +
+        this.connections.confirm.length +
+        counter,
     );
 
-    console.log('end sync');
+    console.log("end sync");
   }
 
   triggerAccount() {
     try {
-      const domains = this
-        .connections
-        .identities
-        .filter((app) => app.accounts && app.accounts.includes(this.account.wallet.selectedAddress))
+      const domains = this.connections.identities
+        .filter(
+          (app) =>
+            app.accounts &&
+            app.accounts.includes(this.account.wallet.selectedAddress),
+        )
         .map((app) => app.domain);
       const account = this.account.selectedAccount;
 
@@ -100,7 +103,7 @@ export class BackgroundState {
           type: MTypeTab.ACCOUNT_CHANGED,
           payload: {
             base58: account.base58,
-          }
+          },
         }).send(...domains);
       }
     } catch (err) {
@@ -116,8 +119,8 @@ export class BackgroundState {
         type: MTypeTab.NETWORK_CHANGED,
         payload: {
           net: this.network.selected,
-          period: this.worker.period
-        }
+          period: this.worker.period,
+        },
       }).send(...domains);
     } catch (err) {
       console.warn(err);
@@ -129,8 +132,8 @@ export class BackgroundState {
       new TabsMessage({
         type: MTypeTab.LOCKED,
         payload: {
-          enabled: this.guard.isEnable
-        }
+          enabled: this.guard.isEnable,
+        },
       }).sendAll();
     } catch (err) {
       console.warn(err);

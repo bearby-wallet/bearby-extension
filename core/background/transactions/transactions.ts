@@ -1,12 +1,15 @@
-import type { ConfirmParams, HistoryTransaction, SignMessageParams } from 'types/transaction';
-import type { BadgeControl } from 'background/notifications';
-import type { NetworkControl } from 'core/background/network';
-import type { AccountController } from 'core/background/account';
+import type {
+  ConfirmParams,
+  HistoryTransaction,
+  SignMessageParams,
+} from "types/transaction";
+import type { BadgeControl } from "background/notifications";
+import type { NetworkControl } from "core/background/network";
+import type { AccountController } from "core/background/account";
 
-import { Fields } from 'config/fields';
-import { MAX_TX_QUEUE } from 'config/common';
-import { BrowserStorage, buildObject, StorageKeyValue } from 'lib/storage';
-
+import { Fields } from "config/fields";
+import { MAX_TX_QUEUE } from "config/common";
+import { BrowserStorage, buildObject, type StorageKeyValue } from "lib/storage";
 
 export class TransactionsController {
   readonly #network: NetworkControl;
@@ -34,7 +37,7 @@ export class TransactionsController {
       return `${Fields.TRANSACTIONS}/${this.#network.selected}/${this.#account.selectedAccount.base58}`;
     }
 
-    return '';
+    return "";
   }
 
   get #confirmField() {
@@ -44,7 +47,7 @@ export class TransactionsController {
   constructor(
     network: NetworkControl,
     account: AccountController,
-    badge: BadgeControl
+    badge: BadgeControl,
   ) {
     this.#network = network;
     this.#account = account;
@@ -59,48 +62,36 @@ export class TransactionsController {
 
     this.#history = newList.filter(Boolean);
 
-    await BrowserStorage.set(
-      buildObject(this.#historyField, this.history)
-    );
+    await BrowserStorage.set(buildObject(this.#historyField, this.history));
   }
 
   async updateHistory(history: HistoryTransaction[]) {
     this.#history = history;
-    await BrowserStorage.set(
-      buildObject(this.#historyField, this.history)
-    );
+    await BrowserStorage.set(buildObject(this.#historyField, this.history));
   }
 
   async clearHistory() {
     this.#history = [];
-    await BrowserStorage.set(
-      buildObject(this.#historyField, this.history)
-    );
+    await BrowserStorage.set(buildObject(this.#historyField, this.history));
   }
 
   async clearConfirm() {
     this.#badge.decrease(this.confirm.length);
     this.#confirm = [];
 
-    await BrowserStorage.set(
-      buildObject(this.#confirmField, this.confirm)
-    );
+    await BrowserStorage.set(buildObject(this.#confirmField, this.confirm));
   }
 
   async addConfirm(params: ConfirmParams) {
     this.#confirm.push(params);
     this.#badge.increase();
-    await BrowserStorage.set(
-      buildObject(this.#confirmField, this.confirm)
-    );
+    await BrowserStorage.set(buildObject(this.#confirmField, this.confirm));
   }
 
   async addMessage(message: SignMessageParams) {
     this.#message = message;
     this.#badge.increase();
-    await BrowserStorage.set(
-      buildObject(Fields.CONFIRM_SIGN_MESSAGE, message)
-    );
+    await BrowserStorage.set(buildObject(Fields.CONFIRM_SIGN_MESSAGE, message));
   }
 
   async removeMessage() {
@@ -115,35 +106,29 @@ export class TransactionsController {
     this.#confirm = this.#confirm.filter(Boolean);
     this.#badge.decrease();
 
-    await BrowserStorage.set(
-      buildObject(this.#confirmField, this.confirm)
-    );
+    await BrowserStorage.set(buildObject(this.#confirmField, this.confirm));
   }
 
   async updateConfirm(txns: ConfirmParams[]) {
     this.#confirm = txns;
 
-    await BrowserStorage.set(
-      buildObject(this.#confirmField, this.confirm)
-    );
+    await BrowserStorage.set(buildObject(this.#confirmField, this.confirm));
   }
 
   async resetNonce(nonce: number) {
     this.#history = this.history.map((t) => ({
       ...t,
-      nonce
+      nonce,
     }));
 
-    await BrowserStorage.set(
-      buildObject(this.#historyField, this.#history)
-    );
+    await BrowserStorage.set(buildObject(this.#historyField, this.#history));
   }
 
   async sync() {
-    const data = await BrowserStorage.get(
+    const data = (await BrowserStorage.get(
       this.#confirmField,
-      this.#historyField
-    ) as StorageKeyValue;
+      this.#historyField,
+    )) as StorageKeyValue;
 
     try {
       if (data[this.#confirmField]) {

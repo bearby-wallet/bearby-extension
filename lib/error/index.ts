@@ -11,7 +11,7 @@ export class BaseError extends Error {
       message: this.message,
       name: this.name,
       code: this.code,
-      stack: this.stack
+      stack: this.stack,
     };
   }
 }

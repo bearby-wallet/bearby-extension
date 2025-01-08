@@ -1,8 +1,7 @@
-import type { ReqBody } from 'types';
+import type { ReqBody } from "types";
 
-import { Runtime } from 'lib/runtime';
-import { BaseError } from 'lib/error';
-
+import { Runtime } from "lib/runtime";
+import { BaseError } from "lib/error";
 
 /**
  * TabsMessage is class for send messages for any tabs.
@@ -17,9 +16,9 @@ export class TabsMessage {
   readonly _body: ReqBody;
 
   static tabs(): Promise<chrome.tabs.Tab[]> {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       Runtime.tabs.query({}, resolve);
-    })
+    });
   }
 
   /**
@@ -34,13 +33,13 @@ export class TabsMessage {
     return new Promise((resolve, reject) => {
       Runtime.tabs.query({ active: true, currentWindow: true }, ([tab]) => {
         if (!tab) {
-          return reject(new BaseError('no active tabs'));
+          return reject(new BaseError("no active tabs"));
         }
 
         const { hostname } = new URL(String(tab.url));
 
         if (hostname !== domain) {
-          return reject(new BaseError('invalid domain'));
+          return reject(new BaseError("invalid domain"));
         }
 
         const seralized = JSON.stringify(this._body);
@@ -48,7 +47,7 @@ export class TabsMessage {
 
         Runtime.tabs.sendMessage(Number(tab.id), deserialized);
 
-        return resolve('');
+        return resolve("");
       });
     });
   }
@@ -71,8 +70,9 @@ export class TabsMessage {
    */
   async sendAll() {
     // Get all active tabs.
-    const tabs = (await TabsMessage.tabs())
-      .filter((tab) => tab.url && !tab.url.includes('chrome://'));
+    const tabs = (await TabsMessage.tabs()).filter(
+      (tab) => tab.url && !tab.url.includes("chrome://"),
+    );
 
     try {
       for (let index = 0; index < tabs.length; index++) {
@@ -84,9 +84,8 @@ export class TabsMessage {
         Runtime.tabs.sendMessage(Number(tab.id), deserialized);
       }
     } catch (err) {
-      console.error('TabsMessage', err);
+      console.error("TabsMessage", err);
       // If not tabs with injected script.
     }
   }
-
 }

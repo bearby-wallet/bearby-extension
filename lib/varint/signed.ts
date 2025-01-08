@@ -1,19 +1,19 @@
-import * as unsigned from './unsigned'
+import * as unsigned from "./unsigned";
 
 const oneBI = BigInt(1);
 const twoBI = BigInt(2);
 
 export function encodingLength(value: bigint): number {
   return unsigned.encodingLength(
-    value >= 0 ? value * twoBI : value * -twoBI - oneBI
+    value >= 0 ? value * twoBI : value * -twoBI - oneBI,
   );
 }
 
 export function encode(
   value: bigint,
-  buffer?: ArrayBuffer,
-  byteOffset?: number
-): ArrayBuffer {
+  buffer?: Uint8Array,
+  byteOffset?: number,
+): Uint8Array {
   value = value >= 0 ? value * twoBI : value * -twoBI - oneBI;
 
   return unsigned.encode(value, buffer, byteOffset);

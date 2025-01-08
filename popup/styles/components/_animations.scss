@@ -1,6 +1,10 @@
-@keyframes -global-loading {  
+@keyframes -global-loading {
   to {
-    background-position: 290px 0, 0 0, 0 290px, 0px 290px;
+    background-position:
+      290px 0,
+      0 0,
+      0 290px,
+      0px 290px;
   }
 }
 
@@ -14,10 +18,12 @@
 }
 
 @keyframes -global-shake {
-  8%, 41% {
+  8%,
+  41% {
     transform: translateX(-10px);
   }
-  25%, 58% {
+  25%,
+  58% {
     transform: translateX(10px);
   }
   75% {
@@ -26,7 +32,8 @@
   92% {
     transform: translateX(5px);
   }
-  0%, 100% {
+  0%,
+  100% {
     transform: translateX(0);
   }
 }

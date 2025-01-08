@@ -1,9 +1,11 @@
 import type { CallParam } from "types/contacts";
 import { Args } from "./args";
-import { ArgTypes, NativeType } from 'config/arg-types';
+import { ArgTypes, type NativeType } from "config/arg-types";
 import { BaseError } from "lib/error";
-import { NOT_SUPOPRT_TYPE_SERIALIZABLE, NOT_SUPOPRT_TYPE_SERIALIZABLE_OBJECT_ARRAY } from "./errors";
-
+import {
+  NOT_SUPOPRT_TYPE_SERIALIZABLE,
+  NOT_SUPOPRT_TYPE_SERIALIZABLE_OBJECT_ARRAY,
+} from "./errors";
 
 export function parseParams(params: CallParam[]): Args {
   let args = new Args();
@@ -60,4 +62,3 @@ export function parseParams(params: CallParam[]): Args {
 
   return args;
 }
-

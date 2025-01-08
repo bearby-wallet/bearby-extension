@@ -1,2 +1,2 @@
-export * from './hex';
-export * from './private-key';
+export * from "./hex";
+export * from "./private-key";

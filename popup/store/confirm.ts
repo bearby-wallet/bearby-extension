@@ -1,6 +1,4 @@
-import type { ConfirmParams } from 'types';
-import { writable } from 'svelte/store';
-
+import type { ConfirmParams } from "types";
+import { writable } from "svelte/store";
 
 export default writable<ConfirmParams[]>([]);
-

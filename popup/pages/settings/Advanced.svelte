@@ -48,9 +48,9 @@
 		>
 			<GasControl
 				multiplier={$gasStore.multiplier}
-				gasLimit={$gasStore.gasLimit}
+				fee={$gasStore.gasLimit}
 				on:select={handleOnChangeGasMultiplier}
-			/>
+			></GasControl>
 		</Jumbotron>
 		<Jumbotron
 			title={$_('advanced.time.title')}

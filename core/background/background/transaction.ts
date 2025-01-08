@@ -5,16 +5,26 @@ import type {
   ConfirmParams,
   HistoryTransaction,
   SignMessageParams,
-  SignedMessage
+  SignedMessage,
 } from "types";
 import type { BackgroundState } from "./state";
 
-import { utils } from 'aes-js';
-import blake3 from 'blake3-js';
+import { utils } from "aes-js";
+import blake3 from "blake3-js";
 import { assert } from "lib/assert";
-import { NOT_FOUND_CONFIRM, TransactionsError, UNKONOW_TX_TYPE } from "background/transactions/errors";
+import {
+  NOT_FOUND_CONFIRM,
+  TransactionsError,
+  UNKONOW_TX_TYPE,
+} from "background/transactions/errors";
 import { OperationsType } from "background/provider/operations";
-import { BuyRollsBuild, CallSmartContractBuild, ExecuteSmartContractBuild, PaymentBuild, SellRollsBuild } from "background/provider/transaction";
+import {
+  BuyRollsBuild,
+  CallSmartContractBuild,
+  ExecuteSmartContractBuild,
+  PaymentBuild,
+  SellRollsBuild,
+} from "background/provider/transaction";
 import { PromptService } from "lib/prompt";
 import { MTypeTab } from "config/stream-keys";
 import { TabsMessage } from "lib/stream/tabs-message";
@@ -23,7 +33,6 @@ import { base58Encode, pubKeyFromBytes } from "lib/address";
 import { getManifestVersion } from "lib/runtime/manifest";
 import { ManifestVersions } from "config/manifest-versions";
 
-
 export class BackgroundTransaction {
   readonly #core: BackgroundState;
 
@@ -31,7 +40,10 @@ export class BackgroundTransaction {
     this.#core = state;
   }
 
-  async addSignMessage(params: SignMessageParams, sendResponse: StreamResponse) {
+  async addSignMessage(
+    params: SignMessageParams,
+    sendResponse: StreamResponse,
+  ) {
     try {
       this.#core.guard.checkSession();
       await this.#core.connections.checkConnection(params.domain);
@@ -50,11 +62,11 @@ export class BackgroundTransaction {
         type: MTypeTab.SING_MESSAGE_RESULT,
         payload: {
           uuid: params.uuid,
-          reject: (err as BaseError).message
-        }
+          reject: (err as BaseError).message,
+        },
       }).send(params.domain);
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
@@ -64,16 +76,19 @@ export class BackgroundTransaction {
       this.#core.guard.checkSession();
 
       return sendResponse({
-        resolve: this.#core.transaction.history
+        resolve: this.#core.transaction.history,
       });
     } catch (err) {
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
 
-  async addToConfirm(params: MinTransactionParams, sendResponse: StreamResponse) {
+  async addToConfirm(
+    params: MinTransactionParams,
+    sendResponse: StreamResponse,
+  ) {
     try {
       this.#core.guard.checkSession();
 
@@ -84,12 +99,15 @@ export class BackgroundTransaction {
 
       if (!params.token) {
         const [massa, rolls] = this.#core.tokens.identities;
-        const token = params.type === OperationsType.RollBuy || params.type === OperationsType.RollSell ?
-          rolls : massa;
+        const token =
+          params.type === OperationsType.RollBuy ||
+          params.type === OperationsType.RollSell
+            ? rolls
+            : massa;
         params.token = {
           decimals: token.decimals,
           base58: token.base58,
-          symbol: token.symbol
+          symbol: token.symbol,
         };
       }
 
@@ -103,14 +121,14 @@ export class BackgroundTransaction {
       }
 
       const prompt = new PromptService(
-        this.#core.settings.popup.enabledPopup && Boolean(params.uuid)
+        this.#core.settings.popup.enabledPopup && Boolean(params.uuid),
       );
       const confirmParams: ConfirmParams = {
         ...params,
         tokenAmount: String(params.coins ?? 0),
         fee: String(params.fee),
         maxGas: String(params.maxGas ?? this.#core.gas.state.gasLimit),
-        recipient: params.toAddr
+        recipient: params.toAddr,
       };
 
       await this.#core.transaction.addConfirm(confirmParams);
@@ -121,7 +139,7 @@ export class BackgroundTransaction {
       }
 
       return sendResponse({
-        resolve: this.#core.state
+        resolve: this.#core.state,
       });
     } catch (err) {
       if (params.uuid && params.domain) {
@@ -129,12 +147,12 @@ export class BackgroundTransaction {
           type: MTypeTab.TX_TO_SEND_RESULT,
           payload: {
             uuid: params.uuid,
-            reject: (err as BaseError).message
-          }
+            reject: (err as BaseError).message,
+          },
         }).send(params.domain);
       }
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
@@ -146,11 +164,11 @@ export class BackgroundTransaction {
       await this.#core.transaction.clearHistory();
 
       return sendResponse({
-        resolve: this.#core.transaction.history
+        resolve: this.#core.transaction.history,
       });
     } catch (err) {
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
@@ -166,24 +184,28 @@ export class BackgroundTransaction {
           type: MTypeTab.TX_TO_SEND_RESULT,
           payload: {
             uuid: confirmTxns[index].uuid,
-            reject: REJECTED
-          }
+            reject: REJECTED,
+          },
         }).send(String(confirmTxns[index].domain));
       }
 
       await this.#core.transaction.rmConfirm(index);
 
       return sendResponse({
-        resolve: this.#core.state
+        resolve: this.#core.state,
       });
     } catch (err) {
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
 
-  async updateConfirmTx(confirmParams: ConfirmParams, index: number, sendResponse: StreamResponse) {
+  async updateConfirmTx(
+    confirmParams: ConfirmParams,
+    index: number,
+    sendResponse: StreamResponse,
+  ) {
     try {
       this.#core.guard.checkSession();
 
@@ -196,11 +218,11 @@ export class BackgroundTransaction {
       await this.#core.transaction.updateConfirm(confirmTxns);
 
       return sendResponse({
-        resolve: this.#core.state
+        resolve: this.#core.state,
       });
     } catch (err) {
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
@@ -215,12 +237,19 @@ export class BackgroundTransaction {
 
       const [slotResponse] = await this.#core.massa.getNodesStatus();
 
-      assert(!slotResponse.error, `code: ${slotResponse.error?.code} message: ${slotResponse.error?.message}`, TransactionsError);
+      assert(
+        !slotResponse.error,
+        `code: ${slotResponse.error?.code} message: ${slotResponse.error?.message}`,
+        TransactionsError,
+      );
 
       const pair = await this.#core.account.getKeyPair();
       const nextSlot = Number(slotResponse.result?.next_slot.period);
       const expiryPeriod = nextSlot + this.#core.settings.period.periodOffset;
-      const bytesCompact = await this.#confirmToBytes(confirmParams, expiryPeriod);
+      const bytesCompact = await this.#confirmToBytes(
+        confirmParams,
+        expiryPeriod,
+      );
       let array = [];
 
       const chainIdBuffer = new ArrayBuffer(8);
@@ -230,7 +259,7 @@ export class BackgroundTransaction {
       array = [
         ...new Uint8Array(chainIdBuffer),
         ...pair.pubKey,
-        ...bytesCompact
+        ...bytesCompact,
       ];
 
       const txBytes = Uint8Array.from(array);
@@ -238,11 +267,16 @@ export class BackgroundTransaction {
       const txDataObject = await this.#core.massa.getTransactionData(
         bytesCompact,
         sig,
-        pair.pubKey
+        pair.pubKey,
       );
-      const [{ result, error }] = await this.#core.massa.sendTransaction(txDataObject);
+      const [{ result, error }] =
+        await this.#core.massa.sendTransaction(txDataObject);
 
-      assert(!error, `code: ${error?.code} message: ${error?.message}`, TransactionsError);
+      assert(
+        !error,
+        `code: ${error?.code} message: ${error?.message}`,
+        TransactionsError,
+      );
 
       const [hash] = result as string[];
       const token = confirmParams.token;
@@ -252,8 +286,8 @@ export class BackgroundTransaction {
           type: MTypeTab.TX_TO_SEND_RESULT,
           payload: {
             uuid: confirmParams.uuid,
-            resolve: hash
-          }
+            resolve: hash,
+          },
         }).send(confirmParams.domain);
       }
 
@@ -277,23 +311,24 @@ export class BackgroundTransaction {
         params: confirmParams.params,
         period: this.#core.settings.period.periodOffset,
         confirmed: false,
-        success: false
+        success: false,
       };
 
       await this.#core.transaction.addHistory(newHistoryTx);
       await this.#core.transaction.rmConfirm(index);
 
       sendResponse({
-        resolve: this.#core.state
+        resolve: this.#core.state,
       });
     } catch (err) {
-      const message = (err as BaseError).serialize ?
-        (err as BaseError).serialize().message : (err as Error).message;
+      const message = (err as BaseError).serialize
+        ? (err as BaseError).serialize().message
+        : (err as Error).message;
 
       return sendResponse({
         reject: {
-          message: String(message)
-        }
+          message: String(message),
+        },
       });
     }
   }
@@ -314,21 +349,21 @@ export class BackgroundTransaction {
       const payload: SignedMessage = {
         signature,
         message: message.message,
-        publicKey: await pubKeyFromBytes(pair.pubKey)
+        publicKey: await pubKeyFromBytes(pair.pubKey),
       };
 
       await new TabsMessage({
         type: MTypeTab.SING_MESSAGE_RESULT,
         payload: {
           uuid: message.uuid,
-          resolve: payload
-        }
+          resolve: payload,
+        },
       }).send(message.domain);
 
       await this.#core.transaction.removeMessage();
 
       return sendResponse({
-        resolve: this.#core.state
+        resolve: this.#core.state,
       });
     } catch (err) {
       if (message) {
@@ -336,13 +371,13 @@ export class BackgroundTransaction {
           type: MTypeTab.SING_MESSAGE_RESULT,
           payload: {
             uuid: message.uuid,
-            reject: (err as BaseError).message
-          }
+            reject: (err as BaseError).message,
+          },
         }).send(message.domain);
       }
       await this.#core.transaction.removeMessage();
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
@@ -362,16 +397,16 @@ export class BackgroundTransaction {
         type: MTypeTab.SING_MESSAGE_RESULT,
         payload: {
           uuid: message.uuid,
-          reject: REJECTED
-        }
+          reject: REJECTED,
+        },
       }).send(message.domain);
 
       return sendResponse({
-        resolve: this.#core.state
+        resolve: this.#core.state,
       });
     } catch (err) {
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
@@ -382,19 +417,20 @@ export class BackgroundTransaction {
         return await new PaymentBuild(
           confirmParams.fee,
           confirmParams.coins,
-          confirmParams.toAddr, expiryPeriod
+          confirmParams.toAddr,
+          expiryPeriod,
         ).bytes();
       case OperationsType.RollBuy:
         return await new BuyRollsBuild(
           confirmParams.fee,
           confirmParams.coins,
-          expiryPeriod
+          expiryPeriod,
         ).bytes();
       case OperationsType.RollSell:
         return await new SellRollsBuild(
           confirmParams.fee,
           confirmParams.coins,
-          expiryPeriod
+          expiryPeriod,
         ).bytes();
       case OperationsType.ExecuteSC:
         assert(Boolean(confirmParams.code), INCORRECT_PARAM);
@@ -406,23 +442,27 @@ export class BackgroundTransaction {
           BigInt(confirmParams.maxCoins || 0),
           BigInt(confirmParams.coins || 0),
           expiryPeriod,
-          confirmParams.code || '',
-          confirmParams.deployer || '',
+          confirmParams.code || "",
+          confirmParams.deployer || "",
           confirmParams.params,
-          confirmParams.unsafeParams ? utils.hex.toBytes(confirmParams.unsafeParams) : undefined
+          confirmParams.unsafeParams
+            ? utils.hex.toBytes(confirmParams.unsafeParams)
+            : undefined,
         ).bytes();
       case OperationsType.CallSC:
         assert(Boolean(confirmParams.func), INCORRECT_PARAM);
 
         return await new CallSmartContractBuild(
-          confirmParams.func || '',
+          confirmParams.func || "",
           confirmParams.params || [],
           confirmParams.fee,
           expiryPeriod,
           BigInt(confirmParams.maxGas),
-          confirmParams.coins || '0',
+          confirmParams.coins || "0",
           confirmParams.toAddr,
-          confirmParams.unsafeParams ? utils.hex.toBytes(confirmParams.unsafeParams) : undefined
+          confirmParams.unsafeParams
+            ? utils.hex.toBytes(confirmParams.unsafeParams)
+            : undefined,
         ).bytes();
       default:
         throw new TransactionsError(UNKONOW_TX_TYPE);

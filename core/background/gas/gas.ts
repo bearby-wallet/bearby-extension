@@ -1,11 +1,15 @@
-import type { GasState } from 'types/gas';
+import type { GasState } from "types/gas";
 
-import { Fields } from 'config/fields';
-import { BrowserStorage, buildObject } from 'lib/storage';
-import { GAS_LIMIT, MULTIPLIER } from 'config/gas';
-import { TypeOf } from 'lib/type';
-import { GasError, INVALID_STATE, INVALID_GAS_LIMIT, INVALID_MULTIPLIER } from './errors';
-
+import { Fields } from "config/fields";
+import { BrowserStorage, buildObject } from "lib/storage";
+import { GAS_LIMIT, MULTIPLIER } from "config/gas";
+import { TypeOf } from "lib/type";
+import {
+  GasError,
+  INVALID_STATE,
+  INVALID_GAS_LIMIT,
+  INVALID_MULTIPLIER,
+} from "./errors";
 
 export class GasControl {
   #gasLimit = GAS_LIMIT;
@@ -28,9 +32,7 @@ export class GasControl {
     this.#checkState(state);
     this.#gasLimit = gasLimit;
 
-    await BrowserStorage.set(
-      buildObject(Fields.GAS, this.state)
-    );
+    await BrowserStorage.set(buildObject(Fields.GAS, this.state));
   }
 
   async setConfig(state: GasState) {
@@ -39,9 +41,7 @@ export class GasControl {
     this.#gasLimit = state.gasLimit;
     this.#multiplier = state.multiplier;
 
-    await BrowserStorage.set(
-      buildObject(Fields.GAS, this.state)
-    );
+    await BrowserStorage.set(buildObject(Fields.GAS, this.state));
   }
 
   async sync() {
@@ -63,9 +63,7 @@ export class GasControl {
     this.#gasLimit = GAS_LIMIT;
     this.#multiplier = MULTIPLIER;
 
-    await BrowserStorage.set(
-      buildObject(Fields.GAS, this.state)
-    );
+    await BrowserStorage.set(buildObject(Fields.GAS, this.state));
   }
 
   #checkState(state: GasState) {

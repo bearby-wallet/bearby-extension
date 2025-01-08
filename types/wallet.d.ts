@@ -1,8 +1,7 @@
 import type { ConfirmParams } from "./transaction";
-import type { GasState } from './gas';
-import type { SettingsState } from './settings';
-import type { ShaAlgorithms } from 'config/sha-algorithms';
-
+import type { GasState } from "./gas";
+import type { SettingsState } from "./settings";
+import type { ShaAlgorithms } from "config/sha-algorithms";
 
 export interface WalletState {
   guard: {

@@ -1,9 +1,9 @@
-import type { ISerializable, IDeserializedResult } from './args';
+import type { ISerializable, IDeserializedResult } from "./args";
 
-import { NativeType, ArgTypes } from 'config/arg-types';
-import { Args } from './args';
-import { bytesToStr } from './strings';
-import { byteToBool } from './bool';
+import { type NativeType, ArgTypes } from "config/arg-types";
+import { Args } from "./args";
+import { bytesToStr } from "./strings";
+import { byteToBool } from "./bool";
 import {
   byteToU8,
   bytesToF32,
@@ -13,11 +13,10 @@ import {
   bytesToU128,
   bytesToU256,
   bytesToU32,
-  bytesToU64
-} from './numbers';
-import { BaseError } from 'lib/error';
-import { INVALID_TYPE } from './errors';
-
+  bytesToU64,
+} from "./numbers";
+import { BaseError } from "lib/error";
+import { INVALID_TYPE } from "./errors";
 
 /**
  * Get the byte size of a typed array unit.
@@ -135,10 +134,7 @@ export function deserializeObj<T extends ISerializable<T>>(
  *
  * @returns The converted Uint8Array.
  */
-export function arrayToBytes(
-  source: NativeType[],
-  type: ArgTypes,
-): Uint8Array {
+export function arrayToBytes(source: NativeType[], type: ArgTypes): Uint8Array {
   let args = new Args();
   source.forEach((value) => {
     switch (type) {

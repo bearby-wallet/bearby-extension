@@ -1,4 +1,9 @@
-import type { AppConnection, ContentWalletData, RPCBody, StreamResponse } from "types";
+import type {
+  AppConnection,
+  ContentWalletData,
+  RPCBody,
+  StreamResponse,
+} from "types";
 import type { BackgroundState } from "./state";
 import type { BaseError } from "lib/error";
 import type { CallParam } from "types";
@@ -10,7 +15,6 @@ import { REJECTED } from "background/connections/errors";
 import { TypeOf } from "lib/type";
 import { parseParams } from "lib/args";
 import { JsonRPCRequestMethods } from "background/provider";
-
 
 export class BackgroundConnection {
   readonly #core: BackgroundState;
@@ -24,11 +28,9 @@ export class BackgroundConnection {
       this.#core.guard.checkSession();
       await this.#core.connections.checkConnection(domain);
 
-      let foundIndex = this
-        .#core
-        .connections
-        .identities
-        .findIndex((el) => el.domain === domain);
+      let foundIndex = this.#core.connections.identities.findIndex(
+        (el) => el.domain === domain,
+      );
 
       await this.#core.connections.rm(foundIndex);
 
@@ -38,16 +40,16 @@ export class BackgroundConnection {
           uuid,
           net: this.#core.network.selected,
           base58: null,
-          resolve: true
-        }
+          resolve: true,
+        },
       }).send(domain);
 
       return sendResponse({
-        resolve: true
+        resolve: true,
       });
     } catch (err) {
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
@@ -57,11 +59,11 @@ export class BackgroundConnection {
       this.#core.guard.checkSession();
 
       return sendResponse({
-        resolve: this.#core.connections.identities
+        resolve: this.#core.connections.identities,
       });
     } catch (err) {
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
@@ -73,16 +75,20 @@ export class BackgroundConnection {
       await this.#core.connections.rm(index);
 
       return sendResponse({
-        resolve: this.#core.connections.identities
+        resolve: this.#core.connections.identities,
       });
     } catch (err) {
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
 
-  async updateConnections(index: number, accounts: number[], sendResponse: StreamResponse) {
+  async updateConnections(
+    index: number,
+    accounts: number[],
+    sendResponse: StreamResponse,
+  ) {
     try {
       this.#core.guard.checkSession();
       await this.#core.connections.updateAccounts(index, accounts);
@@ -97,22 +103,25 @@ export class BackgroundConnection {
             .map((index) => this.#core.account.wallet.identities[index])
             .filter(Boolean)
             .map((value) => value.base58),
-        }
+        },
       }).signal(app.domain);
       this.#core.triggerAccount();
 
-
       return sendResponse({
-        resolve: this.#core.state
+        resolve: this.#core.state,
       });
     } catch (err) {
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
 
-  async approveConnections(index: number, accounts: number[], sendResponse: StreamResponse) {
+  async approveConnections(
+    index: number,
+    accounts: number[],
+    sendResponse: StreamResponse,
+  ) {
     try {
       this.#core.guard.checkSession();
 
@@ -130,15 +139,15 @@ export class BackgroundConnection {
             .map((index) => this.#core.account.wallet.identities[index])
             .filter(Boolean)
             .map((value) => value.base58),
-          resolve: true
-        }
+          resolve: true,
+        },
       }).send(connection.domain);
 
       if (this.#core.connections.has(connection.domain)) {
         await this.#core.connections.removeConfirmConnection(index);
 
         return sendResponse({
-          resolve: this.#core.state
+          resolve: this.#core.state,
         });
       }
 
@@ -146,11 +155,11 @@ export class BackgroundConnection {
       await this.#core.connections.removeConfirmConnection(index);
 
       return sendResponse({
-        resolve: this.#core.state
+        resolve: this.#core.state,
       });
     } catch (err) {
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
@@ -165,25 +174,25 @@ export class BackgroundConnection {
         type: MTypeTab.RESPONSE_CONNECT_APP,
         payload: {
           uuid: app.uuid,
-          reject: REJECTED
-        }
+          reject: REJECTED,
+        },
       }).send(app.domain);
 
       await this.#core.connections.removeConfirmConnection(index);
 
       if (this.#core.connections.has(app.domain)) {
         const foundIndex = this.#core.connections.identities.findIndex(
-          (a) => a.domain === app.domain
+          (a) => a.domain === app.domain,
         );
         await this.#core.connections.rm(foundIndex);
 
         return sendResponse({
-          resolve: this.#core.state
+          resolve: this.#core.state,
         });
       }
 
       return sendResponse({
-        resolve: this.#core.state
+        resolve: this.#core.state,
       });
     } catch (err) {
       if (app.uuid) {
@@ -191,12 +200,12 @@ export class BackgroundConnection {
           type: MTypeTab.RESPONSE_CONNECT_APP,
           payload: {
             uuid: app.uuid,
-            reject: REJECTED
-          }
+            reject: REJECTED,
+          },
         }).send(app.domain);
       }
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
@@ -206,12 +215,15 @@ export class BackgroundConnection {
     const app = this.#core.connections.has(domain);
     const connected = Boolean(app);
     const account = this.#core.account.selectedAccount;
-    const base58 = (connected && enabled && account) ? account.base58 : undefined;
+    const base58 = connected && enabled && account ? account.base58 : undefined;
     const net = connected ? this.#core.network.selected : undefined;
-    const accounts = enabled && app ? app.accounts
-      .map((index) => this.#core.account.wallet.identities[index])
-      .filter(Boolean)
-      .map((value) => value.base58) : [];
+    const accounts =
+      enabled && app
+        ? app.accounts
+            .map((index) => this.#core.account.wallet.identities[index])
+            .filter(Boolean)
+            .map((value) => value.base58)
+        : [];
 
     const data: ContentWalletData = {
       accounts,
@@ -220,10 +232,10 @@ export class BackgroundConnection {
       enabled,
       net,
       period: this.#core.worker.period,
-      phishing: this.#core.settings.phishing.phishingDetectionEnabled
+      phishing: this.#core.settings.phishing.phishingDetectionEnabled,
     };
     return sendResponse({
-      resolve: data
+      resolve: data,
     });
   }
 
@@ -236,25 +248,24 @@ export class BackgroundConnection {
             if (TypeOf.isArray(param)) {
               return (param as any).map((req: any) => ({
                 ...req,
-                parameter: Array.from(parseParams(req.parameter).serialize())
+                parameter: Array.from(parseParams(req.parameter).serialize()),
               }));
             }
 
             return param;
-          })
+          });
         }
 
-        return this.#core.massa.provider.buildBody(method, params)
-      }
-      );
+        return this.#core.massa.provider.buildBody(method, params);
+      });
       const respone = await this.#core.massa.sendJson(...rpcBodies);
 
       return sendResponse({
-        resolve: respone
+        resolve: respone,
       });
     } catch (err) {
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
@@ -275,16 +286,19 @@ export class BackgroundConnection {
         type: MTypeTab.RESPONSE_PUB_KEY,
         payload: {
           uuid: payload.uuid,
-          reject: (err as BaseError).message
-        }
+          reject: (err as BaseError).message,
+        },
       }).send(payload.domain);
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
 
-  async requestPubKeyApproveReject(approved: boolean, sendResponse: StreamResponse) {
+  async requestPubKeyApproveReject(
+    approved: boolean,
+    sendResponse: StreamResponse,
+  ) {
     try {
       this.#core.guard.checkSession();
 
@@ -293,27 +307,27 @@ export class BackgroundConnection {
           type: MTypeTab.RESPONSE_PUB_KEY,
           payload: {
             uuid: this.#core.account.requestPubKey?.uuid,
-            resolve: this.#core.account.selectedAccount?.pubKey
-          }
+            resolve: this.#core.account.selectedAccount?.pubKey,
+          },
         }).send(String(this.#core.account.requestPubKey?.domain));
       } else {
         new TabsMessage({
           type: MTypeTab.RESPONSE_PUB_KEY,
           payload: {
             uuid: this.#core.account.requestPubKey?.uuid,
-            reject: REJECTED
-          }
+            reject: REJECTED,
+          },
         }).send(String(this.#core.account.requestPubKey?.domain));
       }
 
       this.#core.account.setPubKeyRequest();
 
       return sendResponse({
-        resolve: this.#core.state
+        resolve: this.#core.state,
       });
     } catch (err) {
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
@@ -327,12 +341,12 @@ export class BackgroundConnection {
             uuid: app.uuid,
             net: this.#core.network.selected,
             base58: this.#core.account.selectedAccount?.base58,
-            resolve: true
-          }
+            resolve: true,
+          },
         }).send(app.domain);
 
         return sendResponse({
-          resolve: true
+          resolve: true,
         });
       }
 
@@ -342,7 +356,7 @@ export class BackgroundConnection {
       await prompt.open();
 
       return sendResponse({
-        resolve: true
+        resolve: true,
       });
     } catch (err) {
       if (app.uuid) {
@@ -350,12 +364,12 @@ export class BackgroundConnection {
           type: MTypeTab.RESPONSE_CONNECT_APP,
           payload: {
             uuid: app.uuid,
-            reject: (err as BaseError).message
-          }
+            reject: (err as BaseError).message,
+          },
         }).send(app.domain);
       }
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }

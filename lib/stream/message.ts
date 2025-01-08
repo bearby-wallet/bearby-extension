@@ -1,7 +1,6 @@
-import type { ReqBody } from 'types';
+import type { ReqBody } from "types";
 
-import { Runtime } from 'lib/runtime';
-
+import { Runtime } from "lib/runtime";
 
 /**
  * Message class can send payload or make signal message.
@@ -19,7 +18,7 @@ export class Message<T> {
    */
   public static signal(type: string): Message<object> {
     return new Message({
-      type
+      type,
     });
   }
 
@@ -55,9 +54,7 @@ export class Message<T> {
   #trySend(): Promise<T> {
     return new Promise((resolve) => {
       try {
-        Runtime
-          .runtime
-          .sendMessage(this._body, resolve);
+        Runtime.runtime.sendMessage(this._body, resolve);
       } catch (err) {
         console.error(this, err);
         window.location.reload();

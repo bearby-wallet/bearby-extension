@@ -1,8 +1,7 @@
-import { EXTENSION_ID } from 'lib/runtime/id';
+import { EXTENSION_ID } from "lib/runtime/id";
 
-import connectionsStore from 'app/store/connection';
-import { getConnections } from 'popup/backend/connections';
-
+import connectionsStore from "app/store/connection";
+import { getConnections } from "popup/backend/connections";
 
 export async function loadTab(tab: chrome.tabs.Tab) {
   if (!tab) {
@@ -22,7 +21,7 @@ export async function loadTab(tab: chrome.tabs.Tab) {
 
     connectionsStore.set({
       domain,
-      accounts: found ? found.accounts : []
+      accounts: found ? found.accounts : [],
     });
   } catch {
     ///

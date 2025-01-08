@@ -3,5 +3,5 @@ export enum OperationsType {
   RollBuy,
   RollSell,
   ExecuteSC,
-  CallSC
+  CallSC,
 }

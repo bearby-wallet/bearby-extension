@@ -60,7 +60,12 @@
   </div>
   <div class="wrapper">
     {#each shuffled as word, index}
-      <div on:mouseup={() => hanldeOnAdd(word, index)}>
+      <div 
+        on:mouseup={() => hanldeOnAdd(word, index)}
+        role="button"
+        aria-label="Select word {word}"
+        tabindex="0"
+      >
         <PickButton text={word} />
       </div>
     {/each}

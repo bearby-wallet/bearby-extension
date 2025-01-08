@@ -2,7 +2,6 @@ import type { BaseError } from "lib/error";
 import type { Contact, StreamResponse } from "types";
 import type { BackgroundState } from "./state";
 
-
 export class BackgroundContacts {
   readonly #core: BackgroundState;
 
@@ -17,11 +16,11 @@ export class BackgroundContacts {
       await this.#core.contacts.add(contact);
 
       return sendResponse({
-        resolve: this.#core.state
+        resolve: this.#core.state,
       });
     } catch (err) {
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
@@ -33,11 +32,11 @@ export class BackgroundContacts {
       await this.#core.contacts.remove(index);
 
       return sendResponse({
-        resolve: this.#core.state
+        resolve: this.#core.state,
       });
     } catch (err) {
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
@@ -47,13 +46,12 @@ export class BackgroundContacts {
       this.#core.guard.checkSession();
 
       return sendResponse({
-        resolve: this.#core.contacts.list
+        resolve: this.#core.contacts.list,
       });
     } catch (err) {
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
-
 }

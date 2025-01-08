@@ -1,10 +1,9 @@
 // This string need that sould did't have problem with conflicts.
-const app = 'BearBy';
-
+const app = "BearBy";
 
 export const MTypeTabContent = {
   CONTENT: `@/${app}/content-script`,
-  INJECTED: `@/${app}/injected-script`
+  INJECTED: `@/${app}/injected-script`,
 };
 
 export const MTypePopup = {
@@ -76,7 +75,7 @@ export const MTypePopup = {
   ADD_FT_TOKEN: `@/${app}/add-ft-token`,
   RM_FT_TOKEN: `@/${app}/rm-ft-token`,
 
-  APPROVE_PUB_KEY_REQ: `@/${app}/apprvoe-pub-key-request`
+  APPROVE_PUB_KEY_REQ: `@/${app}/apprvoe-pub-key-request`,
 };
 
 export const MTypeTab = {

@@ -1,12 +1,11 @@
-import { BaseError } from 'lib/error';
-import { TypeOf } from 'lib/type';
-import { encode } from './unsigned';
+import { BaseError } from "lib/error";
+import { TypeOf } from "lib/type";
+import { encode } from "./unsigned";
 
 const MSB = 0x80;
-const REST = 0x7F;
+const REST = 0x7f;
 const MSBALL = ~REST;
 const INT = Math.pow(2, 31);
-
 
 export class VarintDecode {
   #bytes = 0;
@@ -31,9 +30,7 @@ export class VarintDecode {
 
       b = buf[counter++];
 
-      res += shift < 28
-        ? (b & REST) << shift
-        : (b & REST) * Math.pow(2, shift);
+      res += shift < 28 ? (b & REST) << shift : (b & REST) * Math.pow(2, shift);
 
       shift += 7;
     } while (b >= MSB);
@@ -60,12 +57,12 @@ export class VarintEncode {
     const oldOffset = offset;
 
     while (num >= INT) {
-      out[offset++] = (num & 0xFF) | MSB;
+      out[offset++] = (num & 0xff) | MSB;
       num /= 128;
     }
 
     while (num & MSBALL) {
-      out[offset++] = (num & 0xFF) | MSB;
+      out[offset++] = (num & 0xff) | MSB;
       num >>>= 7;
     }
 
@@ -85,12 +82,11 @@ export function varintEncode(data: number | bigint): Uint8Array {
 }
 
 export function varintDecode(data: Uint8Array): {
-  value: number
-  bytes: number
+  value: number;
+  bytes: number;
 } {
   const varint = new VarintDecode();
   const value = varint.decode(data);
   const bytes = varint.bytes;
-  return { value, bytes }
+  return { value, bytes };
 }
-

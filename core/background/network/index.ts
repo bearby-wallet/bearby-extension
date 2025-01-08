@@ -1,12 +1,18 @@
-import type { NetworkConfig } from 'types';
+import type { NetworkConfig } from "types";
 
-import { NETWORK, NETWORK_KEYS } from 'config/network';
-import { Fields } from 'config/fields';
-import { BrowserStorage, buildObject, StorageKeyValue } from 'lib/storage';
-import { assert } from 'lib/assert';
-import { FAIL_SYNC, INVALID_CONFIG, INVALID_SELECTED, NetworkError, ONLY_CUSTOM, UNIQUE_PROVIDER } from './errors';
-import { TypeOf } from 'lib/type';
-
+import { NETWORK, NETWORK_KEYS } from "config/network";
+import { Fields } from "config/fields";
+import { BrowserStorage, buildObject, type StorageKeyValue } from "lib/storage";
+import { assert } from "lib/assert";
+import {
+  FAIL_SYNC,
+  INVALID_CONFIG,
+  INVALID_SELECTED,
+  NetworkError,
+  ONLY_CUSTOM,
+  UNIQUE_PROVIDER,
+} from "./errors";
+import { TypeOf } from "lib/type";
 
 const [mainnet, , custom] = NETWORK_KEYS;
 
@@ -37,15 +43,15 @@ export class NetworkControl {
   get state() {
     return {
       selected: this.selected,
-      config: this.config
+      config: this.config,
     };
   }
 
   async sync() {
-    const data = await BrowserStorage.get(
+    const data = (await BrowserStorage.get(
       Fields.NETWORK_CONFIG,
-      Fields.NETWORK_SELECTED
-    ) as StorageKeyValue;
+      Fields.NETWORK_SELECTED,
+    )) as StorageKeyValue;
 
     try {
       if (data[Fields.NETWORK_SELECTED]) {
@@ -67,7 +73,11 @@ export class NetworkControl {
         }
       }
 
-      assert(Boolean(this.providers && this.providers.length > 0), FAIL_SYNC, NetworkError);
+      assert(
+        Boolean(this.providers && this.providers.length > 0),
+        FAIL_SYNC,
+        NetworkError,
+      );
     } catch {
       await this.reset();
     }
@@ -79,7 +89,7 @@ export class NetworkControl {
 
     await BrowserStorage.set(
       buildObject(Fields.NETWORK_CONFIG, this.config),
-      buildObject(Fields.NETWORK_SELECTED, this.selected)
+      buildObject(Fields.NETWORK_SELECTED, this.selected),
     );
   }
 
@@ -92,13 +102,11 @@ export class NetworkControl {
       return {
         selected,
         config: this.config,
-        provider: this.providers
+        provider: this.providers,
       };
     }
 
-    await BrowserStorage.set(
-      buildObject(Fields.NETWORK_SELECTED, selected)
-    );
+    await BrowserStorage.set(buildObject(Fields.NETWORK_SELECTED, selected));
 
     this.#selected = selected;
   }
@@ -106,29 +114,29 @@ export class NetworkControl {
   async setConfig(newConfig: NetworkConfig) {
     for (const key in newConfig) {
       assert(Boolean(newConfig[key].PROVIDERS), INVALID_CONFIG, NetworkError);
-      assert(!isNaN(Number(newConfig[key].VERSION)), INVALID_CONFIG, NetworkError);
+      assert(
+        !isNaN(Number(newConfig[key].VERSION)),
+        INVALID_CONFIG,
+        NetworkError,
+      );
     }
 
     this.#config = newConfig;
 
-    await BrowserStorage.set(
-      buildObject(Fields.NETWORK_CONFIG, this.config)
-    );
+    await BrowserStorage.set(buildObject(Fields.NETWORK_CONFIG, this.config));
   }
 
   async addProvider(node: string) {
     const providers = this.config[this.selected].PROVIDERS;
     const unique = providers.some(
-      (n) => n.toLowerCase() === node.toLowerCase()
+      (n) => n.toLowerCase() === node.toLowerCase(),
     );
 
     assert(!unique, UNIQUE_PROVIDER, NetworkError);
 
     this.#config[this.selected].PROVIDERS.push(node);
 
-    await BrowserStorage.set(
-      buildObject(Fields.NETWORK_CONFIG, this.config)
-    );
+    await BrowserStorage.set(buildObject(Fields.NETWORK_CONFIG, this.config));
   }
 
   async setChainID(newChainID: number) {
@@ -136,9 +144,7 @@ export class NetworkControl {
 
     this.#config[this.selected].CHAIN_ID = newChainID;
 
-    await BrowserStorage.set(
-      buildObject(Fields.NETWORK_CONFIG, this.config)
-    );
+    await BrowserStorage.set(buildObject(Fields.NETWORK_CONFIG, this.config));
   }
 
   async sortProvider(node: string) {
@@ -152,9 +158,7 @@ export class NetworkControl {
       return 0;
     });
 
-    await BrowserStorage.set(
-      buildObject(Fields.NETWORK_CONFIG, this.config)
-    );
+    await BrowserStorage.set(buildObject(Fields.NETWORK_CONFIG, this.config));
   }
 
   async removeProvider(node: string) {
@@ -164,13 +168,9 @@ export class NetworkControl {
 
     const providers = this.config[this.selected].PROVIDERS;
 
-    this.#config[this.selected].PROVIDERS = providers.filter(
-      (n) => node !== n
-    );
+    this.#config[this.selected].PROVIDERS = providers.filter((n) => node !== n);
 
-    await BrowserStorage.set(
-      buildObject(Fields.NETWORK_CONFIG, this.config)
-    );
+    await BrowserStorage.set(buildObject(Fields.NETWORK_CONFIG, this.config));
   }
 
   #getURL(selected: string) {

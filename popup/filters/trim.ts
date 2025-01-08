@@ -1,6 +1,6 @@
-export function trim(value = '', length = 6) {
+export function trim(value = "", length = 6) {
   if (!value) {
-    return '';
+    return "";
   }
 
   const part0 = value.slice(0, length);

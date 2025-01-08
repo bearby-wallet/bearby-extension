@@ -1,1 +1,1 @@
-declare module 'elliptic/lib/elliptic/ec';
+declare module "elliptic/lib/elliptic/ec";

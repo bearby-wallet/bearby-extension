@@ -1,12 +1,12 @@
-import type { ArgTypes, NativeType } from 'config/arg-types';
+import type { ArgTypes, NativeType } from "config/arg-types";
 
 import {
   serializableObjectsArrayToBytes,
   bytesToSerializableObjectArray,
   deserializeObj,
   arrayToBytes,
-  bytesToArray
-} from 'lib/args/arrays';
+  bytesToArray,
+} from "lib/args/arrays";
 import {
   bytesToF32,
   bytesToF64,
@@ -26,10 +26,9 @@ import {
   u32ToBytes,
   u64ToBytes,
   u8toByte,
-} from 'lib/args/numbers';
-import { bytesToStr, strToBytes } from 'lib/args/strings';
-import { BaseError } from 'lib/error';
-
+} from "lib/args/numbers";
+import { bytesToStr, strToBytes } from "lib/args/strings";
+import { BaseError } from "lib/error";
 
 export interface ISerializable<T> {
   serialize(): Uint8Array;
@@ -250,7 +249,10 @@ export class Args {
    */
   nextUint8Array(): Uint8Array {
     const length = this.nextU32();
-    const byteArray = this.#serialized.slice(this.#offset, this.#offset + length);
+    const byteArray = this.#serialized.slice(
+      this.#offset,
+      this.#offset + length,
+    );
 
     this.#offset += length;
     return byteArray;
@@ -296,7 +298,9 @@ export class Args {
     }
 
     if (this.#offset + length > this.#serialized.length) {
-      throw new BaseError("can't deserialize length of array from given argument");
+      throw new BaseError(
+        "can't deserialize length of array from given argument",
+      );
     }
 
     const buffer = this.#getNextData(length);
@@ -324,7 +328,9 @@ export class Args {
     }
 
     if (this.#offset + length > this.#serialized.length) {
-      throw new BaseError("can't deserialize length of array from given argument");
+      throw new BaseError(
+        "can't deserialize length of array from given argument",
+      );
     }
 
     const buffer = this.#getNextData(length);
@@ -385,10 +391,7 @@ export class Args {
    * @returns the serialized arguments to be able to chain `add` method calls.
    */
   addU64(bigInt: bigint): this {
-    this.#serialized = Args.concatArrays(
-      this.#serialized,
-      u64ToBytes(bigInt),
-    );
+    this.#serialized = Args.concatArrays(this.#serialized, u64ToBytes(bigInt));
 
     this.#offset += 8;
 
@@ -403,10 +406,7 @@ export class Args {
    * @returns the serialized arguments to be able to chain `add` method calls.
    */
   addU128(bigInt: bigint): this {
-    this.#serialized = Args.concatArrays(
-      this.#serialized,
-      u128ToBytes(bigInt),
-    );
+    this.#serialized = Args.concatArrays(this.#serialized, u128ToBytes(bigInt));
 
     this.#offset += 16;
 
@@ -421,10 +421,7 @@ export class Args {
    * @returns the serialized arguments to be able to chain `add` method calls.
    */
   addU256(bigInt: bigint): this {
-    this.#serialized = Args.concatArrays(
-      this.#serialized,
-      u256ToBytes(bigInt),
-    );
+    this.#serialized = Args.concatArrays(this.#serialized, u256ToBytes(bigInt));
 
     this.#offset += 32;
 
@@ -452,10 +449,7 @@ export class Args {
    * @returns the serialized arguments to be able to chain `add` method calls.
    */
   addI64(bigInt: bigint): this {
-    this.#serialized = Args.concatArrays(
-      this.#serialized,
-      i64ToBytes(bigInt),
-    );
+    this.#serialized = Args.concatArrays(this.#serialized, i64ToBytes(bigInt));
     this.#offset += 8;
     return this;
   }
@@ -515,7 +509,7 @@ export class Args {
     const size = arg.length;
 
     if (size > maxSize) {
-      console.warn('input string is too long, it will be truncated');
+      console.warn("input string is too long, it will be truncated");
       arg = arg.slice(0, maxSize);
     }
 

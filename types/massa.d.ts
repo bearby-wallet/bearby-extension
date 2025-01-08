@@ -23,10 +23,10 @@ export interface JsonRPCResponseNodeStatus extends JsonRPCResponse {
       roll_price: string;
       t0: number;
       thread_count: number;
-    },
+    };
     connected_nodes: {
       [key: string]: Array<boolean | string>;
-    },
+    };
     consensus_stats: {
       clique_count: number;
       end_timespan: number;
@@ -35,30 +35,30 @@ export interface JsonRPCResponseNodeStatus extends JsonRPCResponse {
       staker_count: number;
       stale_block_count: number;
       start_timespan: number;
-    },
+    };
     current_cycle: number;
     current_time: number;
     last_slot?: {
       period: number;
       thread: number;
-    },
+    };
     network_stats: {
       active_node_count: number;
       banned_peer_count: number;
       in_connection_count: number;
       known_peer_count: number;
       out_connection_count: number;
-    },
+    };
     next_slot: {
       period: number;
       thread: number;
-    },
+    };
     node_id: string;
     node_ip: string;
     pool_stats: {
       endorsement_count: number;
       operation_count: number;
-    },
+    };
     minimal_fees: string;
     version: string;
     chain_id: number | null;
@@ -89,12 +89,12 @@ export interface OperationTransaction extends JsonRPCResponse {
     op_exec_status: boolean;
     operation: {
       content: {
-        expire_period: number;// after that period, the operation become invalid forever
+        expire_period: number; // after that period, the operation become invalid forever
         fee: string; // represent an Amount in coins
         op: {
           Transaction?: {
             amount: string; // represent an Amount in coins
-            recipient_address: String
+            recipient_address: String;
           };
           RollBuy?: {
             roll_count: number;
@@ -121,7 +121,7 @@ export interface OperationTransaction extends JsonRPCResponse {
         sender_public_key: string;
       };
       signature: string;
-    }
+    };
   }[];
 }
 
@@ -138,13 +138,14 @@ export interface MassaBlock extends JsonRPCResponse {
             endorsed_block: string; // Block id
             index: number;
             sender_public_key: string;
-            slot: { // endorsed block slot: deifferent from block's slot
+            slot: {
+              // endorsed block slot: deifferent from block's slot
               period: number;
-              thread: Number
+              thread: Number;
             };
           };
           signature: string;
-        }
+        };
         operation_merkle_root: string; // Hash of all operations
         parents: string[]; // Block ids, as many as thread count
         slot: {
@@ -158,7 +159,7 @@ export interface MassaBlock extends JsonRPCResponse {
     is_final: boolean;
     is_in_blockclique: boolean;
     is_stale: boolean;
-  }
+  };
 }
 
 export interface OperationResponse extends JsonRPCResponse {

@@ -1,13 +1,13 @@
-import { assert } from 'lib/assert';
-import { INVALID_U8_ARRAY, OUT_OF_BOUNDS, OUT_OF_RANGE } from './errors';
+import { assert } from "lib/assert";
+import { INVALID_U8_ARRAY, OUT_OF_BOUNDS, OUT_OF_RANGE } from "./errors";
 
-function checkInt (
+function checkInt(
   buf: Uint8Array,
   value: number,
   offset: number,
   ext: number,
   max: number,
-  min: number
+  min: number,
 ) {
   assert(buf instanceof Uint8Array, INVALID_U8_ARRAY);
 
@@ -19,8 +19,12 @@ function checkInt (
   }
 }
 
-
-export function writeUint32BE(source: Uint8Array, value: number, offset: number, noAssert?: boolean): Uint8Array {
+export function writeUint32BE(
+  source: Uint8Array,
+  value: number,
+  offset: number,
+  noAssert?: boolean,
+): Uint8Array {
   source = Uint8Array.from(source);
   value = Number(value);
   offset = offset >>> 0;
@@ -29,10 +33,10 @@ export function writeUint32BE(source: Uint8Array, value: number, offset: number,
     checkInt(source, value, offset, 4, 0xffffffff, 0);
   }
 
-  source[offset] = (value >>> 24)
-  source[offset + 1] = (value >>> 16)
-  source[offset + 2] = (value >>> 8)
-  source[offset + 3] = (value & 0xff)
+  source[offset] = value >>> 24;
+  source[offset + 1] = value >>> 16;
+  source[offset + 2] = value >>> 8;
+  source[offset + 3] = value & 0xff;
 
   return source;
 }

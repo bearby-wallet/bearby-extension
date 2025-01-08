@@ -1,4 +1,4 @@
-import { ArgTypes, NativeType } from 'config/arg-types';
+import { ArgTypes, NativeType } from "config/arg-types";
 
 export interface Contact {
   name: string;

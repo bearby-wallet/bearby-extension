@@ -1,6 +1,4 @@
-
 import type { ReqBody } from "types";
-
 
 type Listener = (...args: ReqBody[]) => void;
 
@@ -14,7 +12,7 @@ export class Subject {
 
   public removeListener(listener: Listener): void {
     const idx: number = this.#events.indexOf(listener);
-    if(idx > -1) this.#events.splice(idx, 1);
+    if (idx > -1) this.#events.splice(idx, 1);
   }
 
   public removeAllListeners(): void {
@@ -22,11 +20,11 @@ export class Subject {
   }
 
   public emit(...args: ReqBody[]): void {
-    this.#events.forEach(listener => listener.apply(this, args));
+    this.#events.forEach((listener) => listener.apply(this, args));
   }
 
   public once(listener: Listener): void {
-    const remove: (() => void) = this.on((...args: ReqBody[]) => {
+    const remove: () => void = this.on((...args: ReqBody[]) => {
       remove();
       listener.apply(this, args);
     });

@@ -1,8 +1,6 @@
-
 import type { BaseError } from "lib/error";
 import type { StreamResponse, TokenRes } from "types";
 import type { BackgroundState } from "./state";
-
 
 export class BackgroundTokens {
   readonly #core: BackgroundState;
@@ -17,11 +15,11 @@ export class BackgroundTokens {
       await this.#core.tokens.addFT(state);
 
       return sendResponse({
-        resolve: this.#core.state
+        resolve: this.#core.state,
       });
     } catch (err) {
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
@@ -32,11 +30,11 @@ export class BackgroundTokens {
       await this.#core.tokens.removeFT(index);
 
       return sendResponse({
-        resolve: this.#core.state
+        resolve: this.#core.state,
       });
     } catch (err) {
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
@@ -47,13 +45,12 @@ export class BackgroundTokens {
       const states = await this.#core.tokens.tokenfetch(addresses);
 
       return sendResponse({
-        resolve: states
+        resolve: states,
       });
     } catch (err) {
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
-
 }

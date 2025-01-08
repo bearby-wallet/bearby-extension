@@ -1,9 +1,8 @@
-import { DEFAULT_CURRENCIES } from 'config/currencies';
-import { Fields } from 'config/fields';
-import { assert } from 'lib/assert';
-import { BrowserStorage, buildObject } from 'lib/storage';
-import { INVALID_CURREENCY, SettingsError } from './errors';
-
+import { DEFAULT_CURRENCIES } from "config/currencies";
+import { Fields } from "config/fields";
+import { assert } from "lib/assert";
+import { BrowserStorage, buildObject } from "lib/storage";
+import { INVALID_CURREENCY, SettingsError } from "./errors";
 
 export class CurrenciesController {
   #selected = DEFAULT_CURRENCIES[0];
@@ -16,13 +15,13 @@ export class CurrenciesController {
     assert(
       DEFAULT_CURRENCIES.includes(newSelected),
       INVALID_CURREENCY,
-      SettingsError
+      SettingsError,
     );
 
     this.#selected = newSelected;
 
     await BrowserStorage.set(
-      buildObject(Fields.SELECTED_CURRENCY, this.selected)
+      buildObject(Fields.SELECTED_CURRENCY, this.selected),
     );
   }
 
@@ -40,7 +39,7 @@ export class CurrenciesController {
     this.#selected = DEFAULT_CURRENCIES[0];
 
     await BrowserStorage.set(
-      buildObject(Fields.SELECTED_CURRENCY, this.selected)
+      buildObject(Fields.SELECTED_CURRENCY, this.selected),
     );
   }
 }

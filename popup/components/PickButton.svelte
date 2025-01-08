@@ -28,6 +28,9 @@
       viewBox="0 0 17 17"
       fill="none"
       on:mouseup={hanldeOnClose}
+      role="button"
+      aria-label="Close"
+      tabindex="0"
     >
       <line
         x1="4.37958"

@@ -50,7 +50,7 @@
     {operate}
     {formatNumber(amount, tx.token.symbol)}
     <span>
-      + {toKG(tx.fee)}
+      + {toKG(Number(tx.fee))}
     </span>
   </h1>
   <p>

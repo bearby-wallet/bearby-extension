@@ -1,5 +1,4 @@
-import { ShaAlgorithms } from 'config/sha-algorithms';
-
+import { ShaAlgorithms } from "config/sha-algorithms";
 
 export async function sha256(value: Uint8Array) {
   const crypto = globalThis.crypto;

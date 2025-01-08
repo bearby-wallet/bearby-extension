@@ -1,12 +1,12 @@
-import { get } from 'svelte/store';
-import settingsStore from 'app/store/settings';
-import { META_URL } from 'config/common';
-import { Themes } from 'config/theme';
-import { themeDetect } from 'popup/mixins/theme';
+import { get } from "svelte/store";
+import settingsStore from "app/store/settings";
+import { META_URL } from "config/common";
+import { Themes } from "config/theme";
+import { themeDetect } from "popup/mixins/theme";
 
 export enum TokenType {
-  FT = 'ft',
-  NFT = 'nft'
+  FT = "ft",
+  NFT = "nft",
 }
 
 export function viewIcon(address: string, tokenType: TokenType): string {
@@ -19,4 +19,3 @@ export function viewIcon(address: string, tokenType: TokenType): string {
 
   return `${META_URL}/${tokenType}/${address}/${theme}.svg`;
 }
-

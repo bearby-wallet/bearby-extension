@@ -6,21 +6,23 @@ import type { GasControl } from "background/gas";
 import { MASSA_DECIMALS, WORKER_POOLING } from "config/common";
 import { BrowserStorage, buildObject } from "lib/storage";
 import { Fields } from "config/fields";
-import { TransactionsController, HASH_OUT_OF_STORAGE } from "background/transactions";
+import {
+  TransactionsController,
+  HASH_OUT_OF_STORAGE,
+} from "background/transactions";
 import { NotificationController } from "lib/runtime/notifications";
 import { MTypeTab } from "config/stream-keys";
 import { TabsMessage } from "lib/stream/tabs-message";
 import { NETWORK, NODE_PORT } from "config/network";
 import { isIPV6 } from "lib/validator/ip";
-import { Massa } from 'lib/explorer';
+import { Massa } from "lib/explorer";
 import { Runtime } from "lib/runtime";
 import { getManifestVersion } from "lib/runtime/manifest";
 import { ManifestVersions } from "config/manifest-versions";
 
-
 enum Statuses {
-  Confirmed = 'Confirmed',
-  ExpirePeriod = 'Expire period'
+  Confirmed = "Confirmed",
+  ExpirePeriod = "Expire period",
 }
 
 export class WorkerController {
@@ -49,7 +51,7 @@ export class WorkerController {
     transactions: TransactionsController,
     network: NetworkControl,
     settings: SettingsControl,
-    gas: GasControl
+    gas: GasControl,
   ) {
     this.#transactions = transactions;
     this.#massa = massa;
@@ -60,7 +62,8 @@ export class WorkerController {
 
   subscribe() {
     const alarmName = this.#fieldAlarm;
-    let intervalId: NodeJS.Timer;
+    let intervalId: ReturnType<typeof setInterval>;
+
     this.trackBlockNumber();
 
     if (getManifestVersion() === ManifestVersions.V2) {
@@ -70,7 +73,7 @@ export class WorkerController {
     } else {
       Runtime.alarms.create(alarmName, {
         delayInMinutes: 0.16667,
-        periodInMinutes: 0.16667
+        periodInMinutes: 0.16667,
       });
       Runtime.alarms.onAlarm.addListener((alarm) => {
         if (alarm.name === alarmName) {
@@ -86,12 +89,11 @@ export class WorkerController {
         } else {
           Runtime.alarms.clear(alarmName);
         }
-      }
-    }
+      },
+    };
   }
 
   async trackBlockNumber() {
-    const lastPeriod = this.#period;
     const [{ result, error }] = await this.#massa.getNodesStatus();
 
     if (error || !result) {
@@ -120,15 +122,15 @@ export class WorkerController {
 
     new TabsMessage({
       type: MTypeTab.NEW_SLOT,
-      payload: newPeriod
+      payload: newPeriod,
     }).sendAll();
 
     if (newCycle > this.#cycle) {
       await this.#setCycle(newCycle);
 
       if (result.connected_nodes && this.#settings.network.state.downgrade) {
-        const nodes = Object.values(result.connected_nodes).map(
-          ([url]) => String(url)
+        const nodes = Object.values(result.connected_nodes).map(([url]) =>
+          String(url),
         );
         await this.#updateProviders(nodes);
       }
@@ -140,7 +142,7 @@ export class WorkerController {
     const now = new Date().getTime();
     const dilaySeconds = 3000;
     const identities = list.filter((t) => {
-      return !t.confirmed && (now - t.timestamp) > dilaySeconds;
+      return !t.confirmed && now - t.timestamp > dilaySeconds;
     });
 
     if (identities.length === 0) {
@@ -149,7 +151,7 @@ export class WorkerController {
 
     const hashSet = identities.map((t) => t.hash);
     const replies = await this.#massa.getOperations(...hashSet);
-    
+
     for (let index = 0; index < replies.length; index++) {
       const { error, result } = replies[index];
       const indicator = identities[index];
@@ -162,7 +164,7 @@ export class WorkerController {
         this.#makeNotify(
           String(list[listIndex].title),
           list[listIndex].hash,
-          error.message
+          error.message,
         );
         continue;
       }
@@ -174,7 +176,7 @@ export class WorkerController {
         this.#makeNotify(
           String(list[listIndex].title),
           list[listIndex].hash,
-          HASH_OUT_OF_STORAGE
+          HASH_OUT_OF_STORAGE,
         );
         continue;
       }
@@ -182,7 +184,10 @@ export class WorkerController {
       const [transaction] = result;
       const expirePeriod = transaction.operation.content.expire_period;
 
-      if (transaction.is_operation_final === false && expirePeriod < this.period) {
+      if (
+        transaction.is_operation_final === false &&
+        expirePeriod < this.period
+      ) {
         list[listIndex].confirmed = true;
         list[listIndex].success = false;
         list[listIndex].error = Statuses.ExpirePeriod;
@@ -190,7 +195,7 @@ export class WorkerController {
         this.#makeNotify(
           String(list[listIndex].title),
           list[listIndex].hash,
-          Statuses.ExpirePeriod
+          Statuses.ExpirePeriod,
         );
 
         continue;
@@ -203,7 +208,7 @@ export class WorkerController {
         this.#makeNotify(
           String(list[listIndex].title),
           list[listIndex].hash,
-          Statuses.Confirmed
+          Statuses.Confirmed,
         );
       }
     }
@@ -216,15 +221,17 @@ export class WorkerController {
 
     const config = this.#network.config;
     const hosts = config[this.#network.selected].PROVIDERS;
-    const newNodes = connectedNodes
-      .map((ip) => {
-        const { https } = this.#settings.network.state;
-        let url = isIPV6(ip) ? `[${ip}]` : `${ip.replace('::ffff:', '')}`;
+    const newNodes = connectedNodes.map((ip) => {
+      const { https } = this.#settings.network.state;
+      let url = isIPV6(ip) ? `[${ip}]` : `${ip.replace("::ffff:", "")}`;
 
-        return https ? `https://${url}` : `http://${url}:${NODE_PORT}`;
-      });
+      return https ? `https://${url}` : `http://${url}:${NODE_PORT}`;
+    });
     const [defaultHost] = NETWORK[this.#network.selected].PROVIDERS;
-    const newHosts = [defaultHost, ...hosts, ...newNodes].slice(0, this.#settings.network.state.numberOfNodes);
+    const newHosts = [defaultHost, ...hosts, ...newNodes].slice(
+      0,
+      this.#settings.network.state.numberOfNodes,
+    );
     const uniqueHosts = new Set(newHosts);
 
     config[this.#network.selected].PROVIDERS = Array.from(uniqueHosts);
@@ -238,7 +245,7 @@ export class WorkerController {
 
     if (isNaN(block)) {
       await BrowserStorage.set(
-        buildObject(Fields.PERIOD, String(this.#period))
+        buildObject(Fields.PERIOD, String(this.#period)),
       );
       return;
     }
@@ -249,25 +256,19 @@ export class WorkerController {
   async #setPeriod(block: number) {
     this.#period = block;
 
-    await BrowserStorage.set(
-      buildObject(Fields.PERIOD, String(this.#period))
-    );
+    await BrowserStorage.set(buildObject(Fields.PERIOD, String(this.#period)));
   }
 
   async #setCycle(cycle: number) {
     this.#cycle = cycle;
 
-    await BrowserStorage.set(
-      buildObject(Fields.CYCLE, String(this.#cycle))
-    );
+    await BrowserStorage.set(buildObject(Fields.CYCLE, String(this.#cycle)));
   }
 
   #makeNotify(title: string, hash: string, message: string) {
-    const url = new Massa().setNetwork(this.#network.selected).transaction(hash);
-    new NotificationController(
-      url,
-      title,
-      message
-    ).create();
+    const url = new Massa()
+      .setNetwork(this.#network.selected)
+      .transaction(hash);
+    new NotificationController(url, title, message).create();
   }
 }

@@ -1,10 +1,9 @@
-import type { RPCBody, Params } from 'types';
-
+import type { RPCBody, Params } from "types";
 
 export class HttpProvider {
   readonly rpc = {
     id: 0,
-    jsonrpc: '2.0'
+    jsonrpc: "2.0",
   };
 
   json(...rpcBody: RPCBody[]) {
@@ -17,7 +16,7 @@ export class HttpProvider {
     return {
       body,
       headers,
-      method: 'POST'
+      method: "POST",
     };
   }
 
@@ -25,7 +24,7 @@ export class HttpProvider {
     return {
       ...this.rpc,
       method,
-      params
+      params,
     };
   }
 }

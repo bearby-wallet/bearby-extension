@@ -21,8 +21,8 @@
   export let selected = false;
 
   $: massa = $tokensStore[0];
-  $: balance = account.tokens && account.tokens[ZERO_ADDRESS] ?
-    account.tokens[ZERO_ADDRESS].final : 0;
+  $: balance = String(account.tokens && account.tokens[ZERO_ADDRESS] ?
+    account.tokens[ZERO_ADDRESS].final : 0);
 
 
   onMount(async() => {

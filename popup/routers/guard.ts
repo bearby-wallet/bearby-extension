@@ -1,12 +1,11 @@
-import { get } from 'svelte/store';
-import { push } from 'svelte-spa-router';
+import { get } from "svelte/store";
+import { push } from "svelte-spa-router";
 
-import guardStore from 'popup/store/guard';
-import confirmStore from 'app/store/confirm';
-import connectAppStore from 'popup/store/confirm-apps';
-import messageStore from 'popup/store/message';
-import reqPubKey from 'app/store/req-pub-key';
-
+import guardStore from "popup/store/guard";
+import confirmStore from "app/store/confirm";
+import connectAppStore from "popup/store/confirm-apps";
+import messageStore from "popup/store/message";
+import reqPubKey from "app/store/req-pub-key";
 
 export const routerGuard = () => {
   const guard = get(guardStore);
@@ -16,37 +15,37 @@ export const routerGuard = () => {
   const message = get(messageStore);
 
   if (!guard.isReady) {
-    push('/start');
+    push("/start");
 
     return guard.isEnable && guard.isReady;
   }
 
   if (guard.isReady && !guard.isEnable) {
-    push('/lock');
+    push("/lock");
 
     return guard.isEnable && guard.isReady;
   }
 
   if (appsConnect.length > 0) {
-    push('/connect');
+    push("/connect");
 
     return guard.isEnable && guard.isReady;
   }
 
   if (confirm.length > 0) {
-    push('/confirm');
+    push("/confirm");
 
     return guard.isEnable && guard.isReady;
   }
 
   if (message) {
-    push('/sign-message');
+    push("/sign-message");
 
     return guard.isEnable && guard.isReady;
   }
 
   if (reqPubKeyState) {
-    push('/req-pubkey');
+    push("/req-pubkey");
 
     return guard.isEnable && guard.isReady;
   }

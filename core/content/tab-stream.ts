@@ -2,7 +2,7 @@ import type {
   ReqBody,
   SendResponseParams,
   ContentWalletData,
-  ProxyContentType
+  ProxyContentType,
 } from "types";
 
 import { MTypeTab, MTypeTabContent } from "config/stream-keys";
@@ -11,7 +11,6 @@ import { Message } from "lib/stream/message";
 import { warpMessage } from "lib/stream/warp-message";
 import { ContentMessage } from "lib/stream/secure-message";
 import { PhishingDetect } from "./phishing-detect";
-
 
 export class ContentTabStream {
   readonly #stream: TabStream;
@@ -76,7 +75,7 @@ export class ContentTabStream {
           type: MTypeTab.PING_RESPONSE,
           payload: {
             uuid: msg.payload.uuid,
-            resolve: true
+            resolve: true,
           },
         }).send(this.#stream, MTypeTabContent.INJECTED);
         break;
@@ -93,8 +92,8 @@ export class ContentTabStream {
       const responses = await new Message<SendResponseParams>({
         type: MTypeTab.REQUEST_RPC_PROXY,
         payload: {
-          bodies: body
-        }
+          bodies: body,
+        },
       }).send();
       const resolve = warpMessage(responses) as ContentWalletData;
 
@@ -102,16 +101,16 @@ export class ContentTabStream {
         type: MTypeTab.CONTENT_PROXY_RESULT,
         payload: {
           resolve,
-          uuid
-        }
+          uuid,
+        },
       }).send(this.#stream, recipient);
     } catch (err) {
       return new ContentMessage({
         type: MTypeTab.CONTENT_PROXY_RESULT,
         payload: {
           reject: (err as Error).message,
-          uuid
-        }
+          uuid,
+        },
       }).send(this.#stream, recipient);
     }
   }
@@ -120,8 +119,8 @@ export class ContentTabStream {
     const data = await new Message<SendResponseParams>({
       type: MTypeTab.GET_DATA,
       payload: {
-        domain: this.domain
-      }
+        domain: this.domain,
+      },
     }).send();
     const resolve = warpMessage(data) as ContentWalletData;
 

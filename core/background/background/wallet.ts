@@ -1,7 +1,7 @@
 import type {
   KeyAccountPayload,
   SetPasswordPayload,
-  WordsPayloadToEncrypt
+  WordsPayloadToEncrypt,
 } from "types/account";
 import type { StreamResponse } from "types/stream";
 import type { BackgroundState } from "./state";
@@ -12,7 +12,6 @@ import { privateKeyBytesToBase58 } from "lib/validator";
 import { MTypeTab } from "config/stream-keys";
 import { TabsMessage } from "lib/stream/tabs-message";
 import { WORD_LIST } from "lib/bip39/wordlists";
-
 
 export class BackgroundWallet {
   readonly #core: BackgroundState;
@@ -27,62 +26,69 @@ export class BackgroundWallet {
 
   async randomWords(strength: number, sendResponse: StreamResponse) {
     try {
-      const mnemonic = await this
-        .#core
-        .account
-        .bip39
-        .generateMnemonic(strength);
+      const mnemonic =
+        await this.#core.account.bip39.generateMnemonic(strength);
 
       sendResponse({
-        resolve: mnemonic
+        resolve: mnemonic,
       });
     } catch (err) {
       sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
 
   checBip39Words(words: string[], sendResponse: StreamResponse) {
-    const wordsHas = words.map((w) =>
-      WORD_LIST.some((wl) => wl === w)
-    );
+    const wordsHas = words.map((w) => WORD_LIST.some((wl) => wl === w));
 
     sendResponse({
-      resolve: wordsHas
+      resolve: wordsHas,
     });
   }
 
-  async initSeedWallet(payload: WordsPayloadToEncrypt, sendResponse: StreamResponse) {
+  async initSeedWallet(
+    payload: WordsPayloadToEncrypt,
+    sendResponse: StreamResponse,
+  ) {
     try {
       await this.#core.account.reset();
       await this.#core.tokens.reset();
-      await this.#core.guard.setGuardConfig(payload.algorithm, payload.iteractions);
+      await this.#core.guard.setGuardConfig(
+        payload.algorithm,
+        payload.iteractions,
+      );
       await this.#core.guard.setupVault(payload.words, payload.password);
-      await this.#core.account.addAccountFromSeed(this.#core.guard.seed, payload.name);
+      await this.#core.account.addAccountFromSeed(
+        this.#core.guard.seed,
+        payload.name,
+      );
 
       this.#startWorker();
       this.#core.triggerAccount();
       this.#core.triggerLock();
       await this.#core.transaction.sync();
 
-
       sendResponse({
-        resolve: this.#core.state
+        resolve: this.#core.state,
       });
     } catch (err) {
-      const message = (err as BaseError).serialize ?
-        (err as BaseError).serialize().message : (err as Error).message;
+      const message = (err as BaseError).serialize
+        ? (err as BaseError).serialize().message
+        : (err as Error).message;
 
       return sendResponse({
         reject: {
-          message: String(message)
-        }
+          message: String(message),
+        },
       });
     }
   }
 
-  async changePassword(payload: SetPasswordPayload, sendResponse: StreamResponse) {
+  async changePassword(
+    payload: SetPasswordPayload,
+    sendResponse: StreamResponse,
+  ) {
     try {
       await this.#core.guard.unlock(payload.current);
       this.#core.guard.checkSession();
@@ -90,7 +96,10 @@ export class BackgroundWallet {
       const words = await this.#core.guard.exportMnemonic(payload.current);
       const keys = this.#core.account.getImportedAccountKeys();
 
-      await this.#core.guard.setGuardConfig(payload.algorithm, payload.iteractions);
+      await this.#core.guard.setGuardConfig(
+        payload.algorithm,
+        payload.iteractions,
+      );
       await this.#core.guard.setupVault(words, payload.password);
       await this.#core.account.updateImportedKeys(keys);
       this.#core.triggerAccount();
@@ -99,11 +108,11 @@ export class BackgroundWallet {
       await this.#core.guard.logout();
 
       sendResponse({
-        resolve: this.#core.state
+        resolve: this.#core.state,
       });
     } catch (err) {
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
@@ -118,27 +127,31 @@ export class BackgroundWallet {
       await this.#core.transaction.sync();
 
       return sendResponse({
-        resolve: this.#core.state
+        resolve: this.#core.state,
       });
     } catch (err) {
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
 
-  async importTrackAccount(base58: string, name: string, sendResponse: StreamResponse) {
+  async importTrackAccount(
+    base58: string,
+    name: string,
+    sendResponse: StreamResponse,
+  ) {
     try {
       this.#core.guard.checkSession();
       await this.#core.account.addAccountForTrack(base58, name);
       await this.#core.transaction.sync();
 
       sendResponse({
-        resolve: this.#core.state
+        resolve: this.#core.state,
       });
     } catch (err) {
       sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
@@ -148,33 +161,37 @@ export class BackgroundWallet {
       this.#core.guard.checkSession();
 
       await this.#core.account.remove(
-        this.#core.account.wallet.selectedAddress
+        this.#core.account.wallet.selectedAddress,
       );
       this.#core.triggerAccount();
       await this.#core.transaction.sync();
 
       sendResponse({
-        resolve: this.#core.state
+        resolve: this.#core.state,
       });
     } catch (err) {
       sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
 
-  async updateAccountName(name: string, index: number, sendResponse: StreamResponse) {
+  async updateAccountName(
+    name: string,
+    index: number,
+    sendResponse: StreamResponse,
+  ) {
     try {
       this.#core.guard.checkSession();
 
       await this.#core.account.changeAccountName(index, name);
 
       sendResponse({
-        resolve: this.#core.state
+        resolve: this.#core.state,
       });
     } catch (err) {
       sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
@@ -188,55 +205,66 @@ export class BackgroundWallet {
       await this.#core.transaction.sync();
 
       sendResponse({
-        resolve: this.#core.state
+        resolve: this.#core.state,
       });
     } catch (err) {
       sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
 
-  async createAccountFromSeed(name: string, appIndexies: number[], sendResponse: StreamResponse) {
+  async createAccountFromSeed(
+    name: string,
+    appIndexies: number[],
+    sendResponse: StreamResponse,
+  ) {
     try {
       this.#core.guard.checkSession();
 
-      await this.#core.account.addAccountFromSeed(
-        this.#core.guard.seed,
-        name
+      await this.#core.account.addAccountFromSeed(this.#core.guard.seed, name);
+      await this.#core.connections.addAccountApps(
+        appIndexies,
+        this.#core.account.wallet.selectedAddress,
       );
-      await this.#core.connections.addAccountApps(appIndexies, this.#core.account.wallet.selectedAddress);
       this.#core.triggerAccount();
       await this.#core.transaction.sync();
 
       sendResponse({
-        resolve: this.#core.state
+        resolve: this.#core.state,
       });
     } catch (err) {
       sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
 
-  async restoreKey(payload: KeyAccountPayload, appIndexies: number[], sendResponse: StreamResponse) {
+  async restoreKey(
+    payload: KeyAccountPayload,
+    appIndexies: number[],
+    sendResponse: StreamResponse,
+  ) {
     try {
       this.#core.guard.checkSession();
 
       await this.#core.account.addAccountFromPrivateKey(
         payload.key,
-        payload.name
+        payload.name,
       );
-      await this.#core.connections.addAccountApps(appIndexies, this.#core.account.wallet.selectedAddress);
+      await this.#core.connections.addAccountApps(
+        appIndexies,
+        this.#core.account.wallet.selectedAddress,
+      );
       this.#core.triggerAccount();
       await this.#core.transaction.sync();
 
       sendResponse({
-        resolve: this.#core.state
+        resolve: this.#core.state,
       });
     } catch (err) {
       sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
@@ -249,11 +277,11 @@ export class BackgroundWallet {
       await this.#core.account.updateBalance(balances);
 
       return sendResponse({
-        resolve: this.#core.state
+        resolve: this.#core.state,
       });
     } catch (err) {
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
@@ -269,12 +297,12 @@ export class BackgroundWallet {
         resolve: {
           base58: pair.base58,
           privKey: await privateKeyBytesToBase58(pair.privKey),
-          pubKey: await pubKeyFromBytes(pair.pubKey)
-        }
+          pubKey: await pubKeyFromBytes(pair.pubKey),
+        },
       });
     } catch (err) {
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
@@ -287,11 +315,11 @@ export class BackgroundWallet {
       const words = await this.#core.guard.exportMnemonic(password);
 
       return sendResponse({
-        resolve: words
+        resolve: words,
       });
     } catch (err) {
       return sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
@@ -303,11 +331,16 @@ export class BackgroundWallet {
     this.#core.triggerAccount();
 
     sendResponse({
-      resolve: this.#core.state
+      resolve: this.#core.state,
     });
   }
 
-  async isBase58Massa(addr: string, uuid: string, domain: string, sendResponse: StreamResponse) {
+  async isBase58Massa(
+    addr: string,
+    uuid: string,
+    domain: string,
+    sendResponse: StreamResponse,
+  ) {
     try {
       const isMassaAddreess = await isBase58Address(addr);
 
@@ -315,16 +348,16 @@ export class BackgroundWallet {
         type: MTypeTab.CHECK_MASSA_ADDRESS_RES,
         payload: {
           uuid,
-          resolve: isMassaAddreess
-        }
+          resolve: isMassaAddreess,
+        },
       }).send(domain);
 
       sendResponse({
-        resolve: isMassaAddreess
+        resolve: isMassaAddreess,
       });
     } catch (err) {
       sendResponse({
-        reject: (err as BaseError).serialize()
+        reject: (err as BaseError).serialize(),
       });
     }
   }
@@ -335,7 +368,7 @@ export class BackgroundWallet {
     }
 
     sendResponse({
-      resolve: this.#core.state
+      resolve: this.#core.state,
     });
   }
 

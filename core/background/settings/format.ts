@@ -1,7 +1,6 @@
 import { Fields } from "config/fields";
 import { BrowserStorage, buildObject } from "lib/storage";
 
-
 export class FormatSettings {
   #enabled = true;
 
@@ -13,7 +12,7 @@ export class FormatSettings {
     this.#enabled = !this.enabled;
 
     await BrowserStorage.set(
-      buildObject(Fields.FORMAT_ENABLED, String(this.enabled))
+      buildObject(Fields.FORMAT_ENABLED, String(this.enabled)),
     );
   }
 
@@ -22,14 +21,14 @@ export class FormatSettings {
       return this.reset();
     }
 
-    this.#enabled = (content === 'true');
+    this.#enabled = content === "true";
   }
 
   async reset() {
     this.#enabled = true;
 
     await BrowserStorage.set(
-      buildObject(Fields.FORMAT_ENABLED, String(this.enabled))
+      buildObject(Fields.FORMAT_ENABLED, String(this.enabled)),
     );
   }
 }

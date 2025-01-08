@@ -9,4 +9,4 @@ export function randomBytes(length: number): Uint8Array {
   }
 
   return a;
-};
+}

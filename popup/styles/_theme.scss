@@ -1,14 +1,18 @@
 // @import "./fonts";
 
 :global(:root) {
-  --background-gradient: linear-gradient(180deg, rgb(234, 240, 253) 12.15%, rgb(238, 222, 222) 100%);
+  --background-gradient: linear-gradient(
+    180deg,
+    rgb(234, 240, 253) 12.15%,
+    rgb(238, 222, 222) 100%
+  );
   --background-color: rgb(255, 255, 255);
-  --text-color:  rgb(50, 51, 90);
+  --text-color: rgb(50, 51, 90);
   --text-negative: rgb(255, 255, 255);
   --muted-color: rgba(94, 104, 135, 0.467);
-  --card-color:  rgb(236, 250, 255);
+  --card-color: rgb(236, 250, 255);
   --hover-color: rgb(237, 238, 242);
-  --modal-color:  rgb(255, 255, 255);
+  --modal-color: rgb(255, 255, 255);
 
   --secondary-color: rgb(172, 89, 255);
   --primary-color: rgb(232, 0, 111);
@@ -16,20 +20,23 @@
 
   --danger-color: rgb(255, 44, 46);
 
-  --success-color:  rgb(0, 255, 43);
+  --success-color: rgb(0, 255, 43);
   --warning-color: rgb(255, 208, 0);
   --loading-color: rgba(255, 235, 164, 0.529);
 }
 
 :global(body[theme="dark"]) {
-  --background-gradient: linear-gradient(rgb(32, 39, 56) 0%, rgb(7, 8, 22) 100%);
+  --background-gradient: linear-gradient(
+    rgb(32, 39, 56) 0%,
+    rgb(7, 8, 22) 100%
+  );
   --background-color: rgb(0, 0, 0);
-  --text-color:  rgb(239, 235, 255);
+  --text-color: rgb(239, 235, 255);
   --text-negative: rgb(0, 0, 0);
   --muted-color: rgb(94, 103, 130);
-  --card-color:  rgb(14, 17, 26);
+  --card-color: rgb(14, 17, 26);
   --hover-color: rgb(64, 73, 99);
-  --modal-color:  rgb(20, 27, 43);
+  --modal-color: rgb(20, 27, 43);
 
   --secondary-color: rgb(149, 78, 221);
   --primary-color: rgb(76, 130, 251);
@@ -37,7 +44,7 @@
 
   --danger-color: rgb(255, 44, 46);
 
-  --success-color:  rgb(39, 174, 96);
+  --success-color: rgb(39, 174, 96);
   --warning-color: rgb(255, 208, 0);
   --loading-color: rgba(255, 235, 164, 0.277);
 }

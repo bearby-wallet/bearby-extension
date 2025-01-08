@@ -1,7 +1,6 @@
 import { Fields } from "config/fields";
 import { BrowserStorage, buildObject } from "lib/storage";
 
-
 export class PopupSettings {
   #enabledPopup = true;
 
@@ -13,7 +12,7 @@ export class PopupSettings {
     this.#enabledPopup = !this.enabledPopup;
 
     await BrowserStorage.set(
-      buildObject(Fields.POPUP_ENABLED, String(this.enabledPopup))
+      buildObject(Fields.POPUP_ENABLED, String(this.enabledPopup)),
     );
   }
 
@@ -22,14 +21,14 @@ export class PopupSettings {
       return this.reset();
     }
 
-    this.#enabledPopup = (content === 'true');
+    this.#enabledPopup = content === "true";
   }
 
   async reset() {
     this.#enabledPopup = true;
 
     await BrowserStorage.set(
-      buildObject(Fields.POPUP_ENABLED, String(this.enabledPopup))
+      buildObject(Fields.POPUP_ENABLED, String(this.enabledPopup)),
     );
   }
 }

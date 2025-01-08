@@ -1,14 +1,19 @@
-import type { BadgeControl } from 'background/notifications';
-import type { AppConnection } from 'types';
+import type { BadgeControl } from "background/notifications";
+import type { AppConnection } from "types";
 
-import { assert } from 'lib/assert';
-import { Fields } from 'config/fields';
-import { BrowserStorage, buildObject, StorageKeyValue } from 'lib/storage';
-import { APP_NOT_CONNECTED, APP_UNIQUE, ConnectionsError, INCORRECT_PARAM, QUEUED } from './errors';
-import { getManifestVersion } from 'lib/runtime/manifest';
-import { ManifestVersions } from 'config/manifest-versions';
-import { Runtime } from 'lib/runtime';
-
+import { assert } from "lib/assert";
+import { Fields } from "config/fields";
+import { BrowserStorage, buildObject, type StorageKeyValue } from "lib/storage";
+import {
+  APP_NOT_CONNECTED,
+  APP_UNIQUE,
+  ConnectionsError,
+  INCORRECT_PARAM,
+  QUEUED,
+} from "./errors";
+import { getManifestVersion } from "lib/runtime/manifest";
+import { ManifestVersions } from "config/manifest-versions";
+import { Runtime } from "lib/runtime";
 
 export class AppConnectController {
   readonly #badge: BadgeControl;
@@ -38,7 +43,7 @@ export class AppConnectController {
     }
 
     await BrowserStorage.set(
-      buildObject(Fields.CONNECTIONS_LIST, this.identities)
+      buildObject(Fields.CONNECTIONS_LIST, this.identities),
     );
   }
 
@@ -53,24 +58,36 @@ export class AppConnectController {
       checkPopup = Runtime.runtime.id == domain;
     }
 
-    assert((Boolean(this.has(domain)) || checkPopup), `${APP_NOT_CONNECTED} ${domain}`, ConnectionsError);
+    assert(
+      Boolean(this.has(domain)) || checkPopup,
+      `${APP_NOT_CONNECTED} ${domain}`,
+      ConnectionsError,
+    );
   }
 
   async updateAccounts(index: number, accounts: number[]) {
-    assert(Boolean(this.identities[index]), INCORRECT_PARAM + 'index', ConnectionsError);
+    assert(
+      Boolean(this.identities[index]),
+      INCORRECT_PARAM + "index",
+      ConnectionsError,
+    );
 
     this.identities[index].accounts = accounts;
 
     await BrowserStorage.set(
-      buildObject(Fields.CONNECTIONS_LIST, this.identities)
+      buildObject(Fields.CONNECTIONS_LIST, this.identities),
     );
   }
 
   async addAppFroConfirm(connect: AppConnection) {
-    assert(Boolean(connect.domain), INCORRECT_PARAM + 'domain', ConnectionsError);
-    assert(Boolean(connect.icon), INCORRECT_PARAM + 'icon', ConnectionsError);
-    assert(Boolean(connect.title), INCORRECT_PARAM + 'title', ConnectionsError);
-    assert(Boolean(connect.uuid), INCORRECT_PARAM + 'uuid', ConnectionsError);
+    assert(
+      Boolean(connect.domain),
+      INCORRECT_PARAM + "domain",
+      ConnectionsError,
+    );
+    assert(Boolean(connect.icon), INCORRECT_PARAM + "icon", ConnectionsError);
+    assert(Boolean(connect.title), INCORRECT_PARAM + "title", ConnectionsError);
+    assert(Boolean(connect.uuid), INCORRECT_PARAM + "uuid", ConnectionsError);
 
     const has = this.#confirm.some((a) => a.domain === connect.domain);
 
@@ -79,9 +96,7 @@ export class AppConnectController {
     this.#confirm.push(connect);
 
     await this.#badge.increase();
-    await BrowserStorage.set(
-      buildObject(Fields.CONNECT_DAPP, this.#confirm)
-    );
+    await BrowserStorage.set(buildObject(Fields.CONNECT_DAPP, this.#confirm));
   }
 
   async add(connect: AppConnection) {
@@ -89,15 +104,13 @@ export class AppConnectController {
 
     this.#identities.push({
       ...connect,
-      uuid: undefined
+      uuid: undefined,
     });
-    this.#confirm = this.#confirm.filter(
-      (a) => a.domain !== connect.domain
-    );
+    this.#confirm = this.#confirm.filter((a) => a.domain !== connect.domain);
 
     await this.#badge.decrease();
     await BrowserStorage.set(
-      buildObject(Fields.CONNECTIONS_LIST, this.identities)
+      buildObject(Fields.CONNECTIONS_LIST, this.identities),
     );
     await BrowserStorage.rm(Fields.CONNECT_DAPP);
   }
@@ -105,9 +118,7 @@ export class AppConnectController {
   async removeConfirmConnection(index: number) {
     const app = this.confirm[index];
 
-    this.#confirm = this.confirm.filter(
-      (a) => a.domain !== app.domain
-    );
+    this.#confirm = this.confirm.filter((a) => a.domain !== app.domain);
 
     await this.#badge.decrease();
     await BrowserStorage.rm(Fields.CONNECT_DAPP);
@@ -119,36 +130,36 @@ export class AppConnectController {
     this.#identities = this.#identities.filter(Boolean);
 
     await BrowserStorage.set(
-      buildObject(Fields.CONNECTIONS_LIST, this.identities)
+      buildObject(Fields.CONNECTIONS_LIST, this.identities),
     );
   }
 
   async sync() {
-    const jsonData = await BrowserStorage.get(
+    const jsonData = (await BrowserStorage.get(
       Fields.CONNECTIONS_LIST,
-      Fields.CONNECT_DAPP
-    ) as StorageKeyValue;
+      Fields.CONNECT_DAPP,
+    )) as StorageKeyValue;
 
     try {
       if (jsonData[Fields.CONNECT_DAPP]) {
         this.#confirm = JSON.parse(String(jsonData[Fields.CONNECT_DAPP]));
       }
     } catch (err) {
-      await BrowserStorage.set(
-        buildObject(Fields.CONNECT_DAPP, [])
-      );
+      await BrowserStorage.set(buildObject(Fields.CONNECT_DAPP, []));
     }
 
     try {
       if (jsonData[Fields.CONNECTIONS_LIST]) {
-        let data: AppConnection[] = JSON.parse(String(jsonData[Fields.CONNECTIONS_LIST]));
+        let data: AppConnection[] = JSON.parse(
+          String(jsonData[Fields.CONNECTIONS_LIST]),
+        );
 
         this.#identities = data.filter((el) => el.accounts && el.domain);
       }
     } catch (err) {
       this.#identities = [];
       await BrowserStorage.set(
-        buildObject(Fields.CONNECTIONS_LIST, this.identities)
+        buildObject(Fields.CONNECTIONS_LIST, this.identities),
       );
     }
   }
@@ -158,7 +169,7 @@ export class AppConnectController {
       assert(
         iterator.domain.toLowerCase() !== connect.domain.toLowerCase(),
         APP_UNIQUE,
-        ConnectionsError
+        ConnectionsError,
       );
     }
   }

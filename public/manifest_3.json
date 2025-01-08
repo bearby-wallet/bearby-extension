@@ -2,12 +2,7 @@
   "name": "BearBy",
   "description": "A Massa Wallet in your Browser",
   "manifest_version": 3,
-  "permissions": [
-    "storage",
-    "notifications",
-    "activeTab",
-    "alarms"
-  ],
+  "permissions": ["storage", "notifications", "activeTab", "alarms"],
   "icons": {
     "16": "icons/16.png",
     "19": "icons/19.png",
@@ -19,12 +14,8 @@
   },
   "content_scripts": [
     {
-      "matches": [
-        "*://*/*"
-      ],
-      "js": [
-        "content.js"
-      ],
+      "matches": ["*://*/*"],
+      "js": ["content.js"],
       "run_at": "document_start",
       "all_frames": true
     }
