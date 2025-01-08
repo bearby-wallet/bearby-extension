@@ -1,7 +1,7 @@
 <script lang="ts">
   import { _ } from "popup/i18n";
   import { onMount } from "svelte";
-  import { goto } from "@mateothegreat/svelte5-router";
+  import { push } from 'popup/routers/navigation';
   import { generateBlockies } from "popup/mixins/blockies";
 
   import { trim } from "popup/filters/trim";
@@ -80,7 +80,7 @@
         return;
       }
 
-      goto("/history");
+      push("/history");
     }
   }
 

@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { route } from '@mateothegreat/svelte5-router';
 	import { _ } from 'popup/i18n';
+	import { route } from 'popup/routers/navigation';
 </script>
 
 <main>

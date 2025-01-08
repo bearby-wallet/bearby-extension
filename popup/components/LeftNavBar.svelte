@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher } from "svelte";
-  import { route } from '@mateothegreat/svelte5-router';
+  import { route } from 'popup/routers/navigation';
   import { _ } from "popup/i18n";
   import { AccountTypes } from "config/account-type";
 

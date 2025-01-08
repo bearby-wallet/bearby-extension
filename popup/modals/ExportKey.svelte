@@ -5,7 +5,6 @@
   import { exportPrivateKey } from 'popup/backend/wallet';
   import { trim } from 'popup/filters/trim';
 
-
   let passwordElement: HTMLInputElement | null = null;
   let loading = false;
   let password = '';
@@ -49,7 +48,7 @@
     <textarea
       bind:value={key}
       readonly
-    />
+    ></textarea>
   {:else}
     <label>
       <input

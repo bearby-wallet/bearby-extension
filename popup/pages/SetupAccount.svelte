@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { goto } from "@mateothegreat/svelte5-router";
+	import { push } from 'popup/routers/navigation';
 	import { _ } from 'popup/i18n';
 	import { createWallet } from "popup/backend/wallet";
   import wordsStore from 'popup/store/words';
@@ -31,7 +31,7 @@
 
 	onMount(() => {
     if ($wordsStore.length < 12) {
-      return goto('/create');
+      return push('/create');
     }
   });
 
@@ -50,7 +50,7 @@
 		try {
 			const words = $wordsStore.join(' ');
       await createWallet(words, password, name, algorithm, iteractions);
-      goto('/created');
+      push('/created');
 			loading = false;
 		} catch (err) {
 			passError = (err as Error).message;

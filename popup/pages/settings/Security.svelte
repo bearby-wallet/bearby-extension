@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { _ } from 'popup/i18n';
+	import { push } from 'popup/routers/navigation'
 
   import { AccountTypes } from 'config/account-type';
 	import { setPhishingDetection } from 'popup/backend/settings';
@@ -18,8 +19,6 @@
   import Guard from '../../components/Guard.svelte';
 
 	import { MIN_PASSWORD_LEN } from 'popup/config/account';
-	import { goto } from "@mateothegreat/svelte5-router";
-
 
 	let phraseModal = false;
 	let keyModal = false;
@@ -58,7 +57,7 @@
 				algorithm,
 				iteractions
 			});
-			goto('/lock');
+			push('/lock');
       loading = false;
 		} catch (err) {
 			console.log(err);

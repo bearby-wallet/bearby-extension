@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { _ } from 'popup/i18n';
-	import { goto } from "@mateothegreat/svelte5-router";
+	import { push } from 'popup/routers/navigation';
   import { shuffle } from 'popup/utils/shuffle';
   import wordsStore from 'popup/store/words';
 
@@ -18,7 +18,7 @@
     shuffled = shuffle<string>(JSON.parse(list));
 
     if ($wordsStore.length < 12) {
-      return goto('/create');
+      return push('/create');
     }
   });
 
@@ -73,7 +73,7 @@
   <button
     class="outline"
     disabled={disabled}
-    on:mouseup={() => goto('/setup-account')}
+    on:mouseup={() => push('/setup-account')}
   >
     {$_('verify.btn')}
   </button>

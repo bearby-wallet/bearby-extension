@@ -1,12 +1,9 @@
 <script lang="ts">
-  import type { Instance } from "@mateothegreat/svelte5-router";
-  import { route, Router } from "@mateothegreat/svelte5-router";
+  import { route, getCurrentRoute } from "popup/routers/navigation";
 
   import GearIcon from './icons/GearIcon.svelte';
   import HomeIcon from './icons/HomeIcon.svelte';
   import TimerIcon from './icons/TimerIcon.svelte';
-
-  let instance = $state<Instance>();
 
   const links = {
     home: '/',
@@ -20,19 +17,19 @@
     href={links.home}
     use:route
   >
-    <HomeIcon selected={instance?.current.path === links.home}/>
+    <HomeIcon selected={getCurrentRoute() === links.home}/>
   </a>
   <a
     href={links.history}
     use:route
   >
-    <TimerIcon selected={instance?.current.path === links.history}/>
+    <TimerIcon selected={getCurrentRoute() === links.history}/>
   </a>
   <a
     href={links.settings}
     use:route
   >
-    <GearIcon selected={instance?.current.path === links.settings}/>
+    <GearIcon selected={getCurrentRoute() === links.settings}/>
   </a>
 </nav>
 

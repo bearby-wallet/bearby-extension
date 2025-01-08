@@ -1,16 +1,11 @@
 <script lang="ts">
-  import type { Instance } from "@mateothegreat/svelte5-router";
-  import { Router } from "@mateothegreat/svelte5-router";
   import { onMount } from "svelte";
 
   import { setupI18n } from "popup/i18n";
-  import routes from "./routers";
-  import { routerGuard } from "./routers/guard"
   import settingsStore from "popup/store/settings";
   import { Locales } from "config/locale";
-  import LockPage from './pages/Lock.svelte';
+  import Router from './Router.svelte';
 
-  let instance = $state<Instance>();
   let loading = $state(true);;
 
   onMount(async () => {
@@ -33,14 +28,9 @@
   });
 </script>
 
-{#if !loading}
-  <LockPage />
+{#if loading}
+  <Router />
 {/if}
-<Router 
-  bind:instance
-  {routes}
-  pre={routerGuard}
-/>
 
 <style lang="scss">
   @import "./styles/general";

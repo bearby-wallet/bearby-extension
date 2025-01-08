@@ -25,7 +25,7 @@
 <label
   class="tgl-btn"
   for={id}
-/>
+></label>
 
 <style lang="scss">
   @import "../styles/mixins";

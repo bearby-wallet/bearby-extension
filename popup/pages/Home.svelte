@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onMount } from "svelte";
 	import { _ } from "popup/i18n";
-	import { goto, route } from "@mateothegreat/svelte5-router";
+	import { push, route } from "popup/routers/navigation";
 
 	import TopBar from "../components/TopBar.svelte";
 	import LeftNavBar from "../components/LeftNavBar.svelte";
@@ -54,10 +54,10 @@
 	const onToken = (index: number) => {
 		if (index === 1) {
 			// index = 1 is Roll Token
-			return goto("/rolls");
+			return push("/rolls");
 		}
 
-		return goto(`/send/${index}`);
+		return push(`/send/${index}`);
 	};
 	const onChangeAppConnection = async (e: CustomEvent) => {
 		let indexies = e.detail;
@@ -125,11 +125,11 @@
 			<button
 				class="action primary"
 				disabled={account.type === AccountTypes.Track}
-				on:mouseup={() => goto(`/send/0`)}
+				on:mouseup={() => push(`/send/0`)}
 			>
 				{$_("home.btns.send")}
 			</button>
-			<button class="action primary" on:mouseup={() => goto("/account")}>
+			<button class="action primary" on:mouseup={() => push("/account")}>
 				{$_("home.btns.receive")}
 			</button>
 		</div>

@@ -2,8 +2,7 @@
   import { NETWORK_KEYS } from "config/network";
 
   import { createEventDispatcher } from "svelte";
-  import { goto, route } from "@mateothegreat/svelte5-router";
-  import type { Instance } from "@mateothegreat/svelte5-router";
+  import { getCurrentRoute, push, route } from "popup/routers/navigation";
 
   import { linksExpand, openTab } from "popup/mixins/link";
   import { Massa } from "lib/explorer";
@@ -28,7 +27,6 @@
   let account = $derived($walletStore.identities[$walletStore.selectedAddress]);
   let isMainnet = $derived($networkStore === NETWORK_KEYS[0]);
   let app = $derived($appsStore.find((a) => a.domain == $connectionStore.domain));
-  let instance = $state<Instance>();
 
   const onShowConnections = () => {
     if (app) {
@@ -41,7 +39,7 @@
   };
   const handleLogout = async () => {
     await logout();
-    goto("/lock");
+    push("/lock");
   };
 </script>
 
@@ -88,7 +86,7 @@
         </span>
       {/if}
       {#if expand}
-        <span class="expand" on:mouseup={() => linksExpand(String(instance?.current.path))} role="button" tabindex="0">
+        <span class="expand" on:mouseup={() => linksExpand(getCurrentRoute())} role="button" tabindex="0">
           <ExpandIcon className="icon" />
         </span>
       {/if}

@@ -3,7 +3,7 @@
 
 	import { _ } from 'popup/i18n';
 	import { onMount } from 'svelte';
-	import { goto } from "@mateothegreat/svelte5-router";
+	import { push } from 'popup/routers/navigation'
 
   import { trim } from 'popup/filters/trim';
   import { getContacts, removeContact } from 'popup/backend/contacts';
@@ -49,7 +49,7 @@
 	};
 
 	const hanldeOnSelect = (address: String) => {
-		goto(`/send/0/${address}`);
+		push(`/send/0/${address}`);
 	};
 
   onMount(async() => {

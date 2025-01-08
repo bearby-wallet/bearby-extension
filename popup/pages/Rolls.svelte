@@ -4,7 +4,7 @@
   import { onMount } from 'svelte';
 	import { _ } from 'popup/i18n';
   import { uuidv4 } from 'lib/crypto/uuid';
-  import { goto } from "@mateothegreat/svelte5-router";
+  import { push } from 'popup/routers/navigation';
 
   import { trim } from 'popup/filters/trim';
   import { TokenType, viewIcon } from 'popup/utils/icon-view';
@@ -63,7 +63,7 @@
         await addConfirmBuyRolls(tokens[1].value.round(), account.base58, rolls);
       }
 
-      goto('/confirm');
+      push('/confirm');
     } catch (err) {
       console.error(err);
     }

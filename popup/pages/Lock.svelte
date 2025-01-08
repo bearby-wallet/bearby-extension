@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { tick, onMount } from "svelte";
-	import { goto } from "@mateothegreat/svelte5-router";
+	import { push } from 'popup/routers/navigation'
 	import { _ } from "popup/i18n";
 	import { linksExpand } from "popup/mixins/link";
 	import { unlockWallet } from "popup/backend/wallet";
@@ -39,7 +39,7 @@
 			if (state.guard.isEnable && state.guard.isReady) {
 				loading = false;
 
-				goto("/");
+				push("/");
 			}
 		} catch (err) {
 			error = `${$_("lock.error")}-(${(err as Error).message})`;

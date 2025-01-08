@@ -3,7 +3,7 @@
   import Big from "big.js";
   import { _ } from "popup/i18n";
   import { uuidv4 } from "lib/crypto/uuid";
-  import { goto } from "@mateothegreat/svelte5-router";
+  import { push } from 'popup/routers/navigation';
 
   import { trim } from "popup/filters/trim";
   import { TokenType, viewIcon } from "popup/utils/icon-view";
@@ -100,7 +100,7 @@
       } else {
         await addConfirmTransferFT(bigAmt, recipient, token);
       }
-      goto("/confirm");
+      push("/confirm");
     } catch (err) {
       error = (err as Error).message;
       console.error(err);
