@@ -82,7 +82,7 @@
 
     if (newTokens[index].meta.base58 === rolls.base58) {
       newTokens[index].value = newAmount;
-      newTokens[1].value = amount.mul(rollPrice);
+      newTokens[1].value = newAmount.mul(rollPrice);
     } else {
       newTokens[index].value = newAmount;
       newTokens[1].value = newAmount.div(rollPrice).round();

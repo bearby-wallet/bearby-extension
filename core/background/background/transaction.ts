@@ -225,12 +225,14 @@ export class BackgroundTransaction {
 
       const chainIdBuffer = new ArrayBuffer(8);
       const view = new DataView(chainIdBuffer);
+
       view.setBigUint64(0, BigInt(this.#core.network.chainId), false);
       array = [
         ...new Uint8Array(chainIdBuffer),
         ...pair.pubKey,
         ...bytesCompact
       ];
+
       const txBytes = Uint8Array.from(array);
       const sig = await this.#core.massa.sign(txBytes, pair);
       const txDataObject = await this.#core.massa.getTransactionData(

@@ -115,10 +115,6 @@ export class WorkerController {
     const newPeriod = Number(result.last_slot.period);
     const newCycle = Number(result.current_cycle);
 
-    if (newPeriod <= lastPeriod) {
-      return;
-    }
-
     await this.#setPeriod(newPeriod);
     await this.#trackTransactions();
 
@@ -153,7 +149,7 @@ export class WorkerController {
 
     const hashSet = identities.map((t) => t.hash);
     const replies = await this.#massa.getOperations(...hashSet);
-
+    
     for (let index = 0; index < replies.length; index++) {
       const { error, result } = replies[index];
       const indicator = identities[index];
