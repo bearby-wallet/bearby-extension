@@ -73,6 +73,7 @@ export class BackgroundWallet {
         resolve: this.#core.state,
       });
     } catch (err) {
+      console.error(err);
       const message = (err as BaseError).serialize
         ? (err as BaseError).serialize().message
         : (err as Error).message;
