@@ -69,7 +69,6 @@ export class WorkerController {
     if (getManifestVersion() === ManifestVersions.V2) {
       intervalId = globalThis.setInterval(() => {
         this.trackBlockNumber();
-        this.#trackTransactions();
       }, this.delay);
     } else {
       Runtime.alarms.create(alarmName, {
@@ -79,9 +78,9 @@ export class WorkerController {
       Runtime.alarms.onAlarm.addListener((alarm) => {
         if (alarm.name === alarmName) {
           this.trackBlockNumber();
-          this.#trackTransactions();
         }
       });
+      this.trackBlockNumber();
     }
 
     return {

@@ -29,6 +29,7 @@ import {
 import { JsonRPCRequestMethods } from "./methods";
 import { assert } from "lib/assert";
 import { base58Encode, pubKeyFromBytes } from "lib/address";
+import { shuffle } from "app/utils/shuffle";
 
 export class MassaControl {
   #network: NetworkControl;
@@ -137,8 +138,9 @@ export class MassaControl {
     const timeout = this.#settings.network.state.abortTimeout;
     const abortController = new AbortController();
     const id = setTimeout(() => abortController.abort(), timeout);
+    const providers = shuffle(this.#network.providers);
 
-    for (const provider of this.#network.providers) {
+    for (const provider of providers) {
       try {
         const responce = await fetch(provider, {
           ...request,
