@@ -84,14 +84,14 @@
 </div>
 
 <style lang="scss">
-	@use "../styles/mixins";
+	@use '../styles/mixins' as mix;
 
   div.adv-wapr {
     display: none;
     margin-block-end: 5px;
 
     &.show {
-      @include flex-center-column;
+      @include mix.flex-center-column;
     }
     & > label {
       max-width: 290px;

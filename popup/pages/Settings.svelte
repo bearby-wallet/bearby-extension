@@ -69,13 +69,13 @@
 </section>
 
 <style lang="scss">
-	@use "../styles/mixins";
+	@use '../styles/mixins' as mix;
 	main {
-		@include flex-center-top-column;
+		@include mix.flex-center-top-column;
 	}
   section {
 		height: fit-content;
-		@include flex-center-top-column;
+		@include mix.flex-center-top-column;
 	}
 	ul {
 		padding: 0;
@@ -90,7 +90,7 @@
 			color: var(--text-color);
 			min-width: 290px;
 
-			@include flex-between-row;
+			@include mix.flex-between-row;
 		}
 	}
 </style>

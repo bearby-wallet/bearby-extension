@@ -188,20 +188,20 @@
 </main>
 
 <style lang="scss">
-	@use "../../styles/mixins";
+	@use "../../styles/mixins" as mix;
 
 	main {
 		height: 100vh;
 		padding-block-end: 16px;
 
-		@include flex-center-top-column;
+		@include mix.flex-center-top-column;
 
 		& > div {
 			overflow-y: scroll;
 		}
 	}
 	form {
-		@include flex-center-top-column;
+		@include mix.flex-center-top-column;
 
 		& > label, input, button {
 			width: 100%;

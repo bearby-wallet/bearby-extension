@@ -103,23 +103,23 @@
 </main>
 
 <style lang="scss">
-	@use "../styles/mixins";
+	@use '../styles/mixins' as mix;
   h1, h3 {
     text-align: center;
     margin-block-start: 0;
     margin-block-end: 0.2em;
   }
   h1 {
-		@include fluid-text(600px, 32px, 55px);
+		@include mix.fluid-text(600px, 32px, 55px);
   }
   h3 {
-    @include fluid-text(600px, 14pt, 20pt);
+    @include mix.fluid-text(600px, 14pt, 20pt);
   }
   main {
     background: inherit;
 		height: 100vh;
 
-    @include flex-center-top-column;
+    @include mix.flex-center-top-column;
 	}
   div.sw {
     max-height: calc(100vh - 30px);
@@ -133,7 +133,7 @@
   }
   div.btns {
     width: 290px;
-    @include flex-center-column;
+    @include mix.flex-center-column;
 
     button {
       margin: 5px;

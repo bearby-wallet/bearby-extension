@@ -54,7 +54,7 @@
 </div>
 
 <style lang="scss">
-  @use "../styles/mixins";
+  @use '../styles/mixins' as mix;
 
   :global(body[theme="dark"]) {
     div.token-card {
@@ -77,13 +77,13 @@
       rgb(0 0 0 / 4%) 0px 16px 24px,
       rgb(0 0 0 / 1%) 0px 24px 32px;
 
-    @include flex-between-row;
-    @include border-radius(16px);
+    @include mix.flex-between-row;
+    @include mix.border-radius(16px);
 
     &.loading {
       border-color: transparent;
 
-      @include loading-gradient(var(--loading-color), var(--card-color));
+      @include mix.loading-gradient(var(--loading-color), var(--card-color));
     }
     &.disabled {
       cursor: unset;

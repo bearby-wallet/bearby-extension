@@ -81,15 +81,15 @@
 </main>
 
 <style lang="scss">
-  @use "../styles/mixins";
+  @use '../styles/mixins' as mix;
   main {
     height: 100vh;
 
-    @include flex-center-top-column;
+    @include mix.flex-center-top-column;
   }
   form {
     width: 100%;
-    @include flex-center-column;
+    @include mix.flex-center-column;
 
     & > label,
     & > button {

@@ -1,37 +1,42 @@
-@use "../mixins";
+@use '../mixins' as mix;
 
 :global(input) {
-  outline: none;
-  border: none;
-  background-color: var(--card-color);
-  color: var(--text-color);
-  border: solid 1px transparent;
-  padding: 1.5vh;
-  height: 49px;
-  font-weight: 500;
-  text-indent: 5px;
-  font-size: 11pt;
+ & {
+   outline: none;
+   border: none;
+   background-color: var(--card-color);
+   color: var(--text-color);
+   border: solid 1px transparent;
+   padding: 1.5vh;
+   height: 49px;
+   font-weight: 500;
+   text-indent: 5px;
+   font-size: 11pt;
+   width: inherit;
+ }
 
-  @include border-radius(16px);
+ @include mix.border-radius(16px);
 
-  width: inherit;
+ &::placeholder {
+   color: var(--muted-color);
+   opacity: 1;
+ }
 
-  &::placeholder {
-    color: var(--muted-color);
-    opacity: 1;
-  }
-
-  &:focus {
-    border: solid 1px var(--muted-color);
-  }
+ &:focus {
+   border: solid 1px var(--muted-color);
+ }
 }
 
 :global(input.error) {
-  color: var(--danger-color);
-  border-color: var(--danger-color);
+ & {
+   color: var(--danger-color);
+   border-color: var(--danger-color);
+ }
 }
 
 :global(input.loading) {
-  @include loading-gradient(var(--loading-color), var(--card-color));
-  border-color: var(--background-color);
+ @include mix.loading-gradient(var(--loading-color), var(--card-color));
+ & {
+   border-color: var(--background-color);
+ }
 }

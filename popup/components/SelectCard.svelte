@@ -55,12 +55,12 @@
 </div>
 
 <style lang="scss">
-  @use "../styles/mixins";
+  @use '../styles/mixins' as mix;
 
   div.header {
     width: 90%;
     & > p {
-      @include text-shorten;
+      @include mix.text-shorten;
     }
   }
   div.card {
@@ -72,7 +72,7 @@
       padding-left: 15px;
       padding-right: 15px;
       min-width: 290px;
-      @include flex-between-row;
+      @include mix.flex-between-row;
 
       & > span {
         margin-right: 10px;

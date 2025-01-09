@@ -1,85 +1,94 @@
-@use "../mixins";
+@use '../mixins' as mix;
 
 :global(button),
 :global(.btn) {
-  outline: none;
-  border: none;
-  cursor: pointer;
+ & {
+   outline: none;
+   border: none;
+   cursor: pointer;
+   display: inline-flex;
+   align-items: center;
+   justify-content: center;
+   text-align: center;
+   white-space: nowrap;
+   vertical-align: middle;
+   font-weight: 600;
+   border-color: var(--primary-color);
+   background: var(--primary-color);
+   color: var(--primary-color);
+   font-size: 12pt;
+   line-height: 30pt;
+   width: inherit;
+ }
 
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+ @include mix.border-radius(16px);
 
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  font-weight: 600;
-
-  border-color: var(--primary-color);
-  background: var(--primary-color);
-  color: var(--primary-color);
-
-  font-size: 12pt;
-  line-height: 30pt;
-
-  width: inherit;
-
-  @include border-radius(16px);
-
-  transition: background-color 250ms linear;
+ & {
+   transition: background-color 250ms linear;
+ }
 }
 
 :global(button:disabled) {
-  opacity: 0.6;
-  cursor: auto;
+ & {
+   opacity: 0.6;
+   cursor: auto;
+ }
 }
 
 :global(button.outline),
 :global(.btn.outline) {
-  background: transparent;
-  color: var(--secondary-color);
-  border: 1px solid var(--secondary-color);
+ & {
+   background: transparent;
+   color: var(--secondary-color);
+   border: 1px solid var(--secondary-color);
+ }
 
-  &:hover:enabled {
-    background: var(--secondary-color);
-    color: var(--text-negative);
-  }
+ &:hover:enabled {
+   background: var(--secondary-color);
+   color: var(--text-negative);
+ }
 }
 
 :global(body[theme="dark"]) {
-  :global(button.primary),
-  :global(.btn.primary) {
-    color: var(--text-color);
-  }
+ :global(button.primary),
+ :global(.btn.primary) {
+   & {
+     color: var(--text-color);
+   }
+ }
 }
 
 :global(button.primary),
 :global(.btn.primary) {
-  border-color: var(--primary-color);
-  background: var(--primary-color);
-  color: var(--text-negative);
+ & {
+   border-color: var(--primary-color);
+   background: var(--primary-color);
+   color: var(--text-negative);
+ }
 }
 
 :global(button.loading),
 :global(span.loading) {
-  color: transparent !important;
-  pointer-events: none;
-  position: relative;
+ & {
+   color: transparent !important;
+   pointer-events: none;
+   position: relative;
+ }
 
-  &::after {
-    animation: loading-button 500ms infinite linear;
-    border: 0.2rem solid var(--text-color);
-    border-radius: 0.8rem;
-    border-right-color: transparent;
-    border-top-color: transparent;
-    content: "";
-    display: block;
-    height: 1.2rem;
-    left: 50%;
-    margin-left: -0.8rem;
-    margin-top: -0.8rem;
-    position: absolute;
-    top: 50%;
-    width: 1.2rem;
-  }
+ &::after {
+   animation: loading-button 500ms infinite linear;
+   border: 0.2rem solid var(--text-color);
+   border-radius: 0.8rem;
+   border-right-color: transparent;
+   border-top-color: transparent;
+   content: "";
+   display: block;
+   height: 1.2rem;
+   left: 50%;
+   margin-left: -0.8rem;
+   margin-top: -0.8rem;
+   position: absolute;
+   top: 50%;
+   width: 1.2rem;
+ }
 }

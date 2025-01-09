@@ -95,15 +95,15 @@
 </main>
 
 <style lang="scss">
-  @use "../styles/mixins";
+  @use '../styles/mixins' as mix;
   main {
     height: 100vh;
 
-    @include flex-center-top-column;
+    @include mix.flex-center-top-column;
   }
   form {
     width: calc(100vw - 30px);
-    @include flex-center-column;
+    @include mix.flex-center-column;
   }
   input {
     width: 100%;
@@ -115,14 +115,14 @@
   b {
     text-align: center;
 
-    @include fluid-text(600px, 12pt, 18pt);
+    @include mix.fluid-text(600px, 12pt, 18pt);
 
     &.error {
       color: var(--danger-color);
     }
   }
   label {
-    @include flex-column;
+    @include mix.flex-column;
 
     &.name,
     &.key {

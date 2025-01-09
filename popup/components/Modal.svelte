@@ -47,7 +47,7 @@
 
 
 <style lang="scss">
-  @use "../styles/mixins";
+  @use '../styles/mixins' as mix;
   aside {
     position: fixed;
     width: 100%;
@@ -73,16 +73,16 @@
         padding-left: 15px;
         padding-right: 15px;
 
-        @include flex-between-row;
+        @include mix.flex-between-row;
 
         & > h1 {
-          @include fluid-text(720px, 20pt, 25pt);          
+          @include mix.fluid-text(720px, 20pt, 25pt);          
         }
       }
 
       @media screen and (min-width: 899px) {
         margin: 10% auto 50px;
-        @include border-radius(16px);
+        @include mix.border-radius(16px);
       }
     }
   }

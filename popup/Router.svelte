@@ -16,7 +16,7 @@
         return notFoundRoute;
     }
 
-    async function handleRouteChange() {
+    function handleRouteChange() {
         const path = window.location.hash.slice(1) || '/';
         const route = findRouteByHash(path);
         const params = parseUrlParams(route.path, path);
@@ -24,7 +24,7 @@
         currentParams.set(params);
 
         if (route) {
-            const guardedRoute = await RouteGuard.checkRoute(route);
+            const guardedRoute = RouteGuard.checkRoute(route);
             currentRoute.set(guardedRoute);
         } else {
             currentRoute.set(notFoundRoute);

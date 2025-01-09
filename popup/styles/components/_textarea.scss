@@ -1,4 +1,4 @@
-@use "../mixins";
+@use '../mixins' as mix;
 
 :global(textarea) {
   outline: none;
@@ -18,8 +18,8 @@
   border: 2px solid transparent;
   color: var(--text-color);
 
-  @include fluid-text(600px, 16pt, 33pt);
-  @include border-radius(16px);
+  @include mix.fluid-text(600px, 16pt, 33pt);
+  @include mix.border-radius(16px);
 
   &::placeholder {
     color: var(--muted-color);

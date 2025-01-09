@@ -82,68 +82,85 @@
 </main>
 
 <style lang="scss">
-  @use "../styles/mixins";
+  @use '../styles/mixins' as mix;
+
   main {
-    height: 100vh;
-    overflow: hidden;
+   & {
+     height: 100vh;
+     overflow: hidden;
+   }
 
-    @include flex-center-top-column;
+   @include mix.flex-center-top-column;
 
-    :global(ul) {
-      max-width: 500px;
-    }
+   :global(ul) {
+     & {
+       max-width: 500px;
+     }
+   }
   }
+
   span.add {
-    cursor: pointer;
-    margin: 5px;
+   & {
+     cursor: pointer;
+     margin: 5px;
+   }
 
-    &:hover {
-      :global(svg > line) {
-        stroke: var(--card-color);
-      }
-      :global(svg > rect) {
-        fill: var(--primary-color);
-      }
-    }
+   &:hover {
+     :global(svg > line) {
+       & {
+         stroke: var(--card-color);
+       }
+     }
+     :global(svg > rect) {
+       & {
+         fill: var(--primary-color);
+       }
+     }
+   }
   }
+
   ul {
-    margin: 0;
-    padding: 0;
-    margin-block-start: 25px;
-    overflow-y: scroll;
+   & {
+     margin: 0;
+     padding: 0;
+     margin-block-start: 25px;
+     overflow-y: scroll;
+   }
 
-    & > li {
-      min-width: 270px;
+   & > li {
+     & {
+       min-width: 270px;
+       margin: 5px;
+       padding: 5px;
+       padding-left: 16px;
+       padding-right: 16px;
+       background-color: var(--card-color);
+       border: solid 1px var(--card-color);
+     }
 
-      margin: 5px;
-      padding: 5px;
+     @include mix.border-radius(16px);
+     @include mix.flex-between-row;
 
-      padding-left: 16px;
-      padding-right: 16px;
+     & > div {
+       & {
+         width: 100%;
+         padding-left: 10px;
+       }
 
-      background-color: var(--card-color);
-      border: solid 1px var(--card-color);
+       & > * {
+         & {
+           max-width: 120px;
+         }
+         @include mix.text-shorten;
+       }
 
-      @include border-radius(16px);
-      @include flex-between-row;
-
-      // &.loading {
-      //   @include loading-gradient(var(--background-color), var(--card-color));
-      // }
-
-      & > div {
-        width: 100%;
-        padding-left: 10px;
-
-        & > * {
-          @include text-shorten;
-          max-width: 120px;
-        }
-        & > h3 {
-          margin-block-end: 0.3em;
-          margin-block-start: 0.3em;
-        }
-      }
-    }
+       & > h3 {
+         & {
+           margin-block-end: 0.3em;
+           margin-block-start: 0.3em;
+         }
+       }
+     }
+   }
   }
 </style>

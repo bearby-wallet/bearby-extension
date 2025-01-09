@@ -141,10 +141,11 @@
 </div>
 
 <style lang="scss">
-  @use "../styles/mixins";
+  @use '../styles/mixins' as mix;
+
   div.tx {
     height: 600px;
-    @include flex-center-top-column;
+    @include mix.flex-center-top-column;
   }
   h1 {
     line-height: 0;
@@ -174,10 +175,10 @@
       rgb(0 0 0 / 4%) 0px 16px 24px,
       rgb(0 0 0 / 1%) 0px 24px 32px;
 
-    @include border-radius(16px);
+    @include mix.border-radius(16px);
 
     &.loading {
-      @include loading-gradient(var(--loading-color), var(--card-color));
+      @include mix.loading-gradient(var(--loading-color), var(--card-color));
     }
     & > li {
       padding: 5px;
@@ -186,7 +187,7 @@
       font-size: 12pt;
       font-weight: 500;
 
-      @include flex-between-row;
+      @include mix.flex-between-row;
 
       &.error {
         color: var(--danger-color);
@@ -207,7 +208,7 @@
       & > span {
         color: var(--text-color);
 
-        @include text-shorten;
+        @include mix.text-shorten;
 
         & > a {
           color: var(--text-color);

@@ -29,5 +29,5 @@
 </svg>
 
 <style lang="scss">
-  @use "../../styles/mixins";
+  @use "../../styles/mixins" as mix;
 </style>

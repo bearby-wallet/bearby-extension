@@ -19,7 +19,7 @@
 </div>
 
 <style lang="scss">
-  @use "../styles/mixins";
+  @use '../styles/mixins' as mix;
 
   div.card-btn {
     background-color: var(--card-color);
@@ -35,8 +35,8 @@
     max-width: 490px;
     width: inherit;
 
-    @include flex-between-row;
-    @include border-radius(16px);
+    @include mix.flex-between-row;
+    @include mix.border-radius(16px);
 
     & > div {
       width: 100%;
@@ -56,7 +56,7 @@
     min-width: 230px;
     max-width: 390px;
 
-    @include text-shorten;
-    @include fluid-text(1024px, 8pt, 10pt);
+    @include mix.text-shorten;
+    @include mix.fluid-text(1024px, 8pt, 10pt);
   }
 </style>

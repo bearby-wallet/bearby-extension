@@ -69,7 +69,7 @@
 </ul>
 
 <style lang="scss">
-	@use "../styles/mixins";
+	@use '../styles/mixins' as mix;
 	ul {
 		padding: 0;
 		margin: 0;
@@ -86,14 +86,14 @@
 
 			width: calc(100vw - 15px);
 
-			@include border-radius(16px);
+			@include mix.border-radius(16px);
 		}
 
 		& > li {
 			padding-left: 10px;
 			padding-right: 10px;
 
-			@include flex-between-row;
+			@include mix.flex-between-row;
 
 			&.card {
 				margin: 0;
@@ -102,7 +102,7 @@
 				border: solid 1px transparent;
 				margin-top: 2pt;
 
-				@include border-radius(16px);
+				@include mix.border-radius(16px);
 
 				&.selected {
 					border-color: var(--primary-color);
@@ -120,7 +120,7 @@
 						font-size: 14pt;
 						max-width: 160px;
 						font-weight: 800;
-						@include text-shorten;
+						@include mix.text-shorten;
 					}
 					& > p {
 						line-height: 0;

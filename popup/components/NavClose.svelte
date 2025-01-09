@@ -18,16 +18,23 @@
 </nav>
 
 <style lang="scss">
-  @use "../styles/mixins";
+  @use '../styles/mixins' as mix;
+
   h1 {
-    color: var(--text-color);
-		margin-block-start: 0.4em;
-		margin-block-end: 0.4em;
+   & {
+     color: var(--text-color);
+     margin-block-start: 0.4em;
+     margin-block-end: 0.4em;
+   }
   }
+
   nav {
-    @include flex-between-row;
-    max-width: 900px;
-    width: calc(100vw - 30px);
-    align-items: center;
+   & {
+     max-width: 900px;
+     width: calc(100vw - 30px);
+     align-items: center;
+   }
+
+   @include mix.flex-between-row;
   }
 </style>

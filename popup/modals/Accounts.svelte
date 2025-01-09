@@ -56,7 +56,7 @@
 </ul>
 
 <style lang="scss">
-	@use "../styles/mixins";
+	@use '../styles/mixins' as mix;
 	ul {
 		padding: 0;
     margin: 0;
@@ -73,7 +73,7 @@
 			padding-left: 10px;
 			padding-right: 10px;
 
-			@include flex-between-row;
+			@include mix.flex-between-row;
 
 			&.selected {
 				background-color: var(--card-color);

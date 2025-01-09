@@ -32,7 +32,7 @@
 </Tooltip>
 
 <style lang="scss">
-  @use "../styles/mixins";
+  @use '../styles/mixins' as mix;
   div.warp-tip {
     text-align: center;
     cursor: pointer;
@@ -41,7 +41,7 @@
     margin: 5px;
     max-width: 200px;
 
-    @include border-radius(16px);
+    @include mix.border-radius(16px);
 
     & > h1 {
       margin: 0;

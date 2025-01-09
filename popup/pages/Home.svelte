@@ -153,18 +153,18 @@
 </section>
 
 <style lang="scss">
-	@use "../styles/mixins";
+	@use '../styles/mixins' as mix;
 	main {
 		background: inherit;
 		height: calc(100vh - 86px);
 		z-index: 3;
 
-		@include flex-center-top-column;
+		@include mix.flex-center-top-column;
 	}
 	div.app-info {
 		font-size: 19pt;
 		margin: 16pt;
-		@include flex-center-top-column;
+		@include mix.flex-center-top-column;
 	}
 	:global(body[theme="dark"]) {
 		img.logo {
@@ -194,12 +194,12 @@
 		}
 	}
 	section {
-		@include flex-center-top-column;
+		@include mix.flex-center-top-column;
 	}
 	div.bar-wrapper {
 		max-width: 500px;
 		width: calc(100vw - 25px);
-		@include flex-between-row;
+		@include mix.flex-between-row;
 
 		& > span.burger {
 			width: 43px;
@@ -215,7 +215,7 @@
 		width: 43px;
 		height: 43px;
 
-		@include border-radius(200px);
+		@include mix.border-radius(200px);
 
 		&:hover {
 			border: solid 2px var(--primary-color);

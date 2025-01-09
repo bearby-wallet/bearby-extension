@@ -81,17 +81,17 @@
 
 
 <style lang="scss">
-	@use "../styles/mixins";
+	@use '../styles/mixins' as mix;
   h1 {
     text-align: center;
     margin-block-start: 0;
-		@include fluid-text(600px, 32px, 55px);
+		@include mix.fluid-text(600px, 32px, 55px);
   }
   main {
     background: inherit;
 		height: 100vh;
 
-    @include flex-center-top-column;
+    @include mix.flex-center-top-column;
 	}
   div.wrapper {
     display: flex;

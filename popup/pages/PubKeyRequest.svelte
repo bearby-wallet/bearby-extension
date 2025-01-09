@@ -90,20 +90,20 @@
 {/if}
 
 <style lang="scss">
-  @use "../styles/mixins";
+  @use '../styles/mixins' as mix;
   main {
     height: 100vh;
-    @include flex-center-column;
+    @include mix.flex-center-column;
   }
   .warp {
     padding-block-start: 50px;
     padding-block-end: 50px;
 
-    @include flex-center-column;
+    @include mix.flex-center-column;
   }
   h1 {
     text-align: center;
-    @include fluid-text(1024px, 15pt, 20pt);
+    @include mix.fluid-text(1024px, 15pt, 20pt);
   }
   h2 {
     background: var(--secondary-color);
@@ -116,7 +116,7 @@
   }
   .btns {
     width: 290px;
-    @include flex-between-row;
+    @include mix.flex-between-row;
 
     & > button {
       min-height: 50px;

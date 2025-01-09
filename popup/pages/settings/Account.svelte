@@ -116,10 +116,10 @@
 </main>
 
 <style lang="scss">
-	@use "../../styles/mixins";
+	@use "../../styles/mixins" as mix;
 	main {
 		height: 100vh;
-		@include flex-center-top-column;
+		@include mix.flex-center-top-column;
 	}
 	img {
 		max-width: 500px;
@@ -127,7 +127,7 @@
 
     box-shadow: rgb(0 0 0 / 1%) 0px 0px 1px, rgb(0 0 0 / 4%) 0px 4px 8px, rgb(0 0 0 / 4%) 0px 16px 24px, rgb(0 0 0 / 1%) 0px 24px 32px;
 
-		@include border-radius(16px);
+		@include mix.border-radius(16px);
 	}
 	div.account-card {
 		margin-block-start: 16px;
@@ -142,8 +142,8 @@
 		margin-block-start: 15px;
 		margin-block-end: 10px;
 
-		@include border-radius(16px);
-		@include flex-between-row;
+		@include mix.border-radius(16px);
+		@include mix.flex-between-row;
 
 		& > div {
 			margin-right: 10px;

@@ -14,7 +14,7 @@
 </div>
 
 <style lang="scss">
-  @use "../styles/mixins";
+  @use '../styles/mixins' as mix;
   .card {
 		background-color: var(--background-color);
     box-shadow: rgb(0 0 0 / 1%) 0px 0px 1px, rgb(0 0 0 / 4%) 0px 4px 8px, rgb(0 0 0 / 4%) 0px 16px 24px, rgb(0 0 0 / 1%) 0px 24px 32px;
@@ -27,11 +27,11 @@
 
 		& > h2 {
 			margin: 0;
-      @include fluid-text(1024px, 16pt, 20pt);
+      @include mix.fluid-text(1024px, 16pt, 20pt);
 		}
     & > p {
       margin-block-start: 0;
-      @include fluid-text(1024px, 10pt, 12pt);
+      @include mix.fluid-text(1024px, 10pt, 12pt);
     }
     & > :global(.right) {
       position: relative;
@@ -40,7 +40,7 @@
     }
 
 		@media screen and (min-width: 400px) {
-			@include border-radius(16px);
+			@include mix.border-radius(16px);
     }
 	}
 </style>

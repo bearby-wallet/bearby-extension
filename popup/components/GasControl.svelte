@@ -32,14 +32,14 @@
 </ul>
 
 <style lang="scss">
-  @use "../styles/mixins";
+  @use '../styles/mixins' as mix;
   ul {
     padding: 0px;
     margin: 0;
     background-color: var(--card-color);
 
-    @include flex-between-row;
-    @include border-radius(16px);
+    @include mix.flex-between-row;
+    @include mix.border-radius(16px);
 
     & > li {
       cursor: pointer;
@@ -50,14 +50,14 @@
       min-height: 40px;
       text-align: center;
 
-      @include border-radius(16px);
-      @include flex-center-column;
+      @include mix.border-radius(16px);
+      @include mix.flex-center-column;
 
       &.selected {
         background-color: var(--background-color);
       }
       & > h3 {
-        @include fluid-text(1024px, 10pt, 14pt);
+        @include mix.fluid-text(1024px, 10pt, 14pt);
         margin: 0;
       }
     }

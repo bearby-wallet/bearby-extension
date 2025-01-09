@@ -87,7 +87,7 @@
 </main>
 
 <style lang="scss">
-	@use "../styles/mixins";
+	@use '../styles/mixins' as mix;
 
 	h1 {
 		color: var(--text-color);
@@ -112,7 +112,7 @@
 		background: inherit;
 		height: 100vh;
 
-		@include flex-center-column;
+		@include mix.flex-center-column;
 	}
 	label {
 		width: inherit;
@@ -126,7 +126,7 @@
 	}
 	form {
 		width: 290px;
-		@include flex-center-column;
+		@include mix.flex-center-column;
 	}
 
 	.restore-button {

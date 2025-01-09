@@ -75,12 +75,12 @@
 {/if}
 
 <style lang="scss">
-	@use "../styles/mixins";
+	@use '../styles/mixins' as mix;
 	main {
 		height: 100vh;
 		text-align: center;
 
-		@include flex-center-top-column;
+		@include mix.flex-center-top-column;
 	}
 	div.info {
 		width: calc(100vw - 30px);

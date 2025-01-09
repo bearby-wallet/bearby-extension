@@ -92,12 +92,12 @@
 </main>
 
 <style lang="scss">
-	@use "../../styles/mixins";
+	@use "../../styles/mixins" as mix;
 
 	main {
 		height: 100vh;
     overflow-y: scroll;
-		@include flex-center-top-column;
+		@include mix.flex-center-top-column;
 	}
 	input {
 		width: 100%;

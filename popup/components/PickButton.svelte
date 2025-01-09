@@ -54,7 +54,7 @@
 </div>
 
 <style lang="scss">
-  @use "../styles/mixins";
+  @use '../styles/mixins' as mix;
 
   div.picker {
     cursor: pointer;
@@ -66,7 +66,7 @@
     text-align: center;
     min-width: 140px;
 
-    @include flex-between-row;
+    @include mix.flex-between-row;
 
     & > span {
       font-size: 16px;

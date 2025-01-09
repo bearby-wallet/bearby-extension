@@ -127,19 +127,19 @@
 </main>
 
 <style lang="scss">
-  @use "../styles/mixins";
+  @use '../styles/mixins' as mix;
   main {
     background: inherit;
 		height: 100vh;
 
-		@include flex-center-top-column;
+		@include mix.flex-center-top-column;
   }
   h1 {
-    @include fluid-text(600px, 25pt, 45pt);
+    @include mix.fluid-text(600px, 25pt, 45pt);
   }
   form {
     width: 100%;
-    @include flex-center-column;
+    @include mix.flex-center-column;
 
     & > label > p {
       margin-block: 2px;

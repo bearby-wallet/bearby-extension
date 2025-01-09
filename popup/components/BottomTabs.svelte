@@ -34,7 +34,7 @@
 </nav>
 
 <style lang="scss">
-  @use "../styles/mixins";
+  @use '../styles/mixins' as mix;
   nav {
     max-width: 320px;
     height: 50px;
@@ -45,10 +45,10 @@
     box-shadow: rgb(0 0 0 / 1%) 0px 0px 1px, rgb(0 0 0 / 4%) 0px 4px 8px, rgb(0 0 0 / 4%) 0px 16px 24px, rgb(0 0 0 / 1%) 0px 24px 32px;
 
     justify-content: space-around;
-    @include flex-center-vert;
+    @include mix.flex-center-vert;
 
     @media screen and (min-width: 400px) {
-      @include border-top-radius(16px);
+      @include mix.border-top-radius(16px);
     }
   }
 </style>

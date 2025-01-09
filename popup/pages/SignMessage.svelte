@@ -127,20 +127,20 @@
 
 
 <style lang="scss">
-	@use "../styles/mixins";
+	@use '../styles/mixins' as mix;
 	main {
 		height: 100vh;
-		@include flex-center-column;
+		@include mix.flex-center-column;
 	}
   h1 {
-    @include fluid-text(1024px, 22pt, 55pt);
+    @include mix.fluid-text(1024px, 22pt, 55pt);
   }
   img {
     margin: 16px;
   }
   .toggle {
     width: 290px;
-    @include flex-between-row;
+    @include mix.flex-between-row;
   }
   textarea {
     line-height: 1em;
@@ -152,7 +152,7 @@
   }
   .btns {
     width: 290px;
-    @include flex-between-row;
+    @include mix.flex-between-row;
 
     & > button {
       min-height: 50px;

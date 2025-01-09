@@ -69,7 +69,7 @@
 </ul>
 
 <style lang="scss">
-  @use "../styles/mixins";
+  @use '../styles/mixins' as mix;
   ul {
     margin: 0;
     padding: 5px;
@@ -84,15 +84,15 @@
       border-bottom: solid 1px var(--hover-color);
       color: var(--text-color);
 
-      @include fluid-text(720px, 12pt, 16pt);
-      @include flex-between-row;
+      @include mix.fluid-text(720px, 12pt, 16pt);
+      @include mix.flex-between-row;
 
       &:last-child {
         border-bottom: solid 1px transparent;
       }
       & > span {
         align-items: center;
-        @include flex-center-horiz;
+        @include mix.flex-center-horiz;
       }
       & > span:last-child {
         font-weight: 600;

@@ -77,7 +77,7 @@
 </ul>
 
 <style lang="scss">
-	@use "../styles/mixins";
+	@use '../styles/mixins' as mix;
 	ul {
 		padding: 0;
     margin: 0;

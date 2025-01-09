@@ -59,7 +59,7 @@
 </div>
 
 <style lang="scss">
-	@use "../styles/mixins";
+	@use '../styles/mixins' as mix;
 
   h3 {
     margin-block-end: 0;
@@ -70,7 +70,7 @@
   }
   div.wrapper {
     width: 100%;
-    @include flex-between-row;
+    @include mix.flex-between-row;
 
     & > span {
       margin-right: 10px;
@@ -87,7 +87,7 @@
     & > div {
       width: 100%;
 
-      @include flex-between-row;
+      @include mix.flex-between-row;
     }
     & > div > div:nth-of-type(2) {
       text-align: right;

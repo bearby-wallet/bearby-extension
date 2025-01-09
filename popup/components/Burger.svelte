@@ -8,7 +8,7 @@
 </div>
 
 <style lang="scss">
-  @use "../styles/mixins";
+  @use '../styles/mixins' as mix;
   div {
     display: inline-block;
 		cursor: pointer;
@@ -22,7 +22,7 @@
 			height: 4px;
       width: 25px;
 
-      @include border-radius(8px);
+      @include mix.border-radius(8px);
 
 			&:last-child {
         margin-bottom: 0;

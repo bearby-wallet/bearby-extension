@@ -39,7 +39,7 @@
 </div>
 
 <style lang="scss">
-  @use "../styles/mixins";
+  @use '../styles/mixins' as mix;
 
   div.search-box {
     background: var(--card-color);
@@ -48,8 +48,8 @@
     width: 100%;
     max-width: 290px;
 
-    @include border-radius(16px);
-    @include flex-center-vert;
+    @include mix.border-radius(16px);
+    @include mix.flex-center-vert;
 
     & > input {
       margin: 0;

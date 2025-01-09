@@ -93,7 +93,7 @@
 </ul>
 
 <style lang="scss">
-	@use "../styles/mixins";
+	@use '../styles/mixins' as mix;
 	ul {
 		padding: 0;
 		margin: 0;
@@ -113,7 +113,7 @@
 
 			padding: 8px;
 
-			@include flex-between-row;
+			@include mix.flex-between-row;
 
 			& > span {
 				margin-right: 10px;

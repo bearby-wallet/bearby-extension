@@ -50,22 +50,22 @@
 
 
 <style lang="scss">
-  @use "../styles/mixins";
+  @use '../styles/mixins' as mix;
   h1,
   h2 {
     color: var(--text-color);
     text-align: center;
   }
   h1 {
-    @include fluid-text(600px, 32px, 55px);
+    @include mix.fluid-text(600px, 32px, 55px);
   }
   h2 {
-    @include fluid-text(600px, 14pt, 20pt);
+    @include mix.fluid-text(600px, 14pt, 20pt);
   }
   main {
     height: 100vh;
 
-		@include flex-center-top-column;
+		@include mix.flex-center-top-column;
   }
   ul {
     list-style: unset;
@@ -75,7 +75,7 @@
     border: solid 2px var(--muted-color);
     max-width: calc(100vw - 16px);
 			
-    @include border-radius(16px);
+    @include mix.border-radius(16px);
 
     h2 {
       color: var(--primary-color);

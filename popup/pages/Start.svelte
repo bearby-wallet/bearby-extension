@@ -33,38 +33,51 @@
 </main>
 
 <style lang="scss">
-	@use "../styles/mixins";
+	@use '../styles/mixins' as mix;
 
 	img {
-		max-width: 500px;
-    width: calc(100vw - 0px);
+	 & {
+	   max-width: 500px;
+	   width: calc(100vw - 0px);
+	 }
 	}
 
 	h1 {
-		color: var(--text-color);
-		margin-block-end: 0;
-		@include fluid-text(600px, 20pt, 40pt);
+	 & {
+	   color: var(--text-color);
+	   margin-block-end: 0;
+	 }
+	 @include mix.fluid-text(600px, 20pt, 40pt);
 	}
 
 	h3 {
-		color: var(--text-color);
-		@include fluid-text(600px, 14pt, 20pt);
+	 & {
+	   color: var(--text-color);
+	 }
+	 @include mix.fluid-text(600px, 14pt, 20pt);
 	}
 
 	main {
-		background: inherit;
-		height: 100vh;
+	 & {
+	   background: inherit;
+	   height: 100vh;
+	 }
 
-		@include flex-center-column;
+	 @include mix.flex-center-column;
 
-		& > div {
-			@include flex-between-row;
-			width: 100%;
-			max-width: 290px;
+	 & > div {
+	   & {
+	     width: 100%;
+	     max-width: 290px;
+	   }
+   
+	   @include mix.flex-between-row;
 
-			a {
-				margin: 10px;
-			}
-		}
+	   a {
+	     & {
+	       margin: 10px;
+	     }
+	   }
+	 }
 	}
 </style>

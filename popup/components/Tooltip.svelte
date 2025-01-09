@@ -26,7 +26,7 @@
 </div>
 
 <style lang="scss">
-  @use "../styles/mixins";
+  @use '../styles/mixins' as mix;
 
   .tooltip-wrapper {
     position: relative;
@@ -52,7 +52,7 @@
     color: var(--text-color);
     text-align: center;
 
-    @include border-radius(16px);
+    @include mix.border-radius(16px);
 
     &:before {
       content: '';

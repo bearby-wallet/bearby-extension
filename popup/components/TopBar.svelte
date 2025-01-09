@@ -95,7 +95,7 @@
 </nav>
 
 <style lang="scss">
-  @use "../styles/mixins";
+  @use '../styles/mixins' as mix;
   nav {
     max-width: 900px;
     height: 36px;
@@ -109,10 +109,10 @@
       rgb(0 0 0 / 4%) 0px 16px 24px,
       rgb(0 0 0 / 1%) 0px 24px 32px;
 
-    @include flex-between-row;
+    @include mix.flex-between-row;
 
     @media screen and (min-width: 899px) {
-      @include border-bottom-radius(16px);
+      @include mix.border-bottom-radius(16px);
     }
   }
   div.connections {
@@ -124,7 +124,7 @@
     padding-left: 5pt;
     padding-right: 5pt;
 
-    @include flex-between-row;
+    @include mix.flex-between-row;
 
     &.enabled {
       cursor: pointer;
@@ -147,7 +147,7 @@
       text-indent: 3pt;
       width: 100pt;
 
-      @include text-shorten;
+      @include mix.text-shorten;
     }
   }
   span.view-btn {

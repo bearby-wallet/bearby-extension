@@ -1,5 +1,7 @@
+@use '../mixins' as mix;
+
 :global(div.m-warp) {
   height: 600px;
-  @include border-radius(8px);
-  @include flex-center-top-column;
+  @include mix.border-radius(16px);
+  @include mix.flex-center-top-column;
 }

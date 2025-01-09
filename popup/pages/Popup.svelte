@@ -167,7 +167,7 @@
           fee={Number(transaction.fee)}
           on:select={handleOnChangeGasMultiplier}
         />
-        <h3 onmouseup={() => (editModal = !editModal)}>
+        <h3 onclick={() => (editModal = !editModal)}>
           ({$_("confirm.btns.edit")})
         </h3>
         <TransactionParams tx={transaction} />
@@ -190,12 +190,13 @@
 </section>
 
 <style lang="scss">
-  @use "../styles/mixins";
+  @use '../styles/mixins' as mix;
+
   section {
     height: 100vh;
     padding-block-start: 16px;
 
-    @include flex-center-top-column;
+    @include mix.flex-center-top-column;
 
     & > div {
       width: 100%;
@@ -208,11 +209,11 @@
     max-height: 600px;
     overflow-y: scroll;
 
-    @include flex-center-column;
+    @include mix.flex-center-column;
     justify-content: space-between;
 
     & > div.warp {
-      @include flex-center-column;
+      @include mix.flex-center-column;
 
       & > p.error {
         color: var(--danger-color);
@@ -221,7 +222,7 @@
       }
     }
     & > div.btns {
-      @include flex-between-row;
+      @include mix.flex-between-row;
 
       & > button {
         margin: 10px;
@@ -237,10 +238,10 @@
         rgb(0 0 0 / 1%) 0px 24px 32px;
 
       background-color: var(--card-color);
-      @include border-radius(16px);
+      @include mix.border-radius(16px);
 
       &.loading {
-        @include loading-gradient(var(--loading-color), var(--card-color));
+        @include mix.loading-gradient(var(--loading-color), var(--card-color));
       }
 
       & > h3 {

@@ -286,13 +286,13 @@
 </main>
 
 <style lang="scss">
-  @use "../../styles/mixins";
+  @use "../../styles/mixins" as mix;
   main {
     background: inherit;
     overflow-y: scroll;
     height: 100vh;
 
-		@include flex-center-top-column;
+		@include mix.flex-center-top-column;
   }
   button {
     margin-block-start: 5px;

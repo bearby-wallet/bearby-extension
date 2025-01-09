@@ -71,11 +71,11 @@
 </form>
 
 <style lang="scss">
-	@use "../styles/mixins";
+	@use '../styles/mixins' as mix;
   form {
     padding: 30px;
     height: 600px;
-    @include flex-center-top-column;
+    @include mix.flex-center-top-column;
 
     & > label,
     & > button {

@@ -57,7 +57,7 @@
       <h2>
         {$_('history.title')}
       </h2>
-      <h3 onmouseup={hanldeOnClear}>
+      <h3 onclick={hanldeOnClear}>
         {$_('history.clear')}
       </h3>
     </div>
@@ -73,7 +73,7 @@
         </b>
         <ul>
           {#each queue as tx}
-            <li onmouseup={() => showTx = tx}>
+            <li onclick={() => showTx = tx}>
               <Transaction
                 tx={tx}
                 loading
@@ -88,7 +88,7 @@
         </b>
         <ul>
           {#each history as tx}
-            <li onmouseup={() => showTx = tx}>
+            <li onclick={() => showTx = tx}>
               <Transaction tx={tx} />
             </li>
           {/each}
@@ -100,56 +100,86 @@
 </section>
 
 <style lang="scss">
-	@use "../styles/mixins";
-	main {
-		height: calc(100vh - 86px);
-    max-width: 500px;
-    width: calc(100vw - 15px);
-		@include flex-center-top-column;
-	}
+  @use '../styles/mixins' as mix;
+
+  main {
+   & {
+     height: calc(100vh - 86px);
+     max-width: 500px;
+     width: calc(100vw - 15px);
+   }
+   @include mix.flex-center-top-column;
+  }
+
   div.header {
-    width: 100%;
-    @include flex-between-row;
+   & {
+     width: 100%;
+   }
+   @include mix.flex-between-row;
 
-    & > h3 {
-      cursor: pointer;
+   & > h3 {
+     cursor: pointer;
 
-      &:hover {
-        color: var(--primary-color);
-      }
-    }
+     &:hover {
+       color: var(--primary-color);
+     }
+   }
   }
+
   div.list {
-    overflow-y: scroll;
+   & {
+     overflow-y: scroll;
+   }
   }
-  ul {
-    margin: 0;
-    padding: 0;
 
-    & > li {
-      margin: 10px;
-    }
+  ul {
+   & {
+     margin: 0;
+     padding: 0;
+   }
+
+   & > li {
+     margin: 10px;
+   }
   }
+
   section {
-		overflow: hidden;
-		@include flex-center-top-column;
-	}
+   & {
+     overflow: hidden;
+   }
+   @include mix.flex-center-top-column;
+  }
+
   h2,
   h3 {
-    margin-block-end: 0;
+   & {
+     margin-block-end: 0;
+   }
   }
+
   h3 {
-    font-size: 12pt;
+   & {
+     font-size: 12pt;
+   }
   }
+
   h2 {
-    text-align: left;
-    font-size: 20pt;
+   & {
+     text-align: left;
+     font-size: 20pt;
+   }
   }
+
   p {
-    text-indent: 15px;
-    font-size: 11pt;
+   & {
+     text-indent: 15px;
+     font-size: 11pt;
+   }
   }
+
   b {
-    font-size: 9pt;
+   & {
+     font-size: 9pt;
+   }
   }
 </style>

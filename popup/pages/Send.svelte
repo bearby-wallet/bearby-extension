@@ -227,13 +227,13 @@
 </main>
 
 <style lang="scss">
-  @use "../styles/mixins";
+  @use '../styles/mixins' as mix;
 
   main {
     background: inherit;
     height: 100vh;
 
-    @include flex-center-top-column;
+    @include mix.flex-center-top-column;
 
     & > div {
       width: 100%;
@@ -256,7 +256,7 @@
     max-width: 310px;
     margin-block-start: 15px;
 
-    @include border-radius(12px);
+    @include mix.border-radius(12px);
   }
   div.wrapper {
     display: flex;
@@ -265,7 +265,7 @@
     max-height: 500px;
 
     & > div {
-      @include flex-center-top-column;
+      @include mix.flex-center-top-column;
 
       & > div {
         margin: 5px;
@@ -280,7 +280,7 @@
   div.input {
     margin-block-start: 16px;
 
-    @include flex-column;
+    @include mix.flex-column;
 
     & > label {
       background-color: var(--card-color);
@@ -288,8 +288,8 @@
 
       height: 55px;
 
-      @include flex-between-row;
-      @include border-radius(16px);
+      @include mix.flex-between-row;
+      @include mix.border-radius(16px);
 
       &.error {
         border-color: var(--danger-color);

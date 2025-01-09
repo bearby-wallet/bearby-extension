@@ -33,5 +33,5 @@
 {/if}
 
 <style lang="scss">
-  @import "./styles/general";
+  @use "./styles/general";
 </style>

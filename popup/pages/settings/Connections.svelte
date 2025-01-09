@@ -89,7 +89,7 @@
 </section>
 
 <style lang="scss">
-	@use "../../styles/mixins";
+	@use "../../styles/mixins" as mix;
 
 	main {
 		max-width: 520px;
@@ -97,11 +97,11 @@
 		width: calc(100vw - 15px);
 		height: calc(100vh - 15px);
 	
-		@include flex-center-top-column;
+		@include mix.flex-center-top-column;
 	}
 	section {
 		height: 100vh;
-		@include flex-center-top-column;
+		@include mix.flex-center-top-column;
 	}
 	ul {
 		padding: 0;
@@ -120,8 +120,8 @@
 			border: solid 1px var(--card-color);
 			margin: 5px;
 
-			@include flex-between-row;
-			@include border-radius(16px);
+			@include mix.flex-between-row;
+			@include mix.border-radius(16px);
 
 			& > img {
 				cursor: pointer;
@@ -146,7 +146,7 @@
 					font-size: 14pt;
 					max-width: 160px;
 					font-weight: 800;
-					@include text-shorten;
+					@include mix.text-shorten;
 				}
 				& > p {
 					line-height: 0;

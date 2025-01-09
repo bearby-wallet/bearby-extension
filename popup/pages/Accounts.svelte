@@ -28,12 +28,13 @@
 
 
 <style lang="scss">
-	@use "../styles/mixins";
+	@use '../styles/mixins' as mix;
+
 	main {
 		height: 100vh;
 		overflow: hidden;
 
-		@include flex-center-top-column;
+		@include mix.flex-center-top-column;
 
 		:global(ul) {
 			max-width: 500px;

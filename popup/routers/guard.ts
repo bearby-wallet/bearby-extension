@@ -20,7 +20,11 @@ export class RouteGuard {
         window.location.hash = path;
     }
 
-    static async checkRoute(route: Route): Promise<Route> {
+    static checkRoute(route: Route): Route {
+        if (!route.isProtected) {
+            return route;
+        }
+
         const guard = get(guardStore);
         const confirm = get(confirmStore);
         const appsConnect = get(connectAppStore);
@@ -36,7 +40,7 @@ export class RouteGuard {
         if (guard.isReady && !guard.isEnable) {
             this.navigate('lock');
             return {
-                path: 'lock',
+                path: '/lock',
                 component: LockPage
             };
         }
@@ -44,7 +48,7 @@ export class RouteGuard {
         if (appsConnect.length > 0) {
             this.navigate('connect');
             return {
-                path: 'connect',
+                path: '/connect',
                 component: ConnectPage
             };
         }
@@ -52,7 +56,7 @@ export class RouteGuard {
         if (confirm.length > 0) {
             this.navigate('confirm');
             return {
-                path: 'confirm',
+                path: '/confirm',
                 component: PopupPage
             };
         }
@@ -60,7 +64,7 @@ export class RouteGuard {
         if (message) {
             this.navigate('sign-message');
             return {
-                path: 'sign-message',
+                path: '/sign-message',
                 component: SignMessagePage
             };
         }
@@ -68,7 +72,7 @@ export class RouteGuard {
         if (reqPubKeyState) {
             this.navigate('req-pubkey');
             return {
-                path: 'req-pubkey',
+                path: '/req-pubkey',
                 component: PubKeyRequestPage
             };
         }

@@ -91,7 +91,7 @@
 </label>
 
 <style lang="scss">
-	@use "../styles/mixins";
+	@use '../styles/mixins' as mix;
 
 	label {
 		display: flex;
@@ -101,11 +101,11 @@
 		border: solid 1px var(--card-color);
 		width: 100%;
 
-		@include border-radius(16px);
+		@include mix.border-radius(16px);
 
 		&.loading {
 			border: solid 1px transparent;
-			@include loading-gradient(var(--loading-color), var(--card-color));
+			@include mix.loading-gradient(var(--loading-color), var(--card-color));
 
 			& > span {
 				cursor: inherit;
@@ -120,7 +120,7 @@
 			min-width: 80px;
 			border-right: 1px solid var(--muted-color);
 
-			@include flex-between-row;
+			@include mix.flex-between-row;
 
 			& > h3 {
 				font-size: 10px;

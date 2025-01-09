@@ -175,9 +175,9 @@
 </div>
 
 <style lang="scss">
-  @use "../styles/mixins";
+  @use '../styles/mixins' as mix;
   div.wrapper {
-    @include flex-center-top-column;
+    @include mix.flex-center-top-column;
   }
   h2.error {
     color: var(--danger-color);
@@ -194,7 +194,7 @@
       rgba(60, 64, 67, 0.3) 0px 1px 2px 0px,
       rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 
-    @include border-radius(16px);
+    @include mix.border-radius(16px);
 
     & > li {
       padding: 5px;
@@ -203,13 +203,13 @@
       color: var(--text-color);
       font-size: 12pt;
 
-      @include flex-between-row;
+      @include mix.flex-between-row;
 
       &:last-child {
         border-bottom: solid 1px transparent;
       }
       & > span {
-        @include text-shorten;
+        @include mix.text-shorten;
       }
       & > span:last-child {
         font-family: Demi;
@@ -221,7 +221,7 @@
     line-height: 0;
   }
   form {
-    @include flex-center-top-column;
+    @include mix.flex-center-top-column;
   }
   label,
   button {

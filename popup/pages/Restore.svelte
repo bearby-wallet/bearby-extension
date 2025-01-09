@@ -27,11 +27,6 @@
   let words: string[] = $state(Array(12).fill(""));
   // BIP39
 
-  $effect(() => {
-    errors = Array(length).fill(true);
-    words = Array(length).fill("");
-  });
-
   // guard
   let algorithm = $state(ShaAlgorithms.Sha512);
   let iteractions = $state(ITERACTIONS);
@@ -57,6 +52,7 @@
       loading = false;
       push('/created');
 		} catch (err) {
+  		console.log(err);
 			error = (err as Error).message;
 		}
 		loading = false;
@@ -171,12 +167,12 @@
 </main>
 
 <style lang="scss">
-  @use "../styles/mixins";
+  @use '../styles/mixins' as mix;
   main {
     background: inherit;
 		height: 100vh;
 
-		@include flex-center-top-column;
+		@include mix.flex-center-top-column;
   }
   div.error {
     & > p {
@@ -186,7 +182,7 @@
   }
   form {
     width: 100%;
-    @include flex-center-column;
+    @include mix.flex-center-column;
 
     & > .inputs-warp {
       overflow-y: scroll;
@@ -236,8 +232,8 @@
   }
   label {
     color: var(--danger-color);
-		@include fluid-text(600px, 12pt, 18pt);
-    @include flex-center-column;
+		@include mix.fluid-text(600px, 12pt, 18pt);
+    @include mix.flex-center-column;
 
     & > input {
       min-width: 290px;

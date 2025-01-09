@@ -179,14 +179,14 @@
 </main>
 
 <style lang="scss">
-	@use "../styles/mixins";
+	@use '../styles/mixins' as mix;
   main {
 		height: 100vh;
 
-		@include flex-center-top-column;
+		@include mix.flex-center-top-column;
 	}
   form {
-		@include flex-center-column;
+		@include mix.flex-center-column;
 
 		min-width: 290px;
     max-width: 500px;
@@ -205,7 +205,7 @@
 			padding-left: 8px;
 			padding-right: 8px;
 
-			@include flex-between-row;
+			@include mix.flex-between-row;
 
 			& > p {
         line-height: 0;

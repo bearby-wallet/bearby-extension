@@ -1,13 +1,12 @@
-// @import "./fonts";
-@use "./mixins";
-@import "./theme";
-@import "./components/index";
-@import "./fonts";
+@use './mixins' as mix;
+@use "./theme";
+@use "./components/index";
+@use "./fonts";
 
 :global(*),
 :global(*:after),
 :global(*:before) {
-  @include box-sizing(border-box);
+  @include mix.box-sizing(border-box);
 }
 
 :global(*) {

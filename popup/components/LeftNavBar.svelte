@@ -20,10 +20,10 @@
 
   const dispatch = createEventDispatcher();
 
-  export let show = false;
+  let { show = false } = $props();
 
-  $: account = $walletStore.identities[$walletStore.selectedAddress];
-  $: canRemove = !(account.index === 0 && account.type === AccountTypes.Seed);
+  let account = $derived($walletStore.identities[$walletStore.selectedAddress]);
+  let canRemove = $derived(!(account.index === 0 && account.type === AccountTypes.Seed));
 
   const handleOnChangePromt = async () => {
     await togglePopupEnabled();
@@ -108,83 +108,99 @@
 <div class="close" class:show onmouseup={onClose} role="button" tabindex="0"></div>
 
 <style lang="scss">
-  @use "../styles/mixins";
+  @use '../styles/mixins' as mix;
+
   :global(span.close:hover > svg > line) {
-    stroke: var(--primary-color) !important;
+   & {
+     stroke: var(--primary-color) !important;
+   }
   }
+
   div.toggles {
-    width: 100%;
+   & {
+     width: 100%;
+     align-items: flex-end;
+   }
+ 
+   @include mix.flex-column;
 
-    @include flex-column;
-    align-items: flex-end;
+   & > div {
+     & {
+       padding-left: 15px;
+       padding-right: 15px;
+       margin-block-end: 5px;
+       align-items: center;
+     }
 
-    & > div {
-      padding-left: 15px;
-      padding-right: 15px;
-      margin-block-end: 5px;
+     @include mix.flex-right-horiz;
 
-      @include flex-right-horiz;
-      align-items: center;
-
-      & > b {
-        margin: 8px;
-      }
-    }
+     & > b {
+       margin: 8px;
+     }
+   }
   }
+
   div.close {
-    position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    right: 0;
+   & {
+     position: fixed;
+     left: 0;
+     top: 0;
+     bottom: 0;
+     right: 0;
+     z-index: 4;
+     display: none;
+     backdrop-filter: blur(3px);
+     cursor: pointer;
+     background-color: #0000008f;
+   }
 
-    z-index: 4;
-
-    display: none;
-    backdrop-filter: blur(3px);
-    cursor: pointer;
-    background-color: #0000008f;
-
-    &.show {
-      display: block;
-    }
+   &.show {
+     display: block;
+   }
   }
+
   h1 {
-    margin-block-end: 0;
-    font-size: 15pt;
-    @include flex-between-row;
+   & {
+     margin-block-end: 0;
+     font-size: 15pt;
+   }
+ 
+   @include mix.flex-between-row;
 
-    & > span {
-      cursor: pointer;
-      margin-right: 15px;
-    }
+   & > span {
+     cursor: pointer;
+     margin-right: 15px;
+   }
   }
+
   nav {
-    position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
+   & {
+     position: fixed;
+     left: 0;
+     top: 0;
+     bottom: 0;
+     padding-left: 15px;
+     display: none;
+     min-width: 270px;
+     max-width: 400px;
+     width: calc(100vw - 30px);
+     height: 100vh;
+     z-index: 5;
+     background-color: var(--background-color);
+     animation: back-in-left 0.4s;
+     animation-timing-function: cubic-bezier(0.3, 0.17, 0.23, 0.96);
+   }
 
-    padding-left: 15px;
+   @include mix.border-right-radius(16px);
 
-    display: none;
-    min-width: 270px;
-    max-width: 400px;
-    width: calc(100vw - 30px);
-    height: 100vh;
-    z-index: 5;
-
-    background-color: var(--background-color);
-
-    @include border-right-radius(16px);
-
-    &.show {
-      @include flex-left-column;
-    }
-    animation: back-in-left 0.4s;
-    animation-timing-function: cubic-bezier(0.3, 0.17, 0.23, 0.96);
+   &.show {
+     @include mix.flex-left-column;
+   }
   }
+
   span {
-    cursor: pointer;
+   & {
+     cursor: pointer;
+   }
   }
 </style>
