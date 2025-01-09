@@ -13,7 +13,7 @@ import pkg from "./package.json" with { type: "json" };
 
 
 const production = !process.env.ROLLUP_WATCH;
-const manifest = process.env.MANIFEST || 3;
+const manifest = process.env.MANIFEST || 2;
 
 const popup = {
   input: "popup/main.ts",
