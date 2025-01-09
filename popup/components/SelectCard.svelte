@@ -1,8 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
-
   import Arrow from './icons/Arrow.svelte';
-
 
   const dispatch = createEventDispatcher();
 
@@ -11,15 +9,19 @@
   export let text = '';
   export let rightHeader = '';
   export let rightText = '';
+  export let disabled = false;
 
   const onClick = () => {
-    dispatch('click');
+    if (!disabled) {
+      dispatch('click');
+    }
   };
 </script>
 
 <div
   class="card"
-  onmouseup={onClick}
+  class:disabled
+  on:click={onClick}
 >
   {#if title}
     <p>
@@ -90,6 +92,11 @@
           margin-block-start: 0;
         }
       }
+    }
+
+    &.disabled {
+      opacity: 0.5;
+      pointer-events: none;
     }
   }
 </style>

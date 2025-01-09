@@ -26,6 +26,7 @@
 
   import { AccountTypes } from "config/account-type";
   import type { ConfirmParams } from "types/transaction";
+    import { OperationsType } from "background/provider/operations";
 
   const url = new URL(window.location.href);
 
@@ -40,6 +41,8 @@
   let multiplier = $state(1);
 
   let account = $derived($walletStore.identities[index]);
+
+  console.log(transaction);
 
   async function onSelectAccount(e: CustomEvent) {
     loading = true;
@@ -135,6 +138,7 @@
 <section>
   <SelectCard
     header={account.name}
+    disabled={transaction.type == OperationsType.CallSC || transaction.type == OperationsType.ExecuteSC || transaction.type == OperationsType.RollBuy || transaction.type == OperationsType.RollSell}
     text={trim(account.base58, 10)}
     on:click={() => (accountsModal = !accountsModal)}
   >
