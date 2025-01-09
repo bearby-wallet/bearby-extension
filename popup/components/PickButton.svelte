@@ -27,7 +27,7 @@
       height="17"
       viewBox="0 0 17 17"
       fill="none"
-      on:mouseup={hanldeOnClose}
+      onmouseup={hanldeOnClose}
       role="button"
       aria-label="Close"
       tabindex="0"

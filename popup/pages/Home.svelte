@@ -113,7 +113,7 @@
 	<img src="/imgs/logo.webp" alt="logo" class="logo" />
 	<main>
 		<div class="bar-wrapper">
-			<span class="burger" on:mouseup={onToggleLeftBar} role="button" tabindex="0">
+			<span class="burger" onmouseup={onToggleLeftBar} role="button" tabindex="0">
 				<Burger />
 			</span>
 			<CopyAccount />
@@ -125,11 +125,11 @@
 			<button
 				class="action primary"
 				disabled={account.type === AccountTypes.Track}
-				on:mouseup={() => push(`/send/0`)}
+				onmouseup={() => push(`/send/0`)}
 			>
 				{$_("home.btns.send")}
 			</button>
-			<button class="action primary" on:mouseup={() => push("/account")}>
+			<button class="action primary" onmouseup={() => push("/account")}>
 				{$_("home.btns.receive")}
 			</button>
 		</div>

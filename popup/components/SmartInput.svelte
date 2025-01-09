@@ -64,7 +64,7 @@
 </script>
 
 <label class:loading for={uuid}>
-	<span on:mouseup={onClick}>
+	<span onmouseup={onClick}>
 		<TokenImage src={img} alt="input-token" width={28} height={28} />
 		<h3>
 			{symbol}
@@ -84,7 +84,7 @@
 				<b>{formatNumber(converted, $settingsStore.currency)}</b>
 			{/if}
 			{#each percents as percent}
-				<p on:mouseup={() => onPercentInput(percent)}>{percent}%</p>
+				<p onmouseup={() => onPercentInput(percent)}>{percent}%</p>
 			{/each}
 		</div>
 	</div>

@@ -21,7 +21,7 @@
 </script>
 
 <Tooltip {tip} bottom>
-  <div class="warp-tip" on:mouseup={handleOnCopy}>
+  <div class="warp-tip" onmouseup={handleOnCopy}>
     <h1>
       {account.name}
     </h1>

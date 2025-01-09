@@ -51,7 +51,7 @@
   let recipientError = $state("");
 
 
-  let token = $derived.by(() => $tokensStore[selectedToken]);
+  let token = $derived($tokensStore[selectedToken]);
   let account = $derived($walletStore.identities[accountIndex]);
   let balance = $derived(
     account.tokens && account.tokens[token.base58]
@@ -191,7 +191,7 @@
     <div>
       <div class="input">
         <label class:error={recipientError}>
-          <div on:mouseup={() => (contactsModal = !contactsModal)} role="button" tabindex="0">
+          <div onmouseup={() => (contactsModal = !contactsModal)} role="button" tabindex="0">
             <ContactIcon width="23" height="26" className="cont-icon" />
           </div>
           <input
@@ -219,7 +219,7 @@
           </b>
         </div>
       {/if}
-      <button class="outline" class:loading {disabled} on:mouseup={onSubmin}>
+      <button class="outline" class:loading {disabled} onmouseup={onSubmin}>
         {$_("send.continue")}
       </button>
     </div>

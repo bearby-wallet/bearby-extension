@@ -154,7 +154,7 @@
       <p>
         {$_('rolls.receive')}
       </p>
-      <span on:mouseup={hanldeOnSwapTokens} role="button" tabindex="0">
+      <span onmouseup={hanldeOnSwapTokens} role="button" tabindex="0">
         <SwapIcon className="swap-icon"/>
       </span>
     </div>

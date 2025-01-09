@@ -92,7 +92,7 @@
 				class="warning"
 				role="button"
 				tabindex="0"
-				on:mouseup={() => phraseModal = !phraseModal}
+				onmouseup={() => phraseModal = !phraseModal}
 			>
 				{$_('security.phrase.btn')}
 			<span></span>
@@ -106,7 +106,7 @@
 					class="warning"
 					role="button"
 					tabindex="0"
-					on:mouseup={() => keyModal = !keyModal}
+					onmouseup={() => keyModal = !keyModal}
 				>
 					{$_('security.key.btn')}
 				</span>

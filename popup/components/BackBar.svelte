@@ -12,7 +12,7 @@
 </script>
 
 <nav>
-  <div on:mouseup={goBack} aria-label="Go back" role="button" tabindex="0">
+  <div onmouseup={goBack} aria-label="Go back" role="button" tabindex="0">
     <BackButton></BackButton>
   </div>
   <ul>

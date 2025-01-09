@@ -24,7 +24,7 @@
   <aside
     bind:this={node}
     transition:fade={{ delay: 0, duration: 250 }}
-    on:mouseup={onToggle}
+    onmouseup={onToggle}
   >
     <div
       class="modal"
@@ -34,7 +34,7 @@
         <h1>
           {title}
         </h1>
-        <span on:mouseup={onClose}>
+        <span onmouseup={onClose}>
           <Close />
         </span>
       </div>

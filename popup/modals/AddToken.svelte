@@ -148,7 +148,7 @@
       class="primary"
       disabled={loading}
       class:loading
-      on:mouseup={addToken}
+      onmouseup={addToken}
     >
       {$_("tokens.modals.add.btns.add")}
     </button>

@@ -17,10 +17,10 @@
 
   const uuid = uuidv4();
 
-  let loading = false;
-  let accountIndex = $walletStore.selectedAddress;
+  let loading = $state(false);
+  let accountIndex = $state($walletStore.selectedAddress);
 
-  $: account = $walletStore.identities[accountIndex];
+  let account = $derived($walletStore.identities[accountIndex]);
 
   onMount(() => {
     const ctx = document.getElementById(uuid);
@@ -74,14 +74,14 @@
     </div>
     <hr />
     <div class="btns">
-      <button class="outline" disabled={loading} on:mouseup={handleOnReject}>
+      <button class="outline" disabled={loading} onmouseup={handleOnReject}>
         {$_("pub_key_req.btns.reject")}
       </button>
       <button
         class="primary"
         class:loading
         disabled={loading || account.type === AccountTypes.Track}
-        on:mouseup={handleOnApprove}
+        onmouseup={handleOnApprove}
       >
         {$_("pub_key_req.btns.confirm")}
       </button>

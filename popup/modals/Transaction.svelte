@@ -67,7 +67,7 @@
         {$_("history.modals.details.from")}
       </span>
       <Tooltip {tip} bottom>
-        <span class="pointer" on:mouseup={() => hanldeOnCopy(tx.from)}>
+        <span class="pointer" onmouseup={() => hanldeOnCopy(tx.from)}>
           {trim(tx.from)}
         </span>
       </Tooltip>
@@ -101,7 +101,7 @@
         {$_("history.modals.details.hash")}
       </span>
       <Tooltip {tip} bottom>
-        <span class="pointer" on:mouseup={() => hanldeOnCopy(hash)}>
+        <span class="pointer" onmouseup={() => hanldeOnCopy(hash)}>
           {trim(hash)}
         </span>
       </Tooltip>
@@ -134,7 +134,7 @@
     {/if}
   </ul>
   <div class="buttons">
-    <div class="explorer" on:mouseup={hanldeOnExplorer}>
+    <div class="explorer" onmouseup={hanldeOnExplorer}>
       <ExplorerIcon />
     </div>
   </div>

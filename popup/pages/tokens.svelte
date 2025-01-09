@@ -47,7 +47,7 @@
     focus
     on:input={onInputSearch}
   >
-    <span class="add" on:mouseup={() => (tokenAddModal = !tokenAddModal)}>
+    <span class="add" onmouseup={() => (tokenAddModal = !tokenAddModal)}>
       <AddIcon />
     </span>
   </SearchBox>

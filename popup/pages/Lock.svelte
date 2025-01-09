@@ -6,11 +6,10 @@
 	import { unlockWallet } from "popup/backend/wallet";
 
 	let inputEl: HTMLInputElement | undefined;
-	let password = "";
-	let error = "";
-	let loading = false;
-
-	$: disabled = loading || !password;
+	let password = $state("");
+	let error = $state("")
+	let loading = $state(false);
+	let disabled = $derived(loading || !password);
 
 	onMount(() => {
 		if (inputEl && inputEl.focus) {
@@ -53,7 +52,7 @@
 	<h1>
 		{$_("lock.title")}
 	</h1>
-	<form on:submit={handleSubmit}>
+	<form onsubmit={handleSubmit}>
 		<label>
 			<input
 				bind:this={inputEl}
@@ -63,8 +62,8 @@
 				autocomplete="off"
 				placeholder={$_("lock.placeholder")}
 				required
-				on:blur={handleBlur}
-				on:input={handleInput}
+				onblur={handleBlur}
+				oninput={handleInput}
 			/>
 		</label>
 		<button 
@@ -78,7 +77,7 @@
     </button>
     <button 
       type="button"
-      on:click={() => linksExpand("/start")} 
+      onclick={() => linksExpand("/start")} 
       aria-label="Go back"
       class="restore-button"
     >

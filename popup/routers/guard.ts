@@ -13,7 +13,7 @@ import PopupPage from '../pages/Popup.svelte';
 import SignMessagePage from '../pages/SignMessage.svelte';
 import PubKeyRequestPage from '../pages/PubKeyRequest.svelte';
 
-import { routes, type Route } from './index';
+import { type Route } from './index';
 
 export class RouteGuard {
     private static navigate(path: string) {

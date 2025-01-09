@@ -46,7 +46,7 @@
 <nav class:show>
   <h1>
     {account.name}
-    <span on:mouseup={onClose} role="button" tabindex="0">
+    <span onmouseup={onClose} role="button" tabindex="0">
       <Close />
     </span>
   </h1>
@@ -70,7 +70,7 @@
     />
   </a>
   {#if canRemove}
-    <span class="remove" on:mouseup={onRemoveAccount} role="button" tabindex="0">
+    <span class="remove" onmouseup={onRemoveAccount} role="button" tabindex="0">
       <TextElement
         title={$_("home.nav.options.remove.title")}
         description={$_("home.nav.options.remove.description")}
@@ -105,7 +105,7 @@
     </div>
   </div>
 </nav>
-<div class="close" class:show on:mouseup={onClose} role="button" tabindex="0"></div>
+<div class="close" class:show onmouseup={onClose} role="button" tabindex="0"></div>
 
 <style lang="scss">
   @import "../styles/mixins";

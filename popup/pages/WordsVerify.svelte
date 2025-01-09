@@ -61,7 +61,7 @@
   <div class="wrapper">
     {#each shuffled as word, index}
       <div 
-        on:mouseup={() => hanldeOnAdd(word, index)}
+        onmouseup={() => hanldeOnAdd(word, index)}
         role="button"
         aria-label="Select word {word}"
         tabindex="0"
@@ -73,7 +73,7 @@
   <button
     class="outline"
     disabled={disabled}
-    on:mouseup={() => push('/setup-account')}
+    onmouseup={() => push('/setup-account')}
   >
     {$_('verify.btn')}
   </button>

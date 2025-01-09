@@ -50,7 +50,7 @@
         <span></span>
       </a>
       {#if view}
-        <span class="view-btn" on:mouseup={viewOnViewBlock} role="button" tabindex="0">
+        <span class="view-btn" onmouseup={viewOnViewBlock} role="button" tabindex="0">
           <ViewIcon className="icon-view" />
         </span>
       {/if}
@@ -60,7 +60,7 @@
         <div
           class="connections"
           class:enabled={Boolean(app)}
-          on:mouseup={onShowConnections}
+          onmouseup={onShowConnections}
           role="button"
           tabindex="0"
         >
@@ -81,12 +81,12 @@
     </div>
     <div class="right">
       {#if lock}
-        <span class="lock" on:mouseup={handleLogout} role="button" tabindex="0">
+        <span class="lock" onmouseup={handleLogout} role="button" tabindex="0">
           <LockIcon className="icon-lock" />
         </span>
       {/if}
       {#if expand}
-        <span class="expand" on:mouseup={() => linksExpand(getCurrentRoute())} role="button" tabindex="0">
+        <span class="expand" onmouseup={() => linksExpand(getCurrentRoute())} role="button" tabindex="0">
           <ExpandIcon className="icon" />
         </span>
       {/if}

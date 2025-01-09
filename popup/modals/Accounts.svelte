@@ -45,7 +45,7 @@
 	{#each identities as account, index}
 		<li
 			class:selected={account.base58 === selectedAccount.base58}
-			on:mouseup={() => onSelectAccount(account)}
+			onmouseup={() => onSelectAccount(account)}
 		>
 			<AccountCard
 				account={account}

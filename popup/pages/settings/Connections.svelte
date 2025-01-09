@@ -66,7 +66,7 @@
 				      width="30"
 				    />
 				  </button>
-					<div on:mouseup={() => hanldeOnSelect(item)} role="button" tabindex="0">
+					<div onmouseup={() => hanldeOnSelect(item)} role="button" tabindex="0">
 						<div class="domain">
 							{item.domain}
 						</div>
@@ -78,7 +78,7 @@
 						class="icon"
 						role="button"
 						tabindex="0"
-						on:mouseup={() => hanldeOnRemove(item)}
+						onmouseup={() => hanldeOnRemove(item)}
 					>
 						<CloseIcon />
 					</div>

@@ -40,7 +40,7 @@
 
 <p
   class="advanced"
-  on:mouseup={() => advanced = !advanced}
+  onmouseup={() => advanced = !advanced}
   >
   {$_('restore.advanced')}
 </p>

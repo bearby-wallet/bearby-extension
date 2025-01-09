@@ -13,9 +13,9 @@
 		rejectConnection,
 	} from "popup/backend/connections";
 
-	let index = 0;
-	let indexies: number[] = [$walletStore.selectedAddress];
-	let app = $connectAppStore[index];
+	let index = $state(0);
+	let indexies: number[] = $state([$walletStore.selectedAddress]);
+	let app = $derived($connectAppStore[index]);
 
 	const hanldeOnConfirm = async () => {
 		try {
@@ -63,11 +63,11 @@
 			<button
 				class="primary"
 				disabled={indexies.length === 0}
-				on:mouseup={hanldeOnConfirm}
+				onmouseup={hanldeOnConfirm}
 			>
 				{$_("connect.btns.conf")}
 			</button>
-			<button class="outline" on:mouseup={hanldeOnReject}>
+			<button class="outline" onmouseup={hanldeOnReject}>
 				{$_("connect.btns.reject")}
 			</button>
 		</div>

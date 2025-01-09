@@ -21,13 +21,12 @@
 
   const uuid = uuidv4();
 
-	let loading = false;
-  let error = '';
-	let accountsModal = false;
-	let accountIndex = $walletStore.selectedAddress;
-  let isHash = false;
+	let loading = $state(false);
+	let accountsModal = $state(false);
+	let accountIndex = $state($walletStore.selectedAddress);
+  let isHash = $state(false);
 
-	$: account = $walletStore.identities[accountIndex];
+	let account = $derived($walletStore.identities[accountIndex]);
 
 
 	onMount(() => {
@@ -52,7 +51,7 @@
       await signMessageApprove();
       await closePopup();
     } catch (err) {
-      error = (err as Error).message;
+      console.warn(err);
     }
     loading = false;
   };
@@ -78,7 +77,7 @@
       text={trim(account.base58)}
       on:click={() => accountsModal = !accountsModal}
     >
-      <div id={uuid}/>
+      <div id={uuid}></div>
     </SelectCard>
     <hr/>
     <h1>
@@ -110,7 +109,7 @@
       <button
         class="outline"
         disabled={loading}
-        on:mouseup={handleOnReject}
+        onmouseup={handleOnReject}
       >
         {$_('sig_message.btns.reject')}
       </button>
@@ -118,7 +117,7 @@
         class="primary"
         class:loading={loading}
         disabled={loading || account.type === AccountTypes.Track}
-        on:mouseup={handleOnSign}
+        onmouseup={handleOnSign}
       >
         {$_('sig_message.btns.confirm')}
       </button>

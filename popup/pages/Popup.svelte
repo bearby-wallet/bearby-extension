@@ -28,17 +28,18 @@
   import type { ConfirmParams } from "types/transaction";
 
   const url = new URL(window.location.href);
-  let uuid = uuidv4();
-  let txIndex = 0;
-  let index = $walletStore.selectedAddress;
-  let transaction: ConfirmParams = $confirmStore[txIndex];
-  let accountsModal = false;
-  let editModal = false;
-  let loading = false;
-  let err = "";
-  let multiplier = 1;
 
-  $: account = $walletStore.identities[index];
+  let uuid = $state(uuidv4());
+  let txIndex = $state(0);
+  let index = $state($walletStore.selectedAddress);
+  let transaction: ConfirmParams = $state($confirmStore[0]);
+  let accountsModal = $state(false);
+  let editModal = $state(false);
+  let loading = $state(false);
+  let err = $state("");
+  let multiplier = $state(1);
+
+  let account = $derived($walletStore.identities[index]);
 
   async function onSelectAccount(e: CustomEvent) {
     loading = true;
@@ -166,20 +167,20 @@
           fee={Number(transaction.fee)}
           on:select={handleOnChangeGasMultiplier}
         />
-        <h3 on:mouseup={() => (editModal = !editModal)}>
+        <h3 onmouseup={() => (editModal = !editModal)}>
           ({$_("confirm.btns.edit")})
         </h3>
         <TransactionParams tx={transaction} />
       </div>
       <div class="btns">
-        <button class="primary" disabled={loading} on:mouseup={handleOnReject}>
+        <button class="primary" disabled={loading} onmouseup={handleOnReject}>
           {$_("confirm.btns.reject")}
         </button>
         <button
           class="outline"
           class:loading
           disabled={loading || account.type === AccountTypes.Track}
-          on:mouseup={handleOnConfirm}
+          onmouseup={handleOnConfirm}
         >
           {$_("confirm.btns.confirm")}
         </button>

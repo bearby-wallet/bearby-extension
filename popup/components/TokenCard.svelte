@@ -36,7 +36,7 @@
   };
 </script>
 
-<div class="token-card" class:loading class:disabled on:mouseup={onClick}>
+<div class="token-card" class:loading class:disabled onmouseup={onClick}>
   <div>
     <p class="symbol">
       {token.symbol}

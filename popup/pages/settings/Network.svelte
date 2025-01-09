@@ -144,7 +144,7 @@
       >
         <p
           class="reset"
-          on:mouseup={resetConfigNodes}
+          onmouseup={resetConfigNodes}
         >
           {$_('network.config.reset')}
         </p>
@@ -158,7 +158,7 @@
         {#if $networkStore === custom && networkConfig[$networkStore].PROVIDERS.length > 1}
           <button
             class="outline"
-            on:mouseup={handleRemoveNode}
+            onmouseup={handleRemoveNode}
           >
             {$_('network.config.remove')}
           </button>
@@ -219,7 +219,7 @@
 		>
       <p
         class="reset"
-        on:mouseup={() => setAbortTimeout(NETWORK_INIT_STATE.abortTimeout)}
+        onmouseup={() => setAbortTimeout(NETWORK_INIT_STATE.abortTimeout)}
       >
         {$_('network.config.reset')}
       </p>
@@ -243,7 +243,7 @@
 		>
     <p
       class="reset"
-      on:mouseup={() => setNumberNodes(NETWORK_INIT_STATE.numberOfNodes)}
+      onmouseup={() => setNumberNodes(NETWORK_INIT_STATE.numberOfNodes)}
     >
       {$_('network.config.reset')}
     </p>
@@ -267,7 +267,7 @@
 		>
     <p
       class="reset"
-      on:mouseup={() => setPeriodOffset(PERIOD_OFFSET)}
+      onmouseup={() => setPeriodOffset(PERIOD_OFFSET)}
     >
       {$_('network.config.reset')}
     </p>

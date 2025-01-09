@@ -12,7 +12,7 @@
   <h1>
     {title}
   </h1>
-  <div on:mouseup={pop} role="button" tabindex="0">
+  <div onmouseup={pop} role="button" tabindex="0">
     <CloseIcon />
   </div>
 </nav>
