@@ -57,7 +57,7 @@
 			return push("/rolls");
 		}
 
-		return push(`/send/${index}`);
+		return push(`/send/0`);
 	};
 	const onChangeAppConnection = async (e: CustomEvent) => {
 		let indexies = e.detail;

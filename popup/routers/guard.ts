@@ -13,7 +13,7 @@ import PopupPage from '../pages/Popup.svelte';
 import SignMessagePage from '../pages/SignMessage.svelte';
 import PubKeyRequestPage from '../pages/PubKeyRequest.svelte';
 
-import type { Route } from './index';
+import { routes, type Route } from './index';
 
 export class RouteGuard {
     private static navigate(path: string) {
@@ -28,11 +28,9 @@ export class RouteGuard {
         const message = get(messageStore);
 
         if (!guard.isReady) {
-            this.navigate('start');
-            return {
-                path: 'start',
-                component: StartPage
-            };
+            this.navigate('/start');
+
+            return { path: "/start", component: StartPage };
         }
 
         if (guard.isReady && !guard.isEnable) {

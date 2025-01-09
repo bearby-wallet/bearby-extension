@@ -27,18 +27,23 @@ import SetupAccountPage from '../pages/SetupAccount.svelte';
 import CreateSuccessPage from '../pages/CreateSuccess.svelte';
 import RestorePage from '../pages/Restore.svelte';
 import PubKeyRequestPage from '../pages/PubKeyRequest.svelte';
+import NotFoundPage from '../pages/NotFoundPage.svelte';
 
 import type { LegacyComponentType } from 'svelte/legacy';
-import type { SvelteComponent } from "svelte";
 
 
-export interface Route {
+interface Route {
     path: string;
-    component:  LegacyComponentType | SvelteComponent;
+    component: LegacyComponentType;
     isProtected?: boolean;
 }
 
-const protectedRoutes: Route[] = [
+export const notFoundRoute: Route = { 
+    path: "*", 
+    component: NotFoundPage 
+};
+
+export const protectedRoutes: Route[] = [
     { path: "/", component: Home, isProtected: true },
     { path: "/add-track", component: AddTrackAccountPage, isProtected: true },
     { path: "/accounts", component: AccountsPage, isProtected: true },
@@ -57,13 +62,13 @@ const protectedRoutes: Route[] = [
     { path: "/security", component: SecurityPage, isProtected: true },
     { path: "/general", component: GeneralPage, isProtected: true },
     { path: "/advanced", component: AdvancedPage, isProtected: true },
-    { path: "/send/:index/:recipient?", component: SendPage, isProtected: true },
+    { path: "/send/:id/:address?", component: SendPage, isProtected: true },
     { path: "/add", component: AddSeedAccountPage, isProtected: true },
     { path: "/import", component: RestorePrivateKeyPage, isProtected: true },
     { path: "/network", component: NetworkPage, isProtected: true }
 ];
 
-const publicRoutes: Route[] = [
+export const publicRoutes: Route[] = [
     { path: "/lock", component: LockPage },
     { path: "/start", component: StartPage },
     { path: "/create", component: CreatePage },
@@ -73,4 +78,77 @@ const publicRoutes: Route[] = [
     { path: "/restore", component: RestorePage }
 ];
 
-export const routes: Route[] = [...protectedRoutes, ...publicRoutes];
+export const routes  = [...protectedRoutes, ...publicRoutes];
+
+export function matchRoute(url: string, routes: Route[]): Route | null {
+    const urlParts = url.split('/').filter(Boolean);
+    
+    for (const route of routes) {
+        const routeParts = route.path.split('/').filter(Boolean);
+        
+        if (!isMatchingLength(routeParts, urlParts)) {
+            continue;
+        }
+        
+        let isMatch = true;
+        
+        for (let i = 0; i < routeParts.length; i++) {
+            const routePart = routeParts[i];
+            const urlPart = urlParts[i];
+            
+            if (routePart.startsWith(':')) {
+                const isOptional = routePart.endsWith('?');
+                if (!urlPart && !isOptional) {
+                    isMatch = false;
+                    break;
+                }
+                continue;
+            }
+            
+            if (routePart !== urlPart) {
+                isMatch = false;
+                break;
+            }
+        }
+        
+        if (isMatch) {
+            return route;
+        }
+    }
+    
+    return null;
+}
+
+export type ParamsRecord = Record<string, string | null>;
+export function parseUrlParams(pattern: string, url: string): ParamsRecord {
+  const params: ParamsRecord = {};
+  const patternParts: string[] = pattern.split('/').filter(Boolean);
+  const urlParts: string[] = url.split('/').filter(Boolean);
+
+  for (let i = 0; i < patternParts.length; i++) {
+    const patternPart = patternParts[i];
+    
+    if (!patternPart.startsWith(':')) {
+      continue;
+    }
+
+    let paramName = patternPart.slice(1);
+    const isOptional = paramName.endsWith('?');
+    
+    if (isOptional) {
+      paramName = paramName.slice(0, -1);
+    }
+
+    const value = urlParts[i];
+    params[paramName] = value || null;
+  }
+
+  return params;
+}
+
+
+function isMatchingLength(routeParts: string[], urlParts: string[]): boolean {
+    const optionalParams = routeParts.filter(part => part.endsWith('?')).length;
+    return urlParts.length >= routeParts.length - optionalParams && 
+           urlParts.length <= routeParts.length;
+}

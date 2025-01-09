@@ -1,42 +1,49 @@
 <script lang="ts">
     import { onMount, onDestroy } from 'svelte';
-    import { routes, type Route } from './routers';
+    import { matchRoute, notFoundRoute, parseUrlParams, routes  } from './routers';
     import { RouteGuard } from './routers/guard';
+    import { currentRoute } from "popup/store/route";
+    import { push } from './routers/navigation';
 
-    import type { SvelteComponent } from "svelte";
+    export function findRouteByHash(hash: string) {
+        const path = hash.replace('#', '').replace(/^\//, '/');
+        const found = matchRoute(path, routes);
 
+        if (found) {
+            return found;
+        }
 
-    let currentComponent = $state<typeof  SvelteComponent | null>(null);
-
-    function findRoute(path: string): Route | undefined {
-        return routes.find(route => {
-            const pattern = new RegExp(`^${route.path}$`);
-            return pattern.test(path);
-        });
+        return notFoundRoute;
     }
 
     async function handleRouteChange() {
         const path = window.location.hash.slice(1) || '/';
-        const route = findRoute(path);
+        const route = findRouteByHash(path);
+        const params = parseUrlParams(route.path, path);
 
         if (route) {
             const guardedRoute = await RouteGuard.checkRoute(route);
-            currentComponent = guardedRoute.component;
+            currentRoute.set(guardedRoute);
         } else {
-            window.location.hash = '/';
+            currentRoute.set(notFoundRoute);
         }
     }
 
     onMount(() => {
+        const handleNavigate = (event: CustomEvent) => {
+            push(event.detail.path);
+        };
+
         window.addEventListener('hashchange', handleRouteChange);
         handleRouteChange();
     });
-
+    
     onDestroy(() => {
         window.removeEventListener('hashchange', handleRouteChange);
     });
 </script>
 
-{#if currentComponent}
-    <svelte:component this={currentComponent} />
+{#if $currentRoute}
+    <svelte:component this={$currentRoute.component} />
 {/if}
+
