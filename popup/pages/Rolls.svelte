@@ -127,7 +127,7 @@
 </Modal>
 <main>
 	<NavClose title={$_('rolls.title')}/>
-  <form on:submit={handleSubmit}>
+  <form onsubmit={handleSubmit}>
     <div>
       <SelectCard
         title={$_('rolls.buyer')}

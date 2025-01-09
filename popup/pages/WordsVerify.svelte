@@ -9,9 +9,9 @@
   import PickButton from '../components/PickButton.svelte';
 
 
-  let words: string[] = [];
-  let shuffled: string[] = [];
-  let disabled = true;
+  let words: string[] = $state([]);
+  let shuffled: string[] = $state([]);
+  let disabled = $state(true);
 
   onMount(() => {
     const list = JSON.stringify($wordsStore);

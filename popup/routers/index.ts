@@ -31,9 +31,10 @@ import NotFoundPage from '../pages/NotFoundPage.svelte';
 
 import type { Component } from 'svelte';
 
+export type ParamsRecord = Record<string, string|null>;
 export interface Route {
     path: string;
-    component: Component<Record<string, never>, {}, "">;
+    component: Component;
     isProtected?: boolean;
 }
 
@@ -118,7 +119,6 @@ export function matchRoute(url: string, routes: Route[]): Route | null {
     return null;
 }
 
-export type ParamsRecord = Record<string, never>;
 export function parseUrlParams(pattern: string, url: string): ParamsRecord {
   const params: ParamsRecord = {};
   const patternParts: string[] = pattern.split('/').filter(Boolean);

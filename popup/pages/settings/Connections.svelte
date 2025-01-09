@@ -58,7 +58,7 @@
 				<li class="card">
 					<button 
 				    class="icon-button"
-				    on:click={() => hanldeOnSelect(item)}
+				    onclick={() => hanldeOnSelect(item)}
 				  >
 				    <img
 				      src={item.icon}

@@ -14,25 +14,30 @@
 	import NavClose from '../components/NavClose.svelte';
   import Guard from '../components/Guard.svelte';
 
-  let error = '';
-  let passError = '';
-  let name = `${DEFAULT_NAME} 0`;
-  let password: string;
-  let confirmPassword: string;
-	let loading = false;
+  let error = $state('');
+  let passError = $state('');
+  let name = $state(`${DEFAULT_NAME} 0`);
+  let password: string = $state("");
+  let confirmPassword: string = $state("");
+	let loading = $state(false);
 
   // BIP39
-  let length = 12;
-  let errors = Array(length).fill(true);
-  let words = Array(length).fill("");
+  let length = $state(12);
+  let errors: boolean[] = $state(Array(12).fill(true));
+  let words: string[] = $state(Array(12).fill(""));
   // BIP39
 
+  $effect(() => {
+    errors = Array(length).fill(true);
+    words = Array(length).fill("");
+  });
+
   // guard
-  let algorithm = ShaAlgorithms.Sha512;
-  let iteractions = ITERACTIONS;
+  let algorithm = $state(ShaAlgorithms.Sha512);
+  let iteractions = $state(ITERACTIONS);
   // guard
 
-	$: disabled = loading || !password || confirmPassword !== password || name.length < MIN_NAME_LEN;
+  let disabled = $derived(loading || !password || confirmPassword !== password || name.length < MIN_NAME_LEN);
 
   const handleSubmit = async (e: Event) => {
 		e.preventDefault();
@@ -92,9 +97,9 @@
 
 <main>
   <NavClose title={$_('restore.title')}/>
-  <form on:submit={handleSubmit}>
+  <form onsubmit={handleSubmit}>
     <div class="sw">
-      <select on:input={handleOnChangeLen}>
+      <select oninput={handleOnChangeLen}>
         {#each [12, 15, 18, 21, 24] as v}
           <option
             value={v}
@@ -106,13 +111,13 @@
       </select>
     </div>
     <div class="inputs-warp">
-      {#each Array(length) as v, index}
+      {#each Array(length) as _, index}
         <input
           type="text"
           placeholder={'#' + (index + 1)}
           bind:value={words[index]}
           class:error={!errors[index]}
-          on:input={handleInputWord}
+          oninput={handleInputWord}
         >
       {/each}
     </div>
@@ -137,8 +142,8 @@
         placeholder={$_('restore.pass_placeholder')}
         minlength={MIN_PASSWORD_LEN}
         required
-        on:input={handleInputPassword}
-        on:blur={handleOnBlurPassword}
+        oninput={handleInputPassword}
+        onblur={handleOnBlurPassword}
       >
       {passError}
     </label>

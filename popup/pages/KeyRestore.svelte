@@ -59,14 +59,14 @@
 
 <main>
   <NavClose title={$_("restore_secret.title")} />
-  <form on:submit={handleSubmit}>
+  <form onsubmit={handleSubmit}>
     <label class="key">
       <input
         bind:value={key}
         class:error={Boolean(error)}
         placeholder={$_("restore_secret.placeholder") + " (S1....)"}
         required
-        on:input={handleInputTextarea}
+        oninput={handleInputTextarea}
       />
     </label>
     <label class="name">

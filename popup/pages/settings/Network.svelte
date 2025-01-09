@@ -111,7 +111,7 @@
 			title={$_('network.selected.title')}
 			description={$_('network.selected.description')}
 		>
-			<select on:input={handleOnSelectNet}>
+			<select oninput={handleOnSelectNet}>
 				{#each NETWORK_KEYS as net}
 					<option
 						value={net}
@@ -130,7 +130,7 @@
             bind:value={chainID}
             type="number"
             disabled={$networkStore !== custom}
-            on:input={() => setChainId(chainID)}
+            oninput={() => setChainId(chainID)}
           >
         </label>
       </div>
@@ -148,7 +148,7 @@
         >
           {$_('network.config.reset')}
         </p>
-        <select on:input={handleSortNodes}>
+        <select oninput={handleSortNodes}>
           {#each networkConfig[$networkStore].PROVIDERS as http}
             <option value={http}>
               {http}
@@ -166,7 +166,7 @@
         {#if $networkStore === custom}
           <form
             class="input"
-            on:submit={handleAddNode}
+            onsubmit={handleAddNode}
           >
             <label>
               <input
@@ -230,7 +230,7 @@
             type="number"
             min={1}
             max={15}
-            on:input={handleAbortTimeout}
+            oninput={handleAbortTimeout}
           >
         </label>
       </div>
@@ -254,7 +254,7 @@
             type="number"
             min={1}
             max={200}
-            on:input={handleNodes}
+            oninput={handleNodes}
           >
         </label>
       </div>
@@ -277,7 +277,7 @@
             bind:value={periodOffset}
             type="number"
             min={1}
-            on:input={handlePeriodOffset}
+            oninput={handlePeriodOffset}
           >
         </label>
       </div>

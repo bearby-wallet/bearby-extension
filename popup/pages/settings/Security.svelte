@@ -20,23 +20,23 @@
 
 	import { MIN_PASSWORD_LEN } from 'popup/config/account';
 
-	let phraseModal = false;
-	let keyModal = false;
-	let loading = false;
-  let passError = '';
-	let currentPassword = '';
-	let password = '';
-	let confirmPassword = '';
+	let phraseModal = $state(false);
+	let keyModal = $state(false);
+	let loading = $state(false);
+  let passError = $state('');
+	let currentPassword = $state('');
+	let password = $state('');
+	let confirmPassword = $state('');
 	// guard
-	let algorithm = $guardStore.algorithm;
-	let iteractions = $guardStore.iteractions;
+	let algorithm = $state($guardStore.algorithm);
+	let iteractions = $state($guardStore.iteractions);
 	// guard
 
-	$: disabled = loading || !password || confirmPassword !== password || Boolean(passError);
-	$: account = $walletStore.identities[$walletStore.selectedAddress];
-	$: keybtndisbaled = account.type !== AccountTypes.PrivateKey
+	let disabled = $derived(loading || !password || confirmPassword !== password || Boolean(passError));
+	let account = $derived($walletStore.identities[$walletStore.selectedAddress]);
+	let keybtndisbaled = $derived(account.type !== AccountTypes.PrivateKey
 		&& account.type !== AccountTypes.Seed
-		&& account.type !== AccountTypes.Track;
+		&& account.type !== AccountTypes.Track);
 
 	const hanldeOnTogglePhishingDetection = async () => {
 		await setPhishingDetection();
@@ -127,7 +127,7 @@
 			title={$_('security.password.title')}
 			description={$_('security.password.description')}
 		>
-			<form on:submit={handleSubmit}>
+			<form onsubmit={handleSubmit}>
 				<b>
 					{passError}
 				</b>
@@ -141,7 +141,7 @@
 						disabled={loading}
 						placeholder={$_('security.password.current')}
 						required
-						on:input={() => passError = ''}
+						oninput={() => passError = ''}
 					>
 				</label>
 				<label>
@@ -155,7 +155,7 @@
 						placeholder={$_('security.password.new')}
 						minlength={MIN_PASSWORD_LEN}
 						required
-						on:input={() => passError = ''}
+						oninput={() => passError = ''}
 					>
 				</label>
 				<input
@@ -168,7 +168,7 @@
 					placeholder={$_('restore.conf_placeholder')}
 					minlength={MIN_PASSWORD_LEN}
 					required
-					on:input={() => passError = ''}
+					oninput={() => passError = ''}
 				>
 				<Guard
 					algorithm={algorithm}

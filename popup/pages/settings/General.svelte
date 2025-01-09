@@ -50,7 +50,7 @@
 			title={$_('general.currency.title')}
 			description={$_('general.currency.description')}
 		>
-			<select on:input={hanldeChangeCurrency}>
+			<select oninput={hanldeChangeCurrency}>
 				{#each DEFAULT_CURRENCIES as currency}
 					<option
 						value={currency}
@@ -65,7 +65,7 @@
 			title={$_('general.theme.title')}
 			description={$_('general.theme.description')}
 		>
-			<select on:input={hanldeChangeTheme}>
+			<select oninput={hanldeChangeTheme}>
 				{#each themesList as theme}
 					<option
 						value={theme}
@@ -80,7 +80,7 @@
 			title={$_('general.lang.title')}
 			description={$_('general.lang.description')}
 		>
-			<select on:input={hanldeChangeLocale}>
+			<select oninput={hanldeChangeLocale}>
 				{#each locales as locale}
 					<option
 						value={locale}

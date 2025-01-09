@@ -17,17 +17,17 @@
   import Guard from '../components/Guard.svelte';
 
 
-	let loading = false;
-  let name = `${DEFAULT_NAME} 0`;
-  let passError = '';
-  let password: string;
-  let confirmPassword: string;
+	let loading = $state(false);
+  let name = $state(`${DEFAULT_NAME} 0`);
+  let passError = $state('');
+  let password: string = $state("");
+  let confirmPassword: string = $state("");
   // guard
-  let algorithm = ShaAlgorithms.Sha512;
-  let iteractions = ITERACTIONS;
+  let algorithm = $state(ShaAlgorithms.Sha512);
+  let iteractions = $state(ITERACTIONS);
   // guard
 
-  $: disabled = loading || !password || confirmPassword !== password || name.length < MIN_NAME_LEN;
+  let disabled = $derived(loading || !password || confirmPassword !== password || name.length < MIN_NAME_LEN);
 
 	onMount(() => {
     if ($wordsStore.length < 12) {
@@ -71,7 +71,7 @@
 	<h1>
     {$_('setup_acc.title')}
   </h1>
-  <form on:submit={handleSubmit}>
+  <form onsubmit={handleSubmit}>
     <label>
 			<input
 				bind:value={name}
@@ -93,8 +93,8 @@
         placeholder={$_('restore.pass_placeholder')}
         minlength={MIN_NAME_LEN}
         required
-        on:input={handleInputPassword}
-        on:blur={handleOnBlurPassword}
+        oninput={handleInputPassword}
+        onblur={handleOnBlurPassword}
       >
       {passError}
     </label>

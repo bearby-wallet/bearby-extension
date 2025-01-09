@@ -64,7 +64,7 @@
 </script>
 
 <label class:loading for={uuid}>
-	<span onmouseup={onClick}>
+	<span onmouseup={onClick} role="button" tabindex="0">
 		<TokenImage src={img} alt="input-token" width={28} height={28} />
 		<h3>
 			{symbol}
@@ -77,7 +77,7 @@
 			id={uuid}
 			{placeholder}
 			disabled={loading || disabled}
-			on:input={onInput}
+			oninput={onInput}
 		/>
 		<div>
 			{#if converted}

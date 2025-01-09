@@ -31,7 +31,7 @@
 	}
 </script>
 
-<form on:submit={handleSubmit}>
+<form onsubmit={handleSubmit}>
   <div class="warn-message">
     <strong>
       {$_('security.p_modal.warn')}
@@ -41,7 +41,7 @@
     <textarea
       bind:value={words}
       readonly
-    />
+    ></textarea>
   {:else}
     <label>
       <input
@@ -53,7 +53,7 @@
         autocomplete="off"
         placeholder={$_('lock.placeholder')}
         required
-        on:input={() => error = ''}
+        oninput={() => error = ''}
       >
     </label>
     <button

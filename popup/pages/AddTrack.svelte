@@ -46,7 +46,7 @@
 
 <main>
 	<NavClose title={$_('account_track.title')}/>
-  <form on:submit={handleSubmit}>
+  <form onsubmit={handleSubmit}>
     <label>
 			<input
 				bind:value={name}
@@ -65,7 +65,7 @@
         bind:value={address}
         class:error={addressError}
         placeholder={$_('send.recipient.placeholder')}
-        on:input={onInput}
+        oninput={onInput}
       >
       <p>
 				{$_('account_track.description')}

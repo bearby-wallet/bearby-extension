@@ -32,10 +32,6 @@
     }
 
     onMount(() => {
-        const handleNavigate = (event: CustomEvent) => {
-            push(event.detail.path);
-        };
-
         window.addEventListener('hashchange', handleRouteChange);
         handleRouteChange();
     });

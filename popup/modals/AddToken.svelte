@@ -153,7 +153,7 @@
       {$_("tokens.modals.add.btns.add")}
     </button>
   {:else}
-    <form autocomplete="off" on:submit={handleSubmit}>
+    <form autocomplete="off" onsubmit={handleSubmit}>
       <label>
         <input
           bind:this={inputEl}
@@ -164,7 +164,7 @@
           class:loading
           disabled={loading}
           placeholder={$_("tokens.modals.add.placeholder")}
-          on:input={hanldeOnInput}
+          oninput={hanldeOnInput}
         />
       </label>
       <button class="primary" disabled={disabled || loading} class:loading>

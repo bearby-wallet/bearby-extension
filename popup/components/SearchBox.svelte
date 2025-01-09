@@ -31,7 +31,7 @@
     bind:this={inputEl}
     placeholder={placeholder}
     type="search"
-    on:input={onInput}
+    oninput={onInput}
   >
   {#if $$slots.default}
     <slot />

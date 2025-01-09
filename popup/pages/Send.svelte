@@ -197,7 +197,7 @@
           <input
             bind:value={recipient}
             placeholder={$_("send.recipient.placeholder")}
-            on:input={onInputRecipient}
+            oninput={onInputRecipient}
           />
         </label>
       </div>
@@ -227,7 +227,8 @@
 </main>
 
 <style lang="scss">
-  @import "../styles/mixins";
+  @use "../styles/mixins";
+
   main {
     background: inherit;
     height: 100vh;

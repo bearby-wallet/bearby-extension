@@ -54,7 +54,7 @@
 
 <main>
   <NavClose title={$_("setup_acc.title")} />
-  <form on:submit={handleSubmit}>
+  <form onsubmit={handleSubmit}>
     <label>
       <input
         bind:value={name}

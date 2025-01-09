@@ -20,7 +20,7 @@
   type="checkbox"
   checked={checked}
   disabled={disabled}
-  on:input={handleOnChange}
+  oninput={handleOnChange}
 />
 <label
   class="tgl-btn"

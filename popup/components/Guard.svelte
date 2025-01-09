@@ -40,7 +40,7 @@
 
 <p
   class="advanced"
-  onmouseup={() => advanced = !advanced}
+  onclick={() => advanced = !advanced}
   >
   {$_('restore.advanced')}
 </p>
@@ -59,14 +59,14 @@
       max={MAX_ITERACTIONS}
       min="0"
       required
-      on:input={handleInputIteractions}
+      oninput={handleInputIteractions}
     >
   </label>
   <label>
     <b>
       {$_('restore.guard.algorithms')}
     </b>
-    <select on:input={handleOnChangeShaAlgorithm}>
+    <select oninput={handleOnChangeShaAlgorithm}>
       <option
         value={ShaAlgorithms.Sha512}
         selected={ShaAlgorithms.Sha512 === algorithm}

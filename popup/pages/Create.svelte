@@ -60,7 +60,7 @@
     {$_('create.sub_title')}
   </h3>
   <div class="sw">
-    <select on:input={handleOnChangeLen}>
+    <select oninput={handleOnChangeLen}>
       {#each [12, 15, 18, 21, 24] as v}
         <option
           value={v}

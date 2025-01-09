@@ -41,7 +41,7 @@
 	}
 </script>
 
-<form on:submit={handleSubmit}>
+<form onsubmit={handleSubmit}>
   <div id={uuid}/>
   <label class:error={Boolean(error)}>
     {error}
