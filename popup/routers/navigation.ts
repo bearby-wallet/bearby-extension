@@ -11,10 +11,12 @@ export function push(path: string) {
 }
 
 export function replace(path: string) {
-    const currentHash = window.location.hash;
-    if (currentHash !== `#${path}`) {
-        window.location.replace(`#${path}`);
-        currentPath = path;
+    const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+    const targetHash = `#${normalizedPath}`;
+    
+    if (window.location.hash !== targetHash) {
+        window.location.replace(targetHash);
+        currentPath = normalizedPath;
     }
 }
 
@@ -23,20 +25,22 @@ export function pop() {
 }
 
 export function route(node: HTMLAnchorElement) {
-  const handleClick = (event: Event) => {
-    event.preventDefault();
-    push(node.href);
-    const navigationEvent = new CustomEvent("navigation", {
-      detail: { href: node.href },
-    });
-    window.dispatchEvent(navigationEvent);
-  };
+    const handleClick = (event: Event) => {
+        event.preventDefault();
+        const path = new URL(node.href).pathname;
+        push(path);
+        
+        const navigationEvent = new CustomEvent("navigation", {
+            detail: { href: path },
+        });
+        window.dispatchEvent(navigationEvent);
+    };
 
-  node.addEventListener("click", handleClick);
+    node.addEventListener("click", handleClick);
 
-  return {
-    destroy() {
-      node.removeEventListener("click", handleClick);
-    },
-  };
+    return {
+        destroy() {
+            node.removeEventListener("click", handleClick);
+        },
+    };
 }

@@ -3,11 +3,10 @@
     import { routes, type Route } from './routers';
     import { RouteGuard } from './routers/guard';
 
-    import type { LegacyComponentType } from 'svelte/legacy';
     import type { SvelteComponent } from "svelte";
 
 
-    let currentComponent = $state<LegacyComponentType | SvelteComponent | null>(null);
+    let currentComponent = $state<typeof  SvelteComponent | null>(null);
 
     function findRoute(path: string): Route | undefined {
         return routes.find(route => {
