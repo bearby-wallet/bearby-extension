@@ -69,7 +69,7 @@
 </ul>
 
 <style lang="scss">
-  @import "../styles/mixins";
+  @use "../styles/mixins";
   ul {
     margin: 0;
     padding: 5px;

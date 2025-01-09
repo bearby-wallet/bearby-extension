@@ -91,7 +91,7 @@
 </label>
 
 <style lang="scss">
-	@import "../styles/mixins";
+	@use "../styles/mixins";
 
 	label {
 		display: flex;

@@ -34,7 +34,7 @@
 </nav>
 
 <style lang="scss">
-  @import "../styles/mixins";
+  @use "../styles/mixins";
   nav {
     max-width: 320px;
     height: 50px;

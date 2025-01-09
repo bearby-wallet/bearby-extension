@@ -82,7 +82,7 @@
 </main>
 
 <style lang="scss">
-	@import "../styles/mixins";
+	@use "../styles/mixins";
 	main {
 		background-color: var(--background-color);
 		height: 100vh;

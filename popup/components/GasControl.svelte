@@ -32,7 +32,7 @@
 </ul>
 
 <style lang="scss">
-  @import "../styles/mixins";
+  @use "../styles/mixins";
   ul {
     padding: 0px;
     margin: 0;

@@ -89,7 +89,7 @@
 </section>
 
 <style lang="scss">
-	@import "../../styles/mixins";
+	@use "../../styles/mixins";
 
 	main {
 		max-width: 520px;

@@ -127,7 +127,7 @@
 </main>
 
 <style lang="scss">
-  @import "../styles/mixins";
+  @use "../styles/mixins";
   main {
     background: inherit;
 		height: 100vh;

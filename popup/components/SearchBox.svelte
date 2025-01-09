@@ -39,7 +39,7 @@
 </div>
 
 <style lang="scss">
-  @import "../styles/mixins";
+  @use "../styles/mixins";
 
   div.search-box {
     background: var(--card-color);

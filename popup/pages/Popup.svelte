@@ -190,7 +190,7 @@
 </section>
 
 <style lang="scss">
-  @import "../styles/mixins";
+  @use "../styles/mixins";
   section {
     height: 100vh;
     padding-block-start: 16px;

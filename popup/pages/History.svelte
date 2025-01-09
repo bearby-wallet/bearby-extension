@@ -100,7 +100,7 @@
 </section>
 
 <style lang="scss">
-	@import "../styles/mixins";
+	@use "../styles/mixins";
 	main {
 		height: calc(100vh - 86px);
     max-width: 500px;

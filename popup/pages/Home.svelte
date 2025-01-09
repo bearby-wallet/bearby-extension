@@ -153,7 +153,7 @@
 </section>
 
 <style lang="scss">
-	@import "../styles/mixins";
+	@use "../styles/mixins";
 	main {
 		background: inherit;
 		height: calc(100vh - 86px);

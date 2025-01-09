@@ -8,7 +8,7 @@
 </div>
 
 <style lang="scss">
-  @import "../styles/mixins";
+  @use "../styles/mixins";
   div {
     display: inline-block;
 		cursor: pointer;

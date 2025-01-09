@@ -141,7 +141,7 @@
 </div>
 
 <style lang="scss">
-  @import "../styles/mixins";
+  @use "../styles/mixins";
   div.tx {
     height: 600px;
     @include flex-center-top-column;

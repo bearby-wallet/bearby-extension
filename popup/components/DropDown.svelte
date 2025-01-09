@@ -47,7 +47,7 @@
 </div>
 
 <style lang="scss">
-  @import "../styles/mixins";
+  @use "../styles/mixins";
   div.arrow {
     cursor: pointer;
     margin: 10px;

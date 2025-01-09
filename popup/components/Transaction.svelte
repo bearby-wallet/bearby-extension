@@ -42,7 +42,7 @@
 </div>
 
 <style lang="scss">
-  @import "../styles/mixins";
+  @use "../styles/mixins";
   div.card {
     cursor: pointer;
 

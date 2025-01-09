@@ -103,7 +103,7 @@
 </main>
 
 <style lang="scss">
-	@import "../styles/mixins";
+	@use "../styles/mixins";
   h1, h3 {
     text-align: center;
     margin-block-start: 0;

@@ -175,7 +175,7 @@
 </div>
 
 <style lang="scss">
-  @import "../styles/mixins";
+  @use "../styles/mixins";
   div.wrapper {
     @include flex-center-top-column;
   }

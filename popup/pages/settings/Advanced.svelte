@@ -92,7 +92,7 @@
 </main>
 
 <style lang="scss">
-	@import "../../styles/mixins";
+	@use "../../styles/mixins";
 
 	main {
 		height: 100vh;

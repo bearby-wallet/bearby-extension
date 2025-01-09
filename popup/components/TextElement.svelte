@@ -19,7 +19,7 @@
 </div>
 
 <style lang="scss">
-  @import "../styles/mixins";
+  @use "../styles/mixins";
 
   div.card-btn {
     background-color: var(--card-color);

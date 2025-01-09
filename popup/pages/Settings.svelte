@@ -69,7 +69,7 @@
 </section>
 
 <style lang="scss">
-	@import "../styles/mixins";
+	@use "../styles/mixins";
 	main {
 		@include flex-center-top-column;
 	}

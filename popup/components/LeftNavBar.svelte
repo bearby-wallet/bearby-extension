@@ -108,7 +108,7 @@
 <div class="close" class:show onmouseup={onClose} role="button" tabindex="0"></div>
 
 <style lang="scss">
-  @import "../styles/mixins";
+  @use "../styles/mixins";
   :global(span.close:hover > svg > line) {
     stroke: var(--primary-color) !important;
   }

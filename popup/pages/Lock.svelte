@@ -87,7 +87,7 @@
 </main>
 
 <style lang="scss">
-	@import "../styles/mixins";
+	@use "../styles/mixins";
 
 	h1 {
 		color: var(--text-color);

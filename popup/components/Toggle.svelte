@@ -28,7 +28,7 @@
 ></label>
 
 <style lang="scss">
-  @import "../styles/mixins";
+  @use "../styles/mixins";
   input {
     display: none;
 

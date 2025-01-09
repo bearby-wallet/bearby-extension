@@ -84,7 +84,7 @@
 </div>
 
 <style lang="scss">
-	@import "../styles/mixins";
+	@use "../styles/mixins";
 
   div.adv-wapr {
     display: none;

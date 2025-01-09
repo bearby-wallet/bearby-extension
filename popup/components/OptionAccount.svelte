@@ -53,7 +53,7 @@
 </label>
 
 <style lang="scss">
-	@import "../styles/mixins";
+	@use "../styles/mixins";
 
   h3 {
     margin-block-end: 0;

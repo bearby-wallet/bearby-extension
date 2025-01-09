@@ -47,7 +47,7 @@
 
 
 <style lang="scss">
-  @import "../styles/mixins";
+  @use "../styles/mixins";
   aside {
     position: fixed;
     width: 100%;

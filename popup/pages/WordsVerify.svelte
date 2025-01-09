@@ -81,7 +81,7 @@
 
 
 <style lang="scss">
-	@import "../styles/mixins";
+	@use "../styles/mixins";
   h1 {
     text-align: center;
     margin-block-start: 0;

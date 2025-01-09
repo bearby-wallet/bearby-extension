@@ -32,7 +32,7 @@
 </Tooltip>
 
 <style lang="scss">
-  @import "../styles/mixins";
+  @use "../styles/mixins";
   div.warp-tip {
     text-align: center;
     cursor: pointer;
