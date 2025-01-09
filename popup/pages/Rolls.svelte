@@ -47,8 +47,8 @@
 	$: account = $walletStore.identities[accountIndex];
   $: disabled = Number(tokens[0].value) > Number(balance) || Number(tokens[0].value) <= 0;
   $: balance =
-    account.tokens && account.tokens[token.base58]
-      ? toMass(account.tokens[token.base58].final, token.decimals)
+    account.tokens && account.tokens[tokens[0].meta.base58]
+      ? toMass(account.tokens[tokens[0].meta.base58].final, tokens[0].meta.decimals)
       : 0;
 
 
@@ -76,7 +76,7 @@
     const index = 0;
 
     if (newTokens[index].meta.base58 === rolls.base58) {
-      newTokens[index].value = newAmount;
+      newTokens[index].value = Big(newAmount).round();
       newTokens[1].value = newAmount.mul(rollPrice);
     } else {
       newTokens[index].value = newAmount;
