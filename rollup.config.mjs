@@ -25,44 +25,32 @@ const popup = {
   },
   plugins: [
     svelte({
-      // preprocess: sveltePreprocess({
-      //   sourceMap: !production,
-      //   style: sass(),
-      // }),
       preprocess: vitePreprocess(),
       compilerOptions: {
-        // enable run-time checks when not in production
         dev: !production,
       },
     }),
-    // we'll extract any component CSS out into
-    // a separate file - better for performance
     css({ output: "bundle.css" }),
-
-    // If you have external dependencies installed from
-    // npm, you'll most likely need these plugins. In
-    // some cases you'll need additional configuration -
-    // consult the documentation for details:
-    // https://github.com/rollup/plugins/tree/master/packages/commonjs
     resolve({
-      browser: true,
-      dedupe: ["svelte"],
+			browser: true,
+			dedupe: ['svelte'],
+			exportConditions: ['svelte']
+		}),
+    commonjs({
+       requireReturnsDefault: "auto"
     }),
-    commonjs(),
     typescript({
+      inlineSources: true,
       sourceMap: !production,
       inlineSources: !production,
     }),
-    production &&
-      terser({
-        format: {
-          comments: false,
-        },
-        compress: true,
-      }),
+    production && terser({
+      format: { comments: false },
+      compress: true,
+    }),
   ],
   watch: {
-    clearScreen: false,
+    clearScreen: true,
     include: ["popup/**"],
   },
 };
@@ -181,6 +169,6 @@ const content = {
 
 export default [
   popup,
-  background,
-  content
+  // background,
+  // content
 ];
