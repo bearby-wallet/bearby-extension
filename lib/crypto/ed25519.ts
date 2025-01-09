@@ -1,4 +1,7 @@
 /*! noble-ed25519 - MIT License (c) 2019 Paul Miller (paulmillr.com) */
+
+import { sha512 } from "./sha512";
+
 /**
  * 4KB JS implementation of ed25519 EDDSA signatures compliant with RFC8032, FIPS 186-5 & ZIP215.
  * @module
@@ -317,12 +320,8 @@ const uvRatio = (u: bigint, v: bigint): { isValid: boolean; value: bigint } => {
 };
 const modL_LE = (hash: Bytes): bigint => M(b2n_LE(hash), N); // modulo L; but little-endian
 export type Sha512FnSync = undefined | ((...messages: Bytes[]) => Bytes);
-let _shaS: Sha512FnSync;
 const sha512a = (...m: Bytes[]) => etc.sha512Async(...m); // Async SHA512
-const sha512s = (
-  ...m: Bytes[] // Sync SHA512, not set by default
-) =>
-  typeof _shaS === "function" ? _shaS(...m) : err("etc.sha512Sync not set");
+
 type ExtK = {
   head: Bytes;
   prefix: Bytes;
@@ -345,23 +344,17 @@ const hash2extK = (hashed: Bytes): ExtK => {
 // RFC8032 5.1.5; getPublicKey async, sync. Hash priv key and extract point.
 const getExtendedPublicKeyAsync = (priv: Hex) =>
   sha512a(toU8(priv, 32)).then(hash2extK);
-const getExtendedPublicKey = (priv: Hex) => hash2extK(sha512s(toU8(priv, 32)));
 /** Creates 32-byte ed25519 public key from 32-byte private key. Async. */
 const getPublicKeyAsync = (priv: Hex): Promise<Bytes> =>
   getExtendedPublicKeyAsync(priv).then((p) => p.pointBytes);
 /** Creates 32-byte ed25519 public key from 32-byte private key. To use, set `etc.sha512Sync` first. */
-const getPublicKey = (priv: Hex): Bytes =>
-  getExtendedPublicKey(priv).pointBytes;
 type Finishable<T> = {
   // Reduces logic duplication between
   hashable: Bytes;
   finish: (hashed: Bytes) => T; // sync & async versions of sign(), verify()
 }; // hashable=start(); finish(hash(hashable));
-function hashFinish<T>(asynchronous: true, res: Finishable<T>): Promise<T>;
-function hashFinish<T>(asynchronous: false, res: Finishable<T>): T;
-function hashFinish<T>(asynchronous: boolean, res: Finishable<T>) {
-  if (asynchronous) return sha512a(res.hashable).then(res.finish);
-  return res.finish(sha512s(res.hashable));
+function hashFinish<T>(res: Finishable<T>) {
+  return sha512a(res.hashable).then(res.finish);
 }
 const _sign = (e: ExtK, rBytes: Bytes, msg: Bytes): Finishable<Bytes> => {
   // sign() shared code
@@ -381,14 +374,7 @@ const signAsync = async (msg: Hex, privKey: Hex): Promise<Bytes> => {
   const m = toU8(msg); // RFC8032 5.1.6: sign msg with key async
   const e = await getExtendedPublicKeyAsync(privKey); // pub,prfx
   const rBytes = await sha512a(e.prefix, m); // r = SHA512(dom2(F, C) || prefix || PH(M))
-  return hashFinish(true, _sign(e, rBytes, m)); // gen R, k, S, then 64-byte signature
-};
-/** Signs message (NOT message hash) using private key. To use, set `etc.sha512Sync` first. */
-const sign = (msg: Hex, privKey: Hex): Bytes => {
-  const m = toU8(msg); // RFC8032 5.1.6: sign msg with key sync
-  const e = getExtendedPublicKey(privKey); // pub,prfx
-  const rBytes = sha512s(e.prefix, m); // r = SHA512(dom2(F, C) || prefix || PH(M))
-  return hashFinish(false, _sign(e, rBytes, m)); // gen R, k, S, then 64-byte signature
+  return hashFinish(_sign(e, rBytes, m)); // gen R, k, S, then 64-byte signature
 };
 /** Verification options. zip215: true (default) follows ZIP215 spec. false would follow RFC8032. */
 export type VerifOpts = { zip215?: boolean };
@@ -433,10 +419,7 @@ const verifyAsync = async (
   m: Hex,
   p: Hex,
   opts: VerifOpts = dvo,
-): Promise<boolean> => hashFinish(true, _verify(s, m, p, opts));
-/** Verifies signature on message and public key. To use, set `etc.sha512Sync` first. */
-const verify = (s: Hex, m: Hex, p: Hex, opts: VerifOpts = dvo): boolean =>
-  hashFinish(false, _verify(s, m, p, opts));
+): Promise<boolean> => hashFinish(_verify(s, m, p, opts));
 declare const globalThis: Record<string, any> | undefined; // Typescript symbol present in browsers
 const cr = () =>
   // We support: 1) browsers 2) node.js 19+
@@ -464,32 +447,17 @@ const etc = {
     return c.getRandomValues(u8n(len));
   },
   sha512Async: async (...messages: Bytes[]): Promise<Bytes> => {
-    const c = cr();
-    const s = c && c.subtle;
-    if (!s) err("etc.sha512Async or crypto.subtle must be defined");
     const m = concatB(...messages);
-    return u8n(await s.digest("SHA-512", m.buffer));
+    const hash = await sha512(m.buffer);
+
+    return u8n(hash);
   },
-  sha512Sync: undefined as Sha512FnSync, // Actual logic below
 };
-Object.defineProperties(etc, {
-  sha512Sync: {
-    // Allow setting it once. Next sets will be ignored
-    configurable: false,
-    get() {
-      return _shaS;
-    },
-    set(f) {
-      if (!_shaS) _shaS = f;
-    },
-  },
-});
 /** ed25519-specific key utilities. */
 const utils = {
   getExtendedPublicKeyAsync: getExtendedPublicKeyAsync as (
     priv: Hex,
   ) => Promise<ExtK>,
-  getExtendedPublicKey: getExtendedPublicKey as (priv: Hex) => ExtK,
   randomPrivateKey: (): Bytes => etc.randomBytes(32),
   precompute: (w = 8, p: Point = G): Point => {
     p.multiply(3n);
@@ -554,10 +522,7 @@ const wNAF = (n: bigint): { p: Point; f: Point } => {
   return { p, f }; // return both real and fake points for JIT
 }; // !! you can disable precomputes by commenting-out call of the wNAF() inside Point#mul()
 export {
-  getPublicKey,
   getPublicKeyAsync,
-  sign,
-  verify, // Remove the export to easily use in REPL
   signAsync,
   verifyAsync,
   CURVE,

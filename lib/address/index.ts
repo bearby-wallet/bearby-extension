@@ -1,7 +1,7 @@
 import type { PrivateKey, PublicKey } from "types/account";
 
 import blake3 from "blake3-js";
-import { getPublicKey } from "lib/crypto/ed25519";
+import { getPublicKeyAsync } from "lib/crypto/ed25519";
 import { sha256 } from "lib/crypto/sha256";
 
 import { base58ToBinary, binaryToBase58 } from "lib/crypto/base58";
@@ -96,7 +96,7 @@ export async function publicKeyBytesFromPrivateKey({
   privKey,
   version,
 }: PrivateKey): Promise<PublicKey> {
-  let pubKey = await getPublicKey(privKey);
+  let pubKey = await  getPublicKeyAsync(privKey);
 
   pubKey = Uint8Array.from([version, ...pubKey]);
 

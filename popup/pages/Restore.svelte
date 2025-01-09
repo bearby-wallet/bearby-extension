@@ -109,7 +109,7 @@
     <div class="inputs-warp">
       {#each Array(length) as _, index}
         <input
-          type="text"
+          type="password"
           placeholder={'#' + (index + 1)}
           bind:value={words[index]}
           class:error={!errors[index]}
