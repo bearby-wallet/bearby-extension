@@ -1,5 +1,6 @@
 /*! noble-ed25519 - MIT License (c) 2019 Paul Miller (paulmillr.com) */
 
+import { randomBytes } from "./random";
 import { sha512 } from "./sha512";
 
 /**
@@ -420,12 +421,6 @@ const verifyAsync = async (
   p: Hex,
   opts: VerifOpts = dvo,
 ): Promise<boolean> => hashFinish(_verify(s, m, p, opts));
-declare const globalThis: Record<string, any> | undefined; // Typescript symbol present in browsers
-const cr = () =>
-  // We support: 1) browsers 2) node.js 19+
-  typeof globalThis === "object" && "crypto" in globalThis
-    ? globalThis.crypto
-    : undefined;
 /** Math, hex, byte helpers. Not in `utils` because utils share API with noble-curves. */
 const etc = {
   bytesToHex: b2h satisfies (b: Bytes) => string as (b: Bytes) => string,
@@ -438,14 +433,7 @@ const etc = {
     b?: bigint,
   ) => bigint,
   invert: invert as (num: bigint, md: bigint) => bigint,
-  randomBytes: (len = 32): Bytes => {
-    // CSPRNG (random number generator)
-    const c = cr(); // Can be shimmed in node.js <= 18 to prevent error:
-    // import { webcrypto } from 'node:crypto';
-    // if (!globalThis.crypto) globalThis.crypto = webcrypto;
-    if (!c || !c.getRandomValues) err("crypto.getRandomValues must be defined");
-    return c.getRandomValues(u8n(len));
-  },
+  randomBytes: randomBytes,
   sha512Async: async (...messages: Bytes[]): Promise<Bytes> => {
     const m = concatB(...messages);
     const hash = await sha512(m.buffer);
