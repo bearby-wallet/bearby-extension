@@ -2,7 +2,7 @@
     import { onMount, onDestroy } from 'svelte';
     import { matchRoute, notFoundRoute, parseUrlParams, routes  } from './routers';
     import { RouteGuard } from './routers/guard';
-    import { currentRoute } from "popup/store/route";
+    import { currentParams, currentRoute } from "popup/store/route";
     import { push } from './routers/navigation';
 
     export function findRouteByHash(hash: string) {
@@ -20,6 +20,8 @@
         const path = window.location.hash.slice(1) || '/';
         const route = findRouteByHash(path);
         const params = parseUrlParams(route.path, path);
+
+        currentParams.set(params);
 
         if (route) {
             const guardedRoute = await RouteGuard.checkRoute(route);
@@ -44,6 +46,6 @@
 </script>
 
 {#if $currentRoute}
-    <svelte:component this={$currentRoute.component} />
+    <svelte:component this={$currentRoute.component} {...$currentParams}/>
 {/if}
 

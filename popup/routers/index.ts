@@ -31,7 +31,6 @@ import NotFoundPage from '../pages/NotFoundPage.svelte';
 
 import type { LegacyComponentType } from 'svelte/legacy';
 
-
 interface Route {
     path: string;
     component: LegacyComponentType;
@@ -62,7 +61,7 @@ export const protectedRoutes: Route[] = [
     { path: "/security", component: SecurityPage, isProtected: true },
     { path: "/general", component: GeneralPage, isProtected: true },
     { path: "/advanced", component: AdvancedPage, isProtected: true },
-    { path: "/send/:id/:address?", component: SendPage, isProtected: true },
+    { path: "/send/:index/:address?", component: SendPage, isProtected: true },
     { path: "/add", component: AddSeedAccountPage, isProtected: true },
     { path: "/import", component: RestorePrivateKeyPage, isProtected: true },
     { path: "/network", component: NetworkPage, isProtected: true }

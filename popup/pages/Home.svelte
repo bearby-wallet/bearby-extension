@@ -38,7 +38,7 @@
 		? $connectionsAppsStore.find((a) => a.domain == $appsStore.domain)
 		: null;
 
-	const onRefresh = async (rate = false) => {
+	const onRefresh = async () => {
 		await getConnections();
 		loading = true;
 		try {
@@ -57,7 +57,7 @@
 			return push("/rolls");
 		}
 
-		return push(`/send/0`);
+		return push(`/send/${index}`);
 	};
 	const onChangeAppConnection = async (e: CustomEvent) => {
 		let indexies = e.detail;
@@ -107,7 +107,7 @@
 	<TopBar
 		view
 		conn
-		on:refresh={() => onRefresh(true)}
+		on:refresh={() => onRefresh()}
 		on:connections={() => (connectionsModal = !connectionsModal)}
 	/>
 	<img src="/imgs/logo.webp" alt="logo" class="logo" />

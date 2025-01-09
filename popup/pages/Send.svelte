@@ -31,30 +31,33 @@
 
   Big.PE = 99;
 
-  export let params = {
-    index: 0,
-    recipient: "",
-  };
+  interface Props {
+    index: number;
+    recipient: string;
+  }
 
-  let uuid = uuidv4();
-  let error = "";
-  let loading = false;
-  let amount = Big(0);
-  let recipient = params.recipient;
-  let accountIndex = $walletStore.selectedAddress;
-  let selectedToken = Number(params.index);
-  let tokensModal = false;
-  let accountsModal = false;
-  let contactsModal = false;
-  let recipientError = "";
+  let params: Props = $props();
 
-  $: token = $tokensStore[selectedToken];
-  $: account = $walletStore.identities[accountIndex];
-  $: balance =
+  let uuid = $state(uuidv4());
+  let error = $state("");
+  let loading = $state(false);
+  let amount = $state(Big(0));
+  let recipient = $state(params.recipient);
+  let accountIndex = $state($walletStore.selectedAddress);
+  let selectedToken = $state(Number(params.index));
+  let tokensModal = $state(false);
+  let accountsModal = $state(false);
+  let contactsModal = $state(false);
+  let recipientError = $state("");
+
+
+  let token = $derived.by(() => $tokensStore[selectedToken]);
+  let account = $derived($walletStore.identities[accountIndex]);
+  let balance = $derived(
     account.tokens && account.tokens[token.base58]
       ? toMass(account.tokens[token.base58].final, token.decimals)
-      : 0;
-  $: disabled = amount.lte(0) || amount.gt(balance) || !recipient;
+      : 0);
+  let disabled = $derived(amount.lte(0) || amount.gt(balance) || !recipient);
 
   function hanldeOnInput(event: CustomEvent) {
     error = "";
