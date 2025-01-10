@@ -3,7 +3,6 @@
     import { matchRoute, notFoundRoute, parseUrlParams, routes  } from './routers';
     import { RouteGuard } from './routers/guard';
     import { currentParams, currentRoute } from "popup/store/route";
-    import { push } from './routers/navigation';
 
     export function findRouteByHash(hash: string) {
         const path = hash.replace('#', '').replace(/^\//, '/');

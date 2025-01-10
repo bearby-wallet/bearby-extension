@@ -1,13 +1,15 @@
-export let currentPath = window.location.hash.slice(1) || '/';
+import { get } from "svelte/store";
+import { currentRoute } from "popup/store/route";
+
 
 export function getCurrentRoute(): string {
-    const path = currentPath;
-    return path.split('?')[0];
+    let rote = get(currentRoute);
+
+    return rote?.path || "";
 }
 
 export function push(path: string) {
     window.location.hash = path;
-    currentPath = path;
 }
 
 export function replace(path: string) {
@@ -16,7 +18,6 @@ export function replace(path: string) {
     
     if (window.location.hash !== targetHash) {
         window.location.replace(targetHash);
-        currentPath = normalizedPath;
     }
 }
 
