@@ -42,8 +42,6 @@
 
   let account = $derived($walletStore.identities[index]);
 
-  console.log(transaction);
-
   async function onSelectAccount(e: CustomEvent) {
     loading = true;
     try {
@@ -197,23 +195,22 @@
   @use '../styles/mixins' as mix;
 
   section {
+    @include mix.flex-center-top-column;
     height: 100vh;
     padding-block-start: 16px;
-
-    @include mix.flex-center-top-column;
-
+  
     & > div {
       width: 100%;
       padding-left: 10px;
       padding-right: 10px;
     }
   }
+
   main {
+    @include mix.flex-center-column;
     height: calc(100vh - 36px);
     max-height: 600px;
     overflow-y: scroll;
-
-    @include mix.flex-center-column;
     justify-content: space-between;
 
     & > div.warp {
@@ -225,6 +222,7 @@
         word-break: break-all;
       }
     }
+
     & > div.btns {
       @include mix.flex-between-row;
 
@@ -233,6 +231,7 @@
         min-width: 140px;
       }
     }
+
     & > div.params {
       margin: 8px;
       box-shadow:
@@ -240,7 +239,6 @@
         rgb(0 0 0 / 4%) 0px 4px 8px,
         rgb(0 0 0 / 4%) 0px 16px 24px,
         rgb(0 0 0 / 1%) 0px 24px 32px;
-
       background-color: var(--card-color);
       @include mix.border-radius(16px);
 

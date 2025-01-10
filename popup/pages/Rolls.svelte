@@ -179,63 +179,85 @@
 </main>
 
 <style lang="scss">
-	@use '../styles/mixins' as mix;
+  @use '../styles/mixins' as mix;
+
   main {
-		height: 100vh;
+   & {
+     height: 100vh;
+     @include mix.flex-center-top-column;
+   }
+  }
 
-		@include mix.flex-center-top-column;
-	}
   form {
-		@include mix.flex-center-column;
+   & {
+     @include mix.flex-center-column;
+     min-width: 290px;
+     max-width: 500px;
+     width: 100%;
+     padding-left: 5px;
+     padding-right: 5px;
+   }
 
-		min-width: 290px;
-    max-width: 500px;
-    width: 100%;
+   & > p {
+     & {
+       width: 100%;
+       line-height: 0;
+       text-indent: 8px;
+     }
+   }
 
-    padding-left: 5px;
-    padding-right: 5px;
+   & > div.seporate {
+     & {
+       width: 100%;
+       padding-left: 8px;
+       padding-right: 8px;
+       @include mix.flex-between-row;
+     }
 
-    & > p {
-      width: 100%;
-      line-height: 0;
-      text-indent: 8px;
-    }
-		& > div.seporate {
-			width: 100%;
-			padding-left: 8px;
-			padding-right: 8px;
+     & > p {
+       & {
+         line-height: 0;
+         text-indent: 8px;
+       }
+     }
 
-			@include mix.flex-between-row;
+     & > span {
+       & {
+         cursor: pointer;
+       }
 
-			& > p {
-        line-height: 0;
-        text-indent: 8px;
-			}
-			& > span {
-				cursor: pointer;
+       &:hover {
+         & :global(.swap-icon > path) {
+           & {
+             fill: var(--primary-color);
+           }
+         }
+       }
+     }
+   }
 
-				&:hover {
-					& > :global(.swap-icon > path) {
-						fill: var(--primary-color);
-					}
-				}
-			}
-		}
-		& > button {
-			width: 100%;
-		}
-		& > :global(label),
-		& > button {
-			margin-block-end: 5px;
-			margin-block-start: 5px;
+   & > button {
+     & {
+       width: 100%;
+     }
+   }
 
-			&:disabled {
-				&:hover {
-					border-color: var(--button-color);
-					background: var(--button-color);
-					color: var(--primary-color);
-				}
-			}
-		}
-	}
+   & > :global(label),
+   & > button {
+     & {
+       margin-block-end: 5px;
+       margin-block-start: 5px;
+     }
+
+     &:disabled {
+       &:hover {
+         & {
+           border-color: var(--button-color);
+           background: var(--button-color);
+           color: var(--primary-color);
+         }
+       }
+     }
+   }
+  }
 </style>

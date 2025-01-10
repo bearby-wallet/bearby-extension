@@ -13,9 +13,9 @@ clean:
 build: clean
 	$(BUN) run build
 	cd $(BUILD_DIR) && zip -r ../$(MV2_FILE_NAME) ./
-	shasum $(shell find $(BUILD_DIR)/* -type f) > $(MV2_HASHSUM_FILE_NAME)
+	cd $(BUILD_DIR) && find . -type f -exec shasum {} + > ../$(MV2_HASHSUM_FILE_NAME)
 	rm -rf $(BUILD_DIR)
 	$(BUN) run build:v3
 	cd $(BUILD_DIR) && zip -r ../$(MV3_FILE_NAME) ./
-	shasum $(shell find $(BUILD_DIR)/* -type f) > $(MV3_HASHSUM_FILE_NAME)
+	cd $(BUILD_DIR) && find . -type f -exec shasum {} + > ../$(MV3_HASHSUM_FILE_NAME)
 	@echo "Done building beabry wallet"

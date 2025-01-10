@@ -42,7 +42,7 @@ const popup = {
         handler(warning);
       }
     }),
-   postcss({
+    postcss({
       extract: 'bundle.css',
       minimize: production,
       sourceMap: !production,
@@ -52,9 +52,20 @@ const popup = {
             discardComments: {
               removeAll: true,
             },
+            cssDeclarationSorter: true,
+            normalizeWhitespace: true,
+            minifySelectors: true
           }],
         })
-      ].filter(Boolean)
+      ].filter(Boolean),
+      onwarn: (warning) => {
+        if (production) return;
+        console.warn(warning);
+      },
+      inject: false,
+      watch: production ? false : {
+        clearScreen: false
+      }
     }),
     resolve({
 			browser: true,
@@ -198,6 +209,6 @@ const content = {
 
 export default [
   popup,
-  // background,
-  // content
+  background,
+  content
 ];

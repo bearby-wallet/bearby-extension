@@ -33,32 +33,41 @@
 
 <style lang="scss">
   @use '../styles/mixins' as mix;
+
   ul {
-    padding: 0px;
-    margin: 0;
-    background-color: var(--card-color);
+    & {
+      padding: 0px;
+      margin: 0;
+      background-color: var(--card-color);
 
-    @include mix.flex-between-row;
-    @include mix.border-radius(16px);
-
-    & > li {
-      cursor: pointer;
-
-      margin: 5px;
-      padding: 8px;
-      min-width: 70px;
-      min-height: 40px;
-      text-align: center;
-
+      @include mix.flex-between-row;
       @include mix.border-radius(16px);
-      @include mix.flex-center-column;
 
-      &.selected {
-        background-color: var(--background-color);
-      }
-      & > h3 {
-        @include mix.fluid-text(1024px, 10pt, 14pt);
-        margin: 0;
+      & > li {
+        & {
+          cursor: pointer;
+          margin: 5px;
+          padding: 8px;
+          min-width: 70px;
+          min-height: 40px;
+          text-align: center;
+
+          @include mix.border-radius(16px);
+          @include mix.flex-center-column;
+        }
+
+        &.selected {
+          & {
+            background-color: var(--background-color);
+          }
+        }
+
+        & > h3 {
+          & {
+            margin: 0;
+            @include mix.fluid-text(1024px, 10pt, 14pt);
+          }
+        }
       }
     }
   }
