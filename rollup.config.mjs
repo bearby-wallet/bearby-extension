@@ -15,7 +15,7 @@ import pkg from "./package.json" with { type: "json" };
 
 const watchMode = !!process.env.ROLLUP_WATCH;
 const production = process.env.NODE_ENV == 'production';
-const manifest = process.env.MANIFEST || 3;
+const manifest = process.env.MANIFEST || 2;
 
 console.log(`build for ${production ? 'production' : 'dev'}, watchmode: ${watchMode}, manifest: ${manifest}`);
 
