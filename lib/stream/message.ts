@@ -1,6 +1,8 @@
 import type { ReqBody } from "types";
 
 import { Runtime } from "lib/runtime";
+import { ManifestVersions } from "config/manifest-versions";
+import { getManifestVersion } from "lib/runtime/manifest";
 
 /**
  * Message class can send payload or make signal message.
@@ -36,15 +38,17 @@ export class Message<T> {
    * Send MessageSelf object.
    */
   async send(): Promise<T> {
-    for (let index = 0; index < 100; index++) {
-      try {
+    if (ManifestVersions.V2 == getManifestVersion()) {
+      const res = await this.#trySend();
+
+      return res;
+    } else {
+      for (let index = 0; index < 100; index++) {
         const res = await this.#trySend();
 
         if (res) {
           return res;
         }
-      } catch {
-        continue;
       }
     }
 
@@ -54,7 +58,9 @@ export class Message<T> {
   #trySend(): Promise<T> {
     return new Promise((resolve) => {
       try {
-        Runtime.runtime.sendMessage(this._body, resolve);
+        // firefox problem with proxy type.
+        let data = JSON.parse(JSON.stringify(this._body));
+        Runtime.runtime.sendMessage(data, resolve);
       } catch (err) {
         console.error(this, err);
         window.location.reload();

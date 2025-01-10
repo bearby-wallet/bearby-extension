@@ -6,7 +6,7 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production rollup -c --no-watch --forceExit",
     "build:v3": "cross-env NODE_ENV=production MANIFEST=3 rollup -c --no-watch --forceExit",
-    "dev": "rollup -c -w",
+    "dev": "cross-env MANIFEST=2 rollup -c -w",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "format": "prettier --write ."
   },

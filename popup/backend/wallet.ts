@@ -43,13 +43,14 @@ export async function createWallet(
 }
 
 export async function checBip39Word(words: string[]) {
-  const data = await new Message<SendResponseParams>({
+  const data = new Message<SendResponseParams>({
     type: MTypePopup.BIP39_WORD_CHECK,
     payload: {
       words,
     },
-  }).send();
-  const resolve = warpMessage(data);
+  });
+  console.log(data);
+  const resolve = warpMessage(await data.send());
   return resolve as boolean[];
 }
 
