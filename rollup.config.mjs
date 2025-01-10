@@ -2,7 +2,8 @@ import svelte from "rollup-plugin-svelte";
 import commonjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
 import typescript from "@rollup/plugin-typescript";
-import css from "rollup-plugin-css-only";
+import postcss from 'rollup-plugin-postcss';
+import cssnano from 'cssnano';
 import copy from "rollup-plugin-copy";
 import json from "@rollup/plugin-json";
 import { terser } from "rollup-plugin-terser";
@@ -12,8 +13,11 @@ import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import pkg from "./package.json" with { type: "json" };
 
 
-const production = !process.env.ROLLUP_WATCH;
+const watchMode = !!process.env.ROLLUP_WATCH;
+const production = process.env.NODE_ENV == 'production';
 const manifest = process.env.MANIFEST || 2;
+
+console.log(`build for ${production ? 'production' : 'dev'}, watchmode: ${watchMode}, manifest: ${manifest}`);
 
 const popup = {
   input: "popup/main.ts",
@@ -28,9 +32,30 @@ const popup = {
       preprocess: vitePreprocess(),
       compilerOptions: {
         dev: !production,
+        accessors: !production,
+        immutable: !production,
       },
+      emitCss: true,
+      onwarn: (warning, handler) => {
+        if (production) return;
+
+        handler(warning);
+      }
     }),
-    css({ output: "bundle.css" }),
+   postcss({
+      extract: 'bundle.css',
+      minimize: production,
+      sourceMap: !production,
+      plugins: [
+        production && cssnano({
+          preset: ['default', {
+            discardComments: {
+              removeAll: true,
+            },
+          }],
+        })
+      ].filter(Boolean)
+    }),
     resolve({
 			browser: true,
 			dedupe: ['svelte'],
@@ -40,7 +65,6 @@ const popup = {
        requireReturnsDefault: "auto"
     }),
     typescript({
-      inlineSources: true,
       sourceMap: !production,
       inlineSources: !production,
     }),
@@ -48,11 +72,16 @@ const popup = {
       format: { comments: false },
       compress: true,
     }),
-  ],
-  watch: {
-    clearScreen: true,
+  ].filter(Boolean),
+  watch: production ? false : {
+    clearScreen: false,
     include: ["popup/**"],
   },
+  onwarn(warning, warn) {
+    if (production) return;
+    
+    warn(warning);
+  }
 };
 const background = {
   input: "core/background/index.ts",
@@ -146,7 +175,7 @@ const content = {
     resolve({
       jsnext: true,
       main: true,
-      brower: true,
+      browser: true,
       preferBuiltins: false,
     }),
     typescript({
