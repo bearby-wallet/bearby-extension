@@ -85,6 +85,24 @@ export class BackgroundTransaction {
     }
   }
 
+  async runTrackTxns(
+    sendResponse: StreamResponse,
+  ) {
+    try {
+      this.#core.guard.checkSession();
+
+      await this.#core.worker.trackTransactions();
+
+      return sendResponse({
+        resolve: this.#core.state,
+      });
+    } catch (err) {
+      return sendResponse({
+        reject: (err as BaseError).serialize(),
+      });
+    }
+  }
+
   async addToConfirm(
     params: MinTransactionParams,
     sendResponse: StreamResponse,

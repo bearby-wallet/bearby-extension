@@ -119,7 +119,7 @@ export class WorkerController {
     const newCycle = Number(result.current_cycle);
 
     await this.#setPeriod(newPeriod);
-    await this.#trackTransactions();
+    await this.trackTransactions();
 
     new TabsMessage({
       type: MTypeTab.NEW_SLOT,
@@ -138,7 +138,7 @@ export class WorkerController {
     }
   }
 
-  async #trackTransactions() {
+  async trackTransactions() {
     const list = this.#transactions.history;
     const now = new Date().getTime();
     const dilaySeconds = 3000;

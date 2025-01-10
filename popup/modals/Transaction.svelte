@@ -1,6 +1,5 @@
 <script lang="ts">
   import type { HistoryTransaction } from "types";
-
   import { _ } from "popup/i18n";
 
   import { trim } from "popup/filters/trim";

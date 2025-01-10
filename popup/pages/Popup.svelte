@@ -26,7 +26,7 @@
 
   import { AccountTypes } from "config/account-type";
   import type { ConfirmParams } from "types/transaction";
-    import { OperationsType } from "background/provider/operations";
+  import { OperationsType } from "background/provider/operations";
 
   const url = new URL(window.location.href);
 

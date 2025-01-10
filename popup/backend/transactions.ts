@@ -91,3 +91,11 @@ export async function signMessageApprove() {
   updateState(resolve as WalletState);
   return resolve;
 }
+
+export async function runTxnsTrack() {
+  const data = await Message.signal(MTypePopup.RUN_TX_TRACK).send();
+  const resolve = warpMessage(data);
+  updateState(resolve as WalletState);
+  return resolve;
+}
+

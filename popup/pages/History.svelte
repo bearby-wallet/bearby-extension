@@ -4,7 +4,7 @@
 	import { onMount } from 'svelte';
 	import { _ } from 'popup/i18n';
 
-  import { getTransactionHistory, clearAllTransactions } from 'popup/backend/transactions';
+  import { getTransactionHistory, clearAllTransactions, runTxnsTrack } from 'popup/backend/transactions';
   import historyStore from "app/store/history";
 
 	import BottomTabs from '../components/BottomTabs.svelte';
@@ -21,7 +21,7 @@
 
   const hanldeOnUpdate = async () => {
     try {
-      await getTransactionHistory();
+        await getTransactionHistory();
     } catch (err) {
       console.error(err);
     }
@@ -33,6 +33,13 @@
 
   onMount(async() => {
     await hanldeOnUpdate();
+
+    try {
+      await runTxnsTrack();
+      await getTransactionHistory();
+    } catch (err) {
+      console.error(err);
+    }
   });
 </script>
 

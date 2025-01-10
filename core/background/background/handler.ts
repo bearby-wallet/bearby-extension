@@ -54,6 +54,9 @@ export function startBackground(core: BackgroundState) {
             sendResponse,
           );
           return true;
+        case MTypePopup.RUN_TX_TRACK:
+          transaction.runTrackTxns(sendResponse);
+          return true;
         case MTypeTab.TX_TO_SEND:
           transaction.addToConfirm(msg.payload, sendResponse);
           return true;

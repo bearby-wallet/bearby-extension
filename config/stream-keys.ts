@@ -71,6 +71,8 @@ export const MTypePopup = {
   REJECT_MESSAGE: `@/${app}/reject-message`,
   APPROVE_MESSAGE: `@/${app}/approve-message`,
 
+  RUN_TX_TRACK: `@/${app}/trigger-run-tx-track`,
+
   GET_FT_STATES: `@/${app}/get-ft-state`,
   ADD_FT_TOKEN: `@/${app}/add-ft-token`,
   RM_FT_TOKEN: `@/${app}/rm-ft-token`,
