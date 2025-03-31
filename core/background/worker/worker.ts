@@ -218,6 +218,8 @@ export class WorkerController {
   }
 
   async #updateProviders(connectedNodes: string[]) {
+    // TODO: disbale method.
+    return;
     if (connectedNodes.length === 0) return;
 
     const config = this.#network.config;

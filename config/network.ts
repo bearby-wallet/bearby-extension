@@ -2,7 +2,7 @@ import type { NetworkSettingsState, NetworkConfig } from "types";
 
 export const NETWORK: NetworkConfig = Object.freeze({
   mainnet: {
-    PROVIDERS: ["https://mainnet.massa.net/api/v2"],
+    PROVIDERS: ["https://mainnet.massa.net/api/v2", "https://massa.bearby.io"],
     VERSION: 0,
     CHAIN_ID: 77658377,
   },

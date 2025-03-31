@@ -150,7 +150,7 @@ export class NetworkControl {
   async sortProvider(node: string) {
     const providers = this.config[this.selected].PROVIDERS;
 
-    this.#config[this.selected].PROVIDERS = providers.sort((a, b) => {
+    this.#config[this.selected].PROVIDERS = providers.sort((a, _) => {
       if (a === node) {
         return -1;
       }
@@ -162,7 +162,7 @@ export class NetworkControl {
   }
 
   async removeProvider(node: string) {
-    if (node === NETWORK[this.selected].PROVIDERS[0]) {
+    if (NETWORK[this.selected].PROVIDERS.includes(node)) {
       return;
     }
 
