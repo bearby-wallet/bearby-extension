@@ -16,6 +16,7 @@ import {
 import { Args, parseParams } from "lib/args";
 import { u64ToBytes, u8toByte } from "lib/args/numbers";
 import { BaseError } from "lib/error";
+import { GAS_LIMIT } from "config/gas";
 
 export class PaymentBuild {
   static operation = OperationsType.Payment;
@@ -26,13 +27,13 @@ export class PaymentBuild {
   expirePeriod: number;
 
   constructor(
-    fee: string,
-    amount: string,
+    fee: string | undefined,
+    amount: string | undefined,
     recipientAddress: string,
     expirePeriod: number,
   ) {
-    this.fee = BigInt(fee);
-    this.amount = BigInt(amount);
+    this.fee = BigInt(fee ?? GAS_LIMIT);
+    this.amount = BigInt(amount ?? 0);
     this.recipientAddress = recipientAddress;
     this.expirePeriod = expirePeriod;
   }
@@ -74,9 +75,9 @@ export class BuyRollsBuild {
   amount: bigint;
   expirePeriod: number;
 
-  constructor(fee: string, amount: string, expirePeriod: number) {
-    this.fee = BigInt(fee);
-    this.amount = BigInt(amount);
+  constructor(fee: string | undefined, amount: string | undefined, expirePeriod: number) {
+    this.fee = BigInt(fee ?? GAS_LIMIT);
+    this.amount = BigInt(amount ?? 0);
     this.expirePeriod = expirePeriod;
   }
 
@@ -102,9 +103,9 @@ export class SellRollsBuild {
   amount: bigint;
   expirePeriod: number;
 
-  constructor(fee: string, amount: string, expirePeriod: number) {
-    this.fee = BigInt(fee);
-    this.amount = BigInt(amount);
+  constructor(fee: string | undefined, amount: string | undefined, expirePeriod: number) {
+    this.fee = BigInt(fee ?? GAS_LIMIT);
+    this.amount = BigInt(amount ?? 0);
     this.expirePeriod = expirePeriod;
   }
 
@@ -248,7 +249,7 @@ export class CallSmartContractBuild {
   constructor(
     functionName: string,
     parameters: CallParam[],
-    fee: string,
+    fee: string | undefined,
     expirePeriod: number,
     maxGas: bigint,
     coins: string,
@@ -258,7 +259,7 @@ export class CallSmartContractBuild {
     this.functionName = functionName;
     this.maxGas = maxGas;
     this.coins = BigInt(coins);
-    this.fee = BigInt(fee);
+    this.fee = BigInt(fee ?? GAS_LIMIT);
     this.expirePeriod = expirePeriod;
     this.targetAddress = targetAddress;
 

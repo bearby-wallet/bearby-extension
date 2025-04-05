@@ -1,12 +1,12 @@
 {
   "name": "bearby-extension",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "repository": "git@github.com:bearby-wallet/bearby-extension.git",
   "author": "Rinat <hicc0rus@gmail.com>",
   "scripts": {
     "build": "cross-env NODE_ENV=production rollup -c --no-watch --forceExit",
     "build:v3": "cross-env NODE_ENV=production MANIFEST=3 rollup -c --no-watch --forceExit",
-    "dev": "cross-env MANIFEST=2 rollup -c -w",
+    "dev": "cross-env MANIFEST=3 rollup -c -w",
     "check": "svelte-check --tsconfig ./tsconfig.json",
     "format": "prettier --write ."
   },
