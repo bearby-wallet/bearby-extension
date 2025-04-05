@@ -143,7 +143,7 @@ export class BackgroundTransaction {
       );
       const confirmParams: ConfirmParams = {
         ...params,
-        tokenAmount: String(params.coins ?? 0),
+        tokenAmount: String(params.coins || params.amount || 0),
         fee: String(params.fee),
         maxGas: String(params.maxGas ?? this.#core.gas.state.gasLimit),
         recipient: params.toAddr,
@@ -434,20 +434,20 @@ export class BackgroundTransaction {
       case OperationsType.Payment:
         return await new PaymentBuild(
           confirmParams.fee,
-          confirmParams.coins,
+          confirmParams.coins || confirmParams.amount,
           confirmParams.toAddr,
           expiryPeriod,
         ).bytes();
       case OperationsType.RollBuy:
         return await new BuyRollsBuild(
           confirmParams.fee,
-          confirmParams.coins,
+          confirmParams.coins || confirmParams.amount,
           expiryPeriod,
         ).bytes();
       case OperationsType.RollSell:
         return await new SellRollsBuild(
           confirmParams.fee,
-          confirmParams.coins,
+          confirmParams.coins || confirmParams.amount,
           expiryPeriod,
         ).bytes();
       case OperationsType.ExecuteSC:
@@ -458,7 +458,7 @@ export class BackgroundTransaction {
           BigInt(confirmParams.fee),
           BigInt(confirmParams.maxGas),
           BigInt(confirmParams.maxCoins || 0),
-          BigInt(confirmParams.coins || 0),
+          BigInt(confirmParams.coins || confirmParams.amount || 0),
           expiryPeriod,
           confirmParams.code || "",
           confirmParams.deployer || "",
@@ -476,7 +476,7 @@ export class BackgroundTransaction {
           confirmParams.fee,
           expiryPeriod,
           BigInt(confirmParams.maxGas),
-          confirmParams.coins || "0",
+          confirmParams.coins || confirmParams.amount || "0",
           confirmParams.toAddr,
           confirmParams.unsafeParams
             ? utils.hex.toBytes(confirmParams.unsafeParams)

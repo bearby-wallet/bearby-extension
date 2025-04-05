@@ -30,6 +30,7 @@ export interface SignedMessage {
 
 export interface MinTransactionParams {
   coins: string;
+  amount: string;
   toAddr: string;
   type: OperationsType;
   token: TransactionToken;

@@ -34,6 +34,7 @@ export async function addConfirmTransaction(
     code: "",
     params: [],
     coins: amount.toString(),
+    amount: amount.toString(),
     icon: viewIcon(token.base58, TokenType.FT),
     title: token.name,
     token: {
@@ -68,6 +69,7 @@ export async function addConfirmBuyRolls(
     code: "",
     params: [],
     coins: String(rolls),
+    amount: String(rolls),
     icon: viewIcon(token.base58, TokenType.FT),
     title: token.name,
     token: {
@@ -102,6 +104,7 @@ export async function addConfirmSellRolls(
     code: "",
     params: [],
     coins: String(rolls),
+    amount: String(rolls),
     icon: viewIcon(token.base58, TokenType.FT),
     title: token.name,
     token: {
@@ -146,6 +149,7 @@ export async function addConfirmTransferFT(
       },
     ],
     coins: "0",
+    amount: "0",
     icon: viewIcon(token.base58, TokenType.FT),
     title: token.name,
     token: {
