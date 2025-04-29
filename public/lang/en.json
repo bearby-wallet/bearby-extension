@@ -291,7 +291,8 @@
         "1": "Buy Rolls",
         "2": "Sell Rolls",
         "3": "Deploy Contract",
-        "4": "Call Contract"
+        "4": "Call Contract",
+        "5": "Execute Bytecode"
       }
     }
   },

@@ -271,7 +271,8 @@
         "1": "Acquista Rolls",
         "2": "Vendi Rolls",
         "3": "Deploy Contract",
-        "4": "Chiama Contract"
+        "4": "Chiama Contract",
+        "5": "Bytecode Esecuzione"
       }
     }
   },

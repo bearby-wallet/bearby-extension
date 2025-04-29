@@ -323,7 +323,7 @@ export class BackgroundTransaction {
         timestamp: new Date().getTime(),
         recipient: confirmParams.recipient,
         coins: confirmParams.coins,
-        code: confirmParams.code,
+        code: confirmParams.bytecode,
         params: confirmParams.params,
         period: this.#core.settings.period.periodOffset,
         confirmed: false,
@@ -449,8 +449,7 @@ export class BackgroundTransaction {
           expiryPeriod,
         ).bytes();
       case OperationsType.ExecuteSC:
-        assert(Boolean(confirmParams.code), INCORRECT_PARAM);
-        assert(Boolean(confirmParams.deployer), INCORRECT_PARAM);
+        assert(Boolean(confirmParams.bytecode), INCORRECT_PARAM);
 
         return new ExecuteSmartContractBuild(
           BigInt(confirmParams.fee),
@@ -458,12 +457,13 @@ export class BackgroundTransaction {
           BigInt(confirmParams.maxCoins || 0),
           BigInt(confirmParams.coins || confirmParams.amount || 0),
           expiryPeriod,
-          confirmParams.code || "",
-          confirmParams.deployer || "",
+          confirmParams.bytecode,
+          confirmParams.bytecodeToDeploy,
           confirmParams.params,
           confirmParams.unsafeParams
             ? utils.hex.toBytes(confirmParams.unsafeParams)
             : undefined,
+          confirmParams.datastore,
         ).bytes();
       case OperationsType.CallSC:
         assert(Boolean(confirmParams.func), INCORRECT_PARAM);

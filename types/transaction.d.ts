@@ -43,11 +43,12 @@ export interface MinTransactionParams {
   title?: string;
   domain?: string;
   func?: string;
-  code?: string;
-  deployer?: string;
+  bytecode: string; // Bytecode to be executed (potentially deployer) (Base64 str)
+  bytecodeToDeploy?: string; // Bytecode to be deployed (Base64 str)
   params?: CallParam[];
   unsafeParams?: string; // in hex string
   maxCoins?: string;
+  datastore?: Record<string, string>; // key: value serialized as hex string. used in executeSC
 }
 
 export interface ConfirmParams extends MinTransactionParams {

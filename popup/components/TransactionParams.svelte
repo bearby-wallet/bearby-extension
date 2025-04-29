@@ -21,6 +21,7 @@
   $: img = viewIcon(tx.token.base58, TokenType.FT);
   $: multiplier = $gasStore.multiplier;
   $: fee = Number(tx.fee) * Number(multiplier);
+  $: type = tx.type == 3 /*executeSC*/ && !tx.bytecodeToDeploy?.length ? 5 /*executeSC*/ : tx.type;
 </script>
 
 <ul>
@@ -41,7 +42,7 @@
       {$_("confirm.params.teg")}
     </span>
     <span>
-      {tx.func || $_(`confirm.params.types.${tx.type}`)}
+      {tx.func || $_(`confirm.params.types.${type}`)}
     </span>
   </li>
   <li>
