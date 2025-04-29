@@ -85,9 +85,7 @@ export class BackgroundTransaction {
     }
   }
 
-  async runTrackTxns(
-    sendResponse: StreamResponse,
-  ) {
+  async runTrackTxns(sendResponse: StreamResponse) {
     try {
       this.#core.guard.checkSession();
 

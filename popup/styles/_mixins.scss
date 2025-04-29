@@ -18,12 +18,8 @@
 
 @mixin loading-gradient($gradient-color, $bg-color) {
   cursor: progress;
-  background: linear-gradient(
-      0.25turn,
-      transparent,
-      $gradient-color,
-      transparent
-    ),
+  background:
+    linear-gradient(0.25turn, transparent, $gradient-color, transparent),
     linear-gradient($bg-color, $bg-color),
     radial-gradient(
       38px circle at 19px 19px,

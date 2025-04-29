@@ -102,7 +102,11 @@ export class MassaControl {
       utils.hex.toBytes(blake3.newRegular().update(data).finalize()),
     );
     const sig = await signAsync(messageHashDigest, pair.privKey);
-    const isVerified = await verifyAsync(sig, messageHashDigest, pair.pubKey.slice(1));
+    const isVerified = await verifyAsync(
+      sig,
+      messageHashDigest,
+      pair.pubKey.slice(1),
+    );
 
     assert(isVerified, INCORRECT_PUB_KEY, MassaHttpError);
 
