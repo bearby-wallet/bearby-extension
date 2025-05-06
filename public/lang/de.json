@@ -271,7 +271,8 @@
         "1": "Rolls kaufen",
         "2": "Rolls verkaufen",
         "3": "Vertrag bereitstellen",
-        "4": "Vertrag aufrufen"
+        "4": "Vertrag aufrufen",
+        "5": "Bytecode-Ausführung"
       }
     }
   },

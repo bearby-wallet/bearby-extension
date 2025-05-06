@@ -135,8 +135,7 @@ export class SellRollsBuild {
 export class ExecuteSmartContractBuild {
   static operation = OperationsType.ExecuteSC;
 
-  code: Uint8Array;
-  deployer: Uint8Array;
+  bytecode: Uint8Array;
   maxGas: bigint;
   fee: bigint;
   maxCoins: bigint;
@@ -150,52 +149,64 @@ export class ExecuteSmartContractBuild {
     maxCoins: bigint,
     coins: bigint,
     expirePeriod: number,
-    code: string, // as Base58
-    deployer: string, // deployer contract as base58.
+    bytecode: string, // Bytecode to be executed (potentially deployer) (Base64 str)
+    bytecodeToDeploy?: string, // Bytecode to be deployed (Base64 str)
     parameters?: CallParam[],
     unsafeParameters?: Uint8Array,
+    operation_datastore?: Record<string, string>,
   ) {
     this.fee = fee;
     this.maxGas = maxGas;
     this.coins = coins;
     this.maxCoins = maxCoins;
     this.expirePeriod = expirePeriod;
-    this.code = toByteArray(code);
-    this.deployer = toByteArray(deployer);
+
+    this.bytecode = toByteArray(bytecode);
 
     const datastore = new Map<Uint8Array, Uint8Array>();
 
-    datastore.set(new Uint8Array([0x00]), u64ToBytes(1n));
+    // case of SC deploy
+    if (bytecodeToDeploy) {
+      datastore.set(new Uint8Array([0x00]), u64ToBytes(1n));
 
-    datastore.set(u64ToBytes(1n), this.code);
+      datastore.set(u64ToBytes(1n), toByteArray(bytecodeToDeploy));
 
-    if (parameters && parameters.length > 0) {
-      const args = parseParams(parameters);
+      if (parameters && parameters.length > 0) {
+        const args = parseParams(parameters);
 
-      datastore.set(
-        Uint8Array.from(
-          new Args().addU64(1n).addUint8Array(u8toByte(0)).serialize(),
-        ),
-        Uint8Array.from(args.serialize()),
-      );
-    }
+        datastore.set(
+          Uint8Array.from(
+            new Args().addU64(1n).addUint8Array(u8toByte(0)).serialize(),
+          ),
+          Uint8Array.from(args.serialize()),
+        );
+      }
 
-    if (unsafeParameters) {
-      datastore.set(
-        Uint8Array.from(
-          new Args().addU64(1n).addUint8Array(u8toByte(0)).serialize(),
-        ),
-        Uint8Array.from(unsafeParameters),
-      );
-    }
+      if (unsafeParameters) {
+        datastore.set(
+          Uint8Array.from(
+            new Args().addU64(1n).addUint8Array(u8toByte(0)).serialize(),
+          ),
+          Uint8Array.from(unsafeParameters),
+        );
+      }
 
-    if (coins > 0n) {
-      datastore.set(
-        new Uint8Array(
-          new Args().addU64(BigInt(1)).addUint8Array(u8toByte(1)).serialize(),
-        ),
-        u64ToBytes(coins),
-      );
+      if (coins > 0n) {
+        datastore.set(
+          new Uint8Array(
+            new Args().addU64(BigInt(1)).addUint8Array(u8toByte(1)).serialize(),
+          ),
+          u64ToBytes(coins),
+        );
+      }
+    } else {
+      // case of execute SC
+      if (operation_datastore)
+        for (const [key, value] of Object.entries(operation_datastore)) {
+          const keyBytes = utils.hex.toBytes(key);
+          const valueBytes = utils.hex.toBytes(value);
+          datastore.set(keyBytes, valueBytes);
+        }
     }
 
     this.datastore = datastore;
@@ -207,7 +218,7 @@ export class ExecuteSmartContractBuild {
     const maxCoinEncoded = varintEncode(this.maxCoins);
     const expirePeriodEncoded = varintEncode(this.expirePeriod);
     const typeIdEncoded = varintEncode(ExecuteSmartContractBuild.operation);
-    const dataLengthEncoded = varintEncode(this.deployer.length);
+    const dataLengthEncoded = varintEncode(this.bytecode.length);
 
     // smart contract operation datastore
     const datastoreKeyMap = this.datastore;
@@ -235,7 +246,7 @@ export class ExecuteSmartContractBuild {
       ...maxGasEncoded,
       ...maxCoinEncoded,
       ...dataLengthEncoded,
-      ...this.deployer,
+      ...this.bytecode,
       ...datastoreSerializedBufferLen,
       ...datastoreSerializedBuffer,
     ]);

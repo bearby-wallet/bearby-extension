@@ -271,7 +271,8 @@
         "1": "Comprar Rolls",
         "2": "Vender Rolls",
         "3": "Desplegar Contrato",
-        "4": "Llamar Contrato"
+        "4": "Llamar Contrato",
+        "5": "Bytecode Ejecución"
       }
     }
   },
