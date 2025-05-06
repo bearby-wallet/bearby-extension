@@ -1,83 +1,89 @@
 <script lang="ts">
-	import { _ } from 'popup/i18n';
+	import { _ }	 from 'popup/i18n';
 	import { route } from 'popup/routers/navigation';
 </script>
 
 <main>
-	<img
-		src="/imgs/logo.webp"
-		alt="logo"
-	>
-	<h1>
-		{$_('start.title')}
-	</h1>
-	<h3>
-		{$_('start.subt_title')}
-	</h3>
-	<div>
-		<a
-			href="/restore"
-			use:route
-			class="btn outline"
-		>
-			{$_('start.btn_restore')}
-		</a>
-		<a
-			href="/create"
-			use:route
-			class="btn primary"
-		>
-			{$_('start.btn_create')}
-		</a>
+	<img src="/imgs/logo.webp" alt="logo" class="logo" />
+	<h1>{$_('start.title')}</h1>
+	<h3>{$_('start.subt_title')}</h3>
+	<div class="button-group">
+		<a href="/restore" use:route class="btn outline">{$_('start.btn_restore')}</a>
+		<a href="/create" use:route class="btn primary">{$_('start.btn_create')}</a>
 	</div>
 </main>
 
 <style lang="scss">
 	@use '../styles/mixins' as mix;
 
-	img {
-	 & {
-	   max-width: 500px;
-	   width: calc(100vw - 0px);
-	 }
-	}
-
-	h1 {
-	 & {
-	   color: var(--text-color);
-	   margin-block-end: 0;
-	 }
-	 @include mix.fluid-text(600px, 20pt, 40pt);
-	}
-
-	h3 {
-	 & {
-	   color: var(--text-color);
-	 }
-	 @include mix.fluid-text(600px, 14pt, 20pt);
+	:global(body) {
+		margin: 0;
+		padding: 0;
 	}
 
 	main {
-	 & {
-	   background: inherit;
-	   height: 100vh;
-	 }
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		min-height: 100vh;
+		background: #1a1a2e;
+		padding: 20px;
+	}
 
-	 @include mix.flex-center-column;
+	.logo {
+		max-width: 200px;
+		width: 100%;
+		margin-bottom: 1rem;
+	}
 
-	 & > div {
-	   & {
-	     width: 100%;
-	     max-width: 290px;
-	   }
-   
-	   @include mix.flex-between-row;
+	h1 {
+		color: white;
+		margin: 0;
+		@include mix.fluid-text(600px, 24pt, 36pt);
+		text-align: center;
+	}
 
-	   a {
-	     & {
-	       margin: 10px;
-	     }
-	   }
-	 }
+	h3 {
+		color: white;
+		@include mix.fluid-text(600px, 16pt, 20pt);
+		text-align: center;
+		margin: 0.5rem 0 2rem;
+	}
+
+	.button-group {
+		display: flex;
+		gap: 1rem;
+		width: 100%;
+		max-width: 300px;
+		justify-content: center;
+	}
+
+	.outline {
+		border: 1px solid white;
+		color: white;
+		&:hover {
+			background: white;
+			color: #1a1a2e;
+		}
+	}
+
+	.primary {
+		background: #007bff;
+		color: white;
+		&:hover {
+			background: darken(#007bff, 10%);
+		}
+	}
+
+	@media (max-width: 600px) {
+		.button-group {
+			flex-direction: column;
+			gap: 0.5rem;
+		}
+
+		.btn {
+			width: 100%;
+		}
 	}
 </style>
