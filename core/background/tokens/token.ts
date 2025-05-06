@@ -210,11 +210,9 @@ export class TokenControl {
     );
     const ftResult: ExecuteReadOnlyCallResponse = ftResonses;
     const ftBalances: bigint[] = ftResult.result
-      ? ftResult.result.map((result) =>
-          {
-            return bytesToU256(Uint8Array.from(result.result.Ok));
-          },
-        )
+      ? ftResult.result.map((result) => {
+          return bytesToU256(Uint8Array.from(result.result.Ok));
+        })
       : new Array(ftTokensData.length).fill(0n);
 
     const balances: Balance[] = [];
@@ -240,7 +238,7 @@ export class TokenControl {
           tokenIndex < tokensAddresses.length;
           tokenIndex++
         ) {
-          const arrayIndex = tokenIndex + (index * tokensAddresses.length);
+          const arrayIndex = tokenIndex + index * tokensAddresses.length;
           const data = ftTokensData[arrayIndex];
           const tokenbalance = ftBalances[arrayIndex];
 

@@ -1,4 +1,4 @@
-import { mount } from 'svelte';
+import { mount } from "svelte";
 import { Runtime } from "lib/runtime";
 import App from "./App.svelte";
 import { getWalletState } from "./backend/wallet";
@@ -11,13 +11,13 @@ getWalletState().finally(() => {
   app = mount(App, {
     target: document.body,
   });
-  
+
   const events = Runtime.storage.local.onChanged;
 
   Runtime.tabs.query({ active: true, currentWindow: true }, ([tab]) =>
     loadTab(tab),
   );
-  
+
   Runtime.tabs.onActivated.addListener((activeInfo) => {
     chrome.tabs.get(activeInfo.tabId, async (tab) => loadTab(tab));
   });

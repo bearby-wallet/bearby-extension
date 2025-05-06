@@ -75,7 +75,11 @@ export class BuyRollsBuild {
   amount: bigint;
   expirePeriod: number;
 
-  constructor(fee: string | undefined, amount: string | undefined, expirePeriod: number) {
+  constructor(
+    fee: string | undefined,
+    amount: string | undefined,
+    expirePeriod: number,
+  ) {
     this.fee = BigInt(fee ?? GAS_LIMIT);
     this.amount = BigInt(amount ?? 0);
     this.expirePeriod = expirePeriod;
@@ -103,7 +107,11 @@ export class SellRollsBuild {
   amount: bigint;
   expirePeriod: number;
 
-  constructor(fee: string | undefined, amount: string | undefined, expirePeriod: number) {
+  constructor(
+    fee: string | undefined,
+    amount: string | undefined,
+    expirePeriod: number,
+  ) {
     this.fee = BigInt(fee ?? GAS_LIMIT);
     this.amount = BigInt(amount ?? 0);
     this.expirePeriod = expirePeriod;

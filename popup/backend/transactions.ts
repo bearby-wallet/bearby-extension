@@ -98,4 +98,3 @@ export async function runTxnsTrack() {
   updateState(resolve as WalletState);
   return resolve;
 }
-

@@ -96,7 +96,7 @@ export async function publicKeyBytesFromPrivateKey({
   privKey,
   version,
 }: PrivateKey): Promise<PublicKey> {
-  let pubKey = await  getPublicKeyAsync(privKey);
+  let pubKey = await getPublicKeyAsync(privKey);
 
   pubKey = Uint8Array.from([version, ...pubKey]);
 

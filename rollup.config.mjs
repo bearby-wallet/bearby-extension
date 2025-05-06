@@ -2,22 +2,23 @@ import svelte from "rollup-plugin-svelte";
 import commonjs from "@rollup/plugin-commonjs";
 import resolve from "@rollup/plugin-node-resolve";
 import typescript from "@rollup/plugin-typescript";
-import postcss from 'rollup-plugin-postcss';
-import cssnano from 'cssnano';
+import postcss from "rollup-plugin-postcss";
+import cssnano from "cssnano";
 import copy from "rollup-plugin-copy";
 import json from "@rollup/plugin-json";
 import { terser } from "rollup-plugin-terser";
 import { visualizer } from "rollup-plugin-visualizer";
 import nodePolyfills from "rollup-plugin-node-polyfills";
-import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
+import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 import pkg from "./package.json" with { type: "json" };
 
-
 const watchMode = !!process.env.ROLLUP_WATCH;
-const production = process.env.NODE_ENV == 'production';
+const production = process.env.NODE_ENV == "production";
 const manifest = process.env.MANIFEST || 3;
 
-console.log(`build for ${production ? 'production' : 'dev'}, watchmode: ${watchMode}, manifest: ${manifest}`);
+console.log(
+  `build for ${production ? "production" : "dev"}, watchmode: ${watchMode}, manifest: ${manifest}`,
+);
 
 const popup = {
   input: "popup/main.ts",
@@ -40,59 +41,68 @@ const popup = {
         if (production) return;
 
         handler(warning);
-      }
+      },
     }),
     postcss({
-      extract: 'bundle.css',
+      extract: "bundle.css",
       minimize: production,
       sourceMap: !production,
       plugins: [
-        production && cssnano({
-          preset: ['default', {
-            discardComments: {
-              removeAll: true,
-            },
-            cssDeclarationSorter: true,
-            normalizeWhitespace: true,
-            minifySelectors: true
-          }],
-        })
+        production &&
+          cssnano({
+            preset: [
+              "default",
+              {
+                discardComments: {
+                  removeAll: true,
+                },
+                cssDeclarationSorter: true,
+                normalizeWhitespace: true,
+                minifySelectors: true,
+              },
+            ],
+          }),
       ].filter(Boolean),
       onwarn: (warning) => {
         if (production) return;
         console.warn(warning);
       },
       inject: false,
-      watch: production ? false : {
-        clearScreen: false
-      }
+      watch: production
+        ? false
+        : {
+            clearScreen: false,
+          },
     }),
     resolve({
-			browser: true,
-			dedupe: ['svelte'],
-			exportConditions: ['svelte']
-		}),
+      browser: true,
+      dedupe: ["svelte"],
+      exportConditions: ["svelte"],
+    }),
     commonjs({
-       requireReturnsDefault: "auto"
+      requireReturnsDefault: "auto",
     }),
     typescript({
       sourceMap: !production,
       inlineSources: !production,
     }),
-    production && terser({
-      format: { comments: false },
-      compress: true,
-    }),
+    production &&
+      terser({
+        format: { comments: false },
+        compress: true,
+      }),
   ].filter(Boolean),
-  watch: production ? false : {
-    clearScreen: false,
-    include: ["popup/**"],
-  },
+  watch: production
+    ? false
+    : {
+        clearScreen: false,
+        include: ["popup/**"],
+      },
   onwarn(warning, warn) {
     if (production) return;
-    
+
     warn(warning);
-  }
+  },
 };
 const background = {
   input: "core/background/index.ts",
@@ -207,8 +217,4 @@ const content = {
   ],
 };
 
-export default [
-  popup,
-  background,
-  content
-];
+export default [popup, background, content];

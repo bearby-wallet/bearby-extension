@@ -72,8 +72,8 @@ export class WorkerController {
       }, this.delay);
     } else {
       Runtime.alarms.create(alarmName, {
-         delayInMinutes: 0.0833,
-         periodInMinutes: 0.0833,
+        delayInMinutes: 0.0833,
+        periodInMinutes: 0.0833,
       });
       Runtime.alarms.onAlarm.addListener((alarm) => {
         if (alarm.name === alarmName) {
